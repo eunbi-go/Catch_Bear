@@ -3,36 +3,54 @@
 #include "CorePch.h"
 #include <thread>
 #include <atomic>
+#include <mutex>
 
-// atomic : All Or Nothing
-// atomic 연산은 많이 느려서 정말로 필요할때만 사용해야 한다, 병목현상도 걸릴 수 있음
-atomic<int32> sum = 0;
+vector<int32> v;
+mutex m;		// 일종의 자물쇠
 
-void Add()
+// RALL
+template<typename T>
+class LockGuard
 {
-	for (int32 i = 0; i < 100'0000; i++)
+public:
+	LockGuard(T& m)
 	{
-		sum.fetch_add(1);
-		//sum++;
+		_mutex = &m;
+		_mutex->lock();
 	}
-}
-
-void Sub()
-{
-	for (int32 i = 0; i < 100'0000; i++)
+	~LockGuard()
 	{
-		sum.fetch_add(-1);
-		//sum--;
+		_mutex->unlock();
+	}
+private:
+	T* _mutex;
+};
+
+void Push()
+{
+	for (int32 i = 0; i < 10000; ++i)
+	{
+		//LockGuard<std::mutex> LockGuard(m);
+		//std::lock_guard<std::mutex> LockGuard(m);
+		std::unique_lock<std::mutex> uniqueLock(m, std::defer_lock);	// 잠기는 시점을 뒤로 미룰수있다	
+
+		uniqueLock.lock();
+		//m.lock();
+
+		v.push_back(i);
+
+		//m.unlock();
 	}
 }
 
 int main()
 {
-	std::thread t1(Add);
-	std::thread t2(Sub);
+	std::thread t1(Push);
+	std::thread t2(Push);
+
 	t1.join();
 	t2.join();
-	cout << sum << endl;
 
+	cout << v.size() << endl;
 }
 

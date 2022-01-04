@@ -5,52 +5,81 @@
 #include <atomic>
 #include <mutex>
 
-vector<int32> v;
-mutex m;		// 일종의 자물쇠
-
-// RALL
-template<typename T>
-class LockGuard
+class SpinLock
 {
 public:
-	LockGuard(T& m)
+	void lock()
 	{
-		_mutex = &m;
-		_mutex->lock();
+		// CAS (Compare-And-Swap)
+
+		bool expected = false;
+		bool desired = true;
+
+		// CAS 의사 코드
+		//if (_locked == expected)
+		//{
+		//	expected = _locked;
+		//	_locked = desired;
+		//	return true;
+		//}
+		//else
+		//{
+		//	return false;
+		//}
+
+		while (_locked.compare_exchange_strong(expected, desired) == false)
+		{
+			expected = false;
+		}
+
+		// 밑 두 개를 묶어서 위에 한번에 설명한것임
+		/*while (_locked)
+		{
+
+		}
+
+		_locked = true;*/
 	}
-	~LockGuard()
+
+	void unlock()
 	{
-		_mutex->unlock();
+		//_locked = false;
+		_locked.store(false);
 	}
+
 private:
-	T* _mutex;
+	atomic<bool> _locked = false;
 };
 
-void Push()
+int32 sum = 0;
+mutex m;
+
+void Add()
 {
-	for (int32 i = 0; i < 10000; ++i)
+	for(int32 i = 0; i < 100000; ++i)
 	{
-		//LockGuard<std::mutex> LockGuard(m);
-		//std::lock_guard<std::mutex> LockGuard(m);
-		std::unique_lock<std::mutex> uniqueLock(m, std::defer_lock);	// 잠기는 시점을 뒤로 미룰수있다	
+		lock_guard<mutex> guard(m);
+		sum++;
+	}
+}
 
-		uniqueLock.lock();
-		//m.lock();
-
-		v.push_back(i);
-
-		//m.unlock();
+void Sub()
+{
+	for (int32 i = 0; i < 100000; ++i)
+	{
+		lock_guard<mutex> guard(m);
+		sum--;
 	}
 }
 
 int main()
 {
-	std::thread t1(Push);
-	std::thread t2(Push);
+	thread t1(Add);
+	thread t2(Sub);
 
 	t1.join();
 	t2.join();
 
-	cout << v.size() << endl;
+	cout << sum << endl;
 }
 

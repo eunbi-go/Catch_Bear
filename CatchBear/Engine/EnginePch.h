@@ -4,7 +4,7 @@
 #define _HAS_STD_BYTE 0
 
 // °¢Á¾ include
-#include <Windows.h>
+#include <windows.h>
 #include <tchar.h>
 #include <memory>
 #include <string>
@@ -112,5 +112,8 @@ struct Transform
 #define CMD_LIST			GEngine->GetCmdQueue()->GetCmdList()
 #define RESOURCE_CMD_LIST	GEngine->GetCmdQueue()->GetResourceCmdList()
 #define ROOT_SIGNATURE		GEngine->GetRootSignature()->GetSignature()
+
+#define INPUT				GEngine->GetInput()
+#define DELTA_TIME			GEngine->GetTimer()->GetDeltaTime()
 
 extern unique_ptr<class Engine> GEngine;

@@ -5,32 +5,26 @@
 #include <atomic>
 #include <mutex>
 #include <future>
+#include "ThreadManager.h"
 
-//__declspec(thread) int32 value;
-thread_local int32 LThreadId = 0;
+CoreGlobal Core;
 
-void ThreadMain(int32 threadId)
+void ThreadMain()
 {
-	LThreadId = threadId;
-
 	while (true)
 	{
-		cout << "Hi i am Thread" << LThreadId << endl;
+		cout << "Hello ! I am thread... " << LThreadId << endl;
 		this_thread::sleep_for(1s);
 	}
 }
 
 int main()
 {
-	vector<thread> threads;
-
-	for (int32 i = 0; i < 10; ++i)
+	for (int32 i = 0; i < 5; i++)
 	{
-		int32 threadId = i + 1;
-		threads.push_back(thread(ThreadMain, threadId));
+		GThreadManager->Launch(ThreadMain);
 	}
 
-	for (thread& t : threads)
-		t.join();
+	GThreadManager->Join();
 }
 

@@ -1,0 +1,102 @@
+#include "pch.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "MeshRenderer.h"
+#include "MonoBehaviour.h"
+
+GameObject::GameObject()
+{
+}
+
+GameObject::~GameObject()
+{
+}
+
+void GameObject::Init()
+{
+	// 모든 물체들이 Transform을 들고 있도록 만들어줌
+	AddComponent(make_shared<Transform>());
+}
+
+void GameObject::Awake()
+{
+	for (shared_ptr<Component>& component : _components)
+	{
+		if (component)
+			component->Awake();
+	}
+
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Awake();
+	}
+}
+
+void GameObject::Start()
+{
+	for (shared_ptr<Component>& component : _components)
+	{
+		if (component)
+			component->Start();
+	}
+
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Start();
+	}
+}
+
+void GameObject::Update()
+{
+	for (shared_ptr<Component>& component : _components)
+	{
+		if (component)
+			component->Update();
+	}
+
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->Update();
+	}
+}
+
+void GameObject::LateUpdate()
+{
+	for (shared_ptr<Component>& component : _components)
+	{
+		if (component)
+			component->LateUpdate();
+	}
+
+	for (shared_ptr<MonoBehaviour>& script : _scripts)
+	{
+		script->LateUpdate();
+	}
+}
+
+shared_ptr<Transform> GameObject::GetTransform()
+{
+	uint8 index = static_cast<uint8>(COMPONENT_TYPE::TRANSFORM);
+	return static_pointer_cast<Transform>(_components[index]);
+}
+
+void GameObject::AddComponent(shared_ptr<Component> component)
+{
+	// this로 인자를 넘겨줌 -> this는 게임 오브젝트의 포인터이지 스마트 포인터가 아님
+	// make_shared<GameObject>(this) -> make_shared를 하는 순간 새로운 스마트 포인터를 만들어주면서
+	// this 객체를 참조하고 래퍼런스는 1인 객체를 만들어줌
+	// 스마트 포인터로 활용하고 있는 아이한테 enable_shared_from_this로 상속받아야 함
+	// shared_from_this()를 사용하면 자기 자신의 shared_ptr를 만들어서 건네줄 수 있음
+	// => 자기 자신에 대한 스마트 포인터를 넘겨주고 싶을 때 enable_shared_from_this, shared_from_this() 사용
+	component->SetGameObject(shared_from_this());
+
+	uint8 index = static_cast<uint8>(component->GetType());	// 내가 어떤 타입을 추가하고 싶은지 뽑아옴
+	if (index < FIXED_COMPONENT_COUNT)
+	{
+		_components[index] = component;	// 기본적인 형태의 컴포넌트
+	}
+	else
+	{
+		_scripts.push_back(dynamic_pointer_cast<MonoBehaviour>(component));	// 사용자가 커스텀한 컴포넌트
+	}
+}

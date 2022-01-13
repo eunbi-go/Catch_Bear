@@ -6,12 +6,15 @@ enum class COMPONENT_TYPE : uint8
 	MESH_RENDERER,
 	CAMERA,
 	// ....
-	MONO_BEHAVIOUR,
+	MONO_BEHAVIOUR,		// 마지막 순서여야함
 	END,
 };
 
 enum
 {
+	// MONO_BEHAVIOUR를 제외한 애들은 자기만의 슬롯 번호를 가지고 있음,
+	// 번호에 맞춰서 게임 오브젝트에서 하나만 가질 수 있음
+	// MONO_BEHAVIOUR는 여러개 만들 수 있기 때문에 별도로 생각함
 	FIXED_COMPONENT_COUNT = static_cast<uint8>(COMPONENT_TYPE::END) - 1
 };
 

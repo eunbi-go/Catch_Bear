@@ -1,7 +1,10 @@
 
-cbuffer TEST_B0 : register(b0)
+cbuffer TRANSFORM_PARAMS : register(b0)
 {
-    float4 offset0;
+    // row_major
+    // 다이렉트에서 활용하고 있는 행렬 접근 순서와 쉐이더 문법에서 생각하는 접근 순서가 다름
+    // 다이렉트x 규칙으로 만들어주기 위해 추가함
+    row_major matrix matWVP;
 };
 
 cbuffer MATERIAL_PARAMS : register(b1)
@@ -45,12 +48,7 @@ VS_OUT VS_Main(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
 
-    output.pos = float4(input.pos, 1.f);
-    //output.pos += offset0;
-    output.pos.x += float_0;
-    output.pos.y += float_1;
-    output.pos.z += float_2;
-
+    output.pos = mul(float4(input.pos, 1.f), matWVP);
     output.color = input.color;
     output.uv = input.uv;
 

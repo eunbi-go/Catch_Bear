@@ -2,7 +2,7 @@
 #include "Material.h"
 #include "Engine.h"
 
-void Material::Update()
+void Material::PushData()
 {
 	// 연관된 모든 것들을 한번에 처리해줌
 

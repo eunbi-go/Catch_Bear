@@ -29,7 +29,7 @@ public:
 	void SetFloat(uint8 index, float value) { _params.SetFloat(index, value); }
 	void SetTexture(uint8 index, shared_ptr<Texture> texture) { _textures[index] = texture; }
 
-	void Update();
+	void PushData();
 
 private:
 	shared_ptr<Shader>	_shader;	// 어떤 쉐이더와 연결되어 있는지

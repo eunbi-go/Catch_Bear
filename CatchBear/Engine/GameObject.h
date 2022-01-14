@@ -18,7 +18,7 @@ public:
 	void Start();
 	void Update();
 	void LateUpdate();
-
+	¤¤\
 	shared_ptr<Transform> GetTransform();
 
 	void AddComponent(shared_ptr<Component> component);

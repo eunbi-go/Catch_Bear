@@ -2,6 +2,14 @@
 #include "Material.h"
 #include "Engine.h"
 
+Material::Material() : Object(OBJECT_TYPE::MATERIAL)
+{
+}
+
+Material::~Material()
+{
+}
+
 void Material::PushData()
 {
 	// 연관된 모든 것들을 한번에 처리해줌

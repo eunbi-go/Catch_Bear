@@ -24,16 +24,9 @@ void SceneManager::Update()
 // TEMP (조명 부분에서 코드가 바뀔거임)
 void SceneManager::Render()
 {
-	if (!_activeScene) return;
+	if (_activeScene)
+		_activeScene->Render();
 
-	const vector<shared_ptr<GameObject>>& gameObjects = _activeScene->GetGameObjects();
-	for (auto& gameObject : gameObjects)
-	{
-		if (!gameObject->GetCamera())
-			continue;
-
-		gameObject->GetCamera()->Render();
-	}
 }
 
 void SceneManager::LoadScene(wstring sceneName)

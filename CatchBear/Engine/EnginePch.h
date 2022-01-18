@@ -137,7 +137,11 @@ public:								\
 
 struct TransformParams
 {
-	Matrix matWVP;
+	Matrix	matWorld;
+	Matrix	matView;
+	Matrix	matProjection;
+	Matrix	matWV;
+	Matrix	matWVP;
 };
 
 extern unique_ptr<class Engine> GEngine;

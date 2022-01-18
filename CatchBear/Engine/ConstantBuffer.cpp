@@ -93,6 +93,14 @@ void ConstantBuffer::PushData(void* buffer, uint32 size)
 	_currentIndex++;
 }
 
+void ConstantBuffer::SetGlobalData(void* buffer, uint32 size)
+{
+	// Light와 관련된 정보는 이 함수를 이용해서 세팅함
+	assert(_elementSize == ((size + 255) & ~255));
+	::memcpy(&_mappedBuffer[0], buffer, size);
+	CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
+}
+
 D3D12_GPU_VIRTUAL_ADDRESS ConstantBuffer::GetGpuVirtualAddress(uint32 index)
 {
 	D3D12_GPU_VIRTUAL_ADDRESS objCBAddress = _cbvBuffer->GetGPUVirtualAddress();

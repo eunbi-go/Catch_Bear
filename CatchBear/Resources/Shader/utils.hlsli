@@ -1,59 +1,78 @@
+#ifndef _UTILS_HLSLI_
+#define _UTILS_HLSLI_
 
-cbuffer TRANSFORM_PARAMS : register(b0)
+LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos)
 {
-    // row_major
-    // 다이렉트에서 활용하고 있는 행렬 접근 순서와 쉐이더 문법에서 생각하는 접근 순서가 다름
-    // 다이렉트x 규칙으로 만들어주기 위해 추가함
-    row_major matrix matWVP;
-};
+    LightColor color = (LightColor)0.f;
 
-cbuffer MATERIAL_PARAMS : register(b1)
-{
-    int int_0;
-    int int_1;
-    int int_2;
-    int int_3;
-    int int_4;
+    float3 viewLightDir = (float3)0.f;
 
-    float float_0;
-    float float_1;
-    float float_2;
-    float float_3;
-    float float_4;
-};
+    float diffuseRatio = 0.f;
+    float specularRatio = 0.f;
+    float distanceRatio = 1.f;  // spotlight나 pointlight를 위한 변수
 
-Texture2D tex_0 : register(t0);
-Texture2D tex_1 : register(t1);
-Texture2D tex_2 : register(t2);
-Texture2D tex_3 : register(t3);
-Texture2D tex_4 : register(t4);
+    if (g_light[lightIndex].lightType == 0)
+    {
+        // Directional Light
+        // world 기준으로 direction을 넣어줬기 때문에  g_matView 뷰 행렬을 이용해서 뷰스페이스로 변환해줌
+        viewLightDir = normalize(mul(float4(g_light[lightIndex].direction.xyz, 0.f), g_matView).xyz);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
+    }
+    else if (g_light[lightIndex].lightType == 1)
+    {
+        // Point Light
+        float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;
+        viewLightDir = normalize(viewPos - viewLightPos);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
 
-SamplerState sam_0 : register(s0);
+        float dist = distance(viewPos, viewLightPos);
+        if (g_light[lightIndex].range == 0.f)
+            distanceRatio = 0.f;
+        else
+            distanceRatio = saturate(1.f - pow(dist / g_light[lightIndex].range, 2));
+    }
+    else
+    {
+        // Spot Light
+        float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;
+        viewLightDir = normalize(viewPos - viewLightPos);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
 
-struct VS_IN
-{
-    float3 pos : POSITION;
-    float2 uv : TEXCOORD;
-};
+        if (g_light[lightIndex].range == 0.f)
+            distanceRatio = 0.f;
+        else
+        {
+            float halfAngle = g_light[lightIndex].angle / 2;
 
-struct VS_OUT
-{
-    float4 pos : SV_Position;
-    float2 uv : TEXCOORD;
-};
+            float3 viewLightVec = viewPos - viewLightPos;
+            float3 viewCenterLightDir = normalize(mul(float4(g_light[lightIndex].direction.xyz, 0.f), g_matView).xyz);
 
-VS_OUT VS_Main(VS_IN input)
-{
-    VS_OUT output = (VS_OUT)0;
+            float centerDist = dot(viewLightVec, viewCenterLightDir);
+            distanceRatio = saturate(1.f - centerDist / g_light[lightIndex].range);
 
-    output.pos = mul(float4(input.pos, 1.f), matWVP);
-    output.uv = input.uv;
+            float lightAngle = acos(dot(normalize(viewLightVec), viewCenterLightDir));
 
-    return output;
-}
+            if (centerDist < 0.f || centerDist > g_light[lightIndex].range) // 최대 거리를 벗어났는지
+                distanceRatio = 0.f;
+            else if (lightAngle > halfAngle) // 최대 시야각을 벗어났는지
+                distanceRatio = 0.f;
+            else // 거리에 따라 적절히 세기를 조절
+                distanceRatio = saturate(1.f - pow(centerDist / g_light[lightIndex].range, 2));
+        }
+    }
 
-float4 PS_Main(VS_OUT input) : SV_Target
-{
-    float4 color = tex_0.Sample(sam_0, input.uv);
+    float3 reflectionDir = normalize(viewLightDir + 2 * (saturate(dot(-viewLightDir, viewNormal)) * viewNormal));
+    float3 eyeDir = normalize(viewPos);
+    specularRatio = saturate(dot(-eyeDir, reflectionDir));
+    specularRatio = pow(specularRatio, 2);  // 안하면 범위가 너무 넓어짐
+
+    // 빛의 원래 세기에서 코사인 값을 곱해줌(비율)
+    color.diffuse = g_light[lightIndex].color.diffuse * diffuseRatio * distanceRatio;
+    color.ambient = g_light[lightIndex].color.ambient * distanceRatio;
+    color.specular = g_light[lightIndex].color.specular * specularRatio * distanceRatio;
+
     return color;
 }
+
+
+#endif

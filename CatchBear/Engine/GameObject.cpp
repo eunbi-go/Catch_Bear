@@ -15,7 +15,6 @@ GameObject::~GameObject()
 }
 
 
-
 void GameObject::Awake()
 {
 	for (shared_ptr<Component>& component : _components)

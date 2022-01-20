@@ -1,8 +1,6 @@
 #pragma once
 #include "Object.h"
 
-// [일감 기술서] 외주 인력들이 뭘 해야할지 기술
-
 class Shader : public Object
 {
 public:
@@ -25,6 +23,6 @@ private:
 	ComPtr<ID3DBlob>					_errBlob;
 
 	ComPtr<ID3D12PipelineState>			_pipelineState;
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC _pipelineDesc = {};
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC	_pipelineDesc = {};
 };
 

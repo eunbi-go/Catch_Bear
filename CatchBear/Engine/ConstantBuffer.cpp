@@ -51,6 +51,7 @@ void ConstantBuffer::CreateBuffer()
 
 void ConstantBuffer::CreateView()
 {
+	// constant buffer에 대해 서술하고 파이프라인에 binding되기 위한 descriptor
 	D3D12_DESCRIPTOR_HEAP_DESC cbvDesc = {};
 	cbvDesc.NumDescriptors = _elementCount;
 	cbvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;

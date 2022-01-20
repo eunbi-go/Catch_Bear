@@ -10,6 +10,7 @@ struct VS_IN
     float3 pos : POSITION;
     float2 uv : TEXCOORD;
     float3 normal : NORMAL;
+    float3 tangent : TANGENT;
 };
 
 struct VS_OUT
@@ -18,6 +19,8 @@ struct VS_OUT
     float2 uv : TEXCOORD;
     float3 viewPos : POSITION;
     float3 viewNormal : NORMAL;
+    float3 viewTangent : TANGENT;
+    float3 viewBinormal : BINORMAL;
 };
 
 VS_OUT VS_Main(VS_IN input)
@@ -32,21 +35,37 @@ VS_OUT VS_Main(VS_IN input)
     // normal, position 좌표를(로컬에서 받아준) 뷰 좌표계를 기준으로 변환해줌
     output.viewPos = mul(float4(input.pos, 1.f), g_matWV).xyz;
     output.viewNormal = normalize(mul(float4(input.normal, 0.f), g_matWV).xyz);
+    output.viewTangent = normalize(mul(float4(input.tangent, 0.f), g_matWV).xyz);
+    output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
 
     return output;
 }
 
 float4 PS_Main(VS_OUT input) : SV_Target
 {
-    //float4 color = g_tex_0.Sample(g_sam_0, input.uv);
     float4 color = float4(1.f, 1.f, 1.f, 1.f);
+    if (g_tex_on_0)
+        color = g_tex_0.Sample(g_sam_0, input.uv);
+
+    // 텍스처에 넘겨준 노멀을 뷰 스페이스로 바꿔치기 해서 넘겨줘야 함
+    float3 viewNormal = input.viewNormal;
+    if (g_tex_on_1) // 노멀 매핑을 해줬다면 1번이 on인 상태
+    {
+        // [0,255] 범위에서 [0,1]로 변환
+        float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
+        // [0,1] 범위에서 [-1,1]로 변환
+        tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
+        float3x3 matTBN = { input.viewTangent, input.viewBinormal, input.viewNormal };
+        viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
+    }
+
 
     LightColor totalColor = (LightColor)0.f;
 
     // 가지고 있는 모든 light를 순회하면서 최종적으로 받아야 하는 빛에 대한 color를 구해줌
     for (int i = 0; i < g_lightCount; ++i)
     {
-        LightColor color = CalculateLightColor(i, input.viewNormal, input.viewPos);
+        LightColor color = CalculateLightColor(i, viewNormal, input.viewPos);
         totalColor.diffuse += color.diffuse;
         totalColor.ambient += color.ambient;
         totalColor.specular += color.specular;

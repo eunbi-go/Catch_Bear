@@ -3,9 +3,9 @@
 #include "CoreTLS.h"
 #include "CoreGlobal.h"
 
-/*-------------------
+/*------------------
 	ThreadManager
---------------------*/
+-------------------*/
 
 ThreadManager::ThreadManager()
 {
@@ -48,4 +48,5 @@ void ThreadManager::InitTLS()
 
 void ThreadManager::DestroyTLS()
 {
+
 }

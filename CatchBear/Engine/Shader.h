@@ -1,6 +1,29 @@
 #pragma once
 #include "Object.h"
 
+enum class RASTERIZER_TYPE
+{
+	CULL_NONE,
+	CULL_FRONT,
+	CULL_BACK,		// 기본 상태, 반시계방향인 애들 무시
+	WIREFRAME,
+};
+
+// 깊이값을 비교할때 어떤 연산으로 비교할 것인지
+enum class DEPTH_STENCIL_TYPE
+{
+	LESS,			// 기본 상태, 깊이 값이 비교값보다 작을때만 그려줌
+	LESS_EQUAL,
+	GREATER,
+	GREATER_EQUAL,
+};
+
+struct ShaderInfo
+{
+	RASTERIZER_TYPE rasterizerType = RASTERIZER_TYPE::CULL_BACK;
+	DEPTH_STENCIL_TYPE depthStencilType = DEPTH_STENCIL_TYPE::LESS;
+};
+
 class Shader : public Object
 {
 public:
@@ -8,7 +31,7 @@ public:
 	virtual ~Shader();
 
 public:
-	void Init(const wstring& path);
+	void Init(const wstring& path, ShaderInfo info = ShaderInfo());
 	void Update();
 
 private:

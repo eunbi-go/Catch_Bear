@@ -36,6 +36,8 @@ void Camera::FinalUpdate()
 	// 나중에 렌더링하는 부분이 깔끔하게 정리되면 수정 (임시적x, 어디선가 전달받아서)
 	S_MatView = _matView;
 	S_MatProjection = _matProjection;
+
+	_frustum.FinalUpdate();
 }
 
 void Camera::Render()
@@ -50,6 +52,18 @@ void Camera::Render()
 	{
 		if (!gameObject->GetMeshRenderer())
 			continue;
+
+		// Frustum Culling
+		// skybox같은 경우는 어떠한 상황이든 그려줘야 함 -> Frustum culling 하면 안됨 (gameObject에 bool변수 추가)
+		if (gameObject->GetCheckFrustum())
+		{
+			if (_frustum.ContainsSphere(
+				gameObject->GetTransform()->GetWorldPosition(),
+				gameObject->GetTransform()->GetBoundingSphereRadius()) == false)
+			{
+				continue;
+			}
+		}
 
 		gameObject->GetMeshRenderer()->Render();
 	}

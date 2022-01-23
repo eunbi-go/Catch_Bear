@@ -2,7 +2,10 @@
 
 enum class CONSTANT_BUFFER_TYPE : uint8
 {
-	TRANSFORM, MATERIAL, END
+	GLOBAL,			// 전역 데이터를 가지고 있을 것임(Light 같은)
+	TRANSFORM,
+	MATERIAL,
+	END
 };
 
 enum
@@ -21,6 +24,8 @@ public:
 
 	void Clear();
 	void PushData(void* buffer, uint32 size);
+
+	void SetGlobalData(void* buffer, uint32 size);
 
 	D3D12_GPU_VIRTUAL_ADDRESS GetGpuVirtualAddress(uint32 index);
 	D3D12_CPU_DESCRIPTOR_HANDLE GetCpuHandle(uint32 index);

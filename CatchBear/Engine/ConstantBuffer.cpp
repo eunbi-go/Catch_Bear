@@ -10,7 +10,7 @@ ConstantBuffer::~ConstantBuffer()
 {
 	if (_cbvBuffer)
 	{
-		if (!_cbvBuffer)
+		if (_cbvBuffer != nullptr)
 			_cbvBuffer->Unmap(0, nullptr);
 
 		_cbvBuffer = nullptr;
@@ -22,7 +22,7 @@ void ConstantBuffer::Init(CBV_REGISTER reg, uint32 size, uint32 count)
 	_reg = reg;
 
 	// 상수 버퍼는 256 바이트 배수로 만들어야 한다
-	// 0 156 512 768
+	// 0 256 512 768
 	_elementSize = (size + 255) & ~255;
 	_elementCount = count;
 
@@ -51,6 +51,7 @@ void ConstantBuffer::CreateBuffer()
 
 void ConstantBuffer::CreateView()
 {
+	// constant buffer에 대해 서술하고 파이프라인에 binding되기 위한 descriptor
 	D3D12_DESCRIPTOR_HEAP_DESC cbvDesc = {};
 	cbvDesc.NumDescriptors = _elementCount;
 	cbvDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
@@ -91,6 +92,14 @@ void ConstantBuffer::PushData(void* buffer, uint32 size)
 	GEngine->GetTableDescHeap()->SetCBV(cpuHandle, _reg);
 
 	_currentIndex++;
+}
+
+void ConstantBuffer::SetGlobalData(void* buffer, uint32 size)
+{
+	// Light와 관련된 정보는 이 함수를 이용해서 세팅함, root signature b0 전역에 넣어줌
+	assert(_elementSize == ((size + 255) & ~255));
+	::memcpy(&_mappedBuffer[0], buffer, size);
+	CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS ConstantBuffer::GetGpuVirtualAddress(uint32 index)

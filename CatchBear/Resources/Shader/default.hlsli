@@ -1,64 +1,82 @@
+#ifndef _DEFAULT_HLSLI_
+#define _DEFAULT_HLSLI_
 
-cbuffer TEST_B0 : register(b0)
-{
-    float4 offset0;
-};
+#include "params.hlsli"
+#include "utils.hlsli"
 
-cbuffer MATERIAL_PARAMS : register(b1)
-{
-    int int_0;
-    int int_1;
-    int int_2;
-    int int_3;
-    int int_4;
-
-    float float_0;
-    float float_1;
-    float float_2;
-    float float_3;
-    float float_4;
-};
-
-Texture2D tex_0 : register(t0);
-Texture2D tex_1 : register(t1);
-Texture2D tex_2 : register(t2);
-Texture2D tex_3 : register(t3);
-Texture2D tex_4 : register(t4);
-
-SamplerState sam_0 : register(s0);
 
 struct VS_IN
 {
     float3 pos : POSITION;
-    float4 color : COLOR;
     float2 uv : TEXCOORD;
+    float3 normal : NORMAL;
+    float3 tangent : TANGENT;
 };
 
 struct VS_OUT
 {
     float4 pos : SV_Position;
-    float4 color : COLOR;
     float2 uv : TEXCOORD;
+    float3 viewPos : POSITION;
+    float3 viewNormal : NORMAL;
+    float3 viewTangent : TANGENT;
+    float3 viewBinormal : BINORMAL;
 };
 
 VS_OUT VS_Main(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
 
-    output.pos = float4(input.pos, 1.f);
-    //output.pos += offset0;
-    output.pos.x += float_0;
-    output.pos.y += float_1;
-    output.pos.z += float_2;
-
-    output.color = input.color;
+    output.pos = mul(float4(input.pos, 1.f), g_matWVP);
     output.uv = input.uv;
+
+    // 당장 투영 좌표계로 넘어가는게 아니라
+    // 빛 연산을 해주기 위해 view까지만 끊기 위해 matWV까지 끊어서 연산
+    // normal, position 좌표를(로컬에서 받아준) 뷰 좌표계를 기준으로 변환해줌
+    output.viewPos = mul(float4(input.pos, 1.f), g_matWV).xyz;
+    output.viewNormal = normalize(mul(float4(input.normal, 0.f), g_matWV).xyz);
+    output.viewTangent = normalize(mul(float4(input.tangent, 0.f), g_matWV).xyz);
+    output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
 
     return output;
 }
 
 float4 PS_Main(VS_OUT input) : SV_Target
 {
-    float4 color = tex_0.Sample(sam_0, input.uv);
+    float4 color = float4(1.f, 1.f, 1.f, 1.f);
+    if (g_tex_on_0)
+        color = g_tex_0.Sample(g_sam_0, input.uv);
+
+    // 텍스처에 넘겨준 노멀을 뷰 스페이스로 바꿔치기 해서 넘겨줘야 함
+    float3 viewNormal = input.viewNormal;
+    if (g_tex_on_1) // 노멀 매핑을 해줬다면 1번이 on인 상태
+    {
+        // [0,255] 범위에서 [0,1]로 변환
+        float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
+        // [0,1] 범위에서 [-1,1]로 변환
+        tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
+        float3x3 matTBN = { input.viewTangent, input.viewBinormal, input.viewNormal };
+        viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
+    }
+
+
+    LightColor totalColor = (LightColor)0.f;
+
+    // 가지고 있는 모든 light를 순회하면서 최종적으로 받아야 하는 빛에 대한 color를 구해줌
+    for (int i = 0; i < g_lightCount; ++i)
+    {
+        LightColor color = CalculateLightColor(i, viewNormal, input.viewPos);
+        totalColor.diffuse += color.diffuse;
+        totalColor.ambient += color.ambient;
+        totalColor.specular += color.specular;
+    }
+    
+    // 최종 값 세팅해줌, 색이 빛에 의해 변화하는 부분
+    color.xyz = (totalColor.diffuse.xyz * color.xyz)
+        + totalColor.ambient.xyz * color.xyz
+        + totalColor.specular.xyz;
+    
     return color;
 }
+
+#endif

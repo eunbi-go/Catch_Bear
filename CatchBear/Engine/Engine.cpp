@@ -5,6 +5,7 @@
 #include "Input.h"
 #include "Timer.h"
 #include "SceneManager.h"
+#include "Light.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -20,9 +21,10 @@ void Engine::Init(const WindowInfo& info)
 	_rootSignature->Init();
 	_tableDescHeap->Init(256);
 	_depthStencilBuffer->Init(_window);
-
-	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(TransformMatrix), 256);
-	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(MaterialParams), 256);
+	
+	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
+	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
+	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
 
 	ResizeWindow(info.width, info.height);
 
@@ -34,6 +36,7 @@ void Engine::Update()
 {
 	GET_SINGLE(Input)->Update();
 	GET_SINGLE(Timer)->Update();
+	GET_SINGLE(SceneManager)->Update();
 
 	Render();
 
@@ -44,8 +47,7 @@ void Engine::Render()
 {
 	RenderBegin();
 
-	// SceneManager의 Update 부분에는 모든 물체들을 그려주는 부분이 일단 들어가 있음.
-	GET_SINGLE(SceneManager)->Update();
+	GET_SINGLE(SceneManager)->Render();
 
 	RenderEnd();
 }

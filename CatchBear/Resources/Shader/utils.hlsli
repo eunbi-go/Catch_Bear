@@ -1,0 +1,78 @@
+#ifndef _UTILS_HLSLI_
+#define _UTILS_HLSLI_
+
+LightColor CalculateLightColor(int lightIndex, float3 viewNormal, float3 viewPos)
+{
+    LightColor color = (LightColor)0.f;
+
+    float3 viewLightDir = (float3)0.f;
+
+    float diffuseRatio = 0.f;
+    float specularRatio = 0.f;
+    float distanceRatio = 1.f;  // spotlight나 pointlight를 위한 변수
+
+    if (g_light[lightIndex].lightType == 0)
+    {
+        // Directional Light
+        // world 기준으로 direction을 넣어줬기 때문에  g_matView 뷰 행렬을 이용해서 뷰스페이스로 변환해줌
+        viewLightDir = normalize(mul(float4(g_light[lightIndex].direction.xyz, 0.f), g_matView).xyz);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
+    }
+    else if (g_light[lightIndex].lightType == 1)
+    {
+        // Point Light
+        float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;
+        viewLightDir = normalize(viewPos - viewLightPos);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
+
+        float dist = distance(viewPos, viewLightPos);
+        if (g_light[lightIndex].range == 0.f)
+            distanceRatio = 0.f;
+        else
+            distanceRatio = saturate(1.f - pow(dist / g_light[lightIndex].range, 2));
+    }
+    else
+    {
+        // Spot Light
+        float3 viewLightPos = mul(float4(g_light[lightIndex].position.xyz, 1.f), g_matView).xyz;
+        viewLightDir = normalize(viewPos - viewLightPos);
+        diffuseRatio = saturate(dot(-viewLightDir, viewNormal));
+
+        if (g_light[lightIndex].range == 0.f)
+            distanceRatio = 0.f;
+        else
+        {
+            float halfAngle = g_light[lightIndex].angle / 2;
+
+            float3 viewLightVec = viewPos - viewLightPos;
+            float3 viewCenterLightDir = normalize(mul(float4(g_light[lightIndex].direction.xyz, 0.f), g_matView).xyz);
+
+            float centerDist = dot(viewLightVec, viewCenterLightDir);
+            distanceRatio = saturate(1.f - centerDist / g_light[lightIndex].range);
+
+            float lightAngle = acos(dot(normalize(viewLightVec), viewCenterLightDir));
+
+            if (centerDist < 0.f || centerDist > g_light[lightIndex].range) // 최대 거리를 벗어났는지
+                distanceRatio = 0.f;
+            else if (lightAngle > halfAngle) // 최대 시야각을 벗어났는지
+                distanceRatio = 0.f;
+            else // 거리에 따라 적절히 세기를 조절
+                distanceRatio = saturate(1.f - pow(centerDist / g_light[lightIndex].range, 2));
+        }
+    }
+
+    float3 reflectionDir = normalize(viewLightDir + 2 * (saturate(dot(-viewLightDir, viewNormal)) * viewNormal));
+    float3 eyeDir = normalize(viewPos);
+    specularRatio = saturate(dot(-eyeDir, reflectionDir));
+    specularRatio = pow(specularRatio, 2);  // 안하면 범위가 너무 넓어짐
+
+    // 빛의 원래 세기에서 코사인 값을 곱해줌(비율)
+    color.diffuse = g_light[lightIndex].color.diffuse * diffuseRatio * distanceRatio;
+    color.ambient = g_light[lightIndex].color.ambient * distanceRatio;
+    color.specular = g_light[lightIndex].color.specular * specularRatio * distanceRatio;
+
+    return color;
+}
+
+
+#endif

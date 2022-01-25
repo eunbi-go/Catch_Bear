@@ -1,5 +1,5 @@
-#ifndef _PARAMS_HLSLI_
-#define _PARAMS_HLSLI_
+#ifndef _PARAMS_HLSL_
+#define _PARAMS_HLSL_
 
 
 struct LightColor

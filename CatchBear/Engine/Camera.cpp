@@ -33,15 +33,14 @@ void Camera::FinalUpdate()
 	else
 		_matProjection = ::XMMatrixOrthographicLH(width * _scale, height * _scale, _near, _far);
 
-	// 나중에 렌더링하는 부분이 깔끔하게 정리되면 수정 (임시적x, 어디선가 전달받아서)
-	S_MatView = _matView;
-	S_MatProjection = _matProjection;
-
 	_frustum.FinalUpdate();
 }
 
 void Camera::Render()
 {
+	S_MatView = _matView;
+	S_MatProjection = _matProjection;
+
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
 	// TODO: Layer 구분
@@ -51,6 +50,9 @@ void Camera::Render()
 	for (auto& gameObject : gameObjects)
 	{
 		if (!gameObject->GetMeshRenderer())
+			continue;
+
+		if (IsCulled(gameObject->GetLayerIndex()))
 			continue;
 
 		// Frustum Culling

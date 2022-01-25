@@ -1,8 +1,8 @@
-#ifndef _DEFAULT_HLSLI_
-#define _DEFAULT_HLSLI_
+#ifndef _DEFAULT_HLSL_
+#define _DEFAULT_HLSL_
 
-#include "params.hlsli"
-#include "utils.hlsli"
+#include "params.hlsl"
+#include "utils.hlsl"
 
 
 struct VS_IN

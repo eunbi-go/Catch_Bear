@@ -31,7 +31,7 @@ public:
 	void AddComponent(shared_ptr<Component> component);
 
 	void SetCheckFrustum(bool checkFrustum) { _checkFrustum = checkFrustum; }
-	bool GetCheckFrustum() { return _checkFrustum; }\
+	bool GetCheckFrustum() { return _checkFrustum; }
 
 	void SetLayerIndex(uint8 layer) { _layerIndex = layer; }
 	uint8 GetLayerIndex() { return _layerIndex; }

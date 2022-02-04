@@ -26,7 +26,7 @@ void Transform::FinalUpdate()
 	_matWorld = _matLocal;									// world space로 가기 위한 행렬
 
 	shared_ptr<Transform> parent = GetParent().lock();
-	if (parent)
+	if (parent != nullptr)
 	{
 		_matWorld *= parent->GetLocalToWorldMatrix();
 	}

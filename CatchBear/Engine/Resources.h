@@ -11,6 +11,8 @@ class Resources
 	DECLARE_SINGLE(Resources);
 
 public:
+	void Init();
+
 	// 리소스를 파일에서 로드하고, 로드된 것을 가져온다던가, 이미 메모리에 있던걸 임시로 추가하는 기능들을
 	// 템플릿으로 만들어줌 - 우리가 사용하는게 어떤건지 모르기 때문에
 	template<typename T>
@@ -25,8 +27,19 @@ public:
 	template<typename T>
 	OBJECT_TYPE GetObjectType();
 
+	shared_ptr<Mesh> LoadRectangleMesh();
 	shared_ptr<Mesh> LoadCubeMesh();
 	shared_ptr<Mesh> LoadSphereMesh();
+
+	shared_ptr<Texture> CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height,
+		const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+		D3D12_RESOURCE_FLAGS resFlags = D3D12_RESOURCE_FLAG_NONE, Vec4 clearColor = Vec4());
+
+	shared_ptr<Texture> CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D);
+
+private:
+	void CreateDefaultShader();
+	void CreateDefaultMaterial();
 
 private:
 	// map 형태로 리소스를 들고 있을 것임 - <이름을 지어줘서 구별할 수 있는 key, 실제 오브젝트>
@@ -49,8 +62,8 @@ inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)
 		return static_pointer_cast<T>(findIt->second);
 
 	shared_ptr<T> object = make_shared<T>();
-	object->Load(0);
-	KeyObjMap[key] = object;
+	object->Load(path);
+	keyObjMap[key] = object;
 
 	return object;
 }

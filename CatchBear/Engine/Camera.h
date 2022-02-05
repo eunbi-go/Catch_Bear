@@ -15,7 +15,26 @@ public:
 	virtual ~Camera();
 
 	virtual void FinalUpdate() override;
-	void Render();
+	
+	void SetProjectionType(PROJECTION_TYPE type) { _type = type; }
+	PROJECTION_TYPE GetProjectionType() { return _type; }
+
+	void SortGameObject();
+	void Render_Deferred();
+	void Render_Forward();
+
+	// 특정 비트 하나만 끄거나 키도록 하고 싶을 때 사용
+	void SetCullingMaskLayerOnOff(uint8 layer, bool on)
+	{
+		if (on)
+			_cullingMask |= (1 << layer);
+		else
+			_cullingMask &= ~(1 << layer);
+	}
+
+	void SetCullingMaskAll() { SetCullingMask(UINT32_MAX); }	// 아무것도 찍지 않도록 설정
+	void SetCullingMask(uint32 mask) { _cullingMask = mask; }
+	bool IsCulled(uint8 layer) { return (_cullingMask & (1 << layer)) != 0; }
 
 private:
 	PROJECTION_TYPE _type = PROJECTION_TYPE::PERSPECTIVE;
@@ -29,6 +48,12 @@ private:
 	Matrix	_matProjection = {};
 
 	Frustum	_frustum;
+	uint32	_cullingMask = 0;	// 각 비트가 컬링해야 하는지 아닌지를 나타냄
+
+private:
+	// 내가 찍어야 하는 애들을 구분해서 벡터에 담아둠
+	vector<shared_ptr<GameObject>>	_vecDeferred;
+	vector<shared_ptr<GameObject>>	_vecForward;
 
 public:
 	// TEMP - PushData()에 넘겨줄 데이터(임시)

@@ -43,6 +43,7 @@ public:
 	virtual ~Light();
 	
 	virtual void FinalUpdate() override;
+	void Render();
 
 public:
 	const LightInfo& GetLightInfo() { return _lightInfo; }
@@ -53,11 +54,17 @@ public:
 	void SetAmbient(const Vec3& ambient) { _lightInfo.color.ambient = ambient; }
 	void SetSpecular(const Vec3& specular) { _lightInfo.color.specular = specular; }
 
-	void SetLightType(LIGHT_TYPE type) { _lightInfo.lightType = static_cast<int32>(type); }
+	void SetLightType(LIGHT_TYPE type);
 	void SetLightRange(float range) { _lightInfo.range = range; }
 	void SetLightAngle(float angle) { _lightInfo.angle = angle; }
 
+	void SetLightIndex(int8 index) { _lightIndex = index; }
+
 private:
 	LightInfo _lightInfo = {};	// Light Component는 쉐이더로 복사해서 넘겨줄 정보 자체를 들고 있음
+
+	int8						_lightIndex = -1;	// 내가 몇번째 빛인지 임시 저장해서 세팅해주기 위해
+	shared_ptr<class Mesh>		_volumeMesh;		// 내가 어떤 영역을 차지하는지
+	shared_ptr<class Material>	_lightMaterial;		// 셰이더에 인자를 넘겨줄때
 };
 

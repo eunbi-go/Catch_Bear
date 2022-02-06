@@ -52,6 +52,8 @@ public:
 	void PushComputeData();
 	void Dispatch(uint32 x, uint32 y, uint32 z);
 
+	shared_ptr<Material> Clone();
+
 private:
 	shared_ptr<Shader>	_shader;	// 어떤 쉐이더와 연결되어 있는지
 	MaterialParams		_params;

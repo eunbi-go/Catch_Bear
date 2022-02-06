@@ -12,7 +12,8 @@ public:
 
 public:
 	void Init(const vector<Vertex>& vertexBuffer, const vector<uint32>& indexBuffer);
-	void Render();
+	void Render(uint32 instanceCount = 1);
+	void Render(shared_ptr<class InstancingBuffer>& buffer);
 
 private:
 	void CreateVertexBuffer(const vector<Vertex>& buffer);

@@ -54,6 +54,7 @@ private:
 	// 내가 찍어야 하는 애들을 구분해서 벡터에 담아둠
 	vector<shared_ptr<GameObject>>	_vecDeferred;
 	vector<shared_ptr<GameObject>>	_vecForward;
+	vector<shared_ptr<GameObject>>	_vecParticle;
 
 public:
 	// TEMP - PushData()에 넘겨줄 데이터(임시)

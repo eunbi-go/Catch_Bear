@@ -79,7 +79,7 @@ void ConstantBuffer::Clear()
 	_currentIndex = 0;
 }
 
-void ConstantBuffer::PushData(void* buffer, uint32 size)
+void ConstantBuffer::PushGraphicsData(void* buffer, uint32 size)
 {
 	// 디버그용
 	assert(_currentIndex < _elementCount);
@@ -89,17 +89,30 @@ void ConstantBuffer::PushData(void* buffer, uint32 size)
 	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(_currentIndex);
-	GEngine->GetTableDescHeap()->SetCBV(cpuHandle, _reg);
+	GEngine->GetGraphicsDescHeap()->SetCBV(cpuHandle, _reg);
 
 	_currentIndex++;
 }
 
-void ConstantBuffer::SetGlobalData(void* buffer, uint32 size)
+void ConstantBuffer::SetGraphicsGlobalData(void* buffer, uint32 size)
 {
 	// Light와 관련된 정보는 이 함수를 이용해서 세팅함, root signature b0 전역에 넣어줌
 	assert(_elementSize == ((size + 255) & ~255));
 	::memcpy(&_mappedBuffer[0], buffer, size);
-	CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
+	GRAPHICS_CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
+}
+
+void ConstantBuffer::PushComputeData(void* buffer, uint32 size)
+{
+	assert(_currentIndex < _elementCount);
+	assert(_elementSize == ((size + 255) & ~255));
+
+	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
+
+	D3D12_CPU_DESCRIPTOR_HANDLE cpuHandle = GetCpuHandle(_currentIndex);
+	GEngine->GetComputeDescHeap()->SetCBV(cpuHandle, _reg);
+
+	_currentIndex++;
 }
 
 D3D12_GPU_VIRTUAL_ADDRESS ConstantBuffer::GetGpuVirtualAddress(uint32 index)

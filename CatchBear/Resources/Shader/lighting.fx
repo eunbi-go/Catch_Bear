@@ -27,6 +27,8 @@ struct PS_OUT
 // g_int_0 : Light index        내가 몇번째 빛에 해당하는지
 // g_tex_0 : Position RT
 // g_tex_1 : Normal RT
+// g_tex_2 : Shadow RT
+// g_mat_0 : ShadowCamera VP
 // Mesh : Rectangle             Directional Light의 영역을 표시하는 메쉬
 
 VS_OUT VS_DirLight(VS_IN input)
@@ -52,6 +54,35 @@ PS_OUT PS_DirLight(VS_OUT input)
     float3 viewNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
 
     LightColor color = CalculateLightColor(g_int_0, viewNormal, viewPos);
+
+    // 그림자
+    if (length(color.diffuse) != 0)
+    {
+        matrix shadowCameraVP = g_mat_0;
+
+        float4 worldPos = mul(float4(viewPos.xyz, 1.f), g_matViewInv);  // view의 역행렬, 해당 물체의 world 포지션이 나옴
+        float4 shadowClipPos = mul(worldPos, shadowCameraVP);   // 빨간 카메라를 기준으로 한 클립 포지션이 완성됨
+        float depth = shadowClipPos.z / shadowClipPos.w;    // 우리가 그리려고 하는 해당 지점의 depth
+
+        // x [-1 ~ 1] -> u [0 ~ 1]
+        // y [1 ~ -1] -> v [0 ~ 1]
+        float2 uv = shadowClipPos.xy / shadowClipPos.w;
+        uv.y = -uv.y;
+        uv = uv * 0.5 + 0.5;
+
+        if (0 < uv.x && uv.x < 1 && 0 < uv.y && uv.y < 1)
+        {
+            float shadowDepth = g_tex_2.Sample(g_sam_0, uv).x;
+            if (shadowDepth > 0 && depth > shadowDepth + 0.00001f)
+            {
+                color.diffuse *= 0.5f;
+                color.specular = (float4) 0.f;
+            }
+        }
+    }
+
+
+
     output.diffuse = color.diffuse + color.ambient;
     output.specular = color.specular;
 

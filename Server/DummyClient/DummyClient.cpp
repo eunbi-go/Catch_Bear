@@ -18,6 +18,13 @@ public:
 	virtual void OnConnected() override
 	{
 		Protocol::C_LOGIN pkt;
+
+		/*
+			내 생각 : LoginScene에서 설정한 닉네임을 패킷에 담아서 서버로 보내자!
+			근데 아직 LoginScene이 구현이 안 됐으니까 여기서 임의로 정하자!
+		*/
+
+		
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		Send(sendBuffer);
 	}
@@ -40,6 +47,9 @@ public:
 	{
 		//cout << "Disconnected" << endl;
 	}
+
+public:
+	string sPlayerNickName;
 };
 
 int main()

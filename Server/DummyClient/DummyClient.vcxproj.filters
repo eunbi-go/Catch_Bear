@@ -10,6 +10,9 @@
     <Filter Include="Protocol">
       <UniqueIdentifier>{15ffd3da-e358-4e2b-8754-e2e4a6f52136}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents">
+      <UniqueIdentifier>{105e1207-fa3e-4d37-ad85-06c976c24c62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">

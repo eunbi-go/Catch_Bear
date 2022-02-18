@@ -17,6 +17,7 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
+
 	if (pkt.players().size() == 0)
 	{
 		// 캐릭터 생성창
@@ -42,6 +43,6 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 {
-	std::cout << pkt.msg() << endl;
+	std::cout << "ID: " << pkt.playerid() << " " << pkt.msg() << endl;
 	return true;
 }

@@ -19,7 +19,7 @@ PROTOBUF_PRAGMA_INIT_SEG
 namespace Protocol {
 constexpr Player::Player(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : name_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
+  : nickname_(&::PROTOBUF_NAMESPACE_ID::internal::fixed_address_empty_string)
   , id_(uint64_t{0u})
   , playertype_(0)
 {}
@@ -44,7 +44,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Struct_2eproto::offsets[] PROT
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::Player, id_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::Player, name_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::Player, nickname_),
   PROTOBUF_FIELD_OFFSET(::Protocol::Player, playertype_),
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -56,17 +56,17 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 };
 
 const char descriptor_table_protodef_Struct_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
-  "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"L\n\006"
-  "Player\022\n\n\002id\030\001 \001(\004\022\014\n\004name\030\002 \001(\t\022(\n\nplay"
-  "erType\030\003 \001(\0162\024.Protocol.PlayerTypeb\006prot"
-  "o3"
+  "\n\014Struct.proto\022\010Protocol\032\nEnum.proto\"P\n\006"
+  "Player\022\n\n\002id\030\001 \001(\004\022\020\n\010nickname\030\002 \001(\t\022(\n\n"
+  "playerType\030\003 \001(\0162\024.Protocol.PlayerTypeb\006"
+  "proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Struct_2eproto_deps[1] = {
   &::descriptor_table_Enum_2eproto,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Struct_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Struct_2eproto = {
-  false, false, 122, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
+  false, false, 126, descriptor_table_protodef_Struct_2eproto, "Struct.proto", 
   &descriptor_table_Struct_2eproto_once, descriptor_table_Struct_2eproto_deps, 1, 1,
   schemas, file_default_instances, TableStruct_Struct_2eproto::offsets,
   file_level_metadata_Struct_2eproto, file_level_enum_descriptors_Struct_2eproto, file_level_service_descriptors_Struct_2eproto,
@@ -94,9 +94,9 @@ Player::Player(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 Player::Player(const Player& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  if (!from._internal_name().empty()) {
-    name_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_name(), 
+  nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (!from._internal_nickname().empty()) {
+    nickname_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, from._internal_nickname(), 
       GetArenaForAllocation());
   }
   ::memcpy(&id_, &from.id_,
@@ -106,7 +106,7 @@ Player::Player(const Player& from)
 }
 
 void Player::SharedCtor() {
-name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+nickname_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&id_) - reinterpret_cast<char*>(this)),
     0, static_cast<size_t>(reinterpret_cast<char*>(&playertype_) -
@@ -121,7 +121,7 @@ Player::~Player() {
 
 void Player::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  nickname_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
 }
 
 void Player::ArenaDtor(void* object) {
@@ -140,7 +140,7 @@ void Player::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  name_.ClearToEmpty();
+  nickname_.ClearToEmpty();
   ::memset(&id_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&playertype_) -
       reinterpret_cast<char*>(&id_)) + sizeof(playertype_));
@@ -160,12 +160,12 @@ const char* Player::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string name = 2;
+      // string nickname = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
-          auto str = _internal_mutable_name();
+          auto str = _internal_mutable_nickname();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.Player.name"));
+          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.Player.nickname"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -212,14 +212,14 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_id(), target);
   }
 
-  // string name = 2;
-  if (!this->name().empty()) {
+  // string nickname = 2;
+  if (!this->nickname().empty()) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_name().data(), static_cast<int>(this->_internal_name().length()),
+      this->_internal_nickname().data(), static_cast<int>(this->_internal_nickname().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Protocol.Player.name");
+      "Protocol.Player.nickname");
     target = stream->WriteStringMaybeAliased(
-        2, this->_internal_name(), target);
+        2, this->_internal_nickname(), target);
   }
 
   // .Protocol.PlayerType playerType = 3;
@@ -245,11 +245,11 @@ size_t Player::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string name = 2;
-  if (!this->name().empty()) {
+  // string nickname = 2;
+  if (!this->nickname().empty()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_name());
+        this->_internal_nickname());
   }
 
   // uint64 id = 1;
@@ -296,8 +296,8 @@ void Player::MergeFrom(const Player& from) {
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (!from.name().empty()) {
-    _internal_set_name(from._internal_name());
+  if (!from.nickname().empty()) {
+    _internal_set_nickname(from._internal_nickname());
   }
   if (from.id() != 0) {
     _internal_set_id(from._internal_id());
@@ -330,8 +330,8 @@ void Player::InternalSwap(Player* other) {
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
       &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
-      &name_, GetArenaForAllocation(),
-      &other->name_, other->GetArenaForAllocation()
+      &nickname_, GetArenaForAllocation(),
+      &other->nickname_, other->GetArenaForAllocation()
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
       PROTOBUF_FIELD_OFFSET(Player, playertype_)

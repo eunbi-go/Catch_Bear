@@ -4,53 +4,10 @@
 #include "Session.h"
 #include "BufferReader.h"
 #include "ServerPacketHandler.h"
+#include "ServerSession.h"
 
 char sendData[] = "Hello World";
 
-class ServerSession : public PacketSession
-{
-public:
-	~ServerSession()
-	{
-		cout << "~ServerSession" << endl;
-	}
-
-	virtual void OnConnected() override
-	{
-		Protocol::C_LOGIN pkt;
-
-		/*
-			내 생각 : LoginScene에서 설정한 닉네임을 패킷에 담아서 서버로 보내자!
-			근데 아직 LoginScene이 구현이 안 됐으니까 여기서 임의로 정하자!
-		*/
-
-		
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		Send(sendBuffer);
-	}
-
-	virtual void OnRecvPacket(BYTE* buffer, int32 len) override
-	{
-		PacketSessionRef session = GetPacketSessionRef();
-		PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
-
-		// TODO : packetId 대역 체크
-		ServerPacketHandler::HandlePacket(session, buffer, len);
-	}
-
-	virtual void OnSend(int32 len) override
-	{
-		//cout << "OnSend Len = " << len << endl;
-	}
-
-	virtual void OnDisconnected() override
-	{
-		//cout << "Disconnected" << endl;
-	}
-
-public:
-	string sPlayerNickName;
-};
 
 int main()
 {
@@ -83,7 +40,7 @@ int main()
 
 	while (true)
 	{
-		service->Broadcast(sendBuffer);
+		//service->Broadcast(sendBuffer);
 		this_thread::sleep_for(1s);
 	}
 

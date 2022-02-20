@@ -16,4 +16,5 @@ public:
 
 public:
 	Vector<PlayerRef> _players;
+	Vector<string> _nickNames;
 };

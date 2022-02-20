@@ -11,7 +11,7 @@
       <UniqueIdentifier>{15ffd3da-e358-4e2b-8754-e2e4a6f52136}</UniqueIdentifier>
     </Filter>
     <Filter Include="GameContents">
-      <UniqueIdentifier>{105e1207-fa3e-4d37-ad85-06c976c24c62}</UniqueIdentifier>
+      <UniqueIdentifier>{50b74b5c-f575-460d-9ea2-982827740e33}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -33,6 +33,15 @@
     <ClCompile Include="Enum.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
+    <ClCompile Include="Lobby.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerSession.cpp">
+      <Filter>Main</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -49,6 +58,15 @@
     </ClInclude>
     <ClInclude Include="Struct.pb.h">
       <Filter>Protocol</Filter>
+    </ClInclude>
+    <ClInclude Include="Lobby.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="ServerSession.h">
+      <Filter>Main</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

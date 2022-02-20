@@ -5,13 +5,8 @@ import "Enum.proto";
 
 message Player
 {
-	uint64			id = 1;
-	string			name = 2;
-	PlayerType		playerType = 3;
+	uint64 id = 1;
+	string nickname = 2;
+	PlayerType playerType = 3;
 	// 스탯 정보...
-	// 버프 아이템 효과
-	//bool			isSpeedUp = 4;
-	//bool			isShield = 5;
-	//bool			isSpeedDown = 6;
-	//bool			isBlind = 7;
 }

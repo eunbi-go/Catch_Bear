@@ -244,18 +244,70 @@ shared_ptr<Mesh> Resources::LoadSphereMesh()
 	Add(L"Sphere", mesh);
 
 	return mesh;
-
 }
 
-shared_ptr<Texture> Resources::CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height, 
-	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags, D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
+shared_ptr<Mesh> Resources::LoadTerrainMesh(int32 sizeX, int32 sizeZ)
+{
+	vector<Vertex> vec;
+
+	for (int32 z = 0; z < sizeZ + 1; z++)
+	{
+		for (int32 x = 0; x < sizeX + 1; x++)
+		{
+			Vertex vtx;
+			vtx.pos = Vec3(static_cast<float>(x), 0, static_cast<float>(z));
+			vtx.uv = Vec2(static_cast<float>(x), static_cast<float>(sizeZ - z));
+			vtx.normal = Vec3(0.f, 1.f, 0.f);
+			vtx.tangent = Vec3(1.f, 0.f, 0.f);
+
+			vec.push_back(vtx);
+		}
+	}
+
+	vector<uint32> idx;
+
+	for (int32 z = 0; z < sizeZ; z++)
+	{
+		for (int32 x = 0; x < sizeX; x++)
+		{
+			//  [0]
+			//   |	\
+			//  [2] - [1]
+			idx.push_back((sizeX + 1) * (z + 1) + (x));
+			idx.push_back((sizeX + 1) * (z)+(x + 1));
+			idx.push_back((sizeX + 1) * (z)+(x));
+			//  [1] - [2]
+			//   	\  |
+			//		  [0]
+			idx.push_back((sizeX + 1) * (z)+(x + 1));
+			idx.push_back((sizeX + 1) * (z + 1) + (x));
+			idx.push_back((sizeX + 1) * (z + 1) + (x + 1));
+		}
+	}
+
+	shared_ptr<Mesh> findMesh = Get<Mesh>(L"Terrain");
+	if (findMesh)
+	{
+		findMesh->Init(vec, idx);
+		return findMesh;
+	}
+
+	shared_ptr<Mesh> mesh = make_shared<Mesh>();
+	mesh->Init(vec, idx);
+	Add(L"Terrain", mesh);
+	return mesh;
+}
+
+
+shared_ptr<Texture> Resources::CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height,
+	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+	D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
 {
 	shared_ptr<Texture> texture = make_shared<Texture>();
 	texture->Create(format, width, height, heapProperty, heapFlags, resFlags, clearColor);
 	Add(name, texture);
 
 	return texture;
-
 }
 
 shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D)
@@ -316,8 +368,17 @@ void Resources::CreateDefaultShader()
 			DEPTH_STENCIL_TYPE::NO_DEPTH_TEST_NO_WRITE
 		};
 
+		ShaderArg arg =
+		{
+			"VS_Tex",
+			"",
+			"",
+			"",
+			"PS_Tex"
+		};
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", info, "VS_Tex", "PS_Tex");
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\forward.fx", info, arg);
 		Add<Shader>(L"Texture", shader);
 	}
 
@@ -331,8 +392,17 @@ void Resources::CreateDefaultShader()
 			BLEND_TYPE::ONE_TO_ONE_BLEND
 		};
 
+		ShaderArg arg =
+		{
+			"VS_DirLight",
+			"",
+			"",
+			"",
+			"PS_DirLight"
+		};
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, "VS_DirLight", "PS_DirLight");
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, arg);
 		Add<Shader>(L"DirLight", shader);
 	}
 
@@ -346,8 +416,17 @@ void Resources::CreateDefaultShader()
 			BLEND_TYPE::ONE_TO_ONE_BLEND
 		};
 
+		ShaderArg arg =
+		{
+			"VS_PointLight",
+			"",
+			"",
+			"",
+			"PS_PointLight"
+		};
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, "VS_PointLight", "PS_PointLight");
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, arg);
 		Add<Shader>(L"PointLight", shader);
 	}
 
@@ -360,8 +439,17 @@ void Resources::CreateDefaultShader()
 			DEPTH_STENCIL_TYPE::NO_DEPTH_TEST_NO_WRITE,
 		};
 
+		ShaderArg arg =
+		{
+			"VS_Final",
+			"",
+			"",
+			"",
+			"PS_Final"
+		};
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, "VS_Final", "PS_Final");
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\lighting.fx", info, arg);
 		Add<Shader>(L"Final", shader);
 	}
 
@@ -383,8 +471,17 @@ void Resources::CreateDefaultShader()
 			D3D_PRIMITIVE_TOPOLOGY_POINTLIST
 		};
 
+		ShaderArg arg =
+		{
+			"VS_Main",
+			"",
+			"",
+			"GS_Main",
+			"PS_Main"
+		};
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\particle.fx", info, "VS_Main", "PS_Main", "GS_Main");
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\particle.fx", info, arg);
 		Add<Shader>(L"Particle", shader);
 	}
 
@@ -408,6 +505,44 @@ void Resources::CreateDefaultShader()
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\shadow.fx", info);
 		Add<Shader>(L"Shadow", shader);
 	}
+
+	// Tessellation
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::FORWARD,
+			RASTERIZER_TYPE::WIREFRAME,
+			DEPTH_STENCIL_TYPE::LESS,
+			BLEND_TYPE::DEFAULT,
+			D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST
+		};
+
+		ShaderArg arg =
+		{
+			"VS_Main",
+			"HS_Main",
+			"DS_Main",
+			"",
+			"PS_Main",
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\tessellation.fx", info, arg);
+		Add<Shader>(L"Tessellation", shader);
+	}
+
+	// Terrain
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info);
+		Add<Shader>(L"Terrain", shader);
+	}
+
 }
 
 void Resources::CreateDefaultMaterial()
@@ -499,4 +634,23 @@ void Resources::CreateDefaultMaterial()
 		material->SetShader(shader);
 		Add<Material>(L"Shadow", material);
 	}
+
+	// Tessellation
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Tessellation");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		Add<Material>(L"Tessellation", material);
+	}
+
+	// Terrain
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Terrain");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Terrain", L"..\\Resources\\Texture\\terrain.jpg");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);	// 0번이 색상
+		Add<Material>(L"Terrain", material);
+	}
+
 }

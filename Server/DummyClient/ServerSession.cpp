@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "ServerSession.h"
 #include "ServerPacketHandler.h"
+#include "Player.h"
+
+static bool isConnected = false;
 
 void ServerSession::OnConnected()
 {
@@ -8,13 +11,17 @@ void ServerSession::OnConnected()
 
 	// 서버와 연결되면 플레이어 닉네임 정해줌
 	
-	string sNickName;
-	cout << "플레이어 닉네임을 입력하세요: ";
-	cin >> sNickName;
-	pkt.set_nickname(sNickName);
+	if (!isConnected) {
+		string sNickName;
+		cout << "플레이어 닉네임을 입력하세요: ";
+		cin >> sNickName;
+		pkt.set_nickname(sNickName);
+		GPlayer.name = sNickName;
 
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-	Send(sendBuffer);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		Send(sendBuffer);
+		isConnected = true;
+	}
 }
 
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)

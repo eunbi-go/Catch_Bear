@@ -13,6 +13,9 @@
     <Filter Include="GameContents">
       <UniqueIdentifier>{50b74b5c-f575-460d-9ea2-982827740e33}</UniqueIdentifier>
     </Filter>
+    <Filter Include="KeyManager">
+      <UniqueIdentifier>{5a2b37b6-329a-46c5-98f9-5426692f40d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DummyClient.cpp">
@@ -42,6 +45,9 @@
     <ClCompile Include="ServerSession.cpp">
       <Filter>Main</Filter>
     </ClCompile>
+    <ClCompile Include="KeyManager.cpp">
+      <Filter>KeyManager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -67,6 +73,9 @@
     </ClInclude>
     <ClInclude Include="ServerSession.h">
       <Filter>Main</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyManager.h">
+      <Filter>KeyManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

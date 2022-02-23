@@ -12,27 +12,29 @@ message C_LOGIN
 message S_LOGIN
 {
 	bool success = 1;
-	repeated Player players = 2; // 아이디 발급 전
+	uint64 playerId = 2;
+	repeated Player players = 3; // 아이디 발급 전
+}
+
+message C_ENTER_LOBBY
+{
+	uint64 playerId = 1;
+	bool isPlayerReady = 2;
+}
+
+message S_ENTER_LOBBY
+{
+	bool isAllPlayersReady = 1;
 }
 
 message C_ENTER_GAME
 {
-	uint64 playerIndex = 1;
+	uint64 playerId = 1;
 }
 
 message S_ENTER_GAME
 {
 	bool success = 1;
-}
-
-message C_ENTER_LOBBY
-{
-
-}
-
-message S_ENTER_LOBBY
-{
-
 }
 
 message C_CHAT

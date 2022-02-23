@@ -26,12 +26,15 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 	// gameSession의 nickName 벡터에 저장.
 	gameSession->_nickNames.push_back(pkt.nickname());
-	//cout << "닉네임: " << pkt.nickname() << " 접속성공!" << endl;
+	cout << "닉네임: " << pkt.nickname() << " 접속성공!" << endl;
 
 	// GameSession에 플레이 정보를 저장 (메모리)
 	// ID 발급 (DB 아이디가 아니고, 인게임 아이디)
-	static Atomic<uint64> idGenerator = 1;
+	static Atomic<uint64> idGenerator = 0;
 	{
+		// PlayerId도 같이 보내줌
+		loginPkt.set_playerid(idGenerator);
+
 		auto player = loginPkt.add_players();
 		player->set_nickname(pkt.nickname());
 		player->set_playertype(Protocol::PLAYER_TYPE_BEAR1);
@@ -82,23 +85,41 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pkt)
 {
-	return false;
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+
+	cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
+
+	uint64 index = pkt.playerid();
+	PlayerRef player = gameSession->_players[index]; // READ_ONLY?
+	GLobby.Enter(player); // WRITE_LOCK
+
+	Protocol::S_ENTER_LOBBY enterLobbyPkt;
+
+	// 만약 모든 플레이어가 준비됐다면
+	//enterLobbyPkt.set_isallplayersready(true);
+	// 한명의 플레이어라도 레디하지않았으면
+	enterLobbyPkt.set_isallplayersready(false);
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+	session->Send(sendBuffer);
+
+	return true;
 }
 
 bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
-	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	//GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
-	uint64 index = pkt.playerindex();
-	// TODO : Validation
+	//uint64 index = pkt.playerindex();
+	//// TODO : Validation
 
-	PlayerRef player = gameSession->_players[index]; // READ_ONLY?
-	GLobby.Enter(player); // WRITE_LOCK
+	//PlayerRef player = gameSession->_players[index]; // READ_ONLY?
+	//GLobby.Enter(player); // WRITE_LOCK
 
-	Protocol::S_ENTER_GAME enterGamePkt;
-	enterGamePkt.set_success(true);
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
-	player->ownerSession->Send(sendBuffer);
+	//Protocol::S_ENTER_GAME enterGamePkt;
+	//enterGamePkt.set_success(true);
+	//auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
+	//player->ownerSession->Send(sendBuffer);
 
 	return true;
 }

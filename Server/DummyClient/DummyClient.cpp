@@ -6,6 +6,8 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
+#include "KeyManager.h"
+
 char sendData[] = "Hello World";
 
 
@@ -42,7 +44,9 @@ int main()
 	{
 		//service->Broadcast(sendBuffer);
 		this_thread::sleep_for(1s);
+		CKeyManager::Get_Instance()->Key_Update();
 	}
 
+	CKeyManager::Destroy_Instance();
 	GThreadManager->Join();
 }

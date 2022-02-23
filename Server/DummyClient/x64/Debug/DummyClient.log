@@ -9,10 +9,10 @@
   {
   	PKT_C_LOGIN = 1000,
   	PKT_S_LOGIN = 1001,
-  	PKT_C_ENTER_GAME = 1002,
-  	PKT_S_ENTER_GAME = 1003,
-  	PKT_C_ENTER_LOBBY = 1004,
-  	PKT_S_ENTER_LOBBY = 1005,
+  	PKT_C_ENTER_LOBBY = 1002,
+  	PKT_S_ENTER_LOBBY = 1003,
+  	PKT_C_ENTER_GAME = 1004,
+  	PKT_S_ENTER_GAME = 1005,
   	PKT_C_CHAT = 1006,
   	PKT_S_CHAT = 1007,
   };
@@ -20,8 +20,8 @@
   // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
   bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt);
-  bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt);
   bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pkt);
+  bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt);
   bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt);
   
   class ClientPacketHandler
@@ -32,8 +32,8 @@
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
   		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LOGIN>(Handle_C_LOGIN, session, buffer, len); };
-  		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handle_C_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_C_ENTER_LOBBY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_LOBBY>(Handle_C_ENTER_LOBBY, session, buffer, len); };
+  		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handle_C_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_C_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHAT>(Handle_C_CHAT, session, buffer, len); };
   	}
   
@@ -43,8 +43,8 @@
   		return GPacketHandler[header->id](session, buffer, len);
   	}
   	static SendBufferRef MakeSendBuffer(Protocol::S_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_S_LOGIN); }
-  	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_LOBBY& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_LOBBY); }
+  	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
   
   private:
@@ -84,10 +84,10 @@
   {
   	PKT_C_LOGIN = 1000,
   	PKT_S_LOGIN = 1001,
-  	PKT_C_ENTER_GAME = 1002,
-  	PKT_S_ENTER_GAME = 1003,
-  	PKT_C_ENTER_LOBBY = 1004,
-  	PKT_S_ENTER_LOBBY = 1005,
+  	PKT_C_ENTER_LOBBY = 1002,
+  	PKT_S_ENTER_LOBBY = 1003,
+  	PKT_C_ENTER_GAME = 1004,
+  	PKT_S_ENTER_GAME = 1005,
   	PKT_C_CHAT = 1006,
   	PKT_S_CHAT = 1007,
   };
@@ -95,8 +95,8 @@
   // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
   bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt);
-  bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
   bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt);
+  bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
   bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
   
   class ServerPacketHandler
@@ -107,8 +107,8 @@
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
   		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
-  		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_S_ENTER_LOBBY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_LOBBY>(Handle_S_ENTER_LOBBY, session, buffer, len); };
+  		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
   	}
   
@@ -118,8 +118,8 @@
   		return GPacketHandler[header->id](session, buffer, len);
   	}
   	static SendBufferRef MakeSendBuffer(Protocol::C_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_C_LOGIN); }
-  	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_LOBBY& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_LOBBY); }
+  	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
   
   private:
@@ -175,14 +175,12 @@
   1개 파일이 복사되었습니다.
   C:Protocol.pb.cc
   1개 파일이 복사되었습니다.
-  0개 파일이 복사되었습니다.
-  파일을 찾을 수 없습니다-ServerPacketHandler.h
-  C:\Users\wc542\Downloads\채팅+실습_소스코드\Common\Protobuf\bin\*.pb.h을(를) 찾을 수 없습니다.
-  C:\Users\wc542\Downloads\채팅+실습_소스코드\Common\Protobuf\bin\*.pb.cc을(를) 찾을 수 없습니다.
-  C:\Users\wc542\Downloads\채팅+실습_소스코드\Common\Protobuf\bin\*.h을(를) 찾을 수 없습니다.
+  C:ServerPacketHandler.h
+  1개 파일이 복사되었습니다.
   계속하려면 아무 키나 누르십시오 . . . 
   pch.cpp
   DummyClient.cpp
+  KeyManager.cpp
   Lobby.cpp
   Player.cpp
   ServerPacketHandler.cpp
@@ -192,4 +190,4 @@
   Protocol.pb.cc
   Struct.pb.cc
   코드를 생성하고 있습니다...
-  DummyClient.vcxproj -> C:\Users\wc542\Downloads\채팅+실습_소스코드\Binary\Debug\DummyClient.exe
+  DummyClient.vcxproj -> C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Binary\Debug\DummyClient.exe

@@ -171,6 +171,7 @@
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="KeyManager.cpp" />
     <ClCompile Include="Lobby.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="ServerPacketHandler.cpp" />
@@ -202,6 +203,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="KeyManager.h" />
     <ClInclude Include="Lobby.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="ServerPacketHandler.h" />

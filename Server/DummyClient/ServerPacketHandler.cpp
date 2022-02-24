@@ -39,42 +39,42 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 
 bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt)
 {
-	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
-	if (pkt.isallplayersready())
-	{
-		Protocol::C_ENTER_GAME enterGamePkt;
-		enterGamePkt.set_playerid(GPlayer.playerId);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
-		session->Send(sendBuffer);
-	}
-	// 준비 안됐다면 여기로
-	else
-	{
-		string sChat;
-		// 채팅하고싶으면 컨트롤 키 누르기 (일단 임시)
-		cout << "채팅하고싶으면 LControl키 누르세요 / 레디하고 싶으면 스페이스를 누르세요 " << endl;
-		if (CKeyManager::Get_Instance()->Key_Down('A'))
-		{
-			cin >> sChat;
-			Protocol::C_CHAT chatPkt;
-			chatPkt.set_msg(sChat);
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-			session->Send(sendBuffer);
-		}
-		if (CKeyManager::Get_Instance()->Key_Down(VK_SPACE))
-		{
-			Protocol::C_ENTER_LOBBY enterLobbyPkt;
-			enterLobbyPkt.set_playerid(GPlayer.playerId);
-			enterLobbyPkt.set_isplayerready(true);
+	//// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
+	//if (pkt.isallplayersready())
+	//{
+	//	Protocol::C_ENTER_GAME enterGamePkt;
+	//	enterGamePkt.set_playerid(GPlayer.playerId);
+	//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	//	session->Send(sendBuffer);
+	//}
+	//// 준비 안됐다면 여기로
+	//else
+	//{
+	//	string sChat;
+	//	// 채팅하고싶으면 컨트롤 키 누르기 (일단 임시)
+	//	cout << "채팅하고싶으면 LControl키 누르세요 / 레디하고 싶으면 스페이스를 누르세요 " << endl;
+	//	if (CKeyManager::Get_Instance()->Key_Down(VK_LCONTROL))
+	//	{
+	//		cin >> sChat;
+	//		Protocol::C_CHAT chatPkt;
+	//		chatPkt.set_msg(sChat);
+	//		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+	//		session->Send(sendBuffer);
+	//	}
+	//	if (CKeyManager::Get_Instance()->Key_Down(VK_SPACE))
+	//	{
+	//		Protocol::C_ENTER_LOBBY enterLobbyPkt;
+	//		enterLobbyPkt.set_playerid(GPlayer.playerId);
+	//		enterLobbyPkt.set_isplayerready(true);
 
-			cout << GPlayer.playerId << "번 플레이어 준비 완료!" << endl;
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
-			session->Send(sendBuffer);
-		}
+	//		cout << GPlayer.playerId << "번 플레이어 준비 완료!" << endl;
+	//		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
+	//		session->Send(sendBuffer);
+	//	}
 
-	}
+	//}
 
-	return false;
+	return true;
 }
 
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)

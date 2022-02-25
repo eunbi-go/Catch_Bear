@@ -14,6 +14,8 @@
 #include "Resources.h"
 #include "ParticleSystem.h"
 
+// 브랜치 만들어서 커밋함 이거 지워 ~!!
+
 void SceneManager::Update()
 {
 	if (_activeScene == nullptr)

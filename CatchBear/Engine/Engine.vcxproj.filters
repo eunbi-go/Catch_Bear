@@ -294,11 +294,8 @@
     <FxCompile Include="..\Resources\Shader\tessellation.fx">
       <Filter>Shader</Filter>
     </FxCompile>
-<<<<<<< HEAD
     <FxCompile Include="..\Resources\Shader\terrain.fx">
       <Filter>Shader</Filter>
     </FxCompile>
-=======
->>>>>>> ClientFramework
   </ItemGroup>
 </Project>

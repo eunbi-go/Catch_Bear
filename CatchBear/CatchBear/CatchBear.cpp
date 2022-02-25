@@ -45,8 +45,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     MSG msg;
 
-    GWindowInfo.width = 1200;
-    GWindowInfo.height = 800;
+    GWindowInfo.width = 800;
+    GWindowInfo.height = 600;
     GWindowInfo.windowed = true;
 
     unique_ptr<Game> game = make_unique<Game>();    // 아래서 delete할 필요x 알아서 삭제해줌

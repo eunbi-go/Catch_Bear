@@ -4,12 +4,10 @@
 
 Shader::Shader() : Object(OBJECT_TYPE::SHADER)
 {
-
 }
 
 Shader::~Shader()
 {
-
 }
 
 void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderArg arg)
@@ -62,6 +60,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 	_graphicsPipelineDesc.SampleDesc.Count = 1;
 	_graphicsPipelineDesc.DSVFormat = DXGI_FORMAT_D32_FLOAT;
 
+	// ShaderType
 	switch (info.shaderType)
 	{
 	case SHADER_TYPE::DEFERRED:
@@ -92,6 +91,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 		break;
 	}
 
+	// RasterizerType
 	switch (info.rasterizerType)
 	{
 	case RASTERIZER_TYPE::CULL_BACK:
@@ -112,6 +112,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 		break;
 	}
 
+	// DepthStencil
 	switch (info.depthStencilType)
 	{
 	case DEPTH_STENCIL_TYPE::LESS:
@@ -143,8 +144,10 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 		_graphicsPipelineDesc.DepthStencilState.DepthFunc = D3D12_COMPARISON_FUNC_LESS;
 		_graphicsPipelineDesc.DepthStencilState.DepthWriteMask = D3D12_DEPTH_WRITE_MASK_ZERO;
 		break;
+
 	}
 
+	// BlendType
 	D3D12_RENDER_TARGET_BLEND_DESC& rt = _graphicsPipelineDesc.BlendState.RenderTarget[0];
 
 	// SrcBlend = Pixel Shader
@@ -171,6 +174,7 @@ void Shader::CreateGraphicsShader(const wstring& path, ShaderInfo info, ShaderAr
 		break;
 	}
 
+
 	DEVICE->CreateGraphicsPipelineState(&_graphicsPipelineDesc, IID_PPV_ARGS(&_pipelineState));
 }
 
@@ -189,6 +193,7 @@ void Shader::Update()
 {
 	if (GetShaderType() == SHADER_TYPE::COMPUTE)
 		COMPUTE_CMD_LIST->SetPipelineState(_pipelineState.Get());
+
 	else
 	{
 		GRAPHICS_CMD_LIST->IASetPrimitiveTopology(_info.topology);

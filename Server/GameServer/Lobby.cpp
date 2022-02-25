@@ -25,3 +25,13 @@ void Lobby::Broadcast(SendBufferRef sendBuffer)
 		p.second->ownerSession->Send(sendBuffer);
 	}
 }
+
+bool Lobby::isFirstEnterLobby(uint64 playerId)
+{
+	WRITE_LOCK;
+	auto key = _players.find(playerId);
+	if (key != _players.end())
+		return false;
+	else
+		return true;
+}

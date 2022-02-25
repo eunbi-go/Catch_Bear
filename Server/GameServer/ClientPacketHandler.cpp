@@ -85,24 +85,30 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pkt)
 {
-	//GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	Protocol::S_ENTER_LOBBY enterLobbyPkt;
+	if (GLobby.isFirstEnterLobby(pkt.playerid()))
+	{
+		PlayerRef player = gameSession->_players[0];
+		player->playerId = pkt.playerid();
+		GLobby.Enter(player);
+		cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
 
-	//cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
+		enterLobbyPkt.set_isallplayersready(false);
 
-	//uint64 index = pkt.playerid();
-	//PlayerRef player = gameSession->_players[index]; // READ_ONLY?
-	//GLobby.Enter(player); // WRITE_LOCK
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		session->Send(sendBuffer);
+	}
+	else
+	{
+		// 만약 모든 플레이어가 준비됐다면
+		//enterLobbyPkt.set_isallplayersready(true);
+		// 한명의 플레이어라도 레디하지않았으면
+		enterLobbyPkt.set_isallplayersready(false);
 
-	//Protocol::S_ENTER_LOBBY enterLobbyPkt;
-
-	//// 만약 모든 플레이어가 준비됐다면
-	////enterLobbyPkt.set_isallplayersready(true);
-	//// 한명의 플레이어라도 레디하지않았으면
-	//enterLobbyPkt.set_isallplayersready(false);
-
-	//auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//session->Send(sendBuffer);
-
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		session->Send(sendBuffer);
+	}
 	return true;
 }
 

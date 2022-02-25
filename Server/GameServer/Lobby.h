@@ -7,6 +7,8 @@ public:
 	void Leave(PlayerRef player);
 	void Broadcast(SendBufferRef sendBuffer);
 
+	bool isFirstEnterLobby(uint64 playerId);
+
 private:
 	USE_LOCK;
 	map<uint64, PlayerRef> _players;

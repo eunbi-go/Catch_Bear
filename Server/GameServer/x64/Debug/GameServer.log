@@ -183,11 +183,11 @@
   Protocol.pb.cc
   Struct.pb.cc
   코드를 생성하고 있습니다...
-  ClientPacketHandler.cpp
   GameServer.cpp
   GameSession.cpp
   GameSessionManager.cpp
   Lobby.cpp
   Player.cpp
+  ClientPacketHandler.cpp
   코드를 생성하고 있습니다...
   GameServer.vcxproj -> C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Binary\Debug\GameServer.exe

@@ -39,6 +39,7 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 
 bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt)
 {
+#pragma region test
 	//// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
 	//if (pkt.isallplayersready())
 	//{
@@ -71,9 +72,30 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	//		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 	//		session->Send(sendBuffer);
 	//	}
-
 	//}
+#pragma endregion test
+	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
+	if (pkt.isallplayersready())
+	{
+		Protocol::C_ENTER_GAME enterGamePkt;
+		enterGamePkt.set_playerid(GPlayer.playerId);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+		session->Send(sendBuffer);
+	}
+	// 준비 안됐다면 여기로
+	else
+	{
+		string chat;
+		cin >> chat;
+		if (chat == "ready")
+		{
+			cout << "준비됐어용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
+		}
 
+		Protocol::C_ENTER_LOBBY LobbyPkt;
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyPkt);
+		session->Send(sendBuffer);
+	}
 	return true;
 }
 

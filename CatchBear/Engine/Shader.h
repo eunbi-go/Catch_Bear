@@ -63,9 +63,9 @@ public:
 	Shader();
 	virtual ~Shader();
 
-public:
 	void CreateGraphicsShader(const wstring& path, ShaderInfo info = ShaderInfo(), ShaderArg arg = ShaderArg());
 	void CreateComputeShader(const wstring& path, const string& name, const string& version);
+
 	void Update();
 
 	SHADER_TYPE GetShaderType() { return _info.shaderType; }
@@ -80,9 +80,8 @@ private:
 	void CreateGeometryShader(const wstring& path, const string& name, const string& version);
 	void CreatePixelShader(const wstring& path, const string& name, const string& version);
 
-
 private:
-	ShaderInfo			_info;
+	ShaderInfo _info;
 	ComPtr<ID3D12PipelineState>			_pipelineState;
 
 	// GraphicsShader
@@ -92,11 +91,10 @@ private:
 	ComPtr<ID3DBlob>					_gsBlob;
 	ComPtr<ID3DBlob>					_psBlob;
 	ComPtr<ID3DBlob>					_errBlob;
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC	_graphicsPipelineDesc = {};
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC  _graphicsPipelineDesc = {};
 
 	// ComputeShader
 	ComPtr<ID3DBlob>					_csBlob;
-	D3D12_COMPUTE_PIPELINE_STATE_DESC	_computePipelineDesc = {};
-
+	D3D12_COMPUTE_PIPELINE_STATE_DESC   _computePipelineDesc = {};
 };
 

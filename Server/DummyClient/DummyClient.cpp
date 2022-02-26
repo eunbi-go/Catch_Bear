@@ -6,11 +6,6 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
-//#include "KeyManager.h"
-
-char sendData[] = "Hello World";
-
-
 int main()
 {
 	ServerPacketHandler::Init();
@@ -36,17 +31,5 @@ int main()
 			});
 	}
 
-	Protocol::C_CHAT chatPkt;
-	chatPkt.set_msg(u8"Hello World !");
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-
-	while (true)
-	{
-		//service->Broadcast(sendBuffer);
-		this_thread::sleep_for(1s);
-		//CKeyManager::Get_Instance()->Key_Update();
-	}
-
-	//CKeyManager::Destroy_Instance();
 	GThreadManager->Join();
 }

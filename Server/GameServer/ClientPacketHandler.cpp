@@ -7,7 +7,6 @@
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 // Á÷Á¢ ÄÁÅÙÃ÷ ÀÛ¾÷ÀÚ
-
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 {
 	PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
@@ -127,13 +126,13 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	//uint64 index = pkt.playerindex();
 	//// TODO : Validation
 
-	//PlayerRef player = gameSession->_players[index]; // READ_ONLY?
+	PlayerRef player = gameSession->_player; // READ_ONLY?
 	//GLobby.Enter(player); // WRITE_LOCK
 
-	//Protocol::S_ENTER_GAME enterGamePkt;
-	//enterGamePkt.set_success(true);
-	//auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
-	//player->ownerSession->Send(sendBuffer);
+	Protocol::S_ENTER_GAME enterGamePkt;
+	enterGamePkt.set_success(true);
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
+	player->ownerSession->Send(sendBuffer);
 
 	return true;
 }

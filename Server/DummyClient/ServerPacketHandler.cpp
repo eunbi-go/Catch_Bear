@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
 #include "Player.h"
-//#include "KeyManager.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -118,7 +117,14 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
+	if (pkt.success() != true)
+		return true;
 	// TODO
+	Protocol::C_ENTER_GAME enterGamePkt;
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
+
+
 	return true;
 }
 

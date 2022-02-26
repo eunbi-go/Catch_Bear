@@ -244,7 +244,6 @@ shared_ptr<Mesh> Resources::LoadSphereMesh()
 	Add(L"Sphere", mesh);
 
 	return mesh;
-
 }
 
 shared_ptr<Mesh> Resources::LoadTerrainMesh(int32 sizeX, int32 sizeZ)
@@ -297,18 +296,18 @@ shared_ptr<Mesh> Resources::LoadTerrainMesh(int32 sizeX, int32 sizeZ)
 	mesh->Init(vec, idx);
 	Add(L"Terrain", mesh);
 	return mesh;
-
 }
 
-shared_ptr<Texture> Resources::CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height, 
-	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags, D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
+
+shared_ptr<Texture> Resources::CreateTexture(const wstring& name, DXGI_FORMAT format, uint32 width, uint32 height,
+	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
+	D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
 {
 	shared_ptr<Texture> texture = make_shared<Texture>();
 	texture->Create(format, width, height, heapProperty, heapFlags, resFlags, clearColor);
 	Add(name, texture);
 
 	return texture;
-
 }
 
 shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D)
@@ -524,7 +523,7 @@ void Resources::CreateDefaultShader()
 			"HS_Main",
 			"DS_Main",
 			"",
-			"PS_Main"
+			"PS_Main",
 		};
 
 		shared_ptr<Shader> shader = make_shared<Shader>();
@@ -537,26 +536,12 @@ void Resources::CreateDefaultShader()
 		ShaderInfo info =
 		{
 			SHADER_TYPE::DEFERRED,
-			RASTERIZER_TYPE::CULL_BACK,
-			DEPTH_STENCIL_TYPE::LESS,
-			BLEND_TYPE::DEFAULT,
-			D3D_PRIMITIVE_TOPOLOGY_3_CONTROL_POINT_PATCHLIST
-		};
-
-		ShaderArg arg =
-		{
-			"VS_Main",
-			"HS_Main",
-			"DS_Main",
-			"",
-			"PS_Main"
 		};
 
 		shared_ptr<Shader> shader = make_shared<Shader>();
-		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\terrain.fx", info, arg);
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info);
 		Add<Shader>(L"Terrain", shader);
 	}
-
 
 }
 
@@ -661,10 +646,11 @@ void Resources::CreateDefaultMaterial()
 	// Terrain
 	{
 		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Terrain");
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Terrain", L"..\\Resources\\Texture\\Terrain\\terrain.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Terrain", L"..\\Resources\\Texture\\terrain.jpg");
 		shared_ptr<Material> material = make_shared<Material>();
 		material->SetShader(shader);
-		material->SetTexture(0, texture);
+		material->SetTexture(0, texture);	// 0번이 색상
 		Add<Material>(L"Terrain", material);
 	}
+
 }

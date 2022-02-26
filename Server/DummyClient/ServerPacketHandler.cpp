@@ -85,14 +85,31 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	// 준비 안됐다면 여기로
 	else
 	{
-		string chat;
-		cin >> chat;
-		if (chat == "ready")
-		{
-			cout << "준비됐어용!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" << endl;
-		}
-
 		Protocol::C_ENTER_LOBBY LobbyPkt;
+		
+		if (!GPlayer.bisPlayerReady)
+		{
+			// 일단은 ready를 입력하면 준비됐다구..실제 게임에선 ui를 클릭해서 ready되도록 수정할거임.
+			string chat;
+			cin >> chat;
+			if (chat == "ready")
+			{
+				LobbyPkt.set_playerid(GPlayer.playerId);
+				LobbyPkt.set_isplayerready(true);
+				GPlayer.bisPlayerReady = true;
+				cout << "ID " << GPlayer.playerId << "준비완료" << endl;
+			}
+
+			// ready 한게 아니라면 채팅으로 간주함 실제 게임에선 채팅창 UI를 클릭하면 그때 cin을 받아 채팅 내용을 입력받음
+			else
+			{
+				Protocol::C_CHAT chatPkt;
+				chatPkt.set_playerid(GPlayer.playerId);
+				chatPkt.set_msg(chat);
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+				session->Send(sendBuffer);
+			}
+		}
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyPkt);
 		session->Send(sendBuffer);
 	}
@@ -107,6 +124,10 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 {
-	std::cout << pkt.msg() << endl;
+	uint64 playerId = pkt.playerid();
+
+	std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
+
+	//std::cout << pkt.msg() << endl;
 	return true;
 }

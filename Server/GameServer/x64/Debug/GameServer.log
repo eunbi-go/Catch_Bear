@@ -187,6 +187,7 @@
   GameSession.cpp
   GameSessionManager.cpp
   Lobby.cpp
+C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\GameServer\Lobby.cpp(61,34): warning C4267: '초기화 중': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   Player.cpp
   ClientPacketHandler.cpp
   코드를 생성하고 있습니다...

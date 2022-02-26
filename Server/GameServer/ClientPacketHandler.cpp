@@ -6,6 +6,8 @@
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
+static bool bCheck = false;
+
 // 직접 컨텐츠 작업자
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -22,7 +24,22 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	// TODO : Validation 체크
 
 	Protocol::S_LOGIN loginPkt;
-	loginPkt.set_success(true);
+	if (pkt.nickname() == "ready")
+	{
+		loginPkt.set_success(false);
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
+		session->Send(sendBuffer);
+		return true;
+	}
+	//if (bCheck)
+	//{
+	//	loginPkt.set_success(false);
+	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
+	//	session->Send(sendBuffer);
+	//	return true;
+	//}
+	else
+		loginPkt.set_success(true);
 
 	// gameSession의 nickName 벡터에 저장.
 	gameSession->_nickNames.push_back(pkt.nickname());
@@ -77,6 +94,8 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	}*/
 #pragma endregion addPlayer
 
+	bCheck = true;
+
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	session->Send(sendBuffer);
 
@@ -101,10 +120,15 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 	}
 	else
 	{
+		if (pkt.isplayerready())
+			GLobby.SetPlayerReady(pkt.playerid());
+
 		// 만약 모든 플레이어가 준비됐다면
-		//enterLobbyPkt.set_isallplayersready(true);
+		if (GLobby.isAllPlayerReady())					
+			enterLobbyPkt.set_isallplayersready(true);
 		// 한명의 플레이어라도 레디하지않았으면
-		enterLobbyPkt.set_isallplayersready(false);
+		else
+			enterLobbyPkt.set_isallplayersready(false);
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
 		session->Send(sendBuffer);
@@ -114,7 +138,9 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 
 bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
-	//GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+
+	cout << "ID " << pkt.playerid() << " 인게임 접속 완료" << endl;
 
 	//uint64 index = pkt.playerindex();
 	//// TODO : Validation
@@ -132,9 +158,12 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 
 bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 {
-	std::cout << pkt.msg() << endl;
+	uint64 playerId = pkt.playerid();
+
+	std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
 
 	Protocol::S_CHAT chatPkt;
+	chatPkt.set_playerid(playerId);
 	chatPkt.set_msg(pkt.msg());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
 

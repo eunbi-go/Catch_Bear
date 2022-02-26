@@ -1042,9 +1042,10 @@ class C_CHAT final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kMsgFieldNumber = 1,
+    kMsgFieldNumber = 2,
+    kPlayerIdFieldNumber = 1,
   };
-  // string msg = 1;
+  // string msg = 2;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1058,6 +1059,15 @@ class C_CHAT final :
   std::string* _internal_mutable_msg();
   public:
 
+  // uint64 playerId = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.C_CHAT)
  private:
   class _Internal;
@@ -1066,6 +1076,7 @@ class C_CHAT final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr msg_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1473,7 +1484,27 @@ inline void S_ENTER_GAME::set_success(bool value) {
 
 // C_CHAT
 
-// string msg = 1;
+// uint64 playerId = 1;
+inline void C_CHAT::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_CHAT::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_CHAT::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_CHAT.playerId)
+  return _internal_playerid();
+}
+inline void C_CHAT::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void C_CHAT::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_CHAT.playerId)
+}
+
+// string msg = 2;
 inline void C_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }

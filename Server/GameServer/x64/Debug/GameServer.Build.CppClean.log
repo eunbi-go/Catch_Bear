@@ -5,14 +5,14 @@ c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\pch.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\struct.pb.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\protocol.pb.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\enum.pb.obj
-c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\clientpackethandler.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\player.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\lobby.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gamesessionmanager.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gamesession.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gameserver.obj
-c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gameserver.ilk
+c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\clientpackethandler.obj
 c:\users\wc542\onedrive\문서\catch_bear\server\binary\debug\gameserver.exe
+c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gameserver.ilk
 c:\users\wc542\onedrive\문서\catch_bear\server\binary\debug\gameserver.pdb
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gameserver.tlog\cl.command.1.tlog
 c:\users\wc542\onedrive\문서\catch_bear\server\gameserver\x64\debug\gameserver.tlog\cl.read.1.tlog

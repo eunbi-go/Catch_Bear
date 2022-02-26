@@ -15,6 +15,7 @@ public:
 	virtual void OnSend(int32 len) override;
 
 public:
-	Vector<PlayerRef> _players;
-	Vector<string> _nickNames;
+	//Vector<PlayerRef>	_players;
+	PlayerRef			_player = nullptr;
+	Vector<string>		_nickNames;
 };

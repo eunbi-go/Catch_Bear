@@ -6,8 +6,6 @@
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
-static bool bCheck = false;
-
 // 직접 컨텐츠 작업자
 
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -22,24 +20,10 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
 	// TODO : Validation 체크
-
+	
 	Protocol::S_LOGIN loginPkt;
-	if (pkt.nickname() == "ready")
-	{
-		loginPkt.set_success(false);
-		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-		session->Send(sendBuffer);
-		return true;
-	}
-	//if (bCheck)
-	//{
-	//	loginPkt.set_success(false);
-	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-	//	session->Send(sendBuffer);
-	//	return true;
-	//}
-	else
-		loginPkt.set_success(true);
+	// 원래대로라면 데이터베이스에 접근하여 유효한 아이디인지 확인하고 성공 패킷을 보내야겠죠?
+	loginPkt.set_success(true);
 
 	// gameSession의 nickName 벡터에 저장.
 	gameSession->_nickNames.push_back(pkt.nickname());
@@ -62,7 +46,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		playerRef->type = player->playertype();
 		playerRef->ownerSession = gameSession;
 
-		gameSession->_players.push_back(playerRef);
+		gameSession->_player = playerRef;
 	}
 #pragma region addPlayer
 	/*{
@@ -94,8 +78,6 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	}*/
 #pragma endregion addPlayer
 
-	bCheck = true;
-
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 	session->Send(sendBuffer);
 
@@ -108,7 +90,7 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 	Protocol::S_ENTER_LOBBY enterLobbyPkt;
 	if (GLobby.isFirstEnterLobby(pkt.playerid()))
 	{
-		PlayerRef player = gameSession->_players[0];
+		PlayerRef player = gameSession->_player;
 		player->playerId = pkt.playerid();
 		GLobby.Enter(player);
 		cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;

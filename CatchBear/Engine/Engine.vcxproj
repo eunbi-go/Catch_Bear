@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraScript.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
@@ -213,7 +214,6 @@
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="TableDescriptorHeap.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TestCameraScript.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
@@ -221,6 +221,7 @@
   <ItemGroup>
     <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraScript.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
@@ -257,7 +258,6 @@
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="TableDescriptorHeap.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TestCameraScript.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

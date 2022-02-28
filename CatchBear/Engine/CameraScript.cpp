@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "TestCameraScript.h"
+#include "CameraScript.h"
 #include "Transform.h"
 #include "Camera.h"
 #include "GameObject.h"
@@ -7,15 +7,15 @@
 #include "Timer.h"
 #include "SceneManager.h"
 
-TestCameraScript::TestCameraScript()
+CameraScript::CameraScript()
 {
 }
 
-TestCameraScript::~TestCameraScript()
+CameraScript::~CameraScript()
 {
 }
 
-void TestCameraScript::LateUpdate()
+void CameraScript::LateUpdate()
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
 

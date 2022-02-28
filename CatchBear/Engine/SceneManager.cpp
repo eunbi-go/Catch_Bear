@@ -10,11 +10,9 @@
 #include "Camera.h"
 #include "Light.h"
 
-#include "TestCameraScript.h"
+#include "CameraScript.h"
 #include "Resources.h"
 #include "ParticleSystem.h"
-
-// 브랜치 만들어서 커밋함 이거 지워 ~!!
 
 void SceneManager::Update()
 {
@@ -98,7 +96,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		camera->SetName(L"Main_Camera");
 		camera->AddComponent(make_shared<Transform>());
 		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
-		camera->AddComponent(make_shared<TestCameraScript>());
+		camera->AddComponent(make_shared<CameraScript>());
 		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
 		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
 		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI는 안 찍음
@@ -144,16 +142,16 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region Object
-	/*{
+#pragma region TestPlayer
+	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
 		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
 		obj->SetStatic(false);
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
+			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
 			meshRenderer->SetMesh(sphereMesh);
 		}
 		{
@@ -162,7 +160,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
-	}*/
+	}
 #pragma endregion
 
 #pragma region Terrain

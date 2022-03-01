@@ -9,6 +9,7 @@
 
 CameraScript::CameraScript()
 {
+	_testPlayer = make_shared<GameObject>();
 }
 
 CameraScript::~CameraScript()
@@ -18,6 +19,14 @@ CameraScript::~CameraScript()
 void CameraScript::LateUpdate()
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
+
+	// 플레이어 따라감
+	_testPlayer = _testPlayer->GetTestPlayer();
+	Vec3 playerPos = _testPlayer->GetTransform()->GetLocalPosition();
+
+	Vec3 rotation = GetTransform()->GetLocalRotation();
+	rotation.x = _angleX;
+	GetTransform()->SetLocalRotation(rotation);
 
 	if (INPUT->GetButton(KEY_TYPE::W))
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;

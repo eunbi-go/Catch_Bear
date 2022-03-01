@@ -28,6 +28,9 @@
     <Filter Include="Object\Component\Camera">
       <UniqueIdentifier>{595410c4-75d1-477f-a9b7-c80f4391cefc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object\Player">
+      <UniqueIdentifier>{81ebf9aa-4952-4370-bfb5-7476c6ac2fcd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -140,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="CameraScript.cpp">
       <Filter>Object\Component\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Object\Player</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -256,6 +262,9 @@
     </ClInclude>
     <ClInclude Include="CameraScript.h">
       <Filter>Object\Component\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Object\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

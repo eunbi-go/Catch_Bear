@@ -9,10 +9,10 @@
   {
   	PKT_C_LOGIN = 1000,
   	PKT_S_LOGIN = 1001,
-  	PKT_C_ENTER_GAME = 1002,
-  	PKT_S_ENTER_GAME = 1003,
-  	PKT_C_ENTER_LOBBY = 1004,
-  	PKT_S_ENTER_LOBBY = 1005,
+  	PKT_C_ENTER_LOBBY = 1002,
+  	PKT_S_ENTER_LOBBY = 1003,
+  	PKT_C_ENTER_GAME = 1004,
+  	PKT_S_ENTER_GAME = 1005,
   	PKT_C_CHAT = 1006,
   	PKT_S_CHAT = 1007,
   };
@@ -20,8 +20,8 @@
   // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
   bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt);
-  bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt);
   bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pkt);
+  bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt);
   bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt);
   
   class ClientPacketHandler
@@ -32,8 +32,8 @@
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
   		GPacketHandler[PKT_C_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_LOGIN>(Handle_C_LOGIN, session, buffer, len); };
-  		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handle_C_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_C_ENTER_LOBBY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_LOBBY>(Handle_C_ENTER_LOBBY, session, buffer, len); };
+  		GPacketHandler[PKT_C_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_ENTER_GAME>(Handle_C_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_C_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::C_CHAT>(Handle_C_CHAT, session, buffer, len); };
   	}
   
@@ -43,8 +43,8 @@
   		return GPacketHandler[header->id](session, buffer, len);
   	}
   	static SendBufferRef MakeSendBuffer(Protocol::S_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_S_LOGIN); }
-  	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_LOBBY& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_LOBBY); }
+  	static SendBufferRef MakeSendBuffer(Protocol::S_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_S_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::S_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_S_CHAT); }
   
   private:
@@ -84,10 +84,10 @@
   {
   	PKT_C_LOGIN = 1000,
   	PKT_S_LOGIN = 1001,
-  	PKT_C_ENTER_GAME = 1002,
-  	PKT_S_ENTER_GAME = 1003,
-  	PKT_C_ENTER_LOBBY = 1004,
-  	PKT_S_ENTER_LOBBY = 1005,
+  	PKT_C_ENTER_LOBBY = 1002,
+  	PKT_S_ENTER_LOBBY = 1003,
+  	PKT_C_ENTER_GAME = 1004,
+  	PKT_S_ENTER_GAME = 1005,
   	PKT_C_CHAT = 1006,
   	PKT_S_CHAT = 1007,
   };
@@ -95,8 +95,8 @@
   // Custom Handlers
   bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
   bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt);
-  bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
   bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt);
+  bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
   bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
   
   class ServerPacketHandler
@@ -107,8 +107,8 @@
   		for (int32 i = 0; i < UINT16_MAX; i++)
   			GPacketHandler[i] = Handle_INVALID;
   		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
-  		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_S_ENTER_LOBBY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_LOBBY>(Handle_S_ENTER_LOBBY, session, buffer, len); };
+  		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
   		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
   	}
   
@@ -118,8 +118,8 @@
   		return GPacketHandler[header->id](session, buffer, len);
   	}
   	static SendBufferRef MakeSendBuffer(Protocol::C_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_C_LOGIN); }
-  	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_LOBBY& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_LOBBY); }
+  	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
   	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
   
   private:
@@ -189,39 +189,12 @@
   Lobby.cpp
   Player.cpp
   ClientPacketHandler.cpp
-C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\GameServer\ClientPacketHandler.cpp(95,43): warning C4244: '인수': 'uint64'에서 'const unsigned int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
   코드를 생성하고 있습니다...
 Enum.pb.obj : error LNK2019: "void __cdecl google::protobuf::internal::AssignDescriptors(struct google::protobuf::internal::DescriptorTable const *,bool)" (?AssignDescriptors@internal@protobuf@google@@YAXPBUDescriptorTable@123@_N@Z)"class google::protobuf::EnumDescriptor const * __cdecl Protocol::PlayerType_descriptor(void)" (?PlayerType_descriptor@Protocol@@YAPBVEnumDescriptor@protobuf@google@@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
 Enum.pb.obj : error LNK2019: "public: __thiscall google::protobuf::internal::AddDescriptorsRunner::AddDescriptorsRunner(struct google::protobuf::internal::DescriptorTable const *)" (??0AddDescriptorsRunner@internal@protobuf@google@@QAE@PBUDescriptorTable@123@@Z)"void __cdecl `dynamic initializer for 'dynamic_init_dummy_Enum_2eproto''(void)" (??__Edynamic_init_dummy_Enum_2eproto@@YAXXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
 Protocol.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: __thiscall google::protobuf::internal::AddDescriptorsRunner::AddDescriptorsRunner(struct google::protobuf::internal::DescriptorTable const *)" (??0AddDescriptorsRunner@internal@protobuf@google@@QAE@PBUDescriptorTable@123@@Z)
 Struct.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: __thiscall google::protobuf::internal::AddDescriptorsRunner::AddDescriptorsRunner(struct google::protobuf::internal::DescriptorTable const *)" (??0AddDescriptorsRunner@internal@protobuf@google@@QAE@PBUDescriptorTable@123@@Z)
-GameServer.obj : error LNK2019: "public: static void * __cdecl PoolAllocator::Alloc(int)" (?Alloc@PoolAllocator@@SAPAXH@Z)"class GameSession * __cdecl xnew<class GameSession>(void)" (??$xnew@VGameSession@@$$V@@YAPAVGameSession@@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameSessionManager.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: static void * __cdecl PoolAllocator::Alloc(int)" (?Alloc@PoolAllocator@@SAPAXH@Z)
-ClientPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: static void * __cdecl PoolAllocator::Alloc(int)" (?Alloc@PoolAllocator@@SAPAXH@Z)
-GameServer.obj : error LNK2019: "public: static void __cdecl PoolAllocator::Release(void *)" (?Release@PoolAllocator@@SAXPAX@Z)"void __cdecl xdelete<class GameSession>(class GameSession *)" (??$xdelete@VGameSession@@@@YAXPAVGameSession@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameSessionManager.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: static void __cdecl PoolAllocator::Release(void *)" (?Release@PoolAllocator@@SAXPAX@Z)
-ClientPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: static void __cdecl PoolAllocator::Release(void *)" (?Release@PoolAllocator@@SAXPAX@Z)
-GameServer.obj : error LNK2019: "public: __thiscall IocpCore::IocpCore(void)" (??0IocpCore@@QAE@XZ)"class IocpCore * __cdecl xnew<class IocpCore>(void)" (??$xnew@VIocpCore@@$$V@@YAPAVIocpCore@@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: __thiscall IocpCore::~IocpCore(void)" (??1IocpCore@@QAE@XZ)"public: void * __thiscall IocpCore::`scalar deleting destructor'(unsigned int)" (??_GIocpCore@@QAEPAXI@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: bool __thiscall IocpCore::Dispatch(unsigned int)" (?Dispatch@IocpCore@@QAE_NI@Z)"public: __thiscall <lambda_049d461998281fbeb8eb17d13a732487>::operator()(void)const " (??R<lambda_049d461998281fbeb8eb17d13a732487>@@QBE@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: __thiscall NetAddress::NetAddress(class std::basic_string<wchar_t,struct std::char_traits<wchar_t>,class std::allocator<wchar_t> >,unsigned short)" (??0NetAddress@@QAE@V?$basic_string@_WU?$char_traits@_W@std@@V?$allocator@_W@2@@std@@G@Z)_main 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2001: 확인할 수 없는 외부 기호 "private: virtual void * __thiscall Session::GetHandle(void)" (?GetHandle@Session@@EAEPAXXZ)
-GameServer.obj : error LNK2001: 확인할 수 없는 외부 기호 "private: virtual void __thiscall Session::Dispatch(class IocpEvent *,int)" (?Dispatch@Session@@EAEXPAVIocpEvent@@H@Z)
-GameServer.obj : error LNK2019: "public: __thiscall PacketSession::PacketSession(void)" (??0PacketSession@@QAE@XZ)"public: __thiscall GameSession::GameSession(void)" (??0GameSession@@QAE@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: virtual __thiscall PacketSession::~PacketSession(void)" (??1PacketSession@@UAE@XZ)__unwindfunclet$??0GameSession@@QAE@XZ$0 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2001: 확인할 수 없는 외부 기호 "protected: virtual int __thiscall PacketSession::OnRecv(unsigned char *,int)" (?OnRecv@PacketSession@@MAEHPAEH@Z)
 GameServer.obj : error LNK2019: "public: bool __thiscall google::protobuf::MessageLite::ParseFromArray(void const *,int)" (?ParseFromArray@MessageLite@protobuf@google@@QAE_NPBXH@Z)"private: static bool __cdecl ClientPacketHandler::HandlePacket<class Protocol::C_CHAT,bool (__cdecl*)(class std::shared_ptr<class PacketSession> &,class Protocol::C_CHAT &)>(bool (__cdecl*)(class std::shared_ptr<class PacketSession> &,class Protocol::C_CHAT &),class std::shared_ptr<class PacketSession> &,unsigned char *,int)" (??$HandlePacket@VC_CHAT@Protocol@@P6A_NAAV?$shared_ptr@VPacketSession@@@std@@AAV12@@Z@ClientPacketHandler@@CA_NP6A_NAAV?$shared_ptr@VPacketSession@@@std@@AAVC_CHAT@Protocol@@@Z0PAEH@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: void __thiscall ThreadManager::Launch(class std::function<void __cdecl(void)>)" (?Launch@ThreadManager@@QAEXV?$function@$$A6AXXZ@std@@@Z)_main 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: void __thiscall ThreadManager::Join(void)" (?Join@ThreadManager@@QAEXXZ)_main 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2019: "public: __thiscall ServerService::ServerService(class NetAddress,class std::shared_ptr<class IocpCore>,class std::function<class std::shared_ptr<class Session> __cdecl(void)>,int)" (??0ServerService@@QAE@VNetAddress@@V?$shared_ptr@VIocpCore@@@std@@V?$function@$$A6A?AV?$shared_ptr@VSession@@@std@@XZ@3@H@Z)"class ServerService * __cdecl xnew<class ServerService,class NetAddress,class std::shared_ptr<class IocpCore>,class std::shared_ptr<class GameSession> (__cdecl&)(void),int>(class NetAddress &&,class std::shared_ptr<class IocpCore> &&,class std::shared_ptr<class GameSession> (__cdecl&)(void),int &&)" (??$xnew@VServerService@@VNetAddress@@V?$shared_ptr@VIocpCore@@@std@@A6A?AV?$shared_ptr@VGameSession@@@4@XZH@@YAPAVServerService@@$$QAVNetAddress@@$$QAV?$shared_ptr@VIocpCore@@@std@@A6A?AV?$shared_ptr@VGameSession@@@3@XZ$$QAH@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-GameServer.obj : error LNK2001: 확인할 수 없는 외부 기호 "class ThreadManager * GThreadManager" (?GThreadManager@@3PAVThreadManager@@A)
-GameSessionManager.obj : error LNK2019: "public: void __thiscall Lock::WriteLock(char const *)" (?WriteLock@Lock@@QAEXPBD@Z)"public: __thiscall WriteLockGuard::WriteLockGuard(class Lock &,char const *)" (??0WriteLockGuard@@QAE@AAVLock@@PBD@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-Lobby.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: void __thiscall Lock::WriteLock(char const *)" (?WriteLock@Lock@@QAEXPBD@Z)
-GameSessionManager.obj : error LNK2019: "public: void __thiscall Lock::WriteUnlock(char const *)" (?WriteUnlock@Lock@@QAEXPBD@Z)"public: __thiscall WriteLockGuard::~WriteLockGuard(void)" (??1WriteLockGuard@@QAE@XZ) 함수에서 참조되는 확인할 수 없는 외부 기호
-Lobby.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: void __thiscall Lock::WriteUnlock(char const *)" (?WriteUnlock@Lock@@QAEXPBD@Z)
-GameSessionManager.obj : error LNK2019: "public: void __thiscall Session::Send(class std::shared_ptr<class SendBuffer>)" (?Send@Session@@QAEXV?$shared_ptr@VSendBuffer@@@std@@@Z)"public: void __thiscall GameSessionManager::Broadcast(class std::shared_ptr<class SendBuffer>)" (?Broadcast@GameSessionManager@@QAEXV?$shared_ptr@VSendBuffer@@@std@@@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-Lobby.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: void __thiscall Session::Send(class std::shared_ptr<class SendBuffer>)" (?Send@Session@@QAEXV?$shared_ptr@VSendBuffer@@@std@@@Z)
-ClientPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: void __thiscall Session::Send(class std::shared_ptr<class SendBuffer>)" (?Send@Session@@QAEXV?$shared_ptr@VSendBuffer@@@std@@@Z)
 Protocol.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall google::protobuf::Message::InitializationErrorString(void)const " (?InitializationErrorString@Message@protobuf@google@@UBE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
 Struct.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual class std::basic_string<char,struct std::char_traits<char>,class std::allocator<char> > __thiscall google::protobuf::Message::InitializationErrorString(void)const " (?InitializationErrorString@Message@protobuf@google@@UBE?AV?$basic_string@DU?$char_traits@D@std@@V?$allocator@D@2@@std@@XZ)
 Protocol.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: virtual void __thiscall google::protobuf::Message::DiscardUnknownFields(void)" (?DiscardUnknownFields@Message@protobuf@google@@UAEXXZ)
@@ -317,10 +290,6 @@ Protocol.pb.obj : error LNK2019: "public: static unsigned char * __cdecl google:
 Struct.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "public: static unsigned char * __cdecl google::protobuf::internal::WireFormat::InternalSerializeUnknownFieldsToArray(class google::protobuf::UnknownFieldSet const &,unsigned char *,class google::protobuf::io::EpsCopyOutputStream *)" (?InternalSerializeUnknownFieldsToArray@WireFormat@internal@protobuf@google@@SAPAEABVUnknownFieldSet@34@PAEPAVEpsCopyOutputStream@io@34@@Z)
 Protocol.pb.obj : error LNK2019: "unsigned int __cdecl google::protobuf::internal::ComputeUnknownFieldsSize(class google::protobuf::internal::InternalMetadata const &,unsigned int,class google::protobuf::internal::CachedSize *)" (?ComputeUnknownFieldsSize@internal@protobuf@google@@YAIABVInternalMetadata@123@IPAVCachedSize@123@@Z)"public: virtual unsigned int __thiscall Protocol::C_LOGIN::ByteSizeLong(void)const " (?ByteSizeLong@C_LOGIN@Protocol@@UBEIXZ) 함수에서 참조되는 확인할 수 없는 외부 기호
 Struct.pb.obj : error LNK2001: 확인할 수 없는 외부 기호 "unsigned int __cdecl google::protobuf::internal::ComputeUnknownFieldsSize(class google::protobuf::internal::InternalMetadata const &,unsigned int,class google::protobuf::internal::CachedSize *)" (?ComputeUnknownFieldsSize@internal@protobuf@google@@YAIABVInternalMetadata@123@IPAVCachedSize@123@@Z)
-ClientPacketHandler.obj : error LNK2019: "public: void __thiscall SendBuffer::Close(unsigned int)" (?Close@SendBuffer@@QAEXI@Z)"private: static class std::shared_ptr<class SendBuffer> __cdecl ClientPacketHandler::MakeSendBuffer<class Protocol::S_CHAT>(class Protocol::S_CHAT &,unsigned short)" (??$MakeSendBuffer@VS_CHAT@Protocol@@@ClientPacketHandler@@CA?AV?$shared_ptr@VSendBuffer@@@std@@AAVS_CHAT@Protocol@@G@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-ClientPacketHandler.obj : error LNK2019: "public: class std::shared_ptr<class SendBuffer> __thiscall SendBufferManager::Open(unsigned int)" (?Open@SendBufferManager@@QAE?AV?$shared_ptr@VSendBuffer@@@std@@I@Z)"private: static class std::shared_ptr<class SendBuffer> __cdecl ClientPacketHandler::MakeSendBuffer<class Protocol::S_CHAT>(class Protocol::S_CHAT &,unsigned short)" (??$MakeSendBuffer@VS_CHAT@Protocol@@@ClientPacketHandler@@CA?AV?$shared_ptr@VSendBuffer@@@std@@AAVS_CHAT@Protocol@@G@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
 ClientPacketHandler.obj : error LNK2019: "public: bool __thiscall google::protobuf::MessageLite::SerializeToArray(void *,int)const " (?SerializeToArray@MessageLite@protobuf@google@@QBE_NPAXH@Z)"private: static class std::shared_ptr<class SendBuffer> __cdecl ClientPacketHandler::MakeSendBuffer<class Protocol::S_CHAT>(class Protocol::S_CHAT &,unsigned short)" (??$MakeSendBuffer@VS_CHAT@Protocol@@@ClientPacketHandler@@CA?AV?$shared_ptr@VSendBuffer@@@std@@AAVS_CHAT@Protocol@@G@Z) 함수에서 참조되는 확인할 수 없는 외부 기호
-ClientPacketHandler.obj : error LNK2001: 확인할 수 없는 외부 기호 "class SendBufferManager * GSendBufferManager" (?GSendBufferManager@@3PAVSendBufferManager@@A)
-C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Libraries\Libs\ServerCore\Debug\ServerCore.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
 C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Libraries\Libs\Protobuf\Debug\libprotobufd.lib : warning LNK4272: 'x64' 라이브러리 컴퓨터 종류가 'x86' 대상 컴퓨터 종류와 충돌합니다.
-C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Binary\Debug\GameServer.exe : fatal error LNK1120: 74개의 확인할 수 없는 외부 참조입니다.
+C:\Users\wc542\OneDrive\문서\Catch_Bear\Server\Binary\Debug\GameServer.exe : fatal error LNK1120: 53개의 확인할 수 없는 외부 참조입니다.

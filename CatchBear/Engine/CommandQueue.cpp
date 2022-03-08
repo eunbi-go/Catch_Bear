@@ -61,6 +61,7 @@ void GraphicsCommandQueue::RenderBegin()
 		D3D12_RESOURCE_STATE_PRESENT, // 화면 출력
 		D3D12_RESOURCE_STATE_RENDER_TARGET); // 외주 결과물
 
+	// 루트 시그너쳐 설정(사용하겠다고 말만했지 데이터 삽입은 X)
 	_cmdList->SetGraphicsRootSignature(GRAPHICS_ROOT_SIGNATURE.Get());
 
 	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TRANSFORM)->Clear();

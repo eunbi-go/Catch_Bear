@@ -58,6 +58,8 @@ void ConstantBuffer::CreateView()
 	cbvDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	DEVICE->CreateDescriptorHeap(&cbvDesc, IID_PPV_ARGS(&_cbvHeap));
 
+	// 편의를 위해 CBV의 CPU 시작 핸들, 각 핸들 별 크기를 미리 구해둔다.
+	// -> GetCpuHandle()을 통해 각 힙들의 CPU 핸들을 얻어올 수 있게 됨
 	_cpuHandleBegin = _cbvHeap->GetCPUDescriptorHandleForHeapStart();
 	_handleIncrementSize = DEVICE->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 

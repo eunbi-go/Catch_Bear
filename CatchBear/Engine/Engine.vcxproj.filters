@@ -31,6 +31,51 @@
     <Filter Include="Object\Player">
       <UniqueIdentifier>{81ebf9aa-4952-4370-bfb5-7476c6ac2fcd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\00. Device">
+      <UniqueIdentifier>{9bcbb455-79c4-420f-8608-5bcd5ef66cb1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\01. Command">
+      <UniqueIdentifier>{6d45afde-db5f-40cd-b3db-5c2ff517777f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\02. SwapChain">
+      <UniqueIdentifier>{89d1e0c2-d7b4-4068-875e-f7f041fc423c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\03. RootSignature">
+      <UniqueIdentifier>{5c562fa5-0e68-41e4-9056-b25013dcab05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Buffer">
+      <UniqueIdentifier>{e71f2ee4-b0b1-4d9f-a515-d57aeb11366a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Buffer\- Constant">
+      <UniqueIdentifier>{dec0ba51-d464-485a-949d-849585471821}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Buffer\- Instancing">
+      <UniqueIdentifier>{48770372-1439-4cb6-b5ce-fb94814a2532}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\04. Buffer\- Structed">
+      <UniqueIdentifier>{2f290859-ff82-49e3-815d-ff83d7c45e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\05. Table">
+      <UniqueIdentifier>{9d6a56a0-9ff8-4d24-86b7-c0c88b336e6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\06. RenderTarget">
+      <UniqueIdentifier>{616cf93d-ef58-42bc-b5fd-cebb2f6fe5da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\00. Input">
+      <UniqueIdentifier>{80fc4923-fca4-4460-846c-e15b3c2796f1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\01. Scene">
+      <UniqueIdentifier>{3f7e71aa-528f-431b-8fa4-cdb55bb804dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\02. Timer">
+      <UniqueIdentifier>{1b2e7564-f0a4-4591-93e4-93ce5782c517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\03. Resource">
+      <UniqueIdentifier>{1aec2e2e-34d2-4600-a013-5a2d252a36e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Manager\04. Instancing">
+      <UniqueIdentifier>{7bbcb893-b1ff-4fa9-be3e-85dce296d00c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -42,29 +87,11 @@
     <ClCompile Include="Engine.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="SwapChain.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="Mesh.cpp">
       <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Object\Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TableDescriptorHeap.cpp">
-      <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
       <Filter>Object\Resource</Filter>
@@ -72,23 +99,8 @@
     <ClCompile Include="Material.cpp">
       <Filter>Object\Resource</Filter>
     </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Object.cpp">
       <Filter>Object</Filter>
@@ -114,20 +126,8 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>Object\Component</Filter>
     </ClCompile>
-    <ClCompile Include="RenderTargetGroup.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="StructuredBuffer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="InstancingBuffer.cpp">
-      <Filter>Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="InstancingManager.cpp">
-      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
       <Filter>Object\Component</Filter>
@@ -147,6 +147,51 @@
     <ClCompile Include="Player.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>Engine\00. Device</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>Engine\01. Command</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>Engine\03. RootSignature</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>Engine\02. SwapChain</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>Engine\04. Buffer\- Constant</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingBuffer.cpp">
+      <Filter>Engine\04. Buffer\- Instancing</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBuffer.cpp">
+      <Filter>Engine\04. Buffer\- Structed</Filter>
+    </ClCompile>
+    <ClCompile Include="TableDescriptorHeap.cpp">
+      <Filter>Engine\05. Table</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp">
+      <Filter>Engine\06. RenderTarget</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Manager\00. Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene.cpp">
+      <Filter>Manager\01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Manager\01. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Manager\02. Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Manager\03. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingManager.cpp">
+      <Filter>Manager\04. Instancing</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -161,29 +206,11 @@
     <ClInclude Include="Engine.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="SwapChain.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="RootSignature.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="Mesh.h">
       <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
       <Filter>Object\Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TableDescriptorHeap.h">
-      <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
       <Filter>Object\Resource</Filter>
@@ -191,23 +218,8 @@
     <ClInclude Include="Material.h">
       <Filter>Object\Resource</Filter>
     </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Manager</Filter>
-    </ClInclude>
     <ClInclude Include="SimpleMath.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Object.h">
       <Filter>Object</Filter>
@@ -233,20 +245,8 @@
     <ClInclude Include="Frustum.h">
       <Filter>Object\Component</Filter>
     </ClInclude>
-    <ClInclude Include="RenderTargetGroup.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="StructuredBuffer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
     <ClInclude Include="ParticleSystem.h">
       <Filter>Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="InstancingBuffer.h">
-      <Filter>Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="InstancingManager.h">
-      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
       <Filter>Object\Component</Filter>
@@ -265,6 +265,51 @@
     </ClInclude>
     <ClInclude Include="Player.h">
       <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>Engine\00. Device</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>Engine\01. Command</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>Engine\03. RootSignature</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapChain.h">
+      <Filter>Engine\02. SwapChain</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>Engine\04. Buffer\- Constant</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancingBuffer.h">
+      <Filter>Engine\04. Buffer\- Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBuffer.h">
+      <Filter>Engine\04. Buffer\- Structed</Filter>
+    </ClInclude>
+    <ClInclude Include="TableDescriptorHeap.h">
+      <Filter>Engine\05. Table</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h">
+      <Filter>Engine\06. RenderTarget</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Manager\00. Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene.h">
+      <Filter>Manager\01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Manager\01. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Manager\02. Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="Resources.h">
+      <Filter>Manager\03. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancingManager.h">
+      <Filter>Manager\04. Instancing</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

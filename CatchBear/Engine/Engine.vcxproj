@@ -181,6 +181,7 @@
   <ItemGroup>
     <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraScript.h" />
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
@@ -201,6 +202,7 @@
     <ClInclude Include="Object.h" />
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RenderTargetGroup.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="RootSignature.h" />
@@ -213,7 +215,6 @@
     <ClInclude Include="SwapChain.h" />
     <ClInclude Include="TableDescriptorHeap.h" />
     <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TestCameraScript.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
@@ -221,6 +222,7 @@
   <ItemGroup>
     <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraScript.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
@@ -245,6 +247,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RenderTargetGroup.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="RootSignature.cpp" />
@@ -257,7 +260,6 @@
     <ClCompile Include="SwapChain.cpp" />
     <ClCompile Include="TableDescriptorHeap.cpp" />
     <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TestCameraScript.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="Transform.cpp" />

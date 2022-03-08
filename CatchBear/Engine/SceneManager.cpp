@@ -13,6 +13,7 @@
 #include "CameraScript.h"
 #include "Resources.h"
 #include "ParticleSystem.h"
+#include "Player.h"
 
 void SceneManager::Update()
 {
@@ -146,6 +147,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
+		obj->AddComponent(make_shared<Player>());
 		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
 		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
 		obj->SetStatic(false);
@@ -159,7 +161,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			meshRenderer->SetMaterial(material->Clone());
 		}
 		obj->AddComponent(meshRenderer);
-		obj->SetTestPlayer(obj);
+		//obj->SetTestPlayer(obj);
 		scene->AddGameObject(obj);
 	}
 #pragma endregion

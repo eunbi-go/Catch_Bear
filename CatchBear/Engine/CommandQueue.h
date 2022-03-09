@@ -29,6 +29,7 @@ private:
 	ComPtr<ID3D12CommandAllocator>		_cmdAlloc;
 	ComPtr<ID3D12GraphicsCommandList>	_cmdList;
 
+	// Resource Load
 	ComPtr<ID3D12CommandAllocator>		_resCmdAlloc;
 	ComPtr<ID3D12GraphicsCommandList>	_resCmdList;
 

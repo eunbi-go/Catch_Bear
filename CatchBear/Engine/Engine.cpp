@@ -21,10 +21,13 @@ void Engine::Init(const WindowInfo& info)
 	_graphicsCmdQueue->Init(_device->GetDevice(), _swapChain);
 	_computeCmdQueue->Init(_device->GetDevice());
 	_swapChain->Init(info, _device->GetDevice(), _device->GetDXGI(), _graphicsCmdQueue->GetCmdQueue());
+	
 	_rootSignature->Init();
 	_graphicsDescHeap->Init(256);
+
 	_computeDescHeap->Init();
 	
+	// 특정 레지스터와 Constant Buffer 설정
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);

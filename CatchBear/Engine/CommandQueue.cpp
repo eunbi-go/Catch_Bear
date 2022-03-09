@@ -22,10 +22,18 @@ void GraphicsCommandQueue::Init(ComPtr<ID3D12Device> device, shared_ptr<SwapChai
 
 	device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&_cmdQueue));
 
+	// 1. COMMAND
+	// D3D12_COMMAND_LIST_TYPE_DIRECT: GPU가 직접 실행하는 명령 목록
 	device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&_cmdAlloc));
+	
+	// GPU가 하나인 시스템에서는 0이므로 DIRECT or BUNDLE
+	// 초기 상태: 그리기 명령 (NULL)
 	device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, _cmdAlloc.Get(), nullptr, IID_PPV_ARGS(&_cmdList));
+	
+	// OPEN 상태에서 Command를 넣다가 CLOSE한 다음 제출
 	_cmdList->Close();
 
+	// 2. RESOURCES
 	device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&_resCmdAlloc));
 	device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, _resCmdAlloc.Get(), nullptr, IID_PPV_ARGS(&_resCmdList));
 
@@ -100,13 +108,17 @@ void GraphicsCommandQueue::RenderEnd()
 
 void GraphicsCommandQueue::FlushResourceCommandQueue()
 {
+	// 리소스 커맨드 리스트를 닫아주고
 	_resCmdList->Close();
 
+	// 실행하고
 	ID3D12CommandList* cmdListArr[] = { _resCmdList.Get() };
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
 
+	// 싱크 맞추고
 	WaitSync();
 
+	// 리셋해서 다시 사용할 준비
 	_resCmdAlloc->Reset();
 	_resCmdList->Reset(_resCmdAlloc.Get(), nullptr);
 }

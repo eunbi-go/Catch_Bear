@@ -24,6 +24,7 @@ public:
 	Object(OBJECT_TYPE type);
 	virtual ~Object();
 
+public:
 	OBJECT_TYPE GetType() { return _objectType; }
 
 	void SetName(const wstring& name) { _name = name; }

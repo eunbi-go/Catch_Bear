@@ -11,6 +11,8 @@ enum class COMPONENT_TYPE : uint8
 	TERRAIN,
 	COLLIDER,
 	// ....
+
+	// 여러 부품들을 만들어서 GameObject에 넣어줄 수 있기 때문에 별도로 생각
 	MONO_BEHAVIOUR,		// 마지막 순서여야함
 	END,
 };
@@ -41,6 +43,7 @@ public:
 
 public:
 	COMPONENT_TYPE GetType() { return _type; }
+	// 자신의 주인이 소멸되었는지 확인
 	bool IsValid() { return _gameObject.expired() == false; }
 
 	shared_ptr<GameObject> GetGameObject();

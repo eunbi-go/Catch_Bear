@@ -15,6 +15,7 @@ union InstanceID
 	uint64 id;
 };
 
+// Mesh를 받아서 그린다
 class MeshRenderer : public Component
 {
 public:

@@ -146,6 +146,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region TestPlayer
 	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->SetName(L"Player");
 		obj->AddComponent(make_shared<Transform>());
 		obj->AddComponent(make_shared<Player>());
 		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
@@ -161,7 +162,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			meshRenderer->SetMaterial(material->Clone());
 		}
 		obj->AddComponent(meshRenderer);
-		//obj->SetTestPlayer(obj);
 		scene->AddGameObject(obj);
 	}
 #pragma endregion

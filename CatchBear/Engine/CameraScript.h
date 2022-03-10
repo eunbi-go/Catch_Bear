@@ -15,6 +15,6 @@ private:
 	float		_offset = 10.f;
 	float		_angleX = 0.5f;
 
-	//shared_ptr<GameObject> _testPlayer;
+	shared_ptr<GameObject> _testPlayer;
 };
 

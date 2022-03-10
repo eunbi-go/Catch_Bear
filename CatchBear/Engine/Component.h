@@ -59,5 +59,11 @@ protected:
 	// 래퍼런스 카운트가 줄어들지 않는 문제가 발생하기 때문에 weak_ptr로 만들어줌
 	weak_ptr<GameObject> _gameObject;	
 
+//public:
+//	shared_ptr<GameObject> GetPlayer() { if (_player != nullptr) return _player; }
+//	void SetPlayer(shared_ptr<GameObject> player) { _player = player; }
+//
+//private:
+//	shared_ptr<GameObject>	_player;
 };
 

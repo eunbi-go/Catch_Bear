@@ -147,6 +147,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Object\Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerScript.cpp">
+      <Filter>Object\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -264,6 +267,9 @@
       <Filter>Object\Component\Camera</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Object\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerScript.h">
       <Filter>Object\Player</Filter>
     </ClInclude>
   </ItemGroup>

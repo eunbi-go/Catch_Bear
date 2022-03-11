@@ -9,12 +9,5 @@ public:
 	virtual ~PlayerScript();
 
 	virtual void LateUpdate() override;
-
-private:
-	void KeyCheck();
-
-
-private:
-	float	_speed = 5.f;
 };
 

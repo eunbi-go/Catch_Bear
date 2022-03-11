@@ -21,7 +21,7 @@ void Player::KeyCheck()
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
 
-
+	
 	if (INPUT->GetButton(KEY_TYPE::W))
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
 

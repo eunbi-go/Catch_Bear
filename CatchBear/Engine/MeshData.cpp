@@ -50,6 +50,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 {
 	FILE* pFile = NULL;
 
+	// wchar_t -> char*
 	char* pStr;
 	int iLen = WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, NULL, 0, NULL, NULL);
 	pStr = new char[iLen];
@@ -73,12 +74,20 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 					if (!strcmp(pStrTocken, "<Frame>:"))
 					{
 						pGameObj = LoadFrameHierarchyFromFile(NULL, pFile);
+						fclose(pFile);
+						return;
 					}
 					else if (!strcmp(pStrTocken, "</Hierarchy>"))
 					{
-
+						fclose(pFile);
+						return;
 					}
 				}
+			}
+			if (!strcmp(pStrTocken, "</Hierarchy>"))
+			{
+				fclose(pFile);
+				return;
 			}
 		}
 	}
@@ -123,6 +132,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 		else if (!strcmp(pStrTocken, "<Materials>:"))
 		{
 			LoadMaterialInfoFromFile(pFile);
+			return pGameObj;
 		}
 	}
 }
@@ -158,8 +168,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		{
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			ReadStringFromFile(pFile, pStrTocken);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			//ReadStringFromFile(pFile, pStrTocken);
+			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nUVs)
 			{
@@ -176,8 +186,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		{
 			nReads = (UINT)fread(&nNormals, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			ReadStringFromFile(pFile, pStrTocken);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			//ReadStringFromFile(pFile, pStrTocken);
+			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nNormals)
 			{
@@ -194,8 +204,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		{
 			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			ReadStringFromFile(pFile, pStrTocken);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			//ReadStringFromFile(pFile, pStrTocken);
+			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nTangents)
 			{
@@ -240,11 +250,62 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 			}
 
 		}
+
+		else if (!strcmp(pStrTocken, "</Mesh>"))
+			return;
 	}
 }
 
 void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 {
 	char pStrTocken[64] = { '\0' };
+	int nMaterials = ReadIntegerFromFile(pFile);
 
+	ReadStringFromFile(pFile, pStrTocken);
+
+	if (!strcmp(pStrTocken, "<Material>:"))
+	{
+		nMaterials = ReadIntegerFromFile(pFile);
+		if (nMaterials == 0)
+		{
+			ReadStringFromFile(pFile, pStrTocken);
+
+			// char -> wchar_t
+			int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
+			wchar_t* pStr;
+			pStr = new WCHAR[nSize];
+			MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
+			
+			_staticMeshInfo.material.diffuseTexName = pStr;
+		}
+
+		ReadStringFromFile(pFile, pStrTocken);
+		
+		if (!strcmp(pStrTocken, "<ShadingModel>:"))
+		{
+			ReadStringFromFile(pFile, pStrTocken);
+
+			if (!strcmp(pStrTocken, "<Lambert>:"))
+			{
+				ReadStringFromFile(pFile, pStrTocken);
+
+				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.ambient.z = ReadFloatFromFile(pFile);
+
+				_staticMeshInfo.material.diffuse.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.diffuse.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.diffuse.z = ReadFloatFromFile(pFile);
+
+				_staticMeshInfo.material.specular.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.specular.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
+
+				float fGlossiness = ReadFloatFromFile(pFile);
+			}
+		}
+
+		if (!strcmp(pStrTocken, "</Materials>"))
+			return;
+	}
 }

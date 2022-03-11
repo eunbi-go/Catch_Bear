@@ -75,6 +75,14 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 					{
 						pGameObj = LoadFrameHierarchyFromFile(NULL, pFile);
 						fclose(pFile);
+
+						// Mesh, Material ¿¬µ¿
+						// - mesh
+						shared_ptr<Mesh> mesh = make_shared<Mesh>();
+						mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
+						mesh->SetName(path);
+						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
+
 						return;
 					}
 					else if (!strcmp(pStrTocken, "</Hierarchy>"))

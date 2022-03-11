@@ -132,6 +132,25 @@ struct Vertex
 	Vec3 tangent;
 };
 
+struct MaterialInfo
+{
+	Vec4		diffuse;
+	Vec4		ambient;
+	Vec4		specular;
+
+	wstring		name;
+	wstring		diffuseTexName;
+};
+
+struct StaticMeshInfo
+{
+	wstring						name;
+	vector<Vertex>				vertices;
+	vector<vector<uint32>>		indices;
+	MaterialInfo				material;
+};
+
+
 #define DECLARE_SINGLE(type)		\
 private:							\
 	type() {}						\

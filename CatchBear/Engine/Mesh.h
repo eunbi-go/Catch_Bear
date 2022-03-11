@@ -19,6 +19,9 @@ private:
 	void CreateVertexBuffer(const vector<Vertex>& buffer);
 	void CreateIndexBuffer(const vector<uint32>& buffer);
 
+public:
+	void CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo);
+
 private:
 	ComPtr<ID3D12Resource>		_vertexBuffer;
 	D3D12_VERTEX_BUFFER_VIEW	_vertexBufferView = {};

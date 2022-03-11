@@ -94,3 +94,22 @@ void Mesh::CreateIndexBuffer(const vector<uint32>& buffer)
 	_indexBufferView.Format = DXGI_FORMAT_R32_UINT;
 	_indexBufferView.SizeInBytes = bufferSize;
 }
+
+void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
+{
+	CreateVertexBuffer(meshInfo->vertices);
+
+	for (const vector<uint32>& buffer : meshInfo->indices)
+	{
+		if (buffer.empty())
+		{
+			return;
+		}
+		else
+		{
+			CreateIndexBuffer(buffer);
+		}
+	}
+
+	return;
+}

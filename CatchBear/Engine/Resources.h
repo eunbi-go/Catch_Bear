@@ -59,10 +59,12 @@ inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)
 	OBJECT_TYPE objectType = GetObjectType<T>();
 	KeyObjMap& keyObjMap = _resources[static_cast<uint8>(objectType)];	// 참조값 - 원본 데이터를 건드리는중
 
+	// key가 존재하면 그대로 return
 	auto findIt = keyObjMap.find(key);
 	if (findIt != keyObjMap.end())
 		return static_pointer_cast<T>(findIt->second);
 
+	// key가 없으면 실제 리소스를 만들고 로드해서 return
 	shared_ptr<T> object = make_shared<T>();
 	object->Load(path);
 	keyObjMap[key] = object;

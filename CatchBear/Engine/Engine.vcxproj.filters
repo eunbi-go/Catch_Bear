@@ -192,6 +192,9 @@
     <ClCompile Include="InstancingManager.cpp">
       <Filter>Manager\04. Instancing</Filter>
     </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>Object\Resource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -310,6 +313,9 @@
     </ClInclude>
     <ClInclude Include="InstancingManager.h">
       <Filter>Manager\04. Instancing</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>Object\Resource</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

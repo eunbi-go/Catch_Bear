@@ -1,6 +1,13 @@
 #pragma once
 #include "Object.h"
 
+// Depth Stencil Buffer와 Swap Chain에서 관리하고 있었던 
+// 실질적으로 후면/전면 버퍼에 해당하는 부분과 더불어 
+// 직접적으로 이미지 파일을 로드하는 텍스처 뿐만 아니라 
+// 코드로 수동으로 만드는 텍스처도 만들 수 있게 작업을 해준다.
+// -> Deferred에서 pos, normal, color를 받아주기 위한 새로운 텍스처(버퍼)를 만들기 위해
+// -> 리소스를 통한 로드보다는 실시간으로 메모리에서 만들어주는 것이 더 편리
+
 class Texture : public Object
 {
 public:
@@ -14,6 +21,7 @@ public:
 		const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
 		D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor = Vec4());
 
+	// SwapChain
 	void CreateFromResource(ComPtr<ID3D12Resource> tex2D);
 
 public:

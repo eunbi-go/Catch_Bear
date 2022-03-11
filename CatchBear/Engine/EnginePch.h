@@ -143,6 +143,8 @@ public:								\
 		return &instance;			\
 	}								\
 
+// static: 스택 영역이 아닌 데이터 영역(정적 메모리 영역)에 올라감
+
 #define GET_SINGLE(type)	type::GetInstance()
 
 #define DEVICE				GEngine->GetDevice()->GetDevice()

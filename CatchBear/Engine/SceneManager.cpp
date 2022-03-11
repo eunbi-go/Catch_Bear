@@ -162,6 +162,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		obj->AddComponent(meshRenderer);
 		//obj->SetTestPlayer(obj);
+
+		// scene에 gameObject 배치
+		// 이미 완성된 gameObjec: prefab
 		scene->AddGameObject(obj);
 	}
 #pragma endregion

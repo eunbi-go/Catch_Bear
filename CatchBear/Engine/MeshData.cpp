@@ -16,10 +16,9 @@ MeshData::~MeshData()
 
 shared_ptr<MeshData> MeshData::LoadMeshFromFile(const wstring& path)
 {
-	// FILE* fp = 
-
 	// 1. Mesh Data
-	// shared_ptr<Mesh>	mesh = 바이너리파일(메쉬)로드 함수
+	// shared_ptr<Mesh>	mesh = Mesh::LoadMeshFromFile(path)
+	// -> 
 	// GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
 
 	// 2. Material Data

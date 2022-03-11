@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Resources.h"
 #include "Engine.h"
+#include "MeshData.h"
 
 void Resources::Init()
 {
@@ -317,6 +318,20 @@ shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& name, Co
 	Add(name, texture);
 
 	return texture;
+}
+
+shared_ptr<class MeshData> Resources::LoadFBX(const wstring& path)
+{
+	wstring		key = path;
+
+	shared_ptr<MeshData>	meshData = Get<MeshData>(key);
+	if (meshData)	return meshData;
+
+	meshData = MeshData::LoadMeshFromFile(path);
+	meshData->SetName(key);
+	Add(key, meshData);
+
+	return meshData;
 }
 
 void Resources::CreateDefaultShader()

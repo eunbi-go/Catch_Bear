@@ -61,5 +61,6 @@ private:
 
 public:
 	shared_ptr<GameObject> _testPlayer;
+	char* _pFrameName;
 };
 

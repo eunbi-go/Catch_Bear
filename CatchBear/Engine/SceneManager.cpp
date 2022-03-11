@@ -145,6 +145,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region TestPlayer
 	{
+		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Bush_01.bin");
+
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
 		obj->AddComponent(make_shared<Player>());

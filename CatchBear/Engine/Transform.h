@@ -31,6 +31,7 @@ public:
 	void SetLocalPosition(const Vec3& position) { _localPosition = position; }
 	void SetLocalRotation(const Vec3& rotation) { _localRotation = rotation; }
 	void SetLocalScale(const Vec3& scale) { _localScale = scale; }
+	//void SetLocalToParent(const Matrix& toParent) { _matToParent = toParent; }
 
 	void LookAt(const Vec3& dir);
 
@@ -50,6 +51,8 @@ private:
 
 	Matrix	_matLocal = {};
 	Matrix	_matWorld = {};
+	// 계층구조에서 부모에 상대적인 행렬
+	Matrix	_matToParent = {};
 
 	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
 };

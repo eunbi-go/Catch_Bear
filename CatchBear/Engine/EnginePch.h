@@ -125,7 +125,7 @@ struct Vertex
 		: pos(p), uv(u), normal(n), tangent(t)
 	{
 	}
-
+	
 	Vec3 pos;
 	Vec2 uv;
 	Vec3 normal;
@@ -171,3 +171,4 @@ struct TransformParams
 };
 
 extern unique_ptr<class Engine> GEngine;
+

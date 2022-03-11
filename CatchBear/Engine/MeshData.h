@@ -37,12 +37,20 @@ public:
 	virtual ~MeshData();
 
 public:
-	static shared_ptr<MeshData>	LoadMeshFromFile(const wstring& path);
+	void	LoadMeshFromFile(const wstring& path);
+	
+private:
+	GameObject* LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile);
+
+	void LoadMeshInfoFromFile(FILE* pFile);
+	void LoadMaterialInfoFromFile(FILE* pFile);
 
 private:
 	shared_ptr<Mesh>				_mesh;
 	vector<shared_ptr<Material>>	_materials;
 
 	vector<MeshRendererInfo>		_meshRenders;
+
+	StaticMeshInfo					_staticMeshInfo;
 };
 

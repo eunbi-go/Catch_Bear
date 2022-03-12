@@ -8,7 +8,7 @@ class GameObject;
 struct MeshRendererInfo
 {
 	shared_ptr<Mesh>				mesh;
-	vector<shared_ptr<Material>>	materials;
+	shared_ptr<Material>	materials;
 };
 
 
@@ -31,6 +31,10 @@ private:
 private:
 	void CreateTextures();
 	void CreateMaterials();
+
+public:
+	vector<shared_ptr<GameObject>>	Instantiate();
+
 
 private:
 	shared_ptr<Mesh>				_mesh;

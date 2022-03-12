@@ -90,6 +90,15 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						CreateTextures();
 						CreateMaterials();
 
+						// - material
+						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
+
+						MeshRendererInfo	info = {};
+						info.mesh = mesh;
+						info.materials = material;
+
+						_meshRenders.push_back(info);
+
 						return;
 					}
 					else if (!strcmp(pStrTocken, "</Hierarchy>"))
@@ -366,4 +375,22 @@ void MeshData::CreateMaterials()
 	}
 
 	GET_SINGLE(Resources)->Add<Material>(material->GetName(), material);
+}
+
+vector<shared_ptr<GameObject>> MeshData::Instantiate()
+{
+	vector<shared_ptr<GameObject>>	v;
+
+	for (MeshRendererInfo& info : _meshRenders)
+	{
+		shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
+		gameObject->AddComponent(make_shared<Transform>());
+		gameObject->AddComponent(make_shared<MeshRenderer>());
+		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
+		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+
+		v.push_back(gameObject);
+	}
+
+	return v;
 }

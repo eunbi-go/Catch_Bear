@@ -14,6 +14,7 @@
 #include "Resources.h"
 #include "ParticleSystem.h"
 #include "Player.h"
+#include "MeshData.h"
 
 void SceneManager::Update()
 {
@@ -147,27 +148,40 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>());
-		obj->AddComponent(make_shared<Player>());
-		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
-		obj->SetStatic(false);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-		obj->AddComponent(meshRenderer);
-		//obj->SetTestPlayer(obj);
+		vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
 
-		// scene에 gameObject 배치
-		// 이미 완성된 gameObjec: prefab
-		scene->AddGameObject(obj);
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Fuck");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+			scene->AddGameObject(gameObject);
+		}
+
+		//////////////////////////////////////////////////////////////
+
+		//shared_ptr<GameObject> obj = make_shared<GameObject>();
+		//obj->AddComponent(make_shared<Transform>());
+		//obj->AddComponent(make_shared<Player>());
+		//obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		//obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
+		//obj->SetStatic(false);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+		//	meshRenderer->SetMesh(sphereMesh);
+		//}
+		//{
+		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+		//	meshRenderer->SetMaterial(material->Clone());
+		//}
+		//obj->AddComponent(meshRenderer);
+		////obj->SetTestPlayer(obj);
+
+		//// scene에 gameObject 배치
+		//// 이미 완성된 gameObjec: prefab
+		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 

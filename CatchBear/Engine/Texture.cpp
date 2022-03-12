@@ -14,10 +14,9 @@ void Texture::Load(const wstring& path)
 {
 	// 파일 확장자 얻기
 	wstring ext = fs::path(path).extension();
-	TexMetadata md;
 
 	if (ext == L".dds" || ext == L".DDS")
-		HRESULT hr = LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, _image);
+		::LoadFromDDSFile(path.c_str(), DDS_FLAGS_NONE, nullptr, _image);
 	else if (ext == L".tga" || ext == L".TGA")
 		::LoadFromTGAFile(path.c_str(), nullptr, _image);
 	else // png, jpg, jpeg, bmp

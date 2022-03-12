@@ -12,6 +12,7 @@ class Terrain;
 class BaseCollider;
 
 // Component 무리들을 관리하는 조립체
+// enable_shared_from_this: this포인터를 스마트 포인터처럼 사용할 때 사용
 class GameObject : public Object, public enable_shared_from_this<GameObject>
 {
 public:

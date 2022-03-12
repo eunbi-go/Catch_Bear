@@ -16,6 +16,7 @@ public:
 	void Render(shared_ptr<class InstancingBuffer>& buffer);
 
 private:
+	// 수정해야 함
 	void CreateVertexBuffer(const vector<Vertex>& buffer);
 	void CreateIndexBuffer(const vector<uint32>& buffer);
 

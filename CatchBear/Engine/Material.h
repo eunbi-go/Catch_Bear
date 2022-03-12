@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Object.h"	// Object »ó¼Ó
 
 class Shader;
 class Texture;

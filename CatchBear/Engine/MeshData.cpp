@@ -6,6 +6,7 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 
+#pragma region ReadFile
 UINT ReadUnsignedIntegerFromFile(FILE* pInFile)
 {
 	UINT nValue = 0;
@@ -37,6 +38,8 @@ int ReadStringFromFile(FILE* pInFile, char* pstrToken)
 
 	return(nStrLength);
 }
+
+#pragma endregion
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
 {
@@ -83,6 +86,10 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						mesh->SetName(path);
 						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
 
+						// Resources에 텍스처, 재질 추가
+						CreateTextures();
+						CreateMaterials();
+
 						return;
 					}
 					else if (!strcmp(pStrTocken, "</Hierarchy>"))
@@ -108,8 +115,17 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 
 	int		nFrame = ReadIntegerFromFile(pFile);
 	GameObject* pGameObj = new GameObject();
+
 	// 프레임 이름으로 바꿔야 함!
 	ReadStringFromFile(pFile, pStrTocken);
+
+	// char -> wchar_t
+	int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
+	wchar_t* pStr;
+	pStr = new WCHAR[nSize];
+	MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
+
+	_staticMeshInfo.material.name = pStr;
 
 	for (; ;)
 	{
@@ -316,4 +332,38 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		if (!strcmp(pStrTocken, "</Materials>"))
 			return;
 	}
+}
+
+void MeshData::CreateTextures()
+{
+	// 우리가 사용하는 Static Mesh, Player Model은 Diffuse Texture만 존재
+
+	// Diffuse
+	wstring		fileName = _staticMeshInfo.material.diffuseTexName.c_str();
+	wstring		fullPath = L"..\\Resources\\Texture\\" + fileName + L".dds";
+	if (!fileName.empty())
+		GET_SINGLE(Resources)->Load<Texture>(fileName, fullPath);
+}
+
+void MeshData::CreateMaterials()
+{
+	// 우리가 사용하는 Static Mesh, Player Model은 Material이 모두 하나
+
+	shared_ptr<Material>	material = make_shared<Material>();
+	wstring		key = _staticMeshInfo.material.name;
+	
+	material->SetName(key);
+	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
+
+
+	{
+		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
+		wstring		fileName = fs::path(diffuseName).filename();
+		wstring		key = fileName;
+
+		shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
+		if (diffuseTex)	material->SetTexture(0, diffuseTex);
+	}
+
+	GET_SINGLE(Resources)->Add<Material>(material->GetName(), material);
 }

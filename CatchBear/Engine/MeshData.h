@@ -29,6 +29,10 @@ private:
 	void LoadMaterialInfoFromFile(FILE* pFile);
 
 private:
+	void CreateTextures();
+	void CreateMaterials();
+
+private:
 	shared_ptr<Mesh>				_mesh;
 	vector<shared_ptr<Material>>	_materials;
 

@@ -195,6 +195,7 @@
     <ClCompile Include="MeshData.cpp">
       <Filter>Object\Resource</Filter>
     </ClCompile>
+    <ClCompile Include="CharacterData.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -317,6 +318,7 @@
     <ClInclude Include="MeshData.h">
       <Filter>Object\Resource</Filter>
     </ClInclude>
+    <ClInclude Include="CharacterData.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

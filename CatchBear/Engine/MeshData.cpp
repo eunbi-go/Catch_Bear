@@ -6,40 +6,7 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 
-#pragma region ReadFile
-UINT ReadUnsignedIntegerFromFile(FILE* pInFile)
-{
-	UINT nValue = 0;
-	UINT nReads = (UINT)::fread(&nValue, sizeof(UINT), 1, pInFile);
-	return(nValue);
-}
 
-int ReadIntegerFromFile(FILE* pInFile)
-{
-	int nValue = 0;
-	UINT nReads = (UINT)::fread(&nValue, sizeof(int), 1, pInFile);
-	return(nValue);
-}
-
-float ReadFloatFromFile(FILE* pInFile)
-{
-	float fValue = 0;
-	UINT nReads = (UINT)::fread(&fValue, sizeof(float), 1, pInFile);
-	return(fValue);
-}
-
-int ReadStringFromFile(FILE* pInFile, char* pstrToken)
-{
-	UINT nStrLength = 0;
-	UINT nReads = 0;
-	nReads = (UINT)::fread(&nStrLength, sizeof(int), 1, pInFile);
-	nReads = (UINT)::fread(pstrToken, sizeof(char), nStrLength, pInFile);
-	pstrToken[nStrLength] = '\0';
-
-	return(nStrLength);
-}
-
-#pragma endregion
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
 {
@@ -159,7 +126,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 
 		else if (!strcmp(pStrTocken, "<Mesh>:"))
 		{
-			LoadMeshInfoFromFile(pFile);
+			LoadMeshInfoFromFile(pFile, false);
 		}
 		
 		else if (!strcmp(pStrTocken, "<Materials>:"))
@@ -170,7 +137,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 	}
 }
 
-void MeshData::LoadMeshInfoFromFile(FILE* pFile)
+void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
 {
 	char pStrTocken[64] = { '\0' };
 	int	nReads, nVertices, nUVs, nNormals, nTangents, nPolygons, nIndices, nSubMeshes, nAllCnt;
@@ -200,9 +167,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<UVs>:"))
 		{
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			//ReadStringFromFile(pFile, pStrTocken);
-			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			if (!bCharac)
+				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nUVs)
 			{
@@ -218,9 +184,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<Normals>:"))
 		{
 			nReads = (UINT)fread(&nNormals, sizeof(int), 1, pFile);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			//ReadStringFromFile(pFile, pStrTocken);
-			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			if (!bCharac)
+				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nNormals)
 			{
@@ -236,9 +201,8 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<Tangents>:"))
 		{
 			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
-			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
-			//ReadStringFromFile(pFile, pStrTocken);
-			//nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			if (!bCharac)
+				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nTangents)
 			{
@@ -284,7 +248,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 
 		}
 
-		else if (!strcmp(pStrTocken, "</Mesh>"))
+		else if (!strcmp(pStrTocken, "</Mesh>") || !strcmp(pStrTocken, "<SubMeshes>:"))
 			return;
 	}
 }

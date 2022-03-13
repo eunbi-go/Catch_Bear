@@ -7,9 +7,10 @@ class GameObject;
 
 struct MeshRendererInfo
 {
-	shared_ptr<Mesh>				mesh;
+	shared_ptr<Mesh>		mesh;
 	shared_ptr<Material>	materials;
 };
+
 
 
 
@@ -25,7 +26,8 @@ public:
 private:
 	GameObject* LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile);
 
-	void LoadMeshInfoFromFile(FILE* pFile);
+protected:
+	void LoadMeshInfoFromFile(FILE* pFile, bool bCharac);
 	void LoadMaterialInfoFromFile(FILE* pFile);
 
 private:
@@ -35,8 +37,7 @@ private:
 public:
 	vector<shared_ptr<GameObject>>	Instantiate();
 
-
-private:
+protected:
 	shared_ptr<Mesh>				_mesh;
 	vector<shared_ptr<Material>>	_materials;
 
@@ -44,4 +45,6 @@ private:
 
 	StaticMeshInfo					_staticMeshInfo;
 };
+
+
 

@@ -2,6 +2,7 @@
 #include "Resources.h"
 #include "Engine.h"
 #include "MeshData.h"
+#include "CharacterData.h"
 
 void Resources::Init()
 {
@@ -330,6 +331,22 @@ shared_ptr<class MeshData> Resources::LoadFBX(const wstring& path)
 	meshData = make_shared<MeshData>();
 
 	meshData->LoadMeshFromFile(path);
+	meshData->SetName(key);
+	Add(key, meshData);
+
+	return meshData;
+}
+
+shared_ptr<class CharacterData> Resources::LoadCharacter(const wstring& path)
+{
+	wstring		key = path;
+
+	shared_ptr<CharacterData>	meshData = Get<CharacterData>(key);
+	if (meshData)	return meshData;
+
+	meshData = make_shared<CharacterData>();
+
+	meshData->LoadCharacterFromFile(path);
 	meshData->SetName(key);
 	Add(key, meshData);
 

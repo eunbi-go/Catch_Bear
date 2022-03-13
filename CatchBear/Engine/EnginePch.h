@@ -130,6 +130,10 @@ struct Vertex
 	Vec2 uv;
 	Vec3 normal;
 	Vec3 tangent;
+
+	// Skinning
+	Vec4 weights;
+	Vec4 indices;
 };
 
 struct MaterialInfo
@@ -191,3 +195,17 @@ struct TransformParams
 
 extern unique_ptr<class Engine> GEngine;
 
+// Utils
+wstring s2ws(const string& s);
+string ws2s(const wstring& s);
+
+#pragma region ReadFile
+UINT ReadUnsignedIntegerFromFile(FILE* pInFile);
+
+int ReadIntegerFromFile(FILE* pInFile);
+
+float ReadFloatFromFile(FILE* pInFile);
+
+int ReadStringFromFile(FILE* pInFile, char* pstrToken);
+
+#pragma endregion

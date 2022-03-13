@@ -15,6 +15,7 @@
 #include "ParticleSystem.h"
 #include "Player.h"
 #include "MeshData.h"
+#include "CharacterData.h"
 
 void SceneManager::Update()
 {
@@ -146,6 +147,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region TestPlayer
 	{
+		//shared_ptr<CharacterData> meshData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
+		
 		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
 		vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();

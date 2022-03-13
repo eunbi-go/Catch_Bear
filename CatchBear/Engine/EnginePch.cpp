@@ -57,3 +57,14 @@ int ReadStringFromFile(FILE* pInFile, char* pstrToken)
 
 	return(nStrLength);
 }
+
+int ReadStringFromFileForCharac(FILE* pInFile, char* pstrToken)
+{
+	UINT nStrLength = 0;
+	UINT nReads = 0;
+	nReads = (UINT)::fread(&nStrLength, sizeof(BYTE), 1, pInFile);	
+	nReads = (UINT)::fread(pstrToken, sizeof(char), nStrLength, pInFile);
+	pstrToken[nStrLength] = '\0';
+
+	return(nStrLength);
+}

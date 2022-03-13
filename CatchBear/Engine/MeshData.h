@@ -12,8 +12,6 @@ struct MeshRendererInfo
 };
 
 
-
-
 class MeshData : public Object
 {
 public:
@@ -27,7 +25,7 @@ private:
 	GameObject* LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile);
 
 protected:
-	void LoadMeshInfoFromFile(FILE* pFile, bool bCharac);
+	void LoadMeshInfoFromFile(FILE* pFile);
 	void LoadMaterialInfoFromFile(FILE* pFile);
 
 private:

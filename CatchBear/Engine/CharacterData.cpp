@@ -34,47 +34,41 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 	for (; ;)
 	{
-		if (ReadStringFromFile(pFile, pStrTocken))
+		if (ReadStringFromFileForCharac(pFile, pStrTocken))
 		{
 			if (!strcmp(pStrTocken, "<Hierarchy>:"))
 			{
-				LoadFrameHierarchyFromFile(NULL, pFile);
+				LoadFrameHierarchyFromFile(NULL, pFile, true);
 			}
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
 			{
-				fclose(pFile);
-				return;
-			}
-		
-			if (!strcmp(pStrTocken, "</Hierarchy>"))
-			{
-				fclose(pFile);
+				//fclose(pFile);
 				return;
 			}
 		}
 	}
 }
 
-void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> parent, FILE* pFile)
+void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> parent, FILE* pFile, bool bFirst)
 {
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
-	int		nFrame, nTextures;
 
 	shared_ptr<CharacterBoneInfo>	cInfo = make_shared<CharacterBoneInfo>();
-	//if (!parent)
-	//	cInfo->parentName = parent->boneName;
+
+	if (!bFirst)
+		cInfo->parentName = parent->boneName;
 
 	for (; ;)
 	{
-		ReadStringFromFile(pFile, pStrTocken);
+		ReadStringFromFileForCharac(pFile, pStrTocken);
 
 		if (!strcmp(pStrTocken, "<Frame>:"))
 		{
 			cInfo->nFrame = ReadIntegerFromFile(pFile);
 			cInfo->nTexture = ReadIntegerFromFile(pFile);
 
-			ReadStringFromFile(pFile, pStrTocken);
+			ReadStringFromFileForCharac(pFile, pStrTocken);
 			cInfo->boneName = s2ws(pStrTocken);
 		}
 
@@ -100,9 +94,7 @@ void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> par
 			if (nChild > 0)
 			{
 				for (int i = 0; i < nChild; ++i)
-				{
-					LoadFrameHierarchyFromFile(cInfo, pFile);
-				}
+					LoadFrameHierarchyFromFile(cInfo, pFile, false);
 			}
 		}
 
@@ -110,18 +102,13 @@ void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> par
 		{
 			LoadSkinningInfoFromFile(pFile);
 
-			ReadStringFromFile(pFile, pStrTocken);
-
-			if (!strcmp(pStrTocken, "<Mesh>:"))
-			{
-				LoadMeshInfoFromFile(pFile, true);
-				LoadSubMeshInfoFromFile(pFile);
-			}
+			ReadStringFromFileForCharac(pFile, pStrTocken);
+			if (!strcmp(pStrTocken, "<Mesh>:"))		LoadMeshInfoFromFile(pFile);
 		}
 
 		else if (!strcmp(pStrTocken, "<Materials>:"))
 		{
-
+			LoadMaterialInfoFromFile(pFile);
 		}
 
 		else if (!strcmp(pStrTocken, "</Frame>"))	break;
@@ -134,11 +121,11 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 	UINT	nReads = 0;
 	int		nSkinnings = 0;
 
-	ReadStringFromFile(pFile, pStrTocken);
+	ReadStringFromFileForCharac(pFile, pStrTocken);
 
 	for (; ;)
 	{
-		ReadStringFromFile(pFile, pStrTocken);
+		ReadStringFromFileForCharac(pFile, pStrTocken);
 
 		if (!strcmp(pStrTocken, "<BonesPerVertex>:"))
 		{
@@ -164,7 +151,7 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 
 				for (int i = 0; i < nSkinnings; ++i)
 				{
-					ReadStringFromFile(pFile, pStrTocken);
+					ReadStringFromFileForCharac(pFile, pStrTocken);
 					skinningInfo.boneNames[i] = s2ws(pStrTocken);
 				}
 			}
@@ -211,6 +198,133 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 	}
 }
 
-void CharacterData::LoadSubMeshInfoFromFile(FILE* pFile)
+void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 {
+	char pStrTocken[64] = { '\0' };
+	int	nReads, nVertices, nUVs, nNormals, nTangents, nSubMeshes;
+
+	nVertices = ReadIntegerFromFile(pFile);
+
+	for (; ;)
+	{
+		ReadStringFromFileForCharac(pFile, pStrTocken);
+
+		if (!strcmp(pStrTocken, "<Bounds>:"))
+		{
+			Vec3 aabbCenter, aabbExtents;
+
+			nReads = (UINT)::fread(&aabbCenter, sizeof(Vec3), 1, pFile);
+			nReads = (UINT)::fread(&aabbExtents, sizeof(Vec3), 1, pFile);
+		}
+
+		else if (!strcmp(pStrTocken, "<ControlPoints>:"))
+		{
+			nReads = (UINT)fread(&nVertices, sizeof(int), 1, pFile);
+
+			if (nVertices)
+			{
+				_staticMeshInfo.vertices.resize(nVertices);
+				Vec3* pos = new Vec3[nVertices];
+
+				nReads = (UINT)fread(pos, sizeof(Vec3), nVertices, pFile);
+
+				for (int i = 0; i < nVertices; ++i)
+					_staticMeshInfo.vertices[i].pos = pos[i];
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<UVs>:"))
+		{
+			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
+
+			if (nUVs)
+			{
+				Vec2* uv = new Vec2[nUVs];
+
+				nReads = (UINT)fread(uv, sizeof(Vec2), nUVs, pFile);
+
+				for (int i = 0; i < nUVs; ++i)
+					_staticMeshInfo.vertices[i].uv = uv[i];
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<Normals>:"))
+		{
+			nReads = (UINT)fread(&nNormals, sizeof(int), 1, pFile);
+
+			if (nNormals)
+			{
+				Vec3* normal = new Vec3[nNormals];
+
+				nReads = (UINT)fread(normal, sizeof(Vec3), nNormals, pFile);
+
+				for (int i = 0; i < nNormals; ++i)
+					_staticMeshInfo.vertices[i].normal = normal[i];
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<Tangents>:"))
+		{
+			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
+
+			if (nTangents)
+			{
+				Vec3* tangent = new Vec3[nTangents];
+
+				nReads = (UINT)fread(tangent, sizeof(Vec3), nTangents, pFile);
+
+				for (int i = 0; i < nTangents; ++i)
+					_staticMeshInfo.vertices[i].tangent = tangent[i];
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<SubMeshes>:"))
+		{
+			nSubMeshes = ReadIntegerFromFile(pFile);
+
+			ReadStringFromFileForCharac(pFile, pStrTocken);
+
+			if (!strcmp(pStrTocken, "<SubMesh>:"))
+			{
+				int nSubMesh = ReadIntegerFromFile(pFile);
+				int nIndices = ReadIntegerFromFile(pFile);
+
+				_staticMeshInfo.indices.resize(nIndices);
+				nReads = (UINT)fread(&_staticMeshInfo.indices[0], sizeof(UINT), nIndices, pFile);
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "</Mesh>"))
+			return;
+	}
+}
+
+void CharacterData::LoadMaterialInfoFromFile(FILE* pFile)
+{
+	char pStrTocken[64] = { '\0' };
+	UINT	nReads = 0;
+	int		nMaterials = ReadIntegerFromFile(pFile);
+
+	ReadStringFromFileForCharac(pFile, pStrTocken);
+
+	if (!strcmp(pStrTocken, "<Material>:"))
+	{
+		int		nMaterial = ReadIntegerFromFile(pFile);
+
+		for (; ;)
+		{
+			ReadStringFromFileForCharac(pFile, pStrTocken);
+
+			if (!strcmp(pStrTocken, "<AlbedoColor>:"))
+				nReads = (UINT)fread(&_staticMeshInfo.material.diffuse, sizeof(float), 4, pFile);
+
+			else if (!strcmp(pStrTocken, "<AlbedoMap>:"))
+			{
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				_staticMeshInfo.material.diffuseTexName = s2ws(pStrTocken);
+			}
+
+			else if (!strcmp(pStrTocken, "</Materials>"))	return;
+		}
+	}
 }

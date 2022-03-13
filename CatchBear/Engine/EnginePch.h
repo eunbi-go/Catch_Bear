@@ -208,4 +208,6 @@ float ReadFloatFromFile(FILE* pInFile);
 
 int ReadStringFromFile(FILE* pInFile, char* pstrToken);
 
+int ReadStringFromFileForCharac(FILE* pInFile, char* pstrToken);
+
 #pragma endregion

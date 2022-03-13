@@ -44,11 +44,12 @@ public:
 
 private:
 	// 이 함수를 재귀함수로 계속 부르면서 계층구조 완성해야 함
-	void LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> parent, FILE* pFile);
+	void LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> parent, FILE* pFile, bool bFirst);
 
 private:
 	void LoadSkinningInfoFromFile(FILE* pFile);
-	void LoadSubMeshInfoFromFile(FILE* pFile);
+	void LoadMeshInfoFromFile(FILE* pFile);
+	void LoadMaterialInfoFromFile(FILE* pFile);
 
 private:
 	vector<shared_ptr<CharacterBoneInfo>>	characterInfo;

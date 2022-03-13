@@ -126,7 +126,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 
 		else if (!strcmp(pStrTocken, "<Mesh>:"))
 		{
-			LoadMeshInfoFromFile(pFile, false);
+			LoadMeshInfoFromFile(pFile);
 		}
 		
 		else if (!strcmp(pStrTocken, "<Materials>:"))
@@ -137,7 +137,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 	}
 }
 
-void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
+void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 {
 	char pStrTocken[64] = { '\0' };
 	int	nReads, nVertices, nUVs, nNormals, nTangents, nPolygons, nIndices, nSubMeshes, nAllCnt;
@@ -167,8 +167,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
 		else if (!strcmp(pStrTocken, "<UVs>:"))
 		{
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
-			if (!bCharac)
-				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nUVs)
 			{
@@ -184,8 +183,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
 		else if (!strcmp(pStrTocken, "<Normals>:"))
 		{
 			nReads = (UINT)fread(&nNormals, sizeof(int), 1, pFile);
-			if (!bCharac)
-				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nNormals)
 			{
@@ -201,8 +199,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
 		else if (!strcmp(pStrTocken, "<Tangents>:"))
 		{
 			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
-			if (!bCharac)
-				nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
+			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
 			if (nTangents)
 			{
@@ -248,7 +245,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile, bool bCharac)
 
 		}
 
-		else if (!strcmp(pStrTocken, "</Mesh>") || !strcmp(pStrTocken, "<SubMeshes>:"))
+		else if (!strcmp(pStrTocken, "</Mesh>"))
 			return;
 	}
 }

@@ -149,18 +149,18 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		//shared_ptr<CharacterData> meshData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
 		
-		shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-		vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+		//vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
 
-		for (auto& gameObject : gameObjects)
-		{
-			gameObject->SetName(L"Fuck");
-			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
-			scene->AddGameObject(gameObject);
-		}
+		//for (auto& gameObject : gameObjects)
+		//{
+		//	gameObject->SetName(L"Fuck");
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(0.3f, 0.3f, 0.3f));
+		//	scene->AddGameObject(gameObject);
+		//}
 
 		//////////////////////////////////////////////////////////////
 

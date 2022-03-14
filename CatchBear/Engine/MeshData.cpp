@@ -46,16 +46,17 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						pGameObj = LoadFrameHierarchyFromFile(NULL, pFile);
 						fclose(pFile);
 
+						// Resources에 텍스처, 재질 추가
+						CreateTextures();
+						CreateMaterials();
+
+
 						// Mesh, Material 연동
 						// - mesh
 						shared_ptr<Mesh> mesh = make_shared<Mesh>();
 						mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
 						mesh->SetName(path);
 						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
-
-						// Resources에 텍스처, 재질 추가
-						CreateTextures();
-						CreateMaterials();
 
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);

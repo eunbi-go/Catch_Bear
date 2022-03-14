@@ -42,7 +42,26 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 			}
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
 			{
-				//fclose(pFile);
+				CreateTextures();
+				CreateMaterials();
+			
+				// Mesh 생성해서 Reosurces에 추가
+				shared_ptr<Mesh> mesh = make_shared<Mesh>();
+				mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
+				mesh->SetName(path);
+				GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
+
+
+				// Material 생성해서 Reosurces에 추가
+				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
+
+				MeshRendererInfo	info = {};
+				info.mesh = mesh;
+				info.materials = material;
+
+				_meshRenders.push_back(info);
+
+				fclose(pFile);
 				return;
 			}
 		}
@@ -106,12 +125,18 @@ void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> par
 			if (!strcmp(pStrTocken, "<Mesh>:"))		LoadMeshInfoFromFile(pFile);
 		}
 
+		else if (!strcmp(pStrTocken, "<Mesh>:"))		LoadMeshInfoFromFile(pFile);
+
 		else if (!strcmp(pStrTocken, "<Materials>:"))
 		{
 			LoadMaterialInfoFromFile(pFile);
 		}
 
-		else if (!strcmp(pStrTocken, "</Frame>"))	break;
+		else if (!strcmp(pStrTocken, "</Frame>"))
+		{
+			characterInfo.push_back(cInfo);
+			break;
+		}
 	}
 }
 
@@ -289,8 +314,16 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 				int nSubMesh = ReadIntegerFromFile(pFile);
 				int nIndices = ReadIntegerFromFile(pFile);
 
-				_staticMeshInfo.indices.resize(nIndices);
-				nReads = (UINT)fread(&_staticMeshInfo.indices[0], sizeof(UINT), nIndices, pFile);
+				_staticMeshInfo.indices.resize(nSubMeshes);
+
+				// 이제 인덱스 읽어옴
+				UINT* subIndices = new UINT[nIndices];
+				nReads = (UINT)fread(subIndices, sizeof(UINT), nIndices, pFile);
+
+				for (int i = 0; i < nIndices; ++i)
+				{
+					_staticMeshInfo.indices[nSubMeshes - 1].push_back(subIndices[i]);
+				}
 			}
 		}
 
@@ -304,6 +337,9 @@ void CharacterData::LoadMaterialInfoFromFile(FILE* pFile)
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
 	int		nMaterials = ReadIntegerFromFile(pFile);
+
+	// !나중에 파일에 추가해서 읽어오기!
+	_staticMeshInfo.material.name = L"Player";
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 

@@ -18,14 +18,14 @@ void MeshRenderer::Render()
 {
 	GetTransform()->PushData();
 	_material->PushGraphicsData();
-	_mesh->Render();
+	_mesh->Render(1, 0);
 }
 
 void MeshRenderer::Render(shared_ptr<class InstancingBuffer>& buffer)
 {
 	buffer->PushData();
 	_material->PushGraphicsData();
-	_mesh->Render(buffer);
+	_mesh->Render(buffer, 0);
 }
 
 void MeshRenderer::RenderShadow()

@@ -28,7 +28,7 @@ protected:
 	void LoadMeshInfoFromFile(FILE* pFile);
 	void LoadMaterialInfoFromFile(FILE* pFile);
 
-private:
+protected:
 	void CreateTextures();
 	void CreateMaterials();
 

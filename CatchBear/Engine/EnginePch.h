@@ -149,9 +149,12 @@ struct MaterialInfo
 struct StaticMeshInfo
 {
 	wstring						name;
+
 	vector<Vertex>				vertices;
 	vector<vector<uint32>>		indices;
 	MaterialInfo				material;
+
+	//vector<>					boneWeights;
 };
 
 

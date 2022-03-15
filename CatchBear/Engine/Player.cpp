@@ -3,9 +3,16 @@
 #include "Transform.h"
 #include "Input.h"
 #include "Timer.h"
+#include "GameObject.h"
+#include "Component.h"
+#include "Scene.h"
+#include "SceneManager.h"
+#include "CameraScript.h"
 
 Player::Player()
 {
+	//tempObject = make_shared<GameObject>();
+	//tempComponent = make_shared<Component>();
 }
 
 Player::~Player()
@@ -37,4 +44,24 @@ void Player::KeyCheck()
 
 	GetTransform()->SetLocalPosition(pos);
 
+	// 현재 씬에서 카메라(Main_Camera)를 가져온다.
+	// 카메라가 가지고 있는 스크립트에서 FlowPlayer()를 실행시킨다.
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	_player = GetGameObject();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Main_Camera")
+		{
+			_camera = gameObject;
+			break;
+		}
+	}
+
+	shared_ptr<CameraScript> cameraScript = make_shared<CameraScript>();
+	cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
+	cameraScript->FollowPlayer(_player);
 }

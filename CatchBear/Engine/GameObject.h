@@ -25,6 +25,8 @@ public:
 	void FinalUpdate();
 
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
+	vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
+	shared_ptr<MonoBehaviour>& GetScript(int index);
 
 	shared_ptr<Transform> GetTransform();
 	shared_ptr<MeshRenderer> GetMeshRenderer();

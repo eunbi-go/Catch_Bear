@@ -10,7 +10,6 @@
 
 CameraScript::CameraScript()
 {
-	_testPlayer = make_shared<GameObject>();
 }
 
 CameraScript::~CameraScript()
@@ -19,25 +18,6 @@ CameraScript::~CameraScript()
 
 void CameraScript::LateUpdate()
 {
-	Vec3 playerPos = GetTransform()->GetLocalPosition();
-	Vec3 pos = GetTransform()->GetLocalPosition();
-	Vec3 playerRot = GetTransform()->GetLocalRotation();
-
-	// 현재 활성화된 씬에서 플레이어를 가져옴
-	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player")
-		{
-			_testPlayer = gameObject;
-			pos = _testPlayer->GetTransform()->GetLocalPosition();
-			pos -= Vec3(0.f, 0.f, _offset);
-			break;
-		}
-	}
-
 	//if (INPUT->GetButton(KEY_TYPE::W))
 	//	pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
 
@@ -77,6 +57,29 @@ void CameraScript::LateUpdate()
 	//	rotation.y -= DELTA_TIME * 0.5f;
 	//	GetTransform()->SetLocalRotation(rotation);
 	//}
+}
+
+void CameraScript::FollowPlayer(shared_ptr<GameObject> player)
+{
+	Vec3 pos = GetTransform()->GetLocalPosition();
+
+	//shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	//const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	//for (auto& gameObject : gameObjects)
+	//{
+	//	if (gameObject->GetName() == L"Player")
+	//	{
+	//		_testPlayer = gameObject;
+	//		pos = _testPlayer->GetTransform()->GetLocalPosition();
+	//		pos -= Vec3(0.f, 0.f, 300.f);
+	//		break;
+	//	}
+	//}
+
+	pos = player->GetTransform()->GetLocalPosition();
+	pos -= Vec3(0.f, 0.f, 300.f);
 
 	GetTransform()->SetLocalPosition(pos);
+
 }

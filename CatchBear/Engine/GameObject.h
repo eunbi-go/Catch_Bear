@@ -24,10 +24,12 @@ public:
 	void LateUpdate();
 	void FinalUpdate();
 
+public:
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 	vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
 	shared_ptr<MonoBehaviour>& GetScript(int index);
 
+public:
 	shared_ptr<Transform> GetTransform();
 	shared_ptr<MeshRenderer> GetMeshRenderer();
 	shared_ptr<Camera> GetCamera();
@@ -36,6 +38,7 @@ public:
 	shared_ptr<Terrain> GetTerrain();
 	shared_ptr<BaseCollider> GetCollider();
 
+public:
 	void AddComponent(shared_ptr<Component> component);
 
 	void SetCheckFrustum(bool checkFrustum) { _checkFrustum = checkFrustum; }

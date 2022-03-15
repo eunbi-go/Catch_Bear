@@ -11,8 +11,6 @@
 
 Player::Player()
 {
-	//tempObject = make_shared<GameObject>();
-	//tempComponent = make_shared<Component>();
 }
 
 Player::~Player()

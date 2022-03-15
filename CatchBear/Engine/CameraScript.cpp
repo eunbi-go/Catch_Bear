@@ -63,20 +63,6 @@ void CameraScript::FollowPlayer(shared_ptr<GameObject> player)
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
 
-	//shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	//const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
-	//for (auto& gameObject : gameObjects)
-	//{
-	//	if (gameObject->GetName() == L"Player")
-	//	{
-	//		_testPlayer = gameObject;
-	//		pos = _testPlayer->GetTransform()->GetLocalPosition();
-	//		pos -= Vec3(0.f, 0.f, 300.f);
-	//		break;
-	//	}
-	//}
-
 	pos = player->GetTransform()->GetLocalPosition();
 	pos -= Vec3(0.f, 0.f, 300.f);
 

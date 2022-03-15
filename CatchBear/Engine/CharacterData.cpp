@@ -40,6 +40,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 			{
 				LoadFrameHierarchyFromFile(NULL, pFile, true);
 			}
+
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
 			{
 				CreateTextures();
@@ -60,9 +61,11 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 				info.materials = material;
 
 				_meshRenders.push_back(info);
+			}
 
-				fclose(pFile);
-				return;
+			else if (!strcmp(pStrTocken, "<Animation>:"))
+			{
+				LoadAnimationInfo(pFile);
 			}
 		}
 	}
@@ -361,6 +364,65 @@ void CharacterData::LoadMaterialInfoFromFile(FILE* pFile)
 			}
 
 			else if (!strcmp(pStrTocken, "</Materials>"))	return;
+		}
+	}
+}
+
+void CharacterData::LoadAnimationInfo(FILE* pFile)
+{
+	char	pStrTocken[64] = { '\0' };
+	UINT	nReads = 0;
+	int32	nAnimationSets = 0;
+
+	ReadStringFromFileForCharac(pFile, pStrTocken);
+
+	if (!strcmp(pStrTocken, "<AnimationSets>:"))	nAnimationSets = ReadIntegerFromFile(pFile);
+
+	for (; ;)
+	{
+		ReadStringFromFileForCharac(pFile, pStrTocken);
+
+		if (!strcmp(pStrTocken, "<FrameNames>:"))
+		{
+			int nSkins = ReadIntegerFromFile(pFile);
+			int nSkin = ReadIntegerFromFile(pFile);
+			// SkineMesh name
+			ReadStringFromFileForCharac(pFile, pStrTocken);
+			int n = ReadIntegerFromFile(pFile);
+
+			for (int i = 0; i < n; ++i)
+			{
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+
+				wstring	frameName = s2ws(pStrTocken);
+				animationFrameName.push_back(frameName);
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<AnimationSet>:"))
+		{
+			AnimationClipInfo	info;
+
+			int nSet = ReadIntegerFromFile(pFile);
+
+			ReadStringFromFileForCharac(pFile, pStrTocken);
+			info.name = s2ws(pStrTocken);
+
+			info.length = ReadFloatFromFile(pFile);
+			info.framePerSec = ReadIntegerFromFile(pFile);
+			info.keyFrames.resize(ReadIntegerFromFile(pFile));
+
+			for (int i = 0; i < nSet; ++i)
+			{
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				if (!strcmp(pStrTocken, "<Transforms>:"))
+				{
+					int nKey = ReadIntegerFromFile(pFile);
+					float fKeyTime = ReadFloatFromFile(pFile);
+
+					nReads = (UINT)fread(&info.keyFrames[nKey], sizeof(Matrix), info.keyFrames.size(), pFile);
+				}
+			}
 		}
 	}
 }

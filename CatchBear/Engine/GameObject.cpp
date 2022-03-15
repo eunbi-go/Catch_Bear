@@ -90,6 +90,11 @@ shared_ptr<Component> GameObject::GetFixedComponent(COMPONENT_TYPE type)
 	return _components[index];
 }
 
+shared_ptr<MonoBehaviour>& GameObject::GetScript(int index)
+{
+	return _scripts[index];
+}
+
 shared_ptr<Transform> GameObject::GetTransform()
 {
 	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::TRANSFORM);

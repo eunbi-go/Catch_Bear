@@ -54,18 +54,18 @@ void Camera::SortGameObject()
 		if (gameObject->GetMeshRenderer() == nullptr && gameObject->GetParticleSystem() == nullptr)
 			continue;
 
-		if (IsCulled(gameObject->GetLayerIndex()))
-			continue;
+		//if (IsCulled(gameObject->GetLayerIndex()))
+		//	continue;
 
-		if (gameObject->GetCheckFrustum())
-		{
-			if (_frustum.ContainsSphere(
-				gameObject->GetTransform()->GetWorldPosition(),
-				gameObject->GetTransform()->GetBoundingSphereRadius()) == false)
-			{
-				continue;
-			}
-		}
+		//if (gameObject->GetCheckFrustum())
+		//{
+		//	if (_frustum.ContainsSphere(
+		//		gameObject->GetTransform()->GetWorldPosition(),
+		//		gameObject->GetTransform()->GetBoundingSphereRadius()) == false)
+		//	{
+		//		continue;
+		//	}
+		//}
 
 		if (gameObject->GetMeshRenderer())
 		{

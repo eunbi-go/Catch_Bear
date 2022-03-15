@@ -6,10 +6,10 @@
 #include "Input.h"
 #include "Timer.h"
 #include "SceneManager.h"
+#include "Scene.h"
 
 CameraScript::CameraScript()
 {
-	//_testPlayer = make_shared<GameObject>();
 }
 
 CameraScript::~CameraScript()
@@ -18,16 +18,6 @@ CameraScript::~CameraScript()
 
 void CameraScript::LateUpdate()
 {
-	//Vec3 pos = GetTransform()->GetLocalPosition();
-
-	//// 플레이어 따라감 - 오류나서 막아둠 고치는중
-	//_testPlayer = _testPlayer->GetTestPlayer();
-	//Vec3 playerPos = _testPlayer->GetTransform()->GetLocalPosition();
-
-	//Vec3 rotation = GetTransform()->GetLocalRotation();
-	//rotation.x = _angleX;
-	//GetTransform()->SetLocalRotation(rotation);
-
 	//if (INPUT->GetButton(KEY_TYPE::W))
 	//	pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
 
@@ -67,6 +57,15 @@ void CameraScript::LateUpdate()
 	//	rotation.y -= DELTA_TIME * 0.5f;
 	//	GetTransform()->SetLocalRotation(rotation);
 	//}
+}
 
-	//GetTransform()->SetLocalPosition(pos);
+void CameraScript::FollowPlayer(shared_ptr<GameObject> player)
+{
+	Vec3 pos = GetTransform()->GetLocalPosition();
+
+	pos = player->GetTransform()->GetLocalPosition();
+	pos -= Vec3(0.f, 0.f, 300.f);
+
+	GetTransform()->SetLocalPosition(pos);
+
 }

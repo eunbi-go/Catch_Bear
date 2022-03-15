@@ -17,6 +17,8 @@ public:
 	const Vec3& GetLocalRotation() { return _localRotation; }
 	const Vec3& GetLocalScale() { return _localScale; }
 
+	const Vec3& GetPlayerLocalPos() { return _localPosition - Vec3(0.f, 0.f, 300.f); }
+
 	// TEMP - 나중에 바운딩 박스같은거 만들때 다시 생각함, scale 이용해서 물체의 구를 임시로 판단
 	// _localScale에서 가장 큰 성분을 boundingSphere radius로 인정
 	float GetBoundingSphereRadius() { return max(max(_localScale.x, _localScale.y), _localScale.z); }

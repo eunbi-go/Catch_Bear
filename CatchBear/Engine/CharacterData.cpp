@@ -30,7 +30,6 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	rewind(pFile);
 
 	char pStrTocken[64] = { '\0' };
-	// 객체로 생성X, 구조체 CharacterBoneInfo로 계층구조 관리
 
 	for (; ;)
 	{
@@ -66,6 +65,9 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 			else if (!strcmp(pStrTocken, "<Animation>:"))
 			{
 				LoadAnimationInfo(pFile);
+
+				fclose(pFile);
+				return;
 			}
 		}
 	}
@@ -372,7 +374,7 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 {
 	char	pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
-	int32	nAnimationSets = 0;
+	int32	nAnimationSets, nFrames;
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
@@ -384,15 +386,14 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 		if (!strcmp(pStrTocken, "<FrameNames>:"))
 		{
-			int nSkins = ReadIntegerFromFile(pFile);
-			int nSkin = ReadIntegerFromFile(pFile);
-			// SkineMesh name
-			ReadStringFromFileForCharac(pFile, pStrTocken);
-			int n = ReadIntegerFromFile(pFile);
+			int nSkins = ReadIntegerFromFile(pFile);	// 1
+			int nSkin = ReadIntegerFromFile(pFile);		// 0
+			ReadStringFromFileForCharac(pFile, pStrTocken);	// SkineMesh name: EvilBear
+			nFrames = ReadIntegerFromFile(pFile);	// 72
 
-			for (int i = 0; i < n; ++i)
+			for (int i = 0; i < nFrames; ++i)
 			{
-				ReadStringFromFileForCharac(pFile, pStrTocken);
+				ReadStringFromFileForCharac(pFile, pStrTocken);	// FrameName
 
 				wstring	frameName = s2ws(pStrTocken);
 				animationFrameName.push_back(frameName);
@@ -410,19 +411,28 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 			info.length = ReadFloatFromFile(pFile);
 			info.framePerSec = ReadIntegerFromFile(pFile);
-			info.keyFrames.resize(ReadIntegerFromFile(pFile));
+			// 해당 애니메이션의 키 프레임 개수
+			int nKeyFrames = ReadIntegerFromFile(pFile);
 
-			for (int i = 0; i < nSet; ++i)
+			info.keyFrames.resize(nFrames);
+
+			for (int i = 0; i < nKeyFrames; ++i)
 			{
 				ReadStringFromFileForCharac(pFile, pStrTocken);
+
 				if (!strcmp(pStrTocken, "<Transforms>:"))
 				{
 					int nKey = ReadIntegerFromFile(pFile);
 					float fKeyTime = ReadFloatFromFile(pFile);
+					int nSkin = ReadIntegerFromFile(pFile);
 
-					nReads = (UINT)fread(&info.keyFrames[nKey], sizeof(Matrix), info.keyFrames.size(), pFile);
+					Matrix* mat = new Matrix[nFrames];
+					nReads = (UINT)fread(&mat[0], sizeof(Matrix), nFrames, pFile);
 				}
 			}
 		}
+
+		else if (!strcmp(pStrTocken, "</Animation>"))
+			return;
 	}
 }

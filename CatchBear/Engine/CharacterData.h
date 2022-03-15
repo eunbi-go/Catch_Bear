@@ -47,7 +47,7 @@ struct AnimationClipInfo
 	float								length;
 	int32								framePerSec;
 	//FbxTime::EMode	mode;
-	vector<vector<AnimationFrameInfo>>	keyFrames;
+	vector<AnimationFrameInfo>	keyFrames;
 };
 
 

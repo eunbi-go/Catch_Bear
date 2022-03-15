@@ -416,18 +416,27 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 			info.keyFrames.resize(nFrames);
 
+			animationClipInfo.push_back(info);
+
+			// i 프레임마다 애니메이션의 정보를 받아온다
+			//   - 프레임 번호, 해당 프레임 재생 시간, 뼈들의 행렬
 			for (int i = 0; i < nKeyFrames; ++i)
 			{
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 
 				if (!strcmp(pStrTocken, "<Transforms>:"))
 				{
-					int nKey = ReadIntegerFromFile(pFile);
-					float fKeyTime = ReadFloatFromFile(pFile);
+					AnimationFrameInfo	frameInfo;
+
+					frameInfo.key = ReadIntegerFromFile(pFile);
+					frameInfo.time = ReadFloatFromFile(pFile);
 					int nSkin = ReadIntegerFromFile(pFile);
 
-					Matrix* mat = new Matrix[nFrames];
-					nReads = (UINT)fread(&mat[0], sizeof(Matrix), nFrames, pFile);
+					frameInfo.matOffset.resize(nFrames);
+
+					nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
+					
+					animationClipInfo[nSet].keyFrames.push_back(frameInfo);
 				}
 			}
 		}

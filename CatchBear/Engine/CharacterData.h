@@ -34,9 +34,9 @@ struct CharacterBoneInfo
 
 struct AnimationFrameInfo
 {
-	wstring					boneName;
-	int32					parentIndex;
-	Matrix					matOffset;
+	int			key;
+	double		time;
+	vector<Matrix>		matOffset;
 };
 
 struct AnimationClipInfo

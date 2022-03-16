@@ -60,5 +60,6 @@ private:
 	SkinningInfo							_skinningInfo;
 	vector<wstring>							_animationFrameName;
 	vector<shared_ptr<AnimationClipInfo>>	_animationClipInfo;
+	vector<vector<AnimationFrameInfo>>		_allFrameInfo;
 };
 

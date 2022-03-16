@@ -126,27 +126,63 @@ void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
 	return;
 }
 
-void Mesh::CreateBonesAndAnimations(vector<AnimationClipInfo> animationClipInfo)
+void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo)
 {
-	uint32 frameCnt = 0;
-	vector<AnimationClipInfo>	anInfo = animationClipInfo;
+	//uint32 frameCnt = 0;
+	//vector<shared_ptr<AnimationClipInfo>> anInfo = animationClipInfo;
 
-	for (size_t i = 0; i < anInfo.size(); ++i)
-	{
-		AnimClipInfo	info = {};
-		
-		info.animName = anInfo[i].name;
-		info.duration = anInfo[i].length;
-		info.frameCount = anInfo[i].nkeyFrames;
+	//for (shared_ptr<AnimationClipInfo>& anim : anInfo)
+	//{
+	//	AnimClipInfo	info = {};
 
-		// 뼈의 개수만큼 할당
-		info.keyFrames.resize(anInfo[i].keyFrames.size());
+	//	info.animName = anim->name;
+	//	info.duration = anim->length;
+	//	info.frameCount = anim->nkeyFrames;	// KeyFrame Count
 
-		const int32 boneCount = static_cast<int32>(anInfo[i].keyFrames.size());
+	//	// KeyFrame.size: 애니메이션에 영향을 주는 뼈의 개수
+	//	info.keyFrames.resize(anim->keyFrames.size());
+	//	const int32 boneCnt = static_cast<int32>(anim->keyFrames.size());
 
-		for (int32 j = 0; j < boneCount; ++j)
-		{
-			//vector<KeyFrameInfo>	vec = anInfo[i].keyFrames[j];
-		}
-	}
+	//	// #. 뼈들 마다 애니메이션 키 프레임 데이터를 갖고 있다. 2차원 배열
+	//	// bone0: KeyFrameInfo X 키 프레임 개수 
+	//	// bone1: KeyFrameInfo X 키 프레임 개수
+
+	//	vector<vector<AnimationClipInfo>> tempInfo;
+	//	tempInfo.resize(boneCnt);
+
+	//	for (int i = 0; i < boneCnt; ++i)
+	//		tempInfo[i].resize(anim->nkeyFrames);
+
+
+	//	// i: 뼈의 개수
+	//	for (int32 i = 0; i < boneCnt; ++i)
+	//	{
+	//		
+	//		// vector<AnimationFrameInfo>
+	//		// 첫 번째 키 프레임의 정보
+	//		auto& vec = anim->keyFrames[i];
+	//		info.keyFrames[i].resize(anim->nkeyFrames);
+
+	//		// j: i번째 뼈가 갖고 있는 키 프레임 데이터들의 개수
+	//		for (int32 j = 0; j < anim->nkeyFrames; ++j)
+	//		{
+	//			AnimationFrameInfo& kf = vec;
+	//			KeyFrameInfo& kInfo = info.keyFrames[i][j];
+	//			
+	//			kInfo.time = kf.time;
+	//			kInfo.frame = static_cast<int32>(kf.key);
+
+	//			vector<Matrix>	mat = kf.matOffset;
+	//		}
+	//	}
+
+	//	for (int i = 0; i < anim->nkeyFrames; ++i)
+	//	{
+	//		for (int32 j = 0; j < boneCnt; ++j)
+	//		{
+
+	//		}
+	//	}
+
+	//}
 }

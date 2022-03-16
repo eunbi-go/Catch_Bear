@@ -159,9 +159,16 @@ struct StaticMeshInfo
 
 struct AnimationFrameInfo
 {
-	int			key;
-	double		time;
+	int					key;
+	double				time;
 	vector<Matrix>		matOffset;
+};
+
+struct AnimationFrameInfo2
+{
+	int					key;
+	double				time;
+	Matrix		matOffset;
 };
 
 struct AnimationClipInfo

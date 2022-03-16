@@ -139,7 +139,7 @@ void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> par
 
 		else if (!strcmp(pStrTocken, "</Frame>"))
 		{
-			characterInfo.push_back(cInfo);
+			_characterInfo.push_back(cInfo);
 			break;
 		}
 	}
@@ -173,16 +173,16 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<BoneNames>:"))
 		{
 			nSkinnings = ReadIntegerFromFile(pFile);
-			skinningInfo.nSkinnings = nSkinnings;
+			_skinningInfo.nSkinnings = nSkinnings;
 
 			if (nSkinnings > 0)
 			{
-				skinningInfo.boneNames.resize(nSkinnings);
+				_skinningInfo.boneNames.resize(nSkinnings);
 
 				for (int i = 0; i < nSkinnings; ++i)
 				{
 					ReadStringFromFileForCharac(pFile, pStrTocken);
-					skinningInfo.boneNames[i] = s2ws(pStrTocken);
+					_skinningInfo.boneNames[i] = s2ws(pStrTocken);
 				}
 			}
 		}
@@ -193,9 +193,9 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 
 			if (nSkinnings > 0)
 			{
-				skinningInfo.boneOffsets.resize(nSkinnings);
+				_skinningInfo.boneOffsets.resize(nSkinnings);
 
-				nReads = (UINT)fread(&skinningInfo.boneOffsets[0], sizeof(Matrix), nSkinnings, pFile);
+				nReads = (UINT)fread(&_skinningInfo.boneOffsets[0], sizeof(Matrix), nSkinnings, pFile);
 			}
 		}
 
@@ -205,9 +205,9 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 
 			if (nSkinnings > 0)
 			{
-				skinningInfo.boneIndices.resize(nSkinnings);
+				_skinningInfo.boneIndices.resize(nSkinnings);
 
-				nReads = (UINT)fread(&skinningInfo.boneIndices[0], sizeof(XMINT4), nSkinnings, pFile);
+				nReads = (UINT)fread(&_skinningInfo.boneIndices[0], sizeof(XMINT4), nSkinnings, pFile);
 			}
 		}
 
@@ -217,9 +217,9 @@ void CharacterData::LoadSkinningInfoFromFile(FILE* pFile)
 
 			if (nSkinnings > 0)
 			{
-				skinningInfo.boneWeights.resize(nSkinnings);
+				_skinningInfo.boneWeights.resize(nSkinnings);
 
-				nReads = (UINT)fread(&skinningInfo.boneWeights[0], sizeof(Vec4), nSkinnings, pFile);
+				nReads = (UINT)fread(&_skinningInfo.boneWeights[0], sizeof(Vec4), nSkinnings, pFile);
 			}
 		}
 
@@ -396,31 +396,31 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 				ReadStringFromFileForCharac(pFile, pStrTocken);	// FrameName
 
 				wstring	frameName = s2ws(pStrTocken);
-				animationFrameName.push_back(frameName);
+				_animationFrameName.push_back(frameName);
 			}
 		}
 
 		else if (!strcmp(pStrTocken, "<AnimationSet>:"))
 		{
-			AnimationClipInfo	info;
+			shared_ptr<AnimationClipInfo>	info = make_shared<AnimationClipInfo>();
 
 			int nSet = ReadIntegerFromFile(pFile);
 
 			ReadStringFromFileForCharac(pFile, pStrTocken);
-			info.name = s2ws(pStrTocken);
+			info->name = s2ws(pStrTocken);
 
-			info.length = ReadFloatFromFile(pFile);
-			info.framePerSec = ReadIntegerFromFile(pFile);
+			info->length = ReadFloatFromFile(pFile);
+			info->framePerSec = ReadIntegerFromFile(pFile);
 			// 해당 애니메이션의 키 프레임 개수
-			int nKeyFrames = ReadIntegerFromFile(pFile);
+			info->nkeyFrames = ReadIntegerFromFile(pFile);
 
-			info.keyFrames.resize(nFrames);
+			info->keyFrames.resize(nFrames);
 
-			animationClipInfo.push_back(info);
+			_animationClipInfo.push_back(info);
 
 			// i 프레임마다 애니메이션의 정보를 받아온다
 			//   - 프레임 번호, 해당 프레임 재생 시간, 뼈들의 행렬
-			for (int i = 0; i < nKeyFrames; ++i)
+			for (int i = 0; i < info->nkeyFrames; ++i)
 			{
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 
@@ -436,7 +436,7 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 					nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
 					
-					animationClipInfo[nSet].keyFrames.push_back(frameInfo);
+					_animationClipInfo[nSet]->keyFrames.push_back(frameInfo);
 				}
 			}
 		}

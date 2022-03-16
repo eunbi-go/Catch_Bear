@@ -125,3 +125,28 @@ void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
 
 	return;
 }
+
+void Mesh::CreateBonesAndAnimations(vector<AnimationClipInfo> animationClipInfo)
+{
+	uint32 frameCnt = 0;
+	vector<AnimationClipInfo>	anInfo = animationClipInfo;
+
+	for (size_t i = 0; i < anInfo.size(); ++i)
+	{
+		AnimClipInfo	info = {};
+		
+		info.animName = anInfo[i].name;
+		info.duration = anInfo[i].length;
+		info.frameCount = anInfo[i].nkeyFrames;
+
+		// 뼈의 개수만큼 할당
+		info.keyFrames.resize(anInfo[i].keyFrames.size());
+
+		const int32 boneCount = static_cast<int32>(anInfo[i].keyFrames.size());
+
+		for (int32 j = 0; j < boneCount; ++j)
+		{
+			//vector<KeyFrameInfo>	vec = anInfo[i].keyFrames[j];
+		}
+	}
+}

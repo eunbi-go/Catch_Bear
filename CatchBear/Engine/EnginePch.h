@@ -157,6 +157,50 @@ struct StaticMeshInfo
 	//vector<>					boneWeights;
 };
 
+struct AnimationFrameInfo
+{
+	int			key;
+	double		time;
+	vector<Matrix>		matOffset;
+};
+
+struct AnimationClipInfo
+{
+	wstring								name;
+	float								startTime;
+	float								endTime;
+	float								length;
+	int32								framePerSec;
+	// 해당 애니메이션의 키 프레임 개수
+	int nkeyFrames;
+	//FbxTime::EMode	mode;
+	vector<AnimationFrameInfo>	keyFrames;
+};
+
+/// ////////////////////////////////
+
+struct KeyFrameInfo
+{
+	double	time;
+	int32	frame;
+
+	// To Parent행렬로 되어 있다면 To Root로 바꿔야 함
+	// keyFrames To Root 행렬 -> SRT 로 구분
+	// : 블렌딩으로 2개의 상태를 섞을 때 SRT 상태가 더 유용
+	Vec3	scale;
+	Vec4	rotation;
+	Vec3	translate;
+};
+
+struct AnimClipInfo
+{
+	wstring			animName;
+	// 총 프레임 개수
+	int32			frameCount;
+	// 지속 시간
+	double			duration;
+	vector<vector<KeyFrameInfo>>	keyFrames;
+};
 
 #define DECLARE_SINGLE(type)		\
 private:							\

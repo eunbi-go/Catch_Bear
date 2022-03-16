@@ -32,23 +32,7 @@ struct CharacterBoneInfo
 	Matrix		toParent;
 };
 
-struct AnimationFrameInfo
-{
-	int			key;
-	double		time;
-	vector<Matrix>		matOffset;
-};
 
-struct AnimationClipInfo
-{
-	wstring								name;
-	float								startTime;
-	float								endTime;
-	float								length;
-	int32								framePerSec;
-	//FbxTime::EMode	mode;
-	vector<AnimationFrameInfo>	keyFrames;
-};
 
 
 class CharacterData : public MeshData
@@ -72,9 +56,9 @@ private:
 	void LoadAnimationInfo(FILE* pFile);
 
 private:
-	vector<shared_ptr<CharacterBoneInfo>>	characterInfo;
-	SkinningInfo							skinningInfo;
-	vector<wstring>							animationFrameName;
-	vector<AnimationClipInfo>				animationClipInfo;
+	vector<shared_ptr<CharacterBoneInfo>>	_characterInfo;
+	SkinningInfo							_skinningInfo;
+	vector<wstring>							_animationFrameName;
+	vector<shared_ptr<AnimationClipInfo>>	_animationClipInfo;
 };
 

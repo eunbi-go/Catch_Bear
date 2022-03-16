@@ -392,7 +392,6 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 			ReadStringFromFileForCharac(pFile, pStrTocken);	// SkineMesh name: EvilBear
 			nFrames = ReadIntegerFromFile(pFile);	// 72
 
-			_allFrameInfo.resize(nFrames);
 
 			for (int i = 0; i < nFrames; ++i)
 			{
@@ -421,12 +420,8 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 			_animationClipInfo.push_back(info);
 
-			vfInfo.resize(nFrames);
+			_allFrameInfo.resize(nFrames);
 
-			for (int i = 0; i < nFrames; ++i)
-			{
-				vfInfo.resize(info->nkeyFrames);
-			}
 
 			// i 프레임마다 애니메이션의 정보를 받아온다
 			//   - 프레임 번호, 해당 프레임 재생 시간, 뼈들의 행렬
@@ -450,15 +445,19 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 				}
 			}
 
-			//for (int i = 0; i < info->nkeyFrames; ++i)
-			//{
-			//	for (int j = 0; j < nFrames; ++j)
-			//	{
-			//		vfInfo[i].matOffset = _animationClipInfo[nSet]->keyFrames[i].matOffset[j];
-			//	}
-			//}
+			for (int j = 0; j < nFrames; ++j)
+			{
+				for (int i = 0; i < info->nkeyFrames; ++i)
+				{
+					vector<AnimationFrameInfo2> vfInfo;
+					vfInfo.resize(info->nkeyFrames);
 
-			int k = 0;
+					// 하나의 뼈에 대한 모든 키 프레임 행렬들을 받아옴
+					vfInfo[i].matOffset = _animationClipInfo[nSet]->keyFrames[i].matOffset[j];
+
+					_allFrameInfo[j].push_back(vfInfo[i]);
+				}
+			}
 		}
 
 		else if (!strcmp(pStrTocken, "</Animation>"))

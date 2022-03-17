@@ -32,7 +32,7 @@ public:
 	void CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo);
 	uint32	GetSubsetCount() { return static_cast<uint32>(_vecIndexInfo.size()); }
 	
-	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo);
+	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo2>> animationMat, vector<shared_ptr<AnimationClipInfo>> animationInfo);
 
 private:
 	ComPtr<ID3D12Resource>		_vertexBuffer;

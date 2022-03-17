@@ -405,11 +405,13 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<AnimationSet>:"))
 		{
 			shared_ptr<AnimationClipInfo>	info = make_shared<AnimationClipInfo>();
+			shared_ptr<AnimationClipInfo2>	info2 = make_shared<AnimationClipInfo2>();
 
 			int nSet = ReadIntegerFromFile(pFile);
 
 			ReadStringFromFileForCharac(pFile, pStrTocken);
 			info->name = s2ws(pStrTocken);
+			info2->name = s2ws(pStrTocken);
 
 			info->length = ReadFloatFromFile(pFile);
 			info->framePerSec = ReadIntegerFromFile(pFile);
@@ -418,7 +420,18 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 			info->keyFrames.resize(info->nkeyFrames);
 
+
+
+			info2->length = info->length;
+			info2->framePerSec = info->framePerSec;
+			// 해당 애니메이션의 키 프레임 개수
+			info2->nkeyFrames = info->nkeyFrames;
+
+			info2->keyFrames.resize(info2->nkeyFrames);
+
+
 			_animationClipInfo.push_back(info);
+			_allAnimationInfos.push_back(info2);
 
 			_allFrameInfo.resize(nFrames);
 
@@ -458,6 +471,9 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 					_allFrameInfo[j].push_back(vfInfo[i]);
 				}
 			}
+
+			_animationClipInfo[nSet]->vecKeyFrames = _allFrameInfo;
+			_allAnimationInfos[nSet]->keyFrames = _allFrameInfo;
 		}
 
 		else if (!strcmp(pStrTocken, "</Animation>"))

@@ -126,63 +126,20 @@ void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
 	return;
 }
 
-void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo)
+void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo2>> animationClipInfo, vector<shared_ptr<AnimationClipInfo>> animationInfo)
 {
-	//uint32 frameCnt = 0;
-	//vector<shared_ptr<AnimationClipInfo>> anInfo = animationClipInfo;
+	//vector<shared_ptr<AnimationClipInfo>>	anmaionClips = animationInfo;
+	//vector<shared_ptr<AnimationClipInfo2>>	anmaionClips = animationClipInfo;
 
-	//for (shared_ptr<AnimationClipInfo>& anim : anInfo)
+	//for (shared_ptr<AnimationClipInfo>& aniClip : anmaionClips)
 	//{
 	//	AnimClipInfo	info = {};
 
-	//	info.animName = anim->name;
-	//	info.duration = anim->length;
-	//	info.frameCount = anim->nkeyFrames;	// KeyFrame Count
+	//	info.animName = aniClip->name;
+	//	info.duration = aniClip->length;
+	//	info.frameCount = aniClip->framePerSec;
 
-	//	// KeyFrame.size: 애니메이션에 영향을 주는 뼈의 개수
-	//	info.keyFrames.resize(anim->keyFrames.size());
-	//	const int32 boneCnt = static_cast<int32>(anim->keyFrames.size());
-
-	//	// #. 뼈들 마다 애니메이션 키 프레임 데이터를 갖고 있다. 2차원 배열
-	//	// bone0: KeyFrameInfo X 키 프레임 개수 
-	//	// bone1: KeyFrameInfo X 키 프레임 개수
-
-	//	vector<vector<AnimationClipInfo>> tempInfo;
-	//	tempInfo.resize(boneCnt);
-
-	//	for (int i = 0; i < boneCnt; ++i)
-	//		tempInfo[i].resize(anim->nkeyFrames);
-
-
-	//	// i: 뼈의 개수
-	//	for (int32 i = 0; i < boneCnt; ++i)
-	//	{
-	//		
-	//		// vector<AnimationFrameInfo>
-	//		// 첫 번째 키 프레임의 정보
-	//		auto& vec = anim->keyFrames[i];
-	//		info.keyFrames[i].resize(anim->nkeyFrames);
-
-	//		// j: i번째 뼈가 갖고 있는 키 프레임 데이터들의 개수
-	//		for (int32 j = 0; j < anim->nkeyFrames; ++j)
-	//		{
-	//			AnimationFrameInfo& kf = vec;
-	//			KeyFrameInfo& kInfo = info.keyFrames[i][j];
-	//			
-	//			kInfo.time = kf.time;
-	//			kInfo.frame = static_cast<int32>(kf.key);
-
-	//			vector<Matrix>	mat = kf.matOffset;
-	//		}
-	//	}
-
-	//	for (int i = 0; i < anim->nkeyFrames; ++i)
-	//	{
-	//		for (int32 j = 0; j < boneCnt; ++j)
-	//		{
-
-	//		}
-	//	}
-
+	//	info.keyFrames.resize(animationInfo[0]->keyFrames.size());
+	//	const int32 boneCount = static_cast<int32>(animationInfo[0]->keyFrames.size());
 	//}
 }

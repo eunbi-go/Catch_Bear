@@ -182,6 +182,21 @@ struct AnimationClipInfo
 	int nkeyFrames;
 	//FbxTime::EMode	mode;
 	vector<AnimationFrameInfo>	keyFrames;
+
+	vector<vector<AnimationFrameInfo2>>	vecKeyFrames;
+};
+
+struct AnimationClipInfo2
+{
+	wstring								name;
+	float								startTime;
+	float								endTime;
+	float								length;
+	int32								framePerSec;
+	// 해당 애니메이션의 키 프레임 개수
+	int nkeyFrames;
+	//FbxTime::EMode	mode;
+	vector<vector<AnimationFrameInfo2>>	keyFrames;
 };
 
 /// ////////////////////////////////

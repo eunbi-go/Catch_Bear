@@ -377,7 +377,6 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 	char	pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
 	int32	nAnimationSets, nFrames;
-	vector<AnimationFrameInfo2>	vfInfo;
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
@@ -407,13 +406,11 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 		else if (!strcmp(pStrTocken, "<AnimationSet>:"))
 		{
 			shared_ptr<AnimationClipInfo>	info = make_shared<AnimationClipInfo>();
-			shared_ptr<AnimationClipInfo2>	info2 = make_shared<AnimationClipInfo2>();
 
 			int nSet = ReadIntegerFromFile(pFile);
 
 			ReadStringFromFileForCharac(pFile, pStrTocken);
 			info->name = s2ws(pStrTocken);
-			info2->name = s2ws(pStrTocken);
 
 			info->length = ReadFloatFromFile(pFile);
 			info->framePerSec = ReadIntegerFromFile(pFile);
@@ -423,20 +420,7 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 			info->keyFrames.resize(info->nkeyFrames);
 
 
-
-			info2->length = info->length;
-			info2->framePerSec = info->framePerSec;
-			// 해당 애니메이션의 키 프레임 개수
-			info2->nkeyFrames = info->nkeyFrames;
-
-			info2->keyFrames.resize(info2->nkeyFrames);
-
-
 			_animationClipInfo.push_back(info);
-			_allAnimationInfos.push_back(info2);
-
-			_allFrameInfo.resize(nFrames);
-
 
 			// i 프레임마다 애니메이션의 정보를 받아온다
 			//   - 프레임 번호, 해당 프레임 재생 시간, 뼈들의 행렬
@@ -460,24 +444,6 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 				}
 			}
 
-			for (int j = 0; j < nFrames; ++j)
-			{
-				for (int i = 0; i < info->nkeyFrames; ++i)
-				{
-					vector<AnimationFrameInfo2> vfInfo;
-					vfInfo.resize(info->nkeyFrames);
-
-					// 하나의 뼈에 대한 모든 키 프레임 행렬들을 받아옴
-					vfInfo[i].matOffset = _animationClipInfo[nSet]->keyFrames[i].matOffset[j];
-					vfInfo[i].key = _animationClipInfo[nSet]->keyFrames[i].key;
-					vfInfo[i].time = _animationClipInfo[nSet]->keyFrames[i].time;
-
-					_allFrameInfo[j].push_back(vfInfo[i]);
-				}
-			}
-
-			_animationClipInfo[nSet]->vecKeyFrames = _allFrameInfo;
-			_allAnimationInfos[nSet]->keyFrames = _allFrameInfo;
 		}
 
 		else if (!strcmp(pStrTocken, "</Animation>"))

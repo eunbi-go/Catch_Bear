@@ -10,6 +10,7 @@ enum class COMPONENT_TYPE : uint8
 	PARTICLE_SYSTEM,
 	TERRAIN,
 	COLLIDER,
+	ANIMATOR,
 	// ....
 
 	// 여러 부품들을 만들어서 GameObject에 넣어줄 수 있기 때문에 별도로 생각

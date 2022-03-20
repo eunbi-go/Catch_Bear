@@ -151,41 +151,41 @@ void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<sha
 void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
 {
 #pragma region Animation
-	vector<shared_ptr<AnimationClipInfo>> animClips = animationClipInfo;
-	
-	for (shared_ptr<AnimationClipInfo>& ac : animClips)
-	{
-		AnimClipInfo	info = {};
+	//vector<shared_ptr<AnimationClipInfo>> animClips = animationClipInfo;
+	//
+	//for (shared_ptr<AnimationClipInfo>& ac : animClips)
+	//{
+	//	AnimClipInfo	info = {};
 
-		info.animName = ac->name;
-		info.duration = ac->length;
-		info.frameCount = ac->nkeyFrames;
+	//	info.animName = ac->name;
+	//	info.duration = ac->length;
+	//	info.frameCount = ac->nkeyFrames;
 
-		info.keyFrames.resize(ac->vecKeyFrames.size());
+	//	info.keyFrames.resize(ac->vecKeyFrames.size());
 
-		const int32 nBones = static_cast<int32>(ac->vecKeyFrames.size());
+	//	const int32 nBones = static_cast<int32>(ac->vecKeyFrames.size());
 
-		for (int32 b = 0; b < nBones; ++b)
-		{
-			auto& vec = ac->vecKeyFrames[b];
+	//	for (int32 b = 0; b < nBones; ++b)
+	//	{
+	//		auto& vec = ac->vecKeyFrames[b];
 
-			// size: b번 뼈가 갖고 있는 프레임 행렬의 수
-			const int32 size = static_cast<int32>(vec.size());
-			info.keyFrames[b].resize(size);
+	//		// size: b번 뼈가 갖고 있는 프레임 행렬의 수
+	//		const int32 size = static_cast<int32>(vec.size());
+	//		info.keyFrames[b].resize(size);
 
-			for (int32 f = 0; f < size; ++f)
-			{
-				AnimationFrameInfo2& kf = vec[f];
-				KeyFrameInfo& kfInfo = info.keyFrames[b][f];
+	//		for (int32 f = 0; f < size; ++f)
+	//		{
+	//			AnimationFrameInfo2& kf = vec[f];
+	//			KeyFrameInfo& kfInfo = info.keyFrames[b][f];
 
-				kfInfo.time = kf.time;
-				kfInfo.frame = static_cast<int32>(size);
+	//			kfInfo.time = kf.time;
+	//			kfInfo.frame = static_cast<int32>(size);
 
-				kfInfo.matTransform = kf.matOffset;
-			}
-		}
-		_animClips.push_back(info);
-	}
+	//			kfInfo.matTransform = kf.matOffset;
+	//		}
+	//	}
+	//	_animClips.push_back(info);
+	//}
 #pragma endregion
 
 #pragma region Bones

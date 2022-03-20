@@ -196,6 +196,7 @@
       <Filter>Object\Resource</Filter>
     </ClCompile>
     <ClCompile Include="CharacterData.cpp" />
+    <ClCompile Include="AnimationController.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -319,6 +320,7 @@
       <Filter>Object\Resource</Filter>
     </ClInclude>
     <ClInclude Include="CharacterData.h" />
+    <ClInclude Include="AnimationController.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

@@ -43,7 +43,7 @@ void Player::KeyCheck()
 	GetTransform()->SetLocalPosition(pos);
 
 	// 현재 씬에서 카메라(Main_Camera)를 가져온다.
-	// 카메라가 가지고 있는 스크립트에서 FlowPlayer()를 실행시킨다.
+	// 카메라가 가지고 있는 스크립트(CameraScript)에서 Followlayer()를 실행시킨다.
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();

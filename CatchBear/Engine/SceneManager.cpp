@@ -129,6 +129,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
 		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
 		obj->SetStatic(false);
+		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
 			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();

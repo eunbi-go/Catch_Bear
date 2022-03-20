@@ -44,10 +44,15 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 			{
 				CreateTextures();
 				CreateMaterials();
-			
+			}
+
+			else if (!strcmp(pStrTocken, "<Animation>:"))
+			{
+				LoadAnimationInfo(pFile);
+
 				// Mesh 생성해서 Reosurces에 추가
 				shared_ptr<Mesh> mesh = make_shared<Mesh>();
-				mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
+				mesh->CreateAnimationMeshFromFBX(&_staticMeshInfo, _animationClipInfo, _characterInfo, _skinningInfo);
 				mesh->SetName(path);
 				GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
 
@@ -60,11 +65,6 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 				info.materials = material;
 
 				_meshRenders.push_back(info);
-			}
-
-			else if (!strcmp(pStrTocken, "<Animation>:"))
-			{
-				LoadAnimationInfo(pFile);
 
 				fclose(pFile);
 				return;
@@ -81,8 +81,10 @@ void CharacterData::LoadFrameHierarchyFromFile(shared_ptr<CharacterBoneInfo> par
 	shared_ptr<CharacterBoneInfo>	cInfo = make_shared<CharacterBoneInfo>();
 
 	if (!bFirst)
+	{
 		cInfo->parentName = parent->boneName;
-
+		cInfo->parentIdx = parent->nFrame;
+	}
 	for (; ;)
 	{
 		ReadStringFromFileForCharac(pFile, pStrTocken);
@@ -467,6 +469,8 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 					// 하나의 뼈에 대한 모든 키 프레임 행렬들을 받아옴
 					vfInfo[i].matOffset = _animationClipInfo[nSet]->keyFrames[i].matOffset[j];
+					vfInfo[i].key = _animationClipInfo[nSet]->keyFrames[i].key;
+					vfInfo[i].time = _animationClipInfo[nSet]->keyFrames[i].time;
 
 					_allFrameInfo[j].push_back(vfInfo[i]);
 				}

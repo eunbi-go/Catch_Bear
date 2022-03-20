@@ -160,7 +160,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Fuck");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 50.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0, -10.f, 50.f));
+			//gameObject->GetTransform()->SetLocalScale(Vec3(0.05f, 0.05f, 0.05f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.0f, 10.0f, 10.0f));
 			scene->AddGameObject(gameObject);
 		}

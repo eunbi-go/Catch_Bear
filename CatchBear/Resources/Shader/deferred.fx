@@ -26,6 +26,8 @@ struct VS_OUT
     float3 viewBinormal : BINORMAL;
 };
 
+StructuredBuffer<matrix>            g_offset : register(t9);
+
 VS_OUT VS_Main(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;

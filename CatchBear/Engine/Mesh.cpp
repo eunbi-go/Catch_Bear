@@ -3,6 +3,7 @@
 #include "Engine.h"
 #include "Material.h"
 #include "InstancingBuffer.h"
+#include "StructuredBuffer.h"
 
 Mesh::Mesh() : Object(OBJECT_TYPE::MESH)
 {
@@ -126,20 +127,92 @@ void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
 	return;
 }
 
-void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo2>> animationClipInfo, vector<shared_ptr<AnimationClipInfo>> animationInfo)
+void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
 {
-	//vector<shared_ptr<AnimationClipInfo>>	anmaionClips = animationInfo;
-	//vector<shared_ptr<AnimationClipInfo2>>	anmaionClips = animationClipInfo;
+	CreateVertexBuffer(meshInfo->vertices);
 
-	//for (shared_ptr<AnimationClipInfo>& aniClip : anmaionClips)
-	//{
-	//	AnimClipInfo	info = {};
+	for (const vector<uint32>& buffer : meshInfo->indices)
+	{
+		if (buffer.empty())
+		{
+			return;
+		}
+		else
+		{
+			CreateIndexBuffer(buffer);
+		}
+	}
 
-	//	info.animName = aniClip->name;
-	//	info.duration = aniClip->length;
-	//	info.frameCount = aniClip->framePerSec;
+	CreateBonesAndAnimations(animationMat, boneInfo, skinningInfo);
 
-	//	info.keyFrames.resize(animationInfo[0]->keyFrames.size());
-	//	const int32 boneCount = static_cast<int32>(animationInfo[0]->keyFrames.size());
-	//}
+	return;
+}
+
+void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
+{
+#pragma region Animation
+	vector<shared_ptr<AnimationClipInfo>> animClips = animationClipInfo;
+	
+	for (shared_ptr<AnimationClipInfo>& ac : animClips)
+	{
+		AnimClipInfo	info = {};
+
+		info.animName = ac->name;
+		info.duration = ac->length;
+		info.frameCount = ac->nkeyFrames;
+
+		info.keyFrames.resize(ac->vecKeyFrames.size());
+
+		const int32 nBones = static_cast<int32>(ac->vecKeyFrames.size());
+
+		for (int32 b = 0; b < nBones; ++b)
+		{
+			auto& vec = ac->vecKeyFrames[b];
+
+			// size: b번 뼈가 갖고 있는 프레임 행렬의 수
+			const int32 size = static_cast<int32>(vec.size());
+			info.keyFrames[b].resize(size);
+
+			for (int32 f = 0; f < size; ++f)
+			{
+				AnimationFrameInfo2& kf = vec[f];
+				KeyFrameInfo& kfInfo = info.keyFrames[b][f];
+
+				kfInfo.time = kf.time;
+				kfInfo.frame = static_cast<int32>(size);
+
+				kfInfo.matTransform = kf.matOffset;
+			}
+		}
+		_animClips.push_back(info);
+	}
+#pragma endregion
+
+#pragma region Bones
+	vector<shared_ptr<CharacterBoneInfo>> bones = boneInfo;
+
+	for (shared_ptr<CharacterBoneInfo>& bone : bones)
+	{
+		BoneInfo	bInfo = {};
+		bInfo.boneName = bone->boneName;
+		bInfo.matOffset = bone->toParent;
+		bInfo.parentIdx = bone->parentIdx;
+	}
+#pragma endregion
+
+#pragma endregion Skinning
+	// Bone Offset 행렬
+	SkinningInfo	skInfo = skinningInfo;
+	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
+
+	vector<Matrix>	offsetMat;
+	offsetMat.resize(boneCnt);
+
+	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
+
+	// OffsetMatrix StructedBuffer 세팅
+	_offsetBuffer = make_shared<StructuredBuffer>();
+	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+
+#pragma endregion
 }

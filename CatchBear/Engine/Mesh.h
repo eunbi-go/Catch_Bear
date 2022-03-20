@@ -2,6 +2,7 @@
 #include "Object.h"
 
 class Material;
+class StructuredBuffer;
 
 struct IndexBufferInfo
 {
@@ -9,6 +10,13 @@ struct IndexBufferInfo
 	D3D12_INDEX_BUFFER_VIEW	bufferView;
 	DXGI_FORMAT				format;
 	uint32					count;
+};
+
+struct BoneInfo
+{
+	wstring					boneName;
+	int32					parentIdx;
+	Matrix					matOffset;
 };
 
 // 정점으로 이루어진 물체
@@ -30,9 +38,10 @@ private:
 
 public:
 	void CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo);
+	void CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo);
 	uint32	GetSubsetCount() { return static_cast<uint32>(_vecIndexInfo.size()); }
 	
-	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo2>> animationMat, vector<shared_ptr<AnimationClipInfo>> animationInfo);
+	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo);
 
 private:
 	ComPtr<ID3D12Resource>		_vertexBuffer;
@@ -41,8 +50,11 @@ private:
 
 	vector<IndexBufferInfo>		_vecIndexInfo;
 
-	//ComPtr<ID3D12Resource>		_indexBuffer;
-	//D3D12_INDEX_BUFFER_VIEW		_indexBufferView;
-	//uint32						_indexCount = 0;
+
+	// Animation
+	vector<AnimClipInfo>		_animClips;
+	vector<BoneInfo>			_bones;
+
+	shared_ptr<StructuredBuffer>	_offsetBuffer;
 };
 

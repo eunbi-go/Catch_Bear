@@ -27,6 +27,7 @@ struct VS_OUT
 };
 
 StructuredBuffer<matrix>            g_offset : register(t9);
+StructuredBuffer<matrix>            g_boneTrans : register(t7);
 
 VS_OUT VS_Main(VS_IN input)
 {

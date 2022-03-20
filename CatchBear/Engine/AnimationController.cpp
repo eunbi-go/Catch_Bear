@@ -18,6 +18,14 @@ AnimationController::~AnimationController()
 
 void AnimationController::PushData()
 {
+	// BoneTrans
+	int	nBones = static_cast<int>(_bones.size());
+	_boneTransform->Init(sizeof(Matrix), nBones);
+	_boneTransform->PushGraphicsData(SRV_REGISTER::t7);
+
+	// OffsetTrans
+	shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+	mesh->GetBoneOffsetBuffer()->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::Play()
@@ -35,7 +43,7 @@ void AnimationController::PlayAnimation()
 {
 	AnimationClipInfo	animClip = _animClips[_clipIndex];
 
-	for (int i = 0; i < animClip.keyFrames.size(); ++i)
+	for (int i = 0; i < _bones.size(); ++i)
 	{
 		Matrix trans;
 		XMStoreFloat4x4(&trans, XMMatrixIdentity());

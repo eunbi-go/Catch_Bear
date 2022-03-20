@@ -31,6 +31,9 @@ public:
 	void Render(uint32 instanceCount = 1, uint32 idx = 0);
 	void Render(shared_ptr<class InstancingBuffer>& buffer, uint32 idx = 0);
 
+public:
+	shared_ptr<StructuredBuffer>	GetBoneOffsetBuffer() { return _offsetBuffer; }
+		
 private:
 	// 수정해야 함
 	void CreateVertexBuffer(const vector<Vertex>& buffer);

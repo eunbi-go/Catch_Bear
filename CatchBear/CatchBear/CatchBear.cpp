@@ -6,6 +6,13 @@
 #include "CatchBear.h"
 #include "Game.h"
 
+#include "ThreadManager.h"
+#include "Service.h"
+#include "Session.h"
+#include "BufferReader.h"
+#include "ServerPacketHandler.h"
+#include "ServerSession.h"
+
 #define MAX_LOADSTRING 100
 
 // 전역 변수:
@@ -52,6 +59,30 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     unique_ptr<Game> game = make_unique<Game>();    // 아래서 delete할 필요x 알아서 삭제해줌
     game->Init(GWindowInfo);
 
+    // 쓰레드 만들기
+
+    ServerPacketHandler::Init();
+    //this_thread::sleep_for(1s);
+
+    ClientServiceRef service = MakeShared<ClientService>(
+        NetAddress(L"127.0.0.1", 7777),
+        MakeShared<IocpCore>(),
+        MakeShared<ServerSession>, // TODO : SessionManager 등
+        2);
+
+    ASSERT_CRASH(service->Start());
+
+    for (int32 i = 0; i < 2; i++)
+    {
+        GThreadManager->Launch([=]()
+            {
+                while (true)
+                {
+                    service->GetIocpCore()->Dispatch();
+                }
+            });
+    }
+
     // 기본 메시지 루프입니다:
     while (true)
     {
@@ -69,6 +100,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         // TODO
         game->Update();
+        //GThreadManager->Join();
     }
 
     return (int) msg.wParam;

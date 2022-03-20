@@ -1,0 +1,25 @@
+syntax = "proto3";
+package Protocol;
+
+enum PlayerType
+{
+	PLAYER_TYPE_NONE = 0;
+	PLAYER_TYPE_BEAR1 = 1;
+	PLAYER_TYPE_BEAR2 = 2;
+	PLAYER_TYPE_BEAR3 = 3;
+}
+
+enum ObjectType
+{
+	PLAYER = 0;
+	WALL = 1;
+	ITEM = 2;
+}
+
+enum MoveDir
+{
+	FRONT = 0;
+	BACK = 1;
+	LEFT = 2;
+	RIGHT = 3;
+}

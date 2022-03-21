@@ -197,6 +197,9 @@
     </ClCompile>
     <ClCompile Include="CharacterData.cpp" />
     <ClCompile Include="AnimationController.cpp" />
+    <ClCompile Include="AnimationSet.cpp" />
+    <ClCompile Include="AnimationSets.cpp" />
+    <ClCompile Include="AnimationTrack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -321,6 +324,9 @@
     </ClInclude>
     <ClInclude Include="CharacterData.h" />
     <ClInclude Include="AnimationController.h" />
+    <ClInclude Include="AnimationSet.h" />
+    <ClInclude Include="AnimationSets.h" />
+    <ClInclude Include="AnimationTrack.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

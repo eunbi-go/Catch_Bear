@@ -14,8 +14,8 @@ public:
 	virtual ~AnimationController();
 
 public:
-	void SetBones(vector<CharacterBoneInfo> bones) { _bones = bones; }
-	void SetAnimClips(vector<AnimationClipInfo> anClips) { _animClips = anClips; }
+	void SetBones(vector<shared_ptr<CharacterBoneInfo>> bones) { _bones = bones; }
+	void SetAnimClips(vector<shared_ptr<AnimationClipInfo>> anClips) { _animClips = anClips; }
 	
 public:
 	void PushData();
@@ -25,17 +25,18 @@ public:
 public:
 	virtual void FinalUpdate() override;
 	
-private:
+public:
 	void PlayAnimation();
 	Matrix	GetboneTrans(int nBone);
+	void UpdateBones();
 
 private:
 	float							_updateTime = 0.f;
 	int32							_clipIndex = 0;
 	float							_fTrackPosition = 0.0f;
 
-	vector<CharacterBoneInfo>	_bones;
-	vector<AnimationClipInfo>			_animClips;
+	vector<shared_ptr<CharacterBoneInfo>>	_bones;
+	vector<shared_ptr<AnimationClipInfo>>			_animClips;
 
 	shared_ptr<StructuredBuffer>		_boneTransform;
 };

@@ -19,6 +19,10 @@ public:
 	D3D12_RESOURCE_STATES GetResourceState() { return _resourceState; }
 	ComPtr<ID3D12Resource> GetBuffer() { return _buffer; }
 
+	uint32	GetElementSize() { return _elementSize; }
+	uint32	GetElementCount() { return _elementCount; }
+	UINT	GetBufferSize() { return _elementSize * _elementCount; }
+
 private:
 	void CopyInitialData(uint64 bufferSize, void* initialData);
 

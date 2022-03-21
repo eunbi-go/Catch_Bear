@@ -9,6 +9,8 @@ struct VS_IN
     float2 uv : TEXCOORD;
     float3 normal : NORMAL;
     float3 tangent : TANGENT;
+    float4 weight : WEIGHT;
+    float4 indices : INDICES;
 
     row_major matrix matWorld : W;
     row_major matrix matWV : WV;
@@ -33,12 +35,35 @@ VS_OUT VS_Main(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
 
+    //float4x4 mtxVertexToBoneWorld = (float4x4)0.0f;
+    //for (int i = 0; i < MAX_VERTEX_INFLUENCES; i++)
+    //{
+    //    mtxVertexToBoneWorld += input.weights[i] * mul(gpmtxBoneOffsets[input.indices[i]], gpmtxBoneTransforms[input.indices[i]]);
+    //}
+    //output.positionW = mul(float4(input.position, 1.0f), mtxVertexToBoneWorld).xyz;
+    //output.normalW = mul(input.normal, (float3x3)mtxVertexToBoneWorld).xyz;
+    //output.tangentW = mul(input.tangent, (float3x3)mtxVertexToBoneWorld).xyz;
+    //output.bitangentW = mul(input.bitangent, (float3x3)mtxVertexToBoneWorld).xyz;
+
+
+    //output.position = mul(mul(float4(output.positionW, 1.0f), gmtxView), gmtxProjection);
+    //output.uv = input.uv;
+
     if (g_int_0 == 1)
     {
+        float4x4 mtxVertexToBoneWorld = (float4x4)0.0f;
+        for (int i = 0; i < 4; ++i)
+        {
+            mtxVertexToBoneWorld += input.weight[i] * mul(g_offset[input.indices[i]], g_boneTrans[input.indices[i]]);
+        }
+
+        float3 position = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+
         output.pos = mul(float4(input.pos, 1.f), input.matWVP);
         output.uv = input.uv;
 
-        output.viewPos = mul(float4(input.pos, 1.f), input.matWV).xyz;
+        //output.viewPos = mul(float4(input.pos, 1.f), input.matWV).xyz;
+        output.viewPos = mul(float4(position, 1.f), input.matWV).xyz;
         output.viewNormal = normalize(mul(float4(input.normal, 0.f), input.matWV).xyz);
         output.viewTangent = normalize(mul(float4(input.tangent, 0.f), input.matWV).xyz);
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));

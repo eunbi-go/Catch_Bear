@@ -5,6 +5,7 @@
 #include "Resources.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
+#include "AnimationController.h"
 
 
 
@@ -261,7 +262,19 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 				nReads = (UINT)fread(pos, sizeof(Vec3), nVertices, pFile);
 
 				for (int i = 0; i < nVertices; ++i)
+				{
 					_staticMeshInfo.vertices[i].pos = pos[i];
+
+					_staticMeshInfo.vertices[i].indices.x = _skinningInfo.boneIndices[i].x;
+					_staticMeshInfo.vertices[i].indices.y = _skinningInfo.boneIndices[i].y;
+					_staticMeshInfo.vertices[i].indices.z = _skinningInfo.boneIndices[i].z;
+					_staticMeshInfo.vertices[i].indices.w = _skinningInfo.boneIndices[i].w;
+
+					_staticMeshInfo.vertices[i].weights.x = _skinningInfo.boneWeights[i].x;
+					_staticMeshInfo.vertices[i].weights.y = _skinningInfo.boneWeights[i].y;
+					_staticMeshInfo.vertices[i].weights.z = _skinningInfo.boneWeights[i].z;
+					_staticMeshInfo.vertices[i].weights.w = _skinningInfo.boneWeights[i].w;
+				}
 			}
 		}
 
@@ -449,4 +462,28 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 		else if (!strcmp(pStrTocken, "</Animation>"))
 			return;
 	}
+}
+
+vector<shared_ptr<GameObject>> CharacterData::Instantiate()
+{
+	vector<shared_ptr<GameObject>>	v;
+
+	for (MeshRendererInfo& info : _meshRenders)
+	{
+		shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
+		gameObject->AddComponent(make_shared<Transform>());
+		gameObject->AddComponent(make_shared<MeshRenderer>());
+		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
+		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+
+		// Animation
+		shared_ptr<AnimationController> animator = make_shared<AnimationController>();
+		gameObject->AddComponent(animator);
+		animator->SetBones(_characterInfo);
+		animator->SetAnimClips(_animationClipInfo);
+
+		v.push_back(gameObject);
+	}
+
+	return v;
 }

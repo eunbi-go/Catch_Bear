@@ -28,6 +28,9 @@ private:
 
 	void LoadAnimationInfo(FILE* pFile);
 
+public:
+	vector<shared_ptr<GameObject>>	Instantiate();
+
 private:
 	vector<shared_ptr<CharacterBoneInfo>>	_characterInfo;
 	SkinningInfo							_skinningInfo;

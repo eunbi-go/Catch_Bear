@@ -28,6 +28,7 @@ enum
 
 class GameObject;
 class Transform;
+class AnimationController;
 
 class Component : public Object
 {
@@ -49,6 +50,7 @@ public:
 
 	shared_ptr<GameObject> GetGameObject();
 	shared_ptr<Transform> GetTransform();
+	shared_ptr< AnimationController> GetAnimationController();
 
 private:
 	friend class GameObject;	// 게임 오브젝트만 set 함수를 실행할 수 있도록 허용해줌

@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Input.h"
 #include "Timer.h"
+#include "AnimationController.h"
 
 Player::Player()
 {
@@ -15,6 +16,7 @@ Player::~Player()
 void Player::LateUpdate()
 {
 	KeyCheck();
+	GetAnimationController()->PlayAnimation();
 }
 
 void Player::KeyCheck()

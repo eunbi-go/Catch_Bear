@@ -213,7 +213,7 @@ struct CharacterBoneInfo
 {
 	wstring		boneName;
 	wstring		parentName;
-	int32		parentIdx;
+	int32		parentIdx = 0;
 
 	int32		nFrame;
 	int32		nTexture;
@@ -223,6 +223,7 @@ struct CharacterBoneInfo
 	Vec3		rotation;
 
 	Matrix		toParent;
+	Matrix		world;
 };
 
 /// ////////////////////////////////
@@ -281,6 +282,10 @@ public:								\
 #define DELTA_TIME			GET_SINGLE(Timer)->GetDeltaTime()
 
 #define CONST_BUFFER(type)	GEngine->GetConstantBuffer(type)
+
+#define ANIMATION_TYPE_ONCE			0
+#define ANIMATION_TYPE_LOOP			1
+#define ANIMATION_TYPE_PINGPONG		2
 
 struct TransformParams
 {
@@ -344,5 +349,19 @@ inline XMFLOAT4X4 Scale(XMFLOAT4X4& xmf4x4Matrix, float fScale)
 			//R = XMQuaternionMultiply(R, XMVectorSet(0, 0, 0, fScale));
 			XMStoreFloat4x4(&xmf4x4Result, XMMatrixAffineTransformation(S, XMVectorZero(), R, T));
 	*/
+	return(xmf4x4Result);
+}
+
+inline XMFLOAT4X4 Multiply(XMFLOAT4X4& xmmtx4x4Matrix1, XMFLOAT4X4& xmmtx4x4Matrix2)
+{
+	XMFLOAT4X4 xmf4x4Result;
+	XMStoreFloat4x4(&xmf4x4Result, XMMatrixMultiply(XMLoadFloat4x4(&xmmtx4x4Matrix1), XMLoadFloat4x4(&xmmtx4x4Matrix2)));
+	return(xmf4x4Result);
+}
+
+inline XMFLOAT4X4 Identity()
+{
+	XMFLOAT4X4 xmf4x4Result;
+	XMStoreFloat4x4(&xmf4x4Result, XMMatrixIdentity());
 	return(xmf4x4Result);
 }

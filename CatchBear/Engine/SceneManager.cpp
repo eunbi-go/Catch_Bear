@@ -145,25 +145,35 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
+#pragma region TestObject
+	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+
+	vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+
+	for (auto& gameObject : gameObjects)
+	{
+		gameObject->SetName(L"Tree01");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10, -10.f, 50.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+		scene->AddGameObject(gameObject);
+	}
+#pragma endregion
+
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> meshData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
 		
-		//////////////////////////////////////////////////////////////
-		//// StaticMesh
-
-		//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
-
-		vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+		/*vector<shared_ptr<GameObject>>	*/gameObjects = CharacData->Instantiate();
 
 		for (auto& gameObject : gameObjects)
 		{
-			gameObject->SetName(L"Fuck");
+			gameObject->SetName(L"Player");
 			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(Vec3(0, -10.f, 50.f));
-			//gameObject->GetTransform()->SetLocalScale(Vec3(0.05f, 0.05f, 0.05f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.0f, 10.0f, 10.0f));
 			scene->AddGameObject(gameObject);
+			//gameObject->AddComponent(make_shared<Player>());
 		}
 
 		//////////////////////////////////////////////////////////////

@@ -30,6 +30,13 @@ public:
 	shared_ptr<MonoBehaviour>& GetScript(int index);
 
 public:
+	// ServerPacketHandler에서 위치 정보를 제어하기 위한 함수
+	float GetX();
+	float GetY();
+	float GetZ();
+	void SetPos(Vec3 _pos);
+
+public:
 	shared_ptr<Transform> GetTransform();
 	shared_ptr<MeshRenderer> GetMeshRenderer();
 	shared_ptr<Camera> GetCamera();

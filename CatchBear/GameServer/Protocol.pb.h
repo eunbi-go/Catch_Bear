@@ -787,6 +787,7 @@ class C_ENTER_GAME final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
+    kSuccessFieldNumber = 2,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -797,6 +798,15 @@ class C_ENTER_GAME final :
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // bool success = 2;
+  void clear_success();
+  bool success() const;
+  void set_success(bool value);
+  private:
+  bool _internal_success() const;
+  void _internal_set_success(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.C_ENTER_GAME)
  private:
   class _Internal;
@@ -805,6 +815,7 @@ class C_ENTER_GAME final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1814,6 +1825,26 @@ inline void C_ENTER_GAME::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64
 inline void C_ENTER_GAME::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_playerid(value);
   // @@protoc_insertion_point(field_set:Protocol.C_ENTER_GAME.playerId)
+}
+
+// bool success = 2;
+inline void C_ENTER_GAME::clear_success() {
+  success_ = false;
+}
+inline bool C_ENTER_GAME::_internal_success() const {
+  return success_;
+}
+inline bool C_ENTER_GAME::success() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ENTER_GAME.success)
+  return _internal_success();
+}
+inline void C_ENTER_GAME::_internal_set_success(bool value) {
+  
+  success_ = value;
+}
+inline void C_ENTER_GAME::set_success(bool value) {
+  _internal_set_success(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_ENTER_GAME.success)
 }
 
 // -------------------------------------------------------------------

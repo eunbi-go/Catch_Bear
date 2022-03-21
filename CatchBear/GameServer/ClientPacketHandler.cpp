@@ -119,7 +119,7 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 
 bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
-	//GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
 	//cout << "ID " << pkt.playerid() << " 인게임 접속 완료" << endl;
 
@@ -129,10 +129,12 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	//PlayerRef player = gameSession->_player; // READ_ONLY?
 	////GLobby.Enter(player); // WRITE_LOCK
 
-	//Protocol::S_ENTER_GAME enterGamePkt;
-	//enterGamePkt.set_success(true);
-	//auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
+	Protocol::S_ENTER_GAME enterGamePkt;
+	enterGamePkt.set_success(true);
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
+	// 나중에는 플레이어마다 오너세션 정해서 거기서 Send하는걸로 수정해야할듯
 	//player->ownerSession->Send(sendBuffer);
+	session->Send(sendBuffer);
 
 	return true;
 }
@@ -153,7 +155,60 @@ bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 	return true;
 }
 
+// 충돌을 위한 AABB검사
+bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidth, float ADepth, float BDepth);
+
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
+	// 후에는 static오브젝트들 위치 불러와서 플레이어랑 충돌체크함
+	// 일단은 테스트용으로 object위치
+	float staticObjX = 0.f;
+	float staticObjZ = 700.f;
+	float staticObjWidth = 100.f;
+	float staticObjDepth = 100.f;
+
+	if (pkt.movedir() == 0)
+		cout << "앞으로 이동" << endl;
+	if (pkt.movedir() == 1)
+		cout << "뒤으로 이동" << endl;
+	if (pkt.movedir() == 2)
+		cout << "왼쪽으로 이동" << endl;
+	if (pkt.movedir() == 3)
+		cout << "오른쪽으로 이동" << endl;
+
+	cout << "x: " << pkt.xpos() << " / z: " << pkt.zpos() << endl;
+
+	Protocol::S_MOVE movePkt;
+
+	// 여기서 충돌체크하고 앞으로 이동 가능하면 이동가능여부만 보내줌
+	bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+
+	// 이동 성공
+	if (isCollid) {
+		movePkt.set_success(false);
+		cout << "충돌함!" << endl;
+	}
+	else
+		movePkt.set_success(true);
+
+	movePkt.set_movedir(pkt.movedir());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
+	session->Send(sendBuffer);
+	return true;
+}
+
+bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidth, float ADepth, float BDepth)
+{
+	float ALeft = AX - (AWidth / 2);
+	float BLeft = BX - (BWidth / 2);
+	float AFront = AZ - (ADepth / 2);
+	float BFront = BZ - (BDepth / 2);
+
+	if (BLeft + BWidth > ALeft && ALeft + AWidth > BLeft
+		&& BFront + BDepth > AFront && AFront + ADepth > BFront)
+	{
+		return true;
+	}
 	return false;
 }

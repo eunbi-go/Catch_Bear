@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
-//#include "Player.h"
+#include "SceneManager.h"
+#include "Input.h"
+#include "Scene.h"
+#include "GameObject.h"
+#include "Player.h"
+#include "Transform.h"
+#include "Timer.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -117,12 +123,73 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
-	//if (pkt.success() != true)
-	//	return true;
-	//// TODO
-	//Protocol::C_ENTER_GAME enterGamePkt;
-	//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
-	//session->Send(sendBuffer);
+	if (pkt.success() != true)
+		return false;
+
+	// TODO
+	Protocol::C_ENTER_GAME enterGamePkt;
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
+
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	// 현재 씬에서 플레이어를 찾는다
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+
+	if (INPUT->GetButton(KEY_TYPE::W))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(0);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::S))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(1);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::A))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(2);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::D))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(3);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
 
 
 	return true;
@@ -140,5 +207,110 @@ bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 {
-	return false;
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+	// 만약 충돌해서 위치가 바뀐다면 위치 다시 바꿔준다.
+
+	Vec3 pos = _player->GetTransform()->GetLocalPosition();
+
+	if (pkt.success() == false)
+	{
+		if (pkt.movedir() == 0)
+		{
+			pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 1)
+		{
+			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 2)
+		{
+			pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 3)
+		{
+			pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+		}
+	}
+
+	// 여기서 서버에서 받은 위치로 player위치를 바꿔주는 코드가 들어감
+	if (pkt.success() == true)
+	{
+		if (pkt.movedir() == 0)
+		{
+			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 1)
+		{
+			pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 2)
+		{
+			pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+		}
+		if (pkt.movedir() == 3)
+		{
+			pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+		}
+	}
+
+	_player->GetTransform()->SetLocalPosition(pos);
+	//_player->SetPos(pos);
+
+	if (INPUT->GetButton(KEY_TYPE::W))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(0);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::S))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(1);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::A))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(2);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::D))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(3);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	return true;
 }

@@ -24,6 +24,13 @@ void ServerSession::OnConnected()
 	//	isConnected = true;
 	//}
 	//m.unlock();
+
+	m.lock();
+	Protocol::C_ENTER_GAME pkt;
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	Send(sendBuffer);
+	isConnected = true;
+	m.unlock();
 }
 
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "AnimationSets.h"
+
 class AnimationTrack
 {
 public:
@@ -23,3 +25,11 @@ public:
 	void SetPosition(float fPosition) { _position = fPosition; }
 };
 
+class AnimationModelInfo
+{
+public:
+	AnimationModelInfo() { }
+	~AnimationModelInfo() { }
+
+	shared_ptr<AnimationSets> _allAnimationSets;
+};

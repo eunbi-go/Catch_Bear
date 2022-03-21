@@ -6,8 +6,9 @@
 #include "Transform.h"
 #include "MeshRenderer.h"
 #include "AnimationController.h"
-
-
+#include "AnimationTrack.h"
+#include "AnimationSets.h"
+#include "AnimationSet.h"
 
 CharacterData::CharacterData() : MeshData()
 {
@@ -390,11 +391,16 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 	char	pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
 	int32	nAnimationSets, nFrames;
+	int nSkin;
+	
+	_modelInfo = make_shared<AnimationModelInfo>();
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
-	if (!strcmp(pStrTocken, "<AnimationSets>:"))	nAnimationSets = ReadIntegerFromFile(pFile);
-
+	if (!strcmp(pStrTocken, "<AnimationSets>:"))
+	{
+		nAnimationSets = ReadIntegerFromFile(pFile);
+	}
 	for (; ;)
 	{
 		ReadStringFromFileForCharac(pFile, pStrTocken);
@@ -402,10 +408,12 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 		if (!strcmp(pStrTocken, "<FrameNames>:"))
 		{
 			int nSkins = ReadIntegerFromFile(pFile);	// 1
-			int nSkin = ReadIntegerFromFile(pFile);		// 0
+
+			nSkin = ReadIntegerFromFile(pFile);		// 0
+			_modelInfo->_allAnimationSets = make_shared<AnimationSets>(nAnimationSets);
+
 			ReadStringFromFileForCharac(pFile, pStrTocken);	// SkineMesh name: EvilBear
 			nFrames = ReadIntegerFromFile(pFile);	// 72
-
 
 			for (int i = 0; i < nFrames; ++i)
 			{
@@ -429,9 +437,9 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 			info->framePerSec = ReadIntegerFromFile(pFile);
 			// 해당 애니메이션의 키 프레임 개수
 			info->nkeyFrames = ReadIntegerFromFile(pFile);
-
+			
+			_modelInfo->_allAnimationSets->_animationSet[nSet] = new AnimationSet(info->length, info->framePerSec, info->nkeyFrames, nFrames, info->name);
 			info->keyFrames.resize(info->nkeyFrames);
-
 
 			_animationClipInfo.push_back(info);
 
@@ -451,7 +459,11 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 					frameInfo.matOffset.resize(nFrames);
 
-					nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
+					AnimationSet*	animSet = _modelInfo->_allAnimationSets->_animationSet[nSet];
+					animSet->_keyFrameTimes[i] = frameInfo.time;
+					nReads = (UINT)fread(&animSet->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);
+
+					//nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
 
 					_animationClipInfo[nSet]->keyFrames[i] = frameInfo;
 				}

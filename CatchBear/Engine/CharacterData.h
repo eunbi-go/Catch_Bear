@@ -5,7 +5,7 @@
 class Mesh;
 class Material;
 class GameObject;
-
+class AnimationModelInfo;
 
 
 class CharacterData : public MeshData
@@ -40,5 +40,6 @@ private:
 	vector<vector<AnimationFrameInfo2>>		_allFrameInfo;
 	vector<shared_ptr<AnimationClipInfo2>>	_allAnimationInfos;
 
+	shared_ptr<AnimationModelInfo>			_modelInfo;
 };
 

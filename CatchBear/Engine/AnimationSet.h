@@ -11,7 +11,7 @@ public:
 
 	XMFLOAT4X4 GetSRT(int nBone);
 
-private:
+public:
 	wstring					_name;
 
 	float					_length;

@@ -1,4 +1,5 @@
 #pragma once
+class AnimationSet;
 
 class AnimationSets
 {
@@ -8,6 +9,6 @@ public:
 
 public:
 	int								_nAnimationSets;
-	vector<vector<class AnimationSet>>	_animationSets;
+	AnimationSet**	_animationSet = NULL;
 };
 

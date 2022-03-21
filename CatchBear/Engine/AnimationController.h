@@ -6,6 +6,7 @@
 class Material;
 class StructuredBuffer;
 class Mesh;
+class AnimationSets;
 
 class AnimationController : public Component
 {

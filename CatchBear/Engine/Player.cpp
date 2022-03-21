@@ -25,20 +25,34 @@ void Player::LateUpdate()
 void Player::KeyCheck()
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
+	Vec3 rot = GetTransform()->GetLocalRotation();
 
-	
+	// 이동
 	if (INPUT->GetButton(KEY_TYPE::W))
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
 
 	if (INPUT->GetButton(KEY_TYPE::S))
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
 
+	// 회전
 	if (INPUT->GetButton(KEY_TYPE::A))
-		pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
+	{
+		rot.y -= DELTA_TIME * _rotSpeed;
+		GetTransform()->SetLocalRotation(rot);
+	}
 
 	if (INPUT->GetButton(KEY_TYPE::D))
-		pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
+	{
+		rot.y += DELTA_TIME * _rotSpeed;
+		GetTransform()->SetLocalRotation(rot);
+	}
 
+
+	//if (INPUT->GetButton(KEY_TYPE::A))
+	//	pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
+
+	//if (INPUT->GetButton(KEY_TYPE::D))
+	//	pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 
 	GetTransform()->SetLocalPosition(pos);
 
@@ -61,5 +75,6 @@ void Player::KeyCheck()
 
 	shared_ptr<CameraScript> cameraScript = make_shared<CameraScript>();
 	cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
+	cameraScript->GetTransform()->SetParent(_player->GetTransform());
 	cameraScript->FollowPlayer(_player);
 }

@@ -61,11 +61,26 @@ void CameraScript::LateUpdate()
 
 void CameraScript::FollowPlayer(shared_ptr<GameObject> player)
 {
+	_offset = Vec3(0.f, 0.f, 5.f);
+
+	//Vec3 pos = GetTransform()->GetLocalPosition();
+	//Vec3 rot = GetTransform()->GetLocalRotation();
+
+	//pos = player->GetTransform()->GetLocalPosition();
+	//pos -= _offset;
+
+	//rot = player->GetTransform()->GetLocalRotation();
+
+	//GetTransform()->SetLocalRotation(rot);
+	//GetTransform()->SetLocalPosition(pos);
+
+
 	Vec3 pos = GetTransform()->GetLocalPosition();
 
 	pos = player->GetTransform()->GetLocalPosition();
-	pos -= Vec3(0.f, 0.f, 300.f);
+	pos -= _offset;
 
 	GetTransform()->SetLocalPosition(pos);
 
+	//GetTransform()->SetParent(player->GetTransform());
 }

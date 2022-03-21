@@ -15,8 +15,10 @@ public:
 
 private:
 	float		_speed = 5.f;
-	float		_offset = 300.f;
+	//float		_offset = 300.f;
 	float		_angleX = 0.5f;
+
+	Vec3		_offset;
 
 	bool		_getPlayer = false;
 };

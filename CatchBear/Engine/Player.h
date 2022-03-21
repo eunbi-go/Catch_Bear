@@ -15,6 +15,7 @@ private:
 
 private:
 	float	_speed = 5.f;
+	float	_rotSpeed = 0.7f;
 
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 	shared_ptr<GameObject>	_camera = make_shared<GameObject>();

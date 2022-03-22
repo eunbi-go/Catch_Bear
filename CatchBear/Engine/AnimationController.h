@@ -56,5 +56,6 @@ private:
 
 	shared_ptr<AnimationSets>			_animSets;
 	vector<shared_ptr<Transform>>		_animatedTrans;
+	vector<Matrix>	matToParent;
 };
 

@@ -124,47 +124,47 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region SkyBox
 	{
-		shared_ptr<GameObject> skybox = make_shared<GameObject>();
-		skybox->AddComponent(make_shared<Transform>());
-		skybox->SetCheckFrustum(false);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Skybox");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Sky", L"..\\Resources\\Texture\\Skybox.png");
-			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(shader);
-			material->SetTexture(0, texture);
-			meshRenderer->SetMaterial(material);
-		}
-		skybox->AddComponent(meshRenderer);
-		scene->AddGameObject(skybox);
+		//shared_ptr<GameObject> skybox = make_shared<GameObject>();
+		//skybox->AddComponent(make_shared<Transform>());
+		//skybox->SetCheckFrustum(false);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+		//	meshRenderer->SetMesh(sphereMesh);
+		//}
+		//{
+		//	shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Skybox");
+		//	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Sky", L"..\\Resources\\Texture\\Skybox.png");
+		//	shared_ptr<Material> material = make_shared<Material>();
+		//	material->SetShader(shader);
+		//	material->SetTexture(0, texture);
+		//	meshRenderer->SetMaterial(material);
+		//}
+		//skybox->AddComponent(meshRenderer);
+		//scene->AddGameObject(skybox);
 	}
 #pragma endregion
 
 #pragma region TestObject
-	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+	//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-	vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+	//vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
 
-	for (auto& gameObject : gameObjects)
-	{
-		gameObject->SetName(L"Tree01");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(10, -10.f, 50.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : gameObjects)
+	//{
+	//	gameObject->SetName(L"Tree01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10, -10.f, 50.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+	//	scene->AddGameObject(gameObject);
+	//}
 #pragma endregion
 
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
 		
-		/*vector<shared_ptr<GameObject>>	*/gameObjects = CharacData->Instantiate();
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 
 		for (auto& gameObject : gameObjects)
 		{
@@ -172,8 +172,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(Vec3(0, -10.f, 50.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.0f, 10.0f, 10.0f));
-			//gameObject->AddComponent(make_shared<Transform>());
-			//gameObject->AddComponent(make_shared<Player>());
+			gameObject->AddComponent(make_shared<Player>());
 			scene->AddGameObject(gameObject);
 
 		}
@@ -208,23 +207,23 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region Terrain
 	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
-		obj->SetStatic(true);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
-			material->SetInt(0, 0);
-			meshRenderer->SetMaterial(material);
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
+		//shared_ptr<GameObject> obj = make_shared<GameObject>();
+		//obj->AddComponent(make_shared<Transform>());
+		//obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
+		//obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
+		//obj->SetStatic(true);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
+		//	meshRenderer->SetMesh(mesh);
+		//}
+		//{
+		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
+		//	material->SetInt(0, 0);
+		//	meshRenderer->SetMaterial(material);
+		//}
+		//obj->AddComponent(meshRenderer);
+		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 

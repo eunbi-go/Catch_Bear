@@ -12,7 +12,6 @@
 
 AnimationController::AnimationController() : Component(COMPONENT_TYPE::ANIMATOR)
 {
-	_boneTransform = make_shared<StructuredBuffer>();
 }
 
 AnimationController::~AnimationController()
@@ -27,25 +26,32 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model)
 	_animSets = model->_allAnimationSets;
 
 	_animatedTrans.resize(model->_vecAnimatedFrame.size());
+	
+	matToParent.resize(model->_vecAnimatedFrame.size());
 
 	for (size_t i = 0; i < model->_vecAnimatedFrame.size(); ++i)
 	{
 		shared_ptr<Transform>	trans = make_shared<Transform>();
 		trans = model->_vecAnimatedFrame[i];
 		_animatedTrans[i] = trans;
+
+		matToParent[i] = trans->_matToParent;
 	}
+
+	_boneTransform = make_shared<StructuredBuffer>();
+	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(model->_vecAnimatedFrame.size()), matToParent.data());
 }
 
 void AnimationController::PushData()
 {
 	// BoneTrans
-	int	nBones = static_cast<int>(_bones.size());
+	int	nBones = static_cast<int>(_animatedTrans.size());
 	_boneTransform->Init(sizeof(Matrix), nBones);
 	_boneTransform->PushGraphicsData(SRV_REGISTER::t7);
 
-	// OffsetTrans
-	shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
-	mesh->GetBoneOffsetBuffer()->PushGraphicsData(SRV_REGISTER::t9);
+	//// OffsetTrans
+	//shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+	//mesh->GetBoneOffsetBuffer()->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::AdvanceTime(float fElapsedTime)
@@ -74,6 +80,7 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 				}
 			}
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
+			matToParent[j] = xmf4x4Transform;
 		}
 	}
 }

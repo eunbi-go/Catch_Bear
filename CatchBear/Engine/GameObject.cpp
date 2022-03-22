@@ -67,7 +67,7 @@ void GameObject::LateUpdate()
 	{
 		if (component)
 			component->LateUpdate();
-	}
+}
 
 	for (shared_ptr<MonoBehaviour>& script : _scripts)
 	{

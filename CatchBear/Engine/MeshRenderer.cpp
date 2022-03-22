@@ -18,6 +18,10 @@ MeshRenderer::~MeshRenderer()
 void MeshRenderer::Render()
 {
 	GetTransform()->PushData();
+	if (GetAnimationController())
+	{
+		GetAnimationController()->PushData();
+	}
 	_material->PushGraphicsData();
 	_mesh->Render(1, 0);
 }

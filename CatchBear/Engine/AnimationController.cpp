@@ -8,6 +8,7 @@
 #include "StructuredBuffer.h"
 #include "AnimationTrack.h"
 #include "AnimationSet.h"
+#include "Transform.h"
 
 AnimationController::AnimationController() : Component(COMPONENT_TYPE::ANIMATOR)
 {
@@ -24,6 +25,15 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model)
 	_animTracks = new AnimationTrack[_nAnimationTracks];
 
 	_animSets = model->_allAnimationSets;
+
+	_animatedTrans.resize(model->_vecAnimatedFrame.size());
+
+	for (size_t i = 0; i < model->_vecAnimatedFrame.size(); ++i)
+	{
+		shared_ptr<Transform>	trans = make_shared<Transform>();
+		trans = model->_vecAnimatedFrame[i];
+		_animatedTrans[i] = trans;
+	}
 }
 
 void AnimationController::PushData()
@@ -46,27 +56,25 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 	{
 		for (int i = 0; i < _nAnimationTracks; i++) _animTracks[i]._position += (fElapsedTime * _animTracks[i]._speed);
 
-		//for (int j = 0; j < _animClips[_clipIndex]->keyFrames.size(); j++)
-		//{
-		//	XMFLOAT4X4 xmf4x4Transform = Zero();
+		for (int j = 0; j < _animatedTrans.size(); j++)
+		{
+			XMFLOAT4X4 xmf4x4Transform = Zero();
 
-		//	for (int k = 0; k < _nAnimationTracks; k++)
-		//	{
-		//		if (_animTracks[k]._bEnable)
-		//		{
-		//			AnimationSet* pAnimationSet =
-		//				_animSets->_animationSet[_animTracks[k]._nAnimationSet];
-		//			pAnimationSet->SetPosition(_animTracks[k]._position);
+			for (int k = 0; k < _nAnimationTracks; k++)
+			{
+				if (_animTracks[k]._bEnable)
+				{
+					AnimationSet* pAnimationSet =
+						_animSets->_animationSet[_animTracks[k]._nAnimationSet];
+					pAnimationSet->SetPosition(_animTracks[k]._position);
 
-		//			XMFLOAT4X4 xmf4x4TrackTransform = pAnimationSet->GetSRT(j);
-		//			xmf4x4Transform = Add(xmf4x4Transform,
-		//				Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
-		//		}
-		//	}
-		//	_bones[j]->toParent = xmf4x4Transform;
-		//}
-
-		//pRootGameObject->UpdateTransform(NULL);
+					XMFLOAT4X4 xmf4x4TrackTransform = pAnimationSet->GetSRT(j);
+					xmf4x4Transform = Add(xmf4x4Transform,
+						Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
+				}
+			}
+			_animatedTrans[j]->_matToParent = xmf4x4Transform;
+		}
 	}
 }
 

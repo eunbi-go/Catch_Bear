@@ -208,6 +208,7 @@ bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 {
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	Protocol::C_MOVE MovePkt;
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
@@ -224,53 +225,115 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 
-	if (pkt.success() == false)
-	{
-		if (pkt.movedir() == 0)
-		{
-			pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-		}
-		if (pkt.movedir() == 1)
-		{
-			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-		}
-		if (pkt.movedir() == 2)
-		{
-			pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
-		}
-		if (pkt.movedir() == 3)
-		{
-			pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
-		}
-	}
-
 	// 여기서 서버에서 받은 위치로 player위치를 바꿔주는 코드가 들어감
+	// 만약 충돌한 상태라면 success가 false로 오겠지?
 	if (pkt.success() == true)
 	{
 		if (pkt.movedir() == 0)
 		{
 			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
 		}
 		if (pkt.movedir() == 1)
 		{
 			pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
 		}
 		if (pkt.movedir() == 2)
 		{
 			pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
 		}
 		if (pkt.movedir() == 3)
 		{
 			pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
+		}
+	}
+	else
+	{
+		// 앞으로 충돌, 뒤,왼,오 이동가능
+		if (pkt.movedir() == 0)
+		{
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 뒤로 충돌, 앞,왼,오 이동가능
+		if (pkt.movedir() == 1)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 왼쪽으로 충돌, 앞,뒤,우 이동가능
+		if (pkt.movedir() == 2)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 오른쪽으로 충돌, 앞,뒤,왼 이동가능
+		if (pkt.movedir() == 3)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
 		}
 	}
 
-	_player->GetTransform()->SetLocalPosition(pos);
-	//_player->SetPos(pos);
+	/*_player->GetTransform()->SetLocalPosition(pos);*/
 
 	if (INPUT->GetButton(KEY_TYPE::W))
 	{
-		Protocol::C_MOVE MovePkt;
 		MovePkt.set_xpos(_player->GetX());
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
@@ -281,7 +344,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	}
 	if (INPUT->GetButton(KEY_TYPE::S))
 	{
-		Protocol::C_MOVE MovePkt;
 		MovePkt.set_xpos(_player->GetX());
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
@@ -292,7 +354,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	}
 	if (INPUT->GetButton(KEY_TYPE::A))
 	{
-		Protocol::C_MOVE MovePkt;
 		MovePkt.set_xpos(_player->GetX());
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
@@ -303,7 +364,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	}
 	if (INPUT->GetButton(KEY_TYPE::D))
 	{
-		Protocol::C_MOVE MovePkt;
 		MovePkt.set_xpos(_player->GetX());
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
@@ -312,5 +372,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
 	}
+
 	return true;
 }

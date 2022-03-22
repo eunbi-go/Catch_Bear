@@ -110,13 +110,6 @@ float GameObject::GetZ()
 	return GetTransform()->GetWorldPosition().z;
 }
 
-void GameObject::SetPos(Vec3 _pos)
-{
-	Vec3 pos = GetTransform()->GetLocalPosition();
-
-	GetTransform()->SetLocalPosition(_pos);
-}
-
 shared_ptr<Transform> GameObject::GetTransform()
 {
 	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::TRANSFORM);

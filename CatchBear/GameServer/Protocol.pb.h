@@ -1362,6 +1362,7 @@ class C_MOVE final :
     kYPosFieldNumber = 3,
     kZPosFieldNumber = 4,
     kMoveDirFieldNumber = 5,
+    kSuccessFieldNumber = 6,
   };
   // .Protocol.ObjectType objType = 1;
   void clear_objtype();
@@ -1408,6 +1409,15 @@ class C_MOVE final :
   void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // bool success = 6;
+  void clear_success();
+  bool success() const;
+  void set_success(bool value);
+  private:
+  bool _internal_success() const;
+  void _internal_set_success(bool value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.C_MOVE)
  private:
   class _Internal;
@@ -1420,6 +1430,7 @@ class C_MOVE final :
   float ypos_;
   float zpos_;
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
+  bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2111,6 +2122,26 @@ inline void C_MOVE::_internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value)
 inline void C_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_movedir(value);
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.moveDir)
+}
+
+// bool success = 6;
+inline void C_MOVE::clear_success() {
+  success_ = false;
+}
+inline bool C_MOVE::_internal_success() const {
+  return success_;
+}
+inline bool C_MOVE::success() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.success)
+  return _internal_success();
+}
+inline void C_MOVE::_internal_set_success(bool value) {
+  
+  success_ = value;
+}
+inline void C_MOVE::set_success(bool value) {
+  _internal_set_success(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.success)
 }
 
 // -------------------------------------------------------------------

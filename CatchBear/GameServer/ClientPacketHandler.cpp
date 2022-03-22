@@ -3,6 +3,7 @@
 //#include "Player.h"
 //#include "Lobby.h"
 #include "GameSession.h"
+#include "Timer.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -160,6 +161,8 @@ bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidt
 
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	
 	// 후에는 static오브젝트들 위치 불러와서 플레이어랑 충돌체크함
 	// 일단은 테스트용으로 object위치
 	float staticObjX = 0.f;
@@ -181,20 +184,76 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	Protocol::S_MOVE movePkt;
 
 	// 여기서 충돌체크하고 앞으로 이동 가능하면 이동가능여부만 보내줌
-	bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+	if (gameSession->GetIsCollid() == false)
+	{
+		bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+		gameSession->SetIsCollid(isCollid);
+		movePkt.set_success(true);
+		switch (pkt.movedir())
+		{
+		case 0:
+			gameSession->SetMoveDir(MoveDir::UP);
+			break;
+		case 1:
+			gameSession->SetMoveDir(MoveDir::DOWN);
+			break;
+		case 2:
+			gameSession->SetMoveDir(MoveDir::LEFT);
+			break;
+		case 3:
+			gameSession->SetMoveDir(MoveDir::RIGHT);
+			break;
+		}
+		movePkt.set_movedir(pkt.movedir());
+	}
 
-	// 이동 성공
-	if (isCollid) {
+	// 충돌하는순간 방향을 저장해서 그 방향은 MOVE패킷 보내지 않음
+	if (gameSession->GetIsCollid() == true) {
 		movePkt.set_success(false);
 		cout << "충돌함!" << endl;
-	}
-	else
-		movePkt.set_success(true);
 
-	movePkt.set_movedir(pkt.movedir());
+		//if (pkt.movedir() == 0)
+		//	gameSession->SetMoveDir(MoveDir::UP);
+		//if (pkt.movedir() == 1)
+		//	gameSession->SetMoveDir(MoveDir::DOWN);
+		//if (pkt.movedir() == 2)
+		//	gameSession->SetMoveDir(MoveDir::LEFT);
+		//if (pkt.movedir() == 3)
+		//	gameSession->SetMoveDir(MoveDir::RIGHT);
+
+		switch (gameSession->GetMoveDir())
+		{
+		case MoveDir::UP:
+			movePkt.set_movedir(0);
+			//movePkt.set_zpos(pkt.zpos() - 5.f);
+			//movePkt.set_xpos(pkt.xpos());
+			break;
+		case MoveDir::DOWN:
+			movePkt.set_movedir(1);
+			//movePkt.set_zpos(pkt.zpos() + 5.f);
+			//movePkt.set_xpos(pkt.xpos());
+			break;
+		case MoveDir::LEFT:
+			movePkt.set_movedir(2);
+			//movePkt.set_xpos(pkt.xpos() + 5.f);
+			//movePkt.set_zpos(pkt.zpos());
+			break;
+		case MoveDir::RIGHT:
+			movePkt.set_movedir(3);
+			//movePkt.set_xpos(pkt.xpos() - 5.f);
+			//movePkt.set_zpos(pkt.zpos());
+			break;
+		}
+
+		bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+		if (!isCollid)
+		{
+			gameSession->SetIsCollid(isCollid);
+		}
+	}
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
-	session->Send(sendBuffer);
+	gameSession->Send(sendBuffer);
 	return true;
 }
 

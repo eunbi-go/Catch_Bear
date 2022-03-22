@@ -34,7 +34,6 @@ public:
 	float GetX();
 	float GetY();
 	float GetZ();
-	void SetPos(Vec3 _pos);
 
 public:
 	shared_ptr<Transform> GetTransform();

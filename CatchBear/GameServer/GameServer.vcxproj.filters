@@ -45,6 +45,9 @@
     <ClCompile Include="Lobby.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -72,6 +75,9 @@
       <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="Lobby.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
       <Filter>GameContents</Filter>
     </ClInclude>
   </ItemGroup>

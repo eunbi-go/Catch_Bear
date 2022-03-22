@@ -57,6 +57,7 @@ message C_MOVE
 	float YPos = 3;
 	float ZPos = 4;
 	uint64 moveDir = 5;
+	bool success = 6;
 }
 
 message S_MOVE

@@ -41,7 +41,7 @@ private:
 
 public:
 	void CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo);
-	void CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo);
+	void CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, SkinningInfo skinningInfo);
 	uint32	GetSubsetCount() { return static_cast<uint32>(_vecIndexInfo.size()); }
 	
 	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo);

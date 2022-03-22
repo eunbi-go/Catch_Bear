@@ -123,12 +123,32 @@ Vec3 Transform::DecomposeRotationMatrix(const Matrix& rotation)
 	return ret;
 }
 
-void Transform::SetChild(shared_ptr<Transform> child)
+shared_ptr<Transform> Transform::FindTransform(wstring name)
 {
-	child->_parent = shared_from_this();
+	shared_ptr<Transform>	frame = make_shared<Transform>();
+	if (_name == name) return shared_from_this();
+	
+	if (_sibling)
+	{
+		if (frame = _sibling->FindTransform(name))
+			return frame;
+	}
 	if (_child)
 	{
-		child->_sibling = _child->_sibling;
+		if (frame = _child->FindTransform(name))
+			return frame;
+	}
+	return NULL;
+}
+
+
+void Transform::SetChild(shared_ptr<Transform> child)
+{
+	if (child)
+		child->_parent = shared_from_this();
+	if (_child)
+	{
+		if (child)	child->_sibling = _child->_sibling;
 		_child->_sibling = child;
 	}
 	else _child = child;

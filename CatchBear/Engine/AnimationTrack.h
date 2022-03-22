@@ -34,4 +34,5 @@ public:
 
 	shared_ptr<AnimationSets> _allAnimationSets;
 	shared_ptr<class Transform>	_rootObject;
+	vector<shared_ptr<class Transform>>	_vecAnimatedFrame;
 };

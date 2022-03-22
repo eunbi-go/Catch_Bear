@@ -33,6 +33,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 	char pStrTocken[64] = { '\0' };
 	_modelInfo = make_shared<AnimationModelInfo>();
+	_modelInfo->_rootObject = make_shared<Transform>();
 
 	for (; ;)
 	{
@@ -41,6 +42,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 			if (!strcmp(pStrTocken, "<Hierarchy>:"))
 			{
 				_modelInfo->_rootObject = LoadFrameHierarchyFromFile(NULL, pFile, true);
+				int l = 0;
 			}
 
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
@@ -55,7 +57,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 				// Mesh 생성해서 Reosurces에 추가
 				shared_ptr<Mesh> mesh = make_shared<Mesh>();
-				mesh->CreateAnimationMeshFromFBX(&_staticMeshInfo, _animationClipInfo, _characterInfo, _skinningInfo);
+				mesh->CreateAnimationMeshFromFBX(&_staticMeshInfo, _animationClipInfo, _skinningInfo);
 				mesh->SetName(path);
 				GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
 
@@ -393,7 +395,7 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 	int32	nAnimationSets, nFrames;
 	int nSkin;
 	
-	_modelInfo = make_shared<AnimationModelInfo>();
+	//_modelInfo = make_shared<AnimationModelInfo>();
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
@@ -407,20 +409,32 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 		if (!strcmp(pStrTocken, "<FrameNames>:"))
 		{
+			// 1. SkinMesh의 총 개수
 			int nSkins = ReadIntegerFromFile(pFile);	// 1
 
+			// 2. 몇 번째 SkinMesh인지
 			nSkin = ReadIntegerFromFile(pFile);		// 0
 			_modelInfo->_allAnimationSets = make_shared<AnimationSets>(nAnimationSets);
 
+			// 3. SkinMesh Name
 			ReadStringFromFileForCharac(pFile, pStrTocken);	// SkineMesh name: EvilBear
+			
+			// 4. 애니메이션에 사용되는 뼈들의 개수
 			nFrames = ReadIntegerFromFile(pFile);	// 72
 
+			_modelInfo->_vecAnimatedFrame.resize(nFrames);
+
+			// 5. 애니메이션에 사용되는 프레임(뼈)들의 이름
 			for (int i = 0; i < nFrames; ++i)
 			{
 				ReadStringFromFileForCharac(pFile, pStrTocken);	// FrameName
 
 				wstring	frameName = s2ws(pStrTocken);
-				_animationFrameName.push_back(frameName);
+
+				_modelInfo->_vecAnimatedFrame[i] = make_shared<Transform>();
+				_modelInfo->_vecAnimatedFrame[i] = _modelInfo->_rootObject->FindTransform(frameName);
+			
+				int j = 0;
 			}
 		}
 
@@ -491,7 +505,6 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		// Animation
 		shared_ptr<AnimationController> animator = make_shared<AnimationController>();
 		gameObject->AddComponent(animator);
-		animator->SetBones(_characterInfo);
 		animator->SetAnimClips(_animationClipInfo);
 		animator->SetModelInfo(_modelInfo);
 

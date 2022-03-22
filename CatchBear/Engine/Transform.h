@@ -39,6 +39,8 @@ public:
 	static bool CloseEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon());
 	static Vec3 DecomposeRotationMatrix(const Matrix& rotation);
 
+public:
+	shared_ptr<Transform>	FindTransform(wstring name);
 
 public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }

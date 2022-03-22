@@ -127,7 +127,7 @@ void Mesh::CreateStaticMeshFromFBX(const StaticMeshInfo* meshInfo)
 	return;
 }
 
-void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
+void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, SkinningInfo skinningInfo)
 {
 	CreateVertexBuffer(meshInfo->vertices);
 

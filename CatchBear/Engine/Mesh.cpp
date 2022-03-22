@@ -143,7 +143,7 @@ void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<sha
 		}
 	}
 
-	CreateBonesAndAnimations(animationMat, boneInfo, skinningInfo);
+	//CreateBonesAndAnimations(animationMat, boneInfo, skinningInfo);
 
 	return;
 }

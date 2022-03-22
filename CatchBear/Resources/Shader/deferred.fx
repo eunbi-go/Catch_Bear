@@ -51,19 +51,12 @@ VS_OUT VS_Main(VS_IN input)
 
     if (g_int_0 == 1)
     {
-        float4x4 mtxVertexToBoneWorld = (float4x4)0.0f;
-        for (int i = 0; i < 4; ++i)
-        {
-            mtxVertexToBoneWorld += input.weight[i] * mul(g_offset[input.indices[i]], g_boneTrans[input.indices[i]]);
-        }
-
-        float3 position = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
 
         output.pos = mul(float4(input.pos, 1.f), input.matWVP);
         output.uv = input.uv;
 
-        //output.viewPos = mul(float4(input.pos, 1.f), input.matWV).xyz;
-        output.viewPos = mul(float4(position, 1.f), input.matWV).xyz;
+        output.viewPos = mul(float4(input.pos, 1.f), input.matWV).xyz;
+        //output.viewPos = mul(float4(position, 1.f), input.matWV).xyz;
         output.viewNormal = normalize(mul(float4(input.normal, 0.f), input.matWV).xyz);
         output.viewTangent = normalize(mul(float4(input.tangent, 0.f), input.matWV).xyz);
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));

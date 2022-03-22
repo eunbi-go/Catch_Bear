@@ -25,6 +25,7 @@ public:
 	void SetPosition(float fPosition) { _position = fPosition; }
 };
 
+
 class AnimationModelInfo
 {
 public:
@@ -32,4 +33,5 @@ public:
 	~AnimationModelInfo() { }
 
 	shared_ptr<AnimationSets> _allAnimationSets;
+	shared_ptr<class Transform>	_rootObject;
 };

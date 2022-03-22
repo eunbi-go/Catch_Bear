@@ -25,7 +25,8 @@ void Transform::FinalUpdate()
 	_matLocal = matScale * matRotation * matTranslation;	// 부모의 local space로 가기 위한 행렬
 	_matWorld = _matLocal;									// world space로 가기 위한 행렬
 
-	shared_ptr<Transform> parent = GetParent().lock();
+	//shared_ptr<Transform> parent = GetParent().lock();
+	shared_ptr<Transform> parent = GetParent();
 	if (parent != nullptr)
 	{
 		_matWorld *= parent->GetLocalToWorldMatrix();
@@ -122,3 +123,13 @@ Vec3 Transform::DecomposeRotationMatrix(const Matrix& rotation)
 	return ret;
 }
 
+void Transform::SetChild(shared_ptr<Transform> child)
+{
+	child->_parent = shared_from_this();
+	if (_child)
+	{
+		child->_sibling = _child->_sibling;
+		_child->_sibling = child;
+	}
+	else _child = child;
+}

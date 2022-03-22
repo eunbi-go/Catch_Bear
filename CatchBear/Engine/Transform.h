@@ -1,7 +1,8 @@
 #pragma once
 #include "Component.h"
 
-class Transform : public Component
+
+class Transform : public Component, public enable_shared_from_this<Transform>
 {
 public:
 	Transform();
@@ -41,7 +42,11 @@ public:
 
 public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
-	weak_ptr<Transform> GetParent() { return _parent; }
+	void SetChild(shared_ptr<Transform> child);
+	void SetName(wstring name) { _name = name; }
+
+public:
+	shared_ptr<Transform> GetParent() { return _parent; }
 
 private:
 	// TODO: World 위치 관련
@@ -51,12 +56,13 @@ private:
 
 	Matrix	_matLocal = {};
 	Matrix	_matWorld = {};
+public:
 	// 계층구조에서 부모에 상대적인 행렬
 	Matrix	_matToParent = {};
 
-	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
-	weak_ptr<Transform>		_child;
-	weak_ptr<Transform>		_sibling;
+	shared_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
+	shared_ptr<Transform>		_child;
+	shared_ptr<Transform>		_sibling;
 
 	wstring	_name;
 };

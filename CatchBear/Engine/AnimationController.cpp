@@ -6,6 +6,8 @@
 #include "Mesh.h"
 #include "MeshRenderer.h"
 #include "StructuredBuffer.h"
+#include "AnimationTrack.h"
+#include "AnimationSet.h"
 
 AnimationController::AnimationController() : Component(COMPONENT_TYPE::ANIMATOR)
 {
@@ -14,6 +16,14 @@ AnimationController::AnimationController() : Component(COMPONENT_TYPE::ANIMATOR)
 
 AnimationController::~AnimationController()
 {
+}
+
+void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model)
+{
+	_nAnimationTracks = 1;
+	_animTracks = new AnimationTrack[_nAnimationTracks];
+
+	_animSets = model->_allAnimationSets;
 }
 
 void AnimationController::PushData()
@@ -28,60 +38,66 @@ void AnimationController::PushData()
 	mesh->GetBoneOffsetBuffer()->PushGraphicsData(SRV_REGISTER::t9);
 }
 
-void AnimationController::Play()
+void AnimationController::AdvanceTime(float fElapsedTime)
 {
+	_time += fElapsedTime;
+
+	if (_animTracks)
+	{
+		for (int i = 0; i < _nAnimationTracks; i++) _animTracks[i]._position += (fElapsedTime * _animTracks[i]._speed);
+
+		//for (int j = 0; j < _animClips[_clipIndex]->keyFrames.size(); j++)
+		//{
+		//	XMFLOAT4X4 xmf4x4Transform = Zero();
+
+		//	for (int k = 0; k < _nAnimationTracks; k++)
+		//	{
+		//		if (_animTracks[k]._bEnable)
+		//		{
+		//			AnimationSet* pAnimationSet =
+		//				_animSets->_animationSet[_animTracks[k]._nAnimationSet];
+		//			pAnimationSet->SetPosition(_animTracks[k]._position);
+
+		//			XMFLOAT4X4 xmf4x4TrackTransform = pAnimationSet->GetSRT(j);
+		//			xmf4x4Transform = Add(xmf4x4Transform,
+		//				Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
+		//		}
+		//	}
+		//	_bones[j]->toParent = xmf4x4Transform;
+		//}
+
+		//pRootGameObject->UpdateTransform(NULL);
+	}
 }
+
 
 void AnimationController::FinalUpdate()
 {
 	_updateTime += DELTA_TIME;
-
-	//PlayAnimation();
 }
 
-void AnimationController::PlayAnimation()
+void AnimationController::SetTrackAnimationSet(int nAnimationTrack, int nAnimationSet)
 {
-	shared_ptr<AnimationClipInfo>	animClip = _animClips[_clipIndex];
-
-	for (int i = 0; i < 72/*animClip->.size()*/; ++i)
-	{
-		Matrix trans;
-		XMStoreFloat4x4(&trans, XMMatrixIdentity());
-
-		if (animClip->position <= 0.0f)
-			animClip->position += (animClip->length * _updateTime);
-
-		Matrix clipTrans = GetboneTrans(i);
-		trans = Add(trans, Scale(clipTrans, 1.f));
-
-		_bones[i]->toParent = trans;
-	}
+	if (_animTracks) _animTracks[nAnimationTrack]._nAnimationSet = nAnimationSet;
 }
 
-Matrix AnimationController::GetboneTrans(int nBone)
+void AnimationController::SetTrackEnable(int nAnimationTrack, bool bEnable)
 {
-	Matrix	trans;
-	XMStoreFloat4x4(&trans, XMMatrixIdentity());
-
-	shared_ptr<AnimationClipInfo>	animClip = _animClips[_clipIndex];
-
-	for (int i = 0; i < animClip->nkeyFrames - 1; ++i)
-	{
-		if ((animClip->position >= animClip->keyFrames[i].time) && animClip->position <= animClip->keyFrames[i + 1].time)
-		{
-			float t = (animClip->position - animClip->keyFrames[i].time) / (animClip->keyFrames[i + 1].time - animClip->keyFrames[i].time);
-			trans = Interpolate(animClip->keyFrames[i].matOffset[nBone], animClip->keyFrames[i + 1].matOffset[nBone], t);
-			break;
-		}
-	}
-
-	return trans;
+	if (_animTracks) _animTracks[nAnimationTrack].SetEnable(bEnable);
 }
 
-void AnimationController::UpdateBones()
+void AnimationController::SetTrackPosition(int nAnimationTrack, float fPosition)
 {
-	//m_xmf4x4World = (pxmf4x4Parent) ? Matrix4x4::Multiply(m_xmf4x4ToParent, *pxmf4x4Parent) : m_xmf4x4ToParent;
-
-	//if (m_pSibling) m_pSibling->UpdateTransform(pxmf4x4Parent);
-	//if (m_pChild) m_pChild->UpdateTransform(&m_xmf4x4World);
+	if (_animTracks) _animTracks[nAnimationTrack].SetPosition(fPosition);
 }
+
+void AnimationController::SetTrackSpeed(int nAnimationTrack, float fSpeed)
+{
+	if (_animTracks) _animTracks[nAnimationTrack].SetSpeed(fSpeed);
+}
+
+void AnimationController::SetTrackWeight(int nAnimationTrack, float fWeight)
+{
+	if (_animTracks) _animTracks[nAnimationTrack].SetWeight(fWeight);
+}
+

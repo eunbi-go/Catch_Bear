@@ -55,5 +55,9 @@ private:
 	Matrix	_matToParent = {};
 
 	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
+	weak_ptr<Transform>		_child;
+	weak_ptr<Transform>		_sibling;
+
+	wstring	_name;
 };
 

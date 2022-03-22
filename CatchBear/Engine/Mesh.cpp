@@ -150,57 +150,6 @@ void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<sha
 
 void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
 {
-#pragma region Animation
-	//vector<shared_ptr<AnimationClipInfo>> animClips = animationClipInfo;
-	//
-	//for (shared_ptr<AnimationClipInfo>& ac : animClips)
-	//{
-	//	AnimClipInfo	info = {};
-
-	//	info.animName = ac->name;
-	//	info.duration = ac->length;
-	//	info.frameCount = ac->nkeyFrames;
-
-	//	info.keyFrames.resize(ac->vecKeyFrames.size());
-
-	//	const int32 nBones = static_cast<int32>(ac->vecKeyFrames.size());
-
-	//	for (int32 b = 0; b < nBones; ++b)
-	//	{
-	//		auto& vec = ac->vecKeyFrames[b];
-
-	//		// size: b번 뼈가 갖고 있는 프레임 행렬의 수
-	//		const int32 size = static_cast<int32>(vec.size());
-	//		info.keyFrames[b].resize(size);
-
-	//		for (int32 f = 0; f < size; ++f)
-	//		{
-	//			AnimationFrameInfo2& kf = vec[f];
-	//			KeyFrameInfo& kfInfo = info.keyFrames[b][f];
-
-	//			kfInfo.time = kf.time;
-	//			kfInfo.frame = static_cast<int32>(size);
-
-	//			kfInfo.matTransform = kf.matOffset;
-	//		}
-	//	}
-	//	_animClips.push_back(info);
-	//}
-#pragma endregion
-
-#pragma region Bones
-	vector<shared_ptr<CharacterBoneInfo>> bones = boneInfo;
-
-	for (shared_ptr<CharacterBoneInfo>& bone : bones)
-	{
-		BoneInfo	bInfo = {};
-		bInfo.boneName = bone->boneName;
-		bInfo.matOffset = bone->toParent;
-		bInfo.parentIdx = bone->parentIdx;
-	}
-#pragma endregion
-
-#pragma endregion Skinning
 	// Bone Offset 행렬
 	SkinningInfo	skInfo = skinningInfo;
 	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
@@ -213,6 +162,4 @@ void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animat
 	// OffsetMatrix StructedBuffer 세팅
 	_offsetBuffer = make_shared<StructuredBuffer>();
 	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
-
-#pragma endregion
 }

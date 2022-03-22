@@ -365,3 +365,10 @@ inline XMFLOAT4X4 Identity()
 	XMStoreFloat4x4(&xmf4x4Result, XMMatrixIdentity());
 	return(xmf4x4Result);
 }
+
+inline XMFLOAT4X4 Zero()
+{
+	XMFLOAT4X4 xmf4x4Result;
+	XMStoreFloat4x4(&xmf4x4Result, XMMatrixSet(0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f));
+	return(xmf4x4Result);
+}

@@ -16,7 +16,7 @@ Player::~Player()
 void Player::LateUpdate()
 {
 	KeyCheck();
-	GetAnimationController()->PlayAnimation();
+	GetAnimationController()->AdvanceTime(DELTA_TIME);
 }
 
 void Player::KeyCheck()

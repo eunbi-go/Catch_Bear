@@ -24,32 +24,32 @@ void AnimationSet::SetPosition(float fTrackPosition)
 {
 	_position = fTrackPosition;
 	int i = 0;
+	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
+	//switch (_ntype)
+	//{
+	//case ANIMATION_TYPE_LOOP:
+	//{
+	//	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
+	//	break;
+	//}
 
-	switch (_ntype)
-	{
-	case ANIMATION_TYPE_LOOP:
-	{
-		_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
-		break;
-	}
+	//case ANIMATION_TYPE_ONCE:
+	//	_position = fmod(fTrackPosition, _length);
+	//	//if (m_fPosition >= m_fLength)
+	//	//{
+	//	//	// 이번 동작 끝
+	//	//	i = 1;
+	//	//	//m_fPosition = 0.0f;
+	//	//}
 
-	case ANIMATION_TYPE_ONCE:
-		_position = fmod(fTrackPosition, _length);
-		//if (m_fPosition >= m_fLength)
-		//{
-		//	// 이번 동작 끝
-		//	i = 1;
-		//	//m_fPosition = 0.0f;
-		//}
+	//	//char buf[100];
+	//	//sprintf_s(buf, "m_fPosition: %d\n", i);
+	//	//OutputDebugStringA(buf);
+	//	break;
 
-		//char buf[100];
-		//sprintf_s(buf, "m_fPosition: %d\n", i);
-		//OutputDebugStringA(buf);
-		break;
-
-	case ANIMATION_TYPE_PINGPONG:
-		break;
-	}
+	//case ANIMATION_TYPE_PINGPONG:
+	//	break;
+	//}
 }
 
 XMFLOAT4X4 AnimationSet::GetSRT(int nBone)

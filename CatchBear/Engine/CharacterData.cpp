@@ -493,6 +493,7 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->AddComponent(animator);
 		animator->SetBones(_characterInfo);
 		animator->SetAnimClips(_animationClipInfo);
+		animator->SetModelInfo(_modelInfo);
 
 		v.push_back(gameObject);
 	}

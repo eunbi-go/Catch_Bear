@@ -172,8 +172,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(Vec3(0, -10.f, 50.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.0f, 10.0f, 10.0f));
+			gameObject->AddComponent(make_shared<Transform>());
+			gameObject->AddComponent(make_shared<Player>());
 			scene->AddGameObject(gameObject);
-			//gameObject->AddComponent(make_shared<Player>());
+
 		}
 
 		//////////////////////////////////////////////////////////////

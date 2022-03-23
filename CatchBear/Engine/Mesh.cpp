@@ -150,16 +150,16 @@ void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<sha
 
 void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, SkinningInfo skinningInfo)
 {
-	// Bone Offset 青纺
-	SkinningInfo	skInfo = skinningInfo;
-	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
+	//// Bone Offset 青纺
+	//SkinningInfo	skInfo = skinningInfo;
+	//const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
 
-	vector<Matrix>	offsetMat;
-	offsetMat.resize(boneCnt);
+	//vector<Matrix>	offsetMat;
+	//offsetMat.resize(boneCnt);
 
-	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
+	//for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
 
-	// OffsetMatrix StructedBuffer 技泼
-	_offsetBuffer = make_shared<StructuredBuffer>();
-	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+	//// OffsetMatrix StructedBuffer 技泼
+	//_offsetBuffer = make_shared<StructuredBuffer>();
+	//_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
 }

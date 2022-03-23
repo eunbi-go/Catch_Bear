@@ -84,13 +84,20 @@ VS_OUT VS_Main(VS_IN input)
         output.pos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld);
         output.uv = input.uv;
 
-        output.viewPos = mul(output.pos, g_matWV).xyz;
-        //output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        //output.viewPos = mul(output.pos, g_matWV).xyz;
+        output.viewPos = mul(float4(input.pos, 1.f), g_matWVP).xyz;
         output.viewNormal = normalize(mul(float4(input.normal, 0.f), g_matWV).xyz);
         output.viewTangent = normalize(mul(float4(input.tangent, 0.f), g_matWV).xyz);
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
 
-        //output.pos = mul(float4(output.viewPos, 1.f), input.matWVP);
+        //output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        //output.uv = input.uv;
+
+        //output.viewNormal = normalize(mul(float4(input.normal, 0.f), mtxVertexToBoneWorld).xyz);
+        //output.viewTangent = normalize(mul(float4(input.tangent, 0.f), mtxVertexToBoneWorld).xyz);
+        //output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
+
+        //output.pos = mul(mul(float4(output.viewPos, 1.f), input.matWV), input.matWVP);
     }
 
     return output;
@@ -111,19 +118,19 @@ PS_OUT PS_Main(VS_OUT input)
     if (g_tex_on_0 == 1)
         color = g_tex_0.Sample(g_sam_0, input.uv);
 
-    float3 viewNormal = input.viewNormal;
-    if (g_tex_on_1 == 1)
-    {
-        // [0,255] 범위에서 [0,1]로 변환
-        float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
-        // [0,1] 범위에서 [-1,1]로 변환
-        tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
-        float3x3 matTBN = { input.viewTangent, input.viewBinormal, input.viewNormal };
-        viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
-    }
+    //float3 viewNormal = input.viewNormal;
+    //if (g_tex_on_1 == 1)
+    //{
+    //    // [0,255] 범위에서 [0,1]로 변환
+    //    float3 tangentSpaceNormal = g_tex_1.Sample(g_sam_0, input.uv).xyz;
+    //    // [0,1] 범위에서 [-1,1]로 변환
+    //    tangentSpaceNormal = (tangentSpaceNormal - 0.5f) * 2.f;
+    //    float3x3 matTBN = { input.viewTangent, input.viewBinormal, input.viewNormal };
+    //    viewNormal = normalize(mul(tangentSpaceNormal, matTBN));
+    //}
 
-    output.position = float4(input.viewPos.xyz, 0.f);
-    output.normal = float4(viewNormal.xyz, 0.f);
+    output.position = float4(input.pos.xyz, 0.f);
+    //output.normal = float4(viewNormal.xyz, 0.f);
     output.color = color;
 
     return output;

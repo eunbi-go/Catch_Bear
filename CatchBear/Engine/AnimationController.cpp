@@ -18,7 +18,7 @@ AnimationController::~AnimationController()
 {
 }
 
-void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model)
+void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, SkinningInfo skinInfo)
 {
 	_nAnimationTracks = 1;
 	_animTracks = new AnimationTrack[_nAnimationTracks];
@@ -40,6 +40,19 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model)
 
 	_boneTransform = make_shared<StructuredBuffer>();
 	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(model->_vecAnimatedFrame.size()), matToParent.data());
+
+	// Bone Offset 행렬
+	SkinningInfo	skInfo = skinInfo;
+	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
+
+
+	offsetMat.resize(boneCnt);
+
+	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
+
+	// OffsetMatrix StructedBuffer 세팅
+	_offsetBuffer = make_shared<StructuredBuffer>();
+	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
 }
 
 void AnimationController::PushData()
@@ -51,9 +64,10 @@ void AnimationController::PushData()
 	_boneTransform->PushGraphicsData(SRV_REGISTER::t7);
 
 	//// OffsetTrans
-	shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
-	shared_ptr<StructuredBuffer> offset = mesh->GetBoneOffsetBuffer();
-	offset->PushGraphicsData(SRV_REGISTER::t9);
+	//shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+	//shared_ptr<StructuredBuffer> offset = mesh->GetBoneOffsetBuffer();
+	//_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+	_offsetBuffer->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::AdvanceTime(float fElapsedTime)
@@ -82,8 +96,13 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 				}
 			}
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
-			matToParent[j] = xmf4x4Transform;
+			// 여기서 변환된 toParent 행렬을 플레이어의 해당 프레임의 toParent 행렬에 넣어줘야 한다.
+			
+			
+			//matToParent[j] = xmf4x4Transform;
 		}
+
+		GetGameObject()->GetTransform()->UpdateTransform(NULL);
 	}
 }
 

@@ -20,7 +20,7 @@ public:
 public:
 	void SetBones(vector<shared_ptr<CharacterBoneInfo>> bones) { _bones = bones; }
 	void SetAnimClips(vector<shared_ptr<AnimationClipInfo>> anClips) { _animClips = anClips; }
-	void SetModelInfo(shared_ptr<AnimationModelInfo> model);
+	void SetModelInfo(shared_ptr<AnimationModelInfo> model, SkinningInfo skinInfo);
 
 public:
 	void PushData();
@@ -57,5 +57,7 @@ private:
 	shared_ptr<AnimationSets>			_animSets;
 	vector<shared_ptr<Transform>>		_animatedTrans;
 	vector<Matrix>	matToParent;
+	shared_ptr<StructuredBuffer>	_offsetBuffer;
+	vector<Matrix>	offsetMat;
 };
 

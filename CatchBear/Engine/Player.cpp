@@ -17,6 +17,7 @@ void Player::LateUpdate()
 {
 	KeyCheck();
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
+	GetTransform()->UpdateTransform(NULL);
 }
 
 void Player::KeyCheck()

@@ -501,12 +501,13 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+		gameObject->GetTransform()->SetChild(_modelInfo->_rootObject);
 
 		// Animation
 		shared_ptr<AnimationController> animator = make_shared<AnimationController>();
 		gameObject->AddComponent(animator);
 		animator->SetAnimClips(_animationClipInfo);
-		animator->SetModelInfo(_modelInfo);
+		animator->SetModelInfo(_modelInfo, _skinningInfo);
 
 		v.push_back(gameObject);
 	}

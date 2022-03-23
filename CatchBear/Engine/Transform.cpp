@@ -25,12 +25,13 @@ void Transform::FinalUpdate()
 	_matLocal = matScale * matRotation * matTranslation;	// 부모의 local space로 가기 위한 행렬
 	_matWorld = _matLocal;									// world space로 가기 위한 행렬
 
+
 	//shared_ptr<Transform> parent = GetParent().lock();
-	shared_ptr<Transform> parent = GetParent();
-	if (parent != nullptr)
-	{
-		_matWorld *= parent->GetLocalToWorldMatrix();
-	}
+	//shared_ptr<Transform> parent = GetParent();
+	//if (parent != nullptr)
+	//{
+	//	_matWorld *= parent->GetLocalToWorldMatrix();
+	//}
 }
 
 void Transform::PushData()
@@ -139,6 +140,14 @@ shared_ptr<Transform> Transform::FindTransform(wstring name)
 			return frame;
 	}
 	return NULL;
+}
+
+void Transform::UpdateTransform(Matrix* matParent)
+{
+	_matWorld = (matParent) ? Multiply(_matToParent, *matParent) : _matToParent;
+
+	if (_sibling)	_sibling->UpdateTransform(matParent);
+	if (_child)		_child->UpdateTransform(&_matWorld);
 }
 
 

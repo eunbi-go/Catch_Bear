@@ -44,7 +44,7 @@ public:
 	void CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<shared_ptr<AnimationClipInfo>> animationMat, SkinningInfo skinningInfo);
 	uint32	GetSubsetCount() { return static_cast<uint32>(_vecIndexInfo.size()); }
 	
-	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationMat, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo);
+	void CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationMat, SkinningInfo skinningInfo);
 
 private:
 	ComPtr<ID3D12Resource>		_vertexBuffer;

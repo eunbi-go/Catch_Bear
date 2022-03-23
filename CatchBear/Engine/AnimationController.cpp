@@ -46,12 +46,14 @@ void AnimationController::PushData()
 {
 	// BoneTrans
 	int	nBones = static_cast<int>(_animatedTrans.size());
-	_boneTransform->Init(sizeof(Matrix), nBones);
+	//_boneTransform->Init(sizeof(Matrix), nBones);
+	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(matToParent.size()), matToParent.data());
 	_boneTransform->PushGraphicsData(SRV_REGISTER::t7);
 
 	//// OffsetTrans
-	//shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
-	//mesh->GetBoneOffsetBuffer()->PushGraphicsData(SRV_REGISTER::t9);
+	shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
+	shared_ptr<StructuredBuffer> offset = mesh->GetBoneOffsetBuffer();
+	offset->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::AdvanceTime(float fElapsedTime)

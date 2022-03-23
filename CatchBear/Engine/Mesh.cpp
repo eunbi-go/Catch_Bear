@@ -143,12 +143,12 @@ void Mesh::CreateAnimationMeshFromFBX(const StaticMeshInfo* meshInfo, vector<sha
 		}
 	}
 
-	//CreateBonesAndAnimations(animationMat, boneInfo, skinningInfo);
+	CreateBonesAndAnimations(animationMat, skinningInfo);
 
 	return;
 }
 
-void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, vector<shared_ptr<CharacterBoneInfo>> boneInfo, SkinningInfo skinningInfo)
+void Mesh::CreateBonesAndAnimations(vector<shared_ptr<AnimationClipInfo>> animationClipInfo, SkinningInfo skinningInfo)
 {
 	// Bone Offset За·Д
 	SkinningInfo	skInfo = skinningInfo;

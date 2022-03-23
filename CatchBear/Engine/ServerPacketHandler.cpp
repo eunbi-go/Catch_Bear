@@ -21,18 +21,31 @@ bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 
 bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 {
-	//if (pkt.success() == false)
-	//	return true;
+	if (pkt.success() == false)
+		return true;
 
-	//GPlayer.playerId = pkt.playerid();
-	//cout << "이 플레이어의 닉네임은 " << GPlayer.name << "이며 ";
-	//cout << "이 클라이언트의 ID는 " << GPlayer.playerId << "입니다!" << endl;
-	//
-	//if (pkt.players().size() == 0)
-	//{
-	//	// 캐릭터 생성창
-	//}
-	//
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	// 현재 씬에서 플레이어를 찾는다
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+
+	_player->SetPlayerID(pkt.playerid());
+	cout << "이 클라이언트의 ID는 " << _player->GetPlayerID() << "입니다!" << endl;
+
+	Protocol::C_ENTER_GAME enterGamePkt;
+	enterGamePkt.set_playerid(_player->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
 	//// 입장 UI 버튼 누르면 로비창 입장
 	//Protocol::C_ENTER_LOBBY enterLobbyPkt;
 	//enterLobbyPkt.set_playerid(GPlayer.playerId);
@@ -128,9 +141,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 	// TODO
 	Protocol::C_ENTER_GAME enterGamePkt;
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
-	session->Send(sendBuffer);
-
+	
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 현재 씬에서 플레이어를 찾는다
@@ -145,6 +156,11 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 			break;
 		}
 	}
+
+	//_player->SetPlayerID(pkt.playerid());
+	enterGamePkt.set_playerid(_player->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
 
 	if (INPUT->GetButton(KEY_TYPE::W))
 	{

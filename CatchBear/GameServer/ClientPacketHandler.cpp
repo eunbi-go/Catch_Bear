@@ -1,11 +1,13 @@
 #include "pch.h"
 #include "ClientPacketHandler.h"
-//#include "Player.h"
+#include "Player.h"
 //#include "Lobby.h"
 #include "GameSession.h"
 #include "Timer.h"
+#include "InGame.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
+std::mutex m;
 
 // 직접 컨텐츠 작업자
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -17,14 +19,32 @@ bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 
 bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 {
-//	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 //
 //	// TODO : Validation 체크
 //	
-//	Protocol::S_LOGIN loginPkt;
-//	// 원래대로라면 데이터베이스에 접근하여 유효한 아이디인지 확인하고 성공 패킷을 보내야겠죠?
-//	loginPkt.set_success(true);
-//
+	Protocol::S_LOGIN loginPkt;
+	// 원래대로라면 데이터베이스에 접근하여 유효한 아이디인지 확인하고 성공 패킷을 보내야겠죠?
+	loginPkt.set_success(true);
+
+	static Atomic<uint64> idGenerator = 0;
+	{
+		// PlayerId도 같이 보내줌
+		loginPkt.set_playerid(idGenerator);
+	
+		PlayerRef playerRef = MakeShared<Player>();
+		playerRef->playerId = idGenerator++;
+		playerRef->ownerSession = gameSession;
+		GInGame.Enter(playerRef);
+		cout << "플레이어ID " << playerRef->playerId << " 인게임 접속완료!" << endl;
+
+		gameSession->_player = playerRef;
+	}
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
+	session->Send(sendBuffer);
+
+#pragma region 일단나중에
 //	// gameSession의 nickName 벡터에 저장.
 //	gameSession->_nickNames.push_back(pkt.nickname());
 //	cout << "닉네임: " << pkt.nickname() << " 접속성공!" << endl;
@@ -48,39 +68,12 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 //
 //		gameSession->_player = playerRef;
 //	}
-//#pragma region addPlayer
-//	/*{
-//		auto player = loginPkt.add_players();
-//		player->set_name(u8"DB에서긁어온이름1");
-//		player->set_playertype(Protocol::PLAYER_TYPE_KNIGHT);
-//
-//		PlayerRef playerRef = MakeShared<Player>();
-//		playerRef->playerId = idGenerator++;
-//		playerRef->name = player->name();
-//		playerRef->type = player->playertype();
-//		playerRef->ownerSession = gameSession;
-//		
-//		gameSession->_players.push_back(playerRef);
-//	}
-//
-//	{
-//		auto player = loginPkt.add_players();
-//		player->set_name(u8"DB에서긁어온이름2");
-//		player->set_playertype(Protocol::PLAYER_TYPE_MAGE);
-//
-//		PlayerRef playerRef = MakeShared<Player>();
-//		playerRef->playerId = idGenerator++;
-//		playerRef->name = player->name();
-//		playerRef->type = player->playertype();
-//		playerRef->ownerSession = gameSession;
-//
-//		gameSession->_players.push_back(playerRef);
-//	}*/
+
 //#pragma endregion addPlayer
 //
 //	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
 //	session->Send(sendBuffer);
-
+#pragma endregion
 	return true;
 }
 
@@ -122,16 +115,11 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
-	//cout << "ID " << pkt.playerid() << " 인게임 접속 완료" << endl;
-
-	////uint64 index = pkt.playerindex();
-	////// TODO : Validation
-
-	//PlayerRef player = gameSession->_player; // READ_ONLY?
-	////GLobby.Enter(player); // WRITE_LOCK
-
 	Protocol::S_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_success(true);
+	
+	cout << "플레이어 " << pkt.playerid() << " 접속완료" << endl;
+
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
 	// 나중에는 플레이어마다 오너세션 정해서 거기서 Send하는걸로 수정해야할듯
 	//player->ownerSession->Send(sendBuffer);

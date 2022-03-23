@@ -48,6 +48,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>GameContents</Filter>
     </ClCompile>
+    <ClCompile Include="InGame.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -78,6 +81,9 @@
       <Filter>GameContents</Filter>
     </ClInclude>
     <ClInclude Include="Timer.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="InGame.h">
       <Filter>GameContents</Filter>
     </ClInclude>
   </ItemGroup>

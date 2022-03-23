@@ -8,5 +8,7 @@ public:
 	string					nickname;
 	Protocol::PlayerType	type = Protocol::PLAYER_TYPE_NONE;
 	GameSessionRef			ownerSession; // Cycle
+	float					fx;
+	float					fy;
 };
 

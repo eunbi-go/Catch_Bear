@@ -929,9 +929,19 @@ class S_ENTER_GAME final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSuccessFieldNumber = 1,
+    kPlayerIdFieldNumber = 1,
+    kSuccessFieldNumber = 2,
   };
-  // bool success = 1;
+  // uint64 playerId = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // bool success = 2;
   void clear_success();
   bool success() const;
   void set_success(bool value);
@@ -947,6 +957,7 @@ class S_ENTER_GAME final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -1357,14 +1368,24 @@ class C_MOVE final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kObjTypeFieldNumber = 1,
-    kXPosFieldNumber = 2,
-    kYPosFieldNumber = 3,
-    kZPosFieldNumber = 4,
-    kMoveDirFieldNumber = 5,
-    kSuccessFieldNumber = 6,
+    kPlayerIdFieldNumber = 1,
+    kObjTypeFieldNumber = 2,
+    kXPosFieldNumber = 3,
+    kYPosFieldNumber = 4,
+    kZPosFieldNumber = 5,
+    kMoveDirFieldNumber = 6,
+    kSuccessFieldNumber = 7,
   };
-  // .Protocol.ObjectType objType = 1;
+  // uint64 playerId = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // .Protocol.ObjectType objType = 2;
   void clear_objtype();
   ::Protocol::ObjectType objtype() const;
   void set_objtype(::Protocol::ObjectType value);
@@ -1373,7 +1394,7 @@ class C_MOVE final :
   void _internal_set_objtype(::Protocol::ObjectType value);
   public:
 
-  // float XPos = 2;
+  // float XPos = 3;
   void clear_xpos();
   float xpos() const;
   void set_xpos(float value);
@@ -1382,7 +1403,7 @@ class C_MOVE final :
   void _internal_set_xpos(float value);
   public:
 
-  // float YPos = 3;
+  // float YPos = 4;
   void clear_ypos();
   float ypos() const;
   void set_ypos(float value);
@@ -1391,7 +1412,7 @@ class C_MOVE final :
   void _internal_set_ypos(float value);
   public:
 
-  // float ZPos = 4;
+  // float ZPos = 5;
   void clear_zpos();
   float zpos() const;
   void set_zpos(float value);
@@ -1400,7 +1421,7 @@ class C_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // uint64 moveDir = 5;
+  // uint64 moveDir = 6;
   void clear_movedir();
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
   void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
@@ -1409,7 +1430,7 @@ class C_MOVE final :
   void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // bool success = 6;
+  // bool success = 7;
   void clear_success();
   bool success() const;
   void set_success(bool value);
@@ -1425,6 +1446,7 @@ class C_MOVE final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   int objtype_;
   float xpos_;
   float ypos_;
@@ -1544,13 +1566,23 @@ class S_MOVE final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kSuccessFieldNumber = 1,
-    kXPosFieldNumber = 2,
-    kYPosFieldNumber = 3,
-    kZPosFieldNumber = 4,
-    kMoveDirFieldNumber = 5,
+    kPlayerIdFieldNumber = 1,
+    kSuccessFieldNumber = 2,
+    kXPosFieldNumber = 3,
+    kYPosFieldNumber = 4,
+    kZPosFieldNumber = 5,
+    kMoveDirFieldNumber = 6,
   };
-  // bool success = 1;
+  // uint64 playerId = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // bool success = 2;
   void clear_success();
   bool success() const;
   void set_success(bool value);
@@ -1559,7 +1591,7 @@ class S_MOVE final :
   void _internal_set_success(bool value);
   public:
 
-  // float XPos = 2;
+  // float XPos = 3;
   void clear_xpos();
   float xpos() const;
   void set_xpos(float value);
@@ -1568,7 +1600,7 @@ class S_MOVE final :
   void _internal_set_xpos(float value);
   public:
 
-  // float YPos = 3;
+  // float YPos = 4;
   void clear_ypos();
   float ypos() const;
   void set_ypos(float value);
@@ -1577,7 +1609,7 @@ class S_MOVE final :
   void _internal_set_ypos(float value);
   public:
 
-  // float ZPos = 4;
+  // float ZPos = 5;
   void clear_zpos();
   float zpos() const;
   void set_zpos(float value);
@@ -1586,7 +1618,7 @@ class S_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // uint64 moveDir = 5;
+  // uint64 moveDir = 6;
   void clear_movedir();
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
   void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
@@ -1602,6 +1634,7 @@ class S_MOVE final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   bool success_;
   float xpos_;
   float ypos_;
@@ -1862,7 +1895,27 @@ inline void C_ENTER_GAME::set_success(bool value) {
 
 // S_ENTER_GAME
 
-// bool success = 1;
+// uint64 playerId = 1;
+inline void S_ENTER_GAME::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ENTER_GAME.playerId)
+  return _internal_playerid();
+}
+inline void S_ENTER_GAME::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void S_ENTER_GAME::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.playerId)
+}
+
+// bool success = 2;
 inline void S_ENTER_GAME::clear_success() {
   success_ = false;
 }
@@ -2024,7 +2077,27 @@ inline void S_CHAT::set_allocated_msg(std::string* msg) {
 
 // C_MOVE
 
-// .Protocol.ObjectType objType = 1;
+// uint64 playerId = 1;
+inline void C_MOVE::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.playerId)
+  return _internal_playerid();
+}
+inline void C_MOVE::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void C_MOVE::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.playerId)
+}
+
+// .Protocol.ObjectType objType = 2;
 inline void C_MOVE::clear_objtype() {
   objtype_ = 0;
 }
@@ -2044,7 +2117,7 @@ inline void C_MOVE::set_objtype(::Protocol::ObjectType value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.objType)
 }
 
-// float XPos = 2;
+// float XPos = 3;
 inline void C_MOVE::clear_xpos() {
   xpos_ = 0;
 }
@@ -2064,7 +2137,7 @@ inline void C_MOVE::set_xpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.XPos)
 }
 
-// float YPos = 3;
+// float YPos = 4;
 inline void C_MOVE::clear_ypos() {
   ypos_ = 0;
 }
@@ -2084,7 +2157,7 @@ inline void C_MOVE::set_ypos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.YPos)
 }
 
-// float ZPos = 4;
+// float ZPos = 5;
 inline void C_MOVE::clear_zpos() {
   zpos_ = 0;
 }
@@ -2104,7 +2177,7 @@ inline void C_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.ZPos)
 }
 
-// uint64 moveDir = 5;
+// uint64 moveDir = 6;
 inline void C_MOVE::clear_movedir() {
   movedir_ = uint64_t{0u};
 }
@@ -2124,7 +2197,7 @@ inline void C_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.moveDir)
 }
 
-// bool success = 6;
+// bool success = 7;
 inline void C_MOVE::clear_success() {
   success_ = false;
 }
@@ -2148,7 +2221,27 @@ inline void C_MOVE::set_success(bool value) {
 
 // S_MOVE
 
-// bool success = 1;
+// uint64 playerId = 1;
+inline void S_MOVE::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.playerId)
+  return _internal_playerid();
+}
+inline void S_MOVE::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void S_MOVE::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.playerId)
+}
+
+// bool success = 2;
 inline void S_MOVE::clear_success() {
   success_ = false;
 }
@@ -2168,7 +2261,7 @@ inline void S_MOVE::set_success(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.success)
 }
 
-// float XPos = 2;
+// float XPos = 3;
 inline void S_MOVE::clear_xpos() {
   xpos_ = 0;
 }
@@ -2188,7 +2281,7 @@ inline void S_MOVE::set_xpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.XPos)
 }
 
-// float YPos = 3;
+// float YPos = 4;
 inline void S_MOVE::clear_ypos() {
   ypos_ = 0;
 }
@@ -2208,7 +2301,7 @@ inline void S_MOVE::set_ypos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.YPos)
 }
 
-// float ZPos = 4;
+// float ZPos = 5;
 inline void S_MOVE::clear_zpos() {
   zpos_ = 0;
 }
@@ -2228,7 +2321,7 @@ inline void S_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.ZPos)
 }
 
-// uint64 moveDir = 5;
+// uint64 moveDir = 6;
 inline void S_MOVE::clear_movedir() {
   movedir_ = uint64_t{0u};
 }

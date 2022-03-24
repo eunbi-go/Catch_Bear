@@ -150,6 +150,17 @@ void Transform::UpdateTransform(Matrix* matParent)
 	if (_child)		_child->UpdateTransform(&_matWorld);
 }
 
+void Transform::PreRender()
+{
+	_matToParent._11 = GetRight().x; _matToParent._12 = GetRight().y; _matToParent._13 = GetRight().z;
+	_matToParent._21 = GetUp().x; _matToParent._22 = GetUp().y; _matToParent._23 = GetUp().z;
+	_matToParent._31 = GetLook().x; _matToParent._32 = GetLook().y; _matToParent._33 = GetLook().z;
+	_matToParent._41 = GetLocalPosition().x; _matToParent._42 = GetLocalPosition().y; _matToParent._43 = GetLocalPosition().z;
+
+	_matToParent = Multiply(XMMatrixScaling(_localScale.x, _localScale.y, _localScale.z), _matToParent);
+
+}
+
 
 void Transform::SetChild(shared_ptr<Transform> child)
 {
@@ -162,3 +173,20 @@ void Transform::SetChild(shared_ptr<Transform> child)
 	}
 	else _child = child;
 }
+
+void Transform::SettoParentMat(wstring name, Matrix toParent)
+{
+	if (name == _name)
+	{
+		_matToParent = toParent;
+		return;
+	}
+
+	else
+	{
+		if (_child)	_child->SettoParentMat(name, toParent);
+		if (_sibling)	_sibling->SettoParentMat(name, toParent);
+	}
+
+}
+

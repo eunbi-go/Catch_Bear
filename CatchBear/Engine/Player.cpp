@@ -4,6 +4,7 @@
 #include "Input.h"
 #include "Timer.h"
 #include "AnimationController.h"
+#include "AnimationTrack.h"
 
 Player::Player()
 {
@@ -15,9 +16,11 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
+	//GetTransform()->PreRender();
 	KeyCheck();
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
+	GetAnimationController()->SetWorldMatrix();
 }
 
 void Player::KeyCheck()

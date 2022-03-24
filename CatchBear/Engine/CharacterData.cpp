@@ -504,10 +504,9 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->GetTransform()->SetChild(_modelInfo->_rootObject);
 
 		// Animation
-		shared_ptr<AnimationController> animator = make_shared<AnimationController>();
-		gameObject->AddComponent(animator);
-		animator->SetAnimClips(_animationClipInfo);
-		animator->SetModelInfo(_modelInfo, _skinningInfo);
+		gameObject->AddComponent(make_shared<AnimationController>());
+		gameObject->GetAnimationController()->SetAnimClips(_animationClipInfo);
+		gameObject->GetAnimationController()->SetModelInfo(_modelInfo, _skinningInfo);
 
 		v.push_back(gameObject);
 	}

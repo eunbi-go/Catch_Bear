@@ -56,6 +56,16 @@ XMFLOAT4X4 AnimationSet::GetSRT(int nBone)
 {
 	Matrix	trans = Identity();
 
+	//for (int i = 0; i < (m_nKeyFrames - 1); i++)
+	//{
+	//	if ((m_pfKeyFrameTimes[i] <= m_fPosition) && (m_fPosition <= m_pfKeyFrameTimes[i + 1]))
+	//	{
+	//		float t = (m_fPosition - m_pfKeyFrameTimes[i]) / (m_pfKeyFrameTimes[i + 1] - m_pfKeyFrameTimes[i]);
+	//		xmf4x4Transform = Matrix4x4::Interpolate(m_ppxmf4x4KeyFrameTransforms[i][nBone], m_ppxmf4x4KeyFrameTransforms[i + 1][nBone], t);
+	//		break;
+	//	}
+	//}
+
 	for (int i = 0; i < (_nKeyFrames - 1); i++)
 	{
 		if ((_keyFrameTimes[i] <= _position) && (_position <= _keyFrameTimes[i + 1]))

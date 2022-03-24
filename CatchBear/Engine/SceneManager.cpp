@@ -16,6 +16,8 @@
 #include "Player.h"
 #include "MeshData.h"
 #include "CharacterData.h"
+#include "AnimationController.h"
+#include "AnimationTrack.h"
 
 void SceneManager::Update()
 {
@@ -124,24 +126,24 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region SkyBox
 	{
-		//shared_ptr<GameObject> skybox = make_shared<GameObject>();
-		//skybox->AddComponent(make_shared<Transform>());
-		//skybox->SetCheckFrustum(false);
-		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		//{
-		//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-		//	meshRenderer->SetMesh(sphereMesh);
-		//}
-		//{
-		//	shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Skybox");
-		//	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Sky", L"..\\Resources\\Texture\\Skybox.png");
-		//	shared_ptr<Material> material = make_shared<Material>();
-		//	material->SetShader(shader);
-		//	material->SetTexture(0, texture);
-		//	meshRenderer->SetMaterial(material);
-		//}
-		//skybox->AddComponent(meshRenderer);
-		//scene->AddGameObject(skybox);
+		shared_ptr<GameObject> skybox = make_shared<GameObject>();
+		skybox->AddComponent(make_shared<Transform>());
+		skybox->SetCheckFrustum(false);
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+			meshRenderer->SetMesh(sphereMesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Skybox");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Sky", L"..\\Resources\\Texture\\Skybox.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		skybox->AddComponent(meshRenderer);
+		scene->AddGameObject(skybox);
 	}
 #pragma endregion
 
@@ -170,12 +172,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Player");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(0, -10.f, 50.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(10.0f, 10.0f, 10.0f));
-			gameObject->GetTransform()->SetLocalRotation(Vec3(180.0f, 0.0f, 0.0f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(100, -50.f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
 			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			scene->AddGameObject(gameObject);
-
 		}
 
 		//////////////////////////////////////////////////////////////

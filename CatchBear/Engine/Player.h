@@ -15,5 +15,6 @@ private:
 
 private:
 	float	_speed = 5.f;
+	
 };
 

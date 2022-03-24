@@ -46,11 +46,13 @@ public:
 	shared_ptr<Transform>	FindTransform(wstring name);
 
 	void UpdateTransform(Matrix* matParent);
+	void PreRender();
 
 public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
 	void SetChild(shared_ptr<Transform> child);
 	void SetName(wstring name) { _name = name; }
+	void SettoParentMat(wstring name, Matrix toParent);
 
 public:
 	shared_ptr<Transform> GetParent() { return _parent; }
@@ -73,5 +75,7 @@ public:
 	shared_ptr<Transform>		_sibling;
 
 	wstring	_name;
+
+	shared_ptr<Transform>		_root;
 };
 

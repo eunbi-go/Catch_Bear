@@ -37,6 +37,11 @@ public:
 
 	void AdvanceTime(float fElapsedTime);
 
+	shared_ptr<AnimationModelInfo> GetRootModel() { return _modelInfo; }
+
+public:
+	void SetWorldMatrix();
+
 private:
 	float									_updateTime = 0.f;
 	int32									_clipIndex = 0;
@@ -55,6 +60,7 @@ private:
 	AnimationTrack*						_animTracks = NULL;
 
 	shared_ptr<AnimationSets>			_animSets;
+public:
 	vector<shared_ptr<Transform>>		_animatedTrans;
 	vector<Matrix>	matToParent;
 	shared_ptr<StructuredBuffer>	_offsetBuffer;

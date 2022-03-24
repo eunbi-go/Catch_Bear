@@ -35,7 +35,7 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 		trans = model->_vecAnimatedFrame[i];
 		_animatedTrans[i] = trans;
 
-		matToParent[i] = trans->_matToParent;
+		matToParent[i] = trans->_matWorld;
 	}
 
 	_boneTransform = make_shared<StructuredBuffer>();
@@ -58,15 +58,14 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 void AnimationController::PushData()
 {
 	// BoneTrans
+	// 플레이어의 계층구조에서 애니메이션에 사용되는 프레임의 월드행렬을 넘겨야 한다.
 	int	nBones = static_cast<int>(_animatedTrans.size());
 	//_boneTransform->Init(sizeof(Matrix), nBones);
 	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(matToParent.size()), matToParent.data());
-	_boneTransform->PushGraphicsData(SRV_REGISTER::t7);
+	_boneTransform->PushGraphicsData(SRV_REGISTER::t8);
 
 	//// OffsetTrans
-	//shared_ptr<Mesh>	mesh = GetGameObject()->GetMeshRenderer()->GetMesh();
-	//shared_ptr<StructuredBuffer> offset = mesh->GetBoneOffsetBuffer();
-	//_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
 	_offsetBuffer->PushGraphicsData(SRV_REGISTER::t9);
 }
 
@@ -96,20 +95,29 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 				}
 			}
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
+
+			// 실제 플레이어 모델 뼈의 toParent행렬을 변경해줘야한다!
+			GetGameObject()->GetTransform()->SettoParentMat(_animatedTrans[j]->_name, _animatedTrans[j]->_matToParent);
+
 			// 여기서 변환된 toParent 행렬을 플레이어의 해당 프레임의 toParent 행렬에 넣어줘야 한다.
-			
-			
 			//matToParent[j] = xmf4x4Transform;
 		}
 
-		GetGameObject()->GetTransform()->UpdateTransform(NULL);
+	}
+}
+
+void AnimationController::SetWorldMatrix()
+{
+	for (size_t i = 0; i < _animatedTrans.size(); ++i)
+	{
+		matToParent[i] = GetGameObject()->GetTransform()->FindTransform(_animatedTrans[i]->_name)->_matWorld;
 	}
 }
 
 
 void AnimationController::FinalUpdate()
 {
-	_updateTime += DELTA_TIME;
+	//_updateTime += DELTA_TIME;
 }
 
 void AnimationController::SetTrackAnimationSet(int nAnimationTrack, int nAnimationSet)

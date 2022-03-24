@@ -16,20 +16,26 @@
     <Filter Include="Object">
       <UniqueIdentifier>{d23a6cb5-db8b-49b6-923e-9e1f7523a699}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Component">
+    <Filter Include="Object\00. Component">
       <UniqueIdentifier>{f49ae5d3-7a39-4c88-ae2c-1059f207126e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Resource">
-      <UniqueIdentifier>{2b163b53-2fb3-493c-818e-4c9d82fc7c6d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Object\Component\Collider">
+    <Filter Include="Object\00. Component\01. Camera">
       <UniqueIdentifier>{ccdda6f8-12ed-4479-964d-aeba4f88dbe5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Component\Camera">
-      <UniqueIdentifier>{595410c4-75d1-477f-a9b7-c80f4391cefc}</UniqueIdentifier>
+    <Filter Include="Object\00. Component\00. BasicComponent">
+      <UniqueIdentifier>{e70a01cb-d3e4-40c4-9d28-30f605447d26}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Object\Player">
+    <Filter Include="Object\00. Component\02. Collider">
+      <UniqueIdentifier>{2a82b847-991e-4e8e-b352-e91369909587}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\01. Resource">
+      <UniqueIdentifier>{2b163b53-2fb3-493c-818e-4c9d82fc7c6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\02. Player">
       <UniqueIdentifier>{81ebf9aa-4952-4370-bfb5-7476c6ac2fcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object\03. Item">
+      <UniqueIdentifier>{3e2da2b0-ce15-48fa-befa-536be28ab331}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,10 +61,10 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClCompile>
     <ClCompile Include="Shader.cpp">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClCompile>
     <ClCompile Include="ConstantBuffer.cpp">
       <Filter>Engine</Filter>
@@ -67,10 +73,10 @@
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="Texture.cpp">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClCompile>
     <ClCompile Include="Material.cpp">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Manager</Filter>
@@ -93,26 +99,8 @@
     <ClCompile Include="Object.cpp">
       <Filter>Object</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="MonoBehaviour.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Light.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
-    <ClCompile Include="Frustum.cpp">
-      <Filter>Object\Component</Filter>
     </ClCompile>
     <ClCompile Include="RenderTargetGroup.cpp">
       <Filter>Engine</Filter>
@@ -120,32 +108,53 @@
     <ClCompile Include="StructuredBuffer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>Object\Component</Filter>
-    </ClCompile>
     <ClCompile Include="InstancingBuffer.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
     <ClCompile Include="InstancingManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Object\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRenderer.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="MonoBehaviour.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
     <ClCompile Include="Terrain.cpp">
-      <Filter>Object\Component</Filter>
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
-    <ClCompile Include="BaseCollider.cpp">
-      <Filter>Object\Component\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>Object\Component\Collider</Filter>
+    <ClCompile Include="Transform.cpp">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
-      <Filter>Object\Component\Camera</Filter>
+      <Filter>Object\00. Component\01. Camera</Filter>
     </ClCompile>
     <ClCompile Include="CameraScript.cpp">
-      <Filter>Object\Component\Camera</Filter>
+      <Filter>Object\00. Component\01. Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>Object\Player</Filter>
+    <ClCompile Include="BaseCollider.cpp">
+      <Filter>Object\00. Component\02. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
+      <Filter>Object\00. Component\02. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="Item.cpp">
+      <Filter>Object\03. Item</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -174,10 +183,10 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Mesh.h">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClInclude>
     <ClInclude Include="Shader.h">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClInclude>
     <ClInclude Include="ConstantBuffer.h">
       <Filter>Engine</Filter>
@@ -186,10 +195,10 @@
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="Texture.h">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClInclude>
     <ClInclude Include="Material.h">
-      <Filter>Object\Resource</Filter>
+      <Filter>Object\01. Resource</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
       <Filter>Manager</Filter>
@@ -212,26 +221,8 @@
     <ClInclude Include="Object.h">
       <Filter>Object</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="MonoBehaviour.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
     <ClInclude Include="GameObject.h">
       <Filter>Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Light.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
-    <ClInclude Include="Frustum.h">
-      <Filter>Object\Component</Filter>
     </ClInclude>
     <ClInclude Include="RenderTargetGroup.h">
       <Filter>Engine</Filter>
@@ -239,32 +230,53 @@
     <ClInclude Include="StructuredBuffer.h">
       <Filter>Engine</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>Object\Component</Filter>
-    </ClInclude>
     <ClInclude Include="InstancingBuffer.h">
       <Filter>Engine</Filter>
     </ClInclude>
     <ClInclude Include="InstancingManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Object\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRenderer.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="MonoBehaviour.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
     <ClInclude Include="Terrain.h">
-      <Filter>Object\Component</Filter>
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
-    <ClInclude Include="BaseCollider.h">
-      <Filter>Object\Component\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>Object\Component\Collider</Filter>
+    <ClInclude Include="Transform.h">
+      <Filter>Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
-      <Filter>Object\Component\Camera</Filter>
+      <Filter>Object\00. Component\01. Camera</Filter>
     </ClInclude>
     <ClInclude Include="CameraScript.h">
-      <Filter>Object\Component\Camera</Filter>
+      <Filter>Object\00. Component\01. Camera</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>Object\Player</Filter>
+    <ClInclude Include="BaseCollider.h">
+      <Filter>Object\00. Component\02. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
+      <Filter>Object\00. Component\02. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Object\03. Item</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

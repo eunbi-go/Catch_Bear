@@ -32,14 +32,10 @@ public:
 	void SetLocalRotation(const Vec3& rotation) { _localRotation = rotation; }
 	void SetLocalScale(const Vec3& scale) { _localScale = scale; }
 
-	void SetRight(const Vec3& right) { _matWorld.Right() = right; }
-
 	void LookAt(const Vec3& dir);
 
 	static bool CloseEnough(const float& a, const float& b, const float& epsilon = std::numeric_limits<float>::epsilon());
 	static Vec3 DecomposeRotationMatrix(const Matrix& rotation);
-
-	void SetParentOffset(Vec3 offset) { _parentOffset = offset; }
 
 public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
@@ -53,8 +49,6 @@ private:
 
 	Matrix	_matLocal = {};
 	Matrix	_matWorld = {};
-
-	Vec3	_parentOffset = {};
 
 	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
 };

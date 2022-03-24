@@ -10,6 +10,7 @@
 
 CameraScript::CameraScript()
 {
+	m_xmf3Offset = Vec3(0.0f, 00.f, -200.f);
 }
 
 CameraScript::~CameraScript()
@@ -18,54 +19,28 @@ CameraScript::~CameraScript()
 
 void CameraScript::LateUpdate()
 {
-	//if (INPUT->GetButton(KEY_TYPE::W))
-	//	pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
-
-	//if (INPUT->GetButton(KEY_TYPE::S))
-	//	pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
-
-	//if (INPUT->GetButton(KEY_TYPE::A))
-	//	pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
-
-	//if (INPUT->GetButton(KEY_TYPE::D))
-	//	pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
-
-	//if (INPUT->GetButton(KEY_TYPE::Q))
-	//{
-	//	Vec3 rotation = GetTransform()->GetLocalRotation();
-	//	rotation.x += DELTA_TIME * 0.5f;
-	//	GetTransform()->SetLocalRotation(rotation);
-	//}
-
-	//if (INPUT->GetButton(KEY_TYPE::E))
-	//{
-	//	Vec3 rotation = GetTransform()->GetLocalRotation();
-	//	rotation.x -= DELTA_TIME * 0.5f;
-	//	GetTransform()->SetLocalRotation(rotation);
-	//}
-
-	//if (INPUT->GetButton(KEY_TYPE::Z))
-	//{
-	//	Vec3 rotation = GetTransform()->GetLocalRotation();
-	//	rotation.y += DELTA_TIME * 0.5f;
-	//	GetTransform()->SetLocalRotation(rotation);
-	//}
-
-	//if (INPUT->GetButton(KEY_TYPE::C))
-	//{
-	//	Vec3 rotation = GetTransform()->GetLocalRotation();
-	//	rotation.y -= DELTA_TIME * 0.5f;
-	//	GetTransform()->SetLocalRotation(rotation);
-	//}
 }
 
-void CameraScript::FollowPlayer(shared_ptr<GameObject> player)
+void CameraScript::Revolve(float rotSize, Vec3 playerPos)
 {
-	Vec3 pos = GetTransform()->GetLocalPosition();
+	if (_player)
+	{
+		XMMATRIX xmmtxRotate = XMMatrixRotationY(rotSize);
+		m_xmf3Offset = Vector3::TransformNormal(m_xmf3Offset, xmmtxRotate);
 
-	pos = player->GetTransform()->GetLocalPosition();
-	pos -= Vec3(0.f, 0.f, 300.f);
+		XMFLOAT4X4 xm4x4Rotate = Matrix4x4::Identity();
+		XMFLOAT3 xmf3Offset =  Vector3::TransformCoord1(m_xmf3Offset, xm4x4Rotate);
+		XMFLOAT3 xmOldPosition = GetTransform()->GetLocalPosition();
+		XMFLOAT3 xmf3Position = Vector3::Add(playerPos, xmf3Offset);
 
-	GetTransform()->SetLocalPosition(pos);
+		XMFLOAT3 xmf3Direction = Vector3::Subtract(xmf3Position, xmOldPosition);
+		float fLength = Vector3::Length(xmf3Direction);
+		xmf3Direction = Vector3::Normalize(xmf3Direction);
 
+		xmOldPosition = Vector3::Add(xmOldPosition, xmf3Direction, fLength);
+		GetTransform()->SetLocalPosition(xmOldPosition);
+		Vec3 dir = Vector3::Subtract(playerPos, xmOldPosition);
+		dir.Normalize();
+		GetTransform()->LookAt(dir);
+	}
 }

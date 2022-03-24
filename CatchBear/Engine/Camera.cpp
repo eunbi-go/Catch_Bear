@@ -18,6 +18,9 @@ Camera::Camera() : Component(COMPONENT_TYPE::CAMERA)
 {
 	_width = static_cast<float>(GEngine->GetWindow().width);
 	_height = static_cast<float>(GEngine->GetWindow().height);
+
+	_matView = XMMatrixIdentity();
+	_matProjection = XMMatrixIdentity();
 }
 
 Camera::~Camera()

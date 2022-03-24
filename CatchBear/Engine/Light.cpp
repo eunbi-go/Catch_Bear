@@ -31,6 +31,7 @@ void Light::FinalUpdate()
 	_shadowCamera->GetTransform()->SetLocalScale(GetTransform()->GetLocalScale());
 
 	_shadowCamera->FinalUpdate();
+
 }
 
 void Light::Render()
@@ -58,6 +59,7 @@ void Light::Render()
 	_lightMaterial->PushGraphicsData();
 
 	_volumeMesh->Render();
+
 }
 
 void Light::RenderShadow()

@@ -930,6 +930,7 @@ class S_ENTER_GAME final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
+    kEnterPlayerFieldNumber = 3,
     kSuccessFieldNumber = 2,
   };
   // uint64 playerId = 1;
@@ -939,6 +940,15 @@ class S_ENTER_GAME final :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // uint64 enterPlayer = 3;
+  void clear_enterplayer();
+  ::PROTOBUF_NAMESPACE_ID::uint64 enterplayer() const;
+  void set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_enterplayer() const;
+  void _internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // bool success = 2;
@@ -958,6 +968,7 @@ class S_ENTER_GAME final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 enterplayer_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -1933,6 +1944,26 @@ inline void S_ENTER_GAME::_internal_set_success(bool value) {
 inline void S_ENTER_GAME::set_success(bool value) {
   _internal_set_success(value);
   // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.success)
+}
+
+// uint64 enterPlayer = 3;
+inline void S_ENTER_GAME::clear_enterplayer() {
+  enterplayer_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::_internal_enterplayer() const {
+  return enterplayer_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::enterplayer() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ENTER_GAME.enterPlayer)
+  return _internal_enterplayer();
+}
+inline void S_ENTER_GAME::_internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  enterplayer_ = value;
+}
+inline void S_ENTER_GAME::set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_enterplayer(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.enterPlayer)
 }
 
 // -------------------------------------------------------------------

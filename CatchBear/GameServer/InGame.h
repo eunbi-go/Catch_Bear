@@ -8,6 +8,7 @@ public:
 	
 public:
 	bool IsAlreadyEnterPlayer(uint64 player);
+	uint64 GetEnterPlayerNum();
 
 private:
 	USE_LOCK;

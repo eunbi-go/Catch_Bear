@@ -24,6 +24,8 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
+	SceneManager::GetInstance()->MakePlayer(pkt.playerid());
+
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 현재 씬에서 플레이어를 찾는다
@@ -46,6 +48,7 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	enterGamePkt.set_playerid(_player->GetPlayerID());
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
 	session->Send(sendBuffer);
+
 	//// 입장 UI 버튼 누르면 로비창 입장
 	//Protocol::C_ENTER_LOBBY enterLobbyPkt;
 	//enterLobbyPkt.set_playerid(GPlayer.playerId);
@@ -134,6 +137,7 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	return true;
 }
 
+static uint64 enterPlayerIndex = 0;
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
 	if (pkt.success() != true)
@@ -155,6 +159,31 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 			_player = gameObject;
 			break;
 		}
+	}
+
+	uint64 enterPlayernum = pkt.enterplayer();
+
+	if (enterPlayerIndex != enterPlayernum)
+	{
+		if (enterPlayernum == 1)	// 2명 접속
+		{
+			if (_player->GetPlayerID() == 0)
+				SceneManager::GetInstance()->MakePlayer(1);		// 0번 플레이어일때 1번 플레이어 만들기
+			if (_player->GetPlayerID() == 1)
+				SceneManager::GetInstance()->MakePlayer(0);		// 1번 플레이어일때 0번 플레이어 만들기
+		}
+		if (enterPlayernum == 2)	// 3명 접속
+		{
+			if (_player->GetPlayerID() == 0)
+				SceneManager::GetInstance()->MakePlayer(2);		// 0번 플레이어일때 2번 플레이어 만들기
+			if (_player->GetPlayerID() == 1)
+				SceneManager::GetInstance()->MakePlayer(2);		// 1번 플레이어일때 2번 플레이어 만들기
+			if (_player->GetPlayerID() == 2) {
+				SceneManager::GetInstance()->MakePlayer(0);		// 2번 플레이어일때 0,1번 플레이어 만들기
+				SceneManager::GetInstance()->MakePlayer(1);
+			}
+		}
+		enterPlayerIndex = enterPlayernum;
 	}
 
 	//_player->SetPlayerID(pkt.playerid());

@@ -117,8 +117,8 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 
 	Protocol::S_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_success(true);
-	
-	cout << "플레이어 " << pkt.playerid() << " 접속완료" << endl;
+
+	enterGamePkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
 	// 나중에는 플레이어마다 오너세션 정해서 거기서 Send하는걸로 수정해야할듯

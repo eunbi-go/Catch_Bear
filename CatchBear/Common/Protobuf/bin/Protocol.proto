@@ -37,6 +37,7 @@ message S_ENTER_GAME
 {
 	uint64 playerId = 1;
 	bool success = 2;
+	uint64 enterPlayer = 3;
 }
 
 message C_CHAT

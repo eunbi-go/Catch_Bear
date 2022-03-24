@@ -15,6 +15,8 @@
 #include "ParticleSystem.h"
 #include "Player.h"
 
+shared_ptr<Scene> scene = make_shared<Scene>();
+
 void SceneManager::Update()
 {
 	if (_activeScene == nullptr)
@@ -62,6 +64,35 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 	return findIt->second;
 }
 
+void SceneManager::MakePlayer(uint64 _playerID)
+{
+	//shared_ptr<Scene> scene = make_shared<Scene>();
+	//if (!bisPlayerCreate)
+	{
+		shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->SetName(L"Player");
+		obj->AddComponent(make_shared<Transform>());
+		obj->AddComponent(make_shared<Player>());
+		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(200.f + (_playerID * 50.f), 0.f, 500.f));
+		obj->SetStatic(false);
+		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+			meshRenderer->SetMesh(sphereMesh);
+		}
+		{
+			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+			meshRenderer->SetMaterial(material->Clone());
+		}
+		obj->AddComponent(meshRenderer);
+		scene->AddGameObject(obj);
+
+		//bisPlayerCreate = true;
+	}
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask
@@ -89,7 +120,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-	shared_ptr<Scene> scene = make_shared<Scene>();
+	
 
 #pragma region Camera
 	{
@@ -121,27 +152,27 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TestPlayer
-	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"Player");
-		obj->AddComponent(make_shared<Transform>());
-		obj->AddComponent(make_shared<Player>());
-		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(200, 0.f, 500.f));
-		obj->SetStatic(false);
-		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-	}
+	//{
+	//	shared_ptr<GameObject> obj = make_shared<GameObject>();
+	//	obj->SetName(L"Player");
+	//	obj->AddComponent(make_shared<Transform>());
+	//	obj->AddComponent(make_shared<Player>());
+	//	obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+	//	obj->GetTransform()->SetLocalPosition(Vec3(200, 0.f, 500.f));
+	//	obj->SetStatic(false);
+	//	obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+	//	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+	//	{
+	//		shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+	//		meshRenderer->SetMesh(sphereMesh);
+	//	}
+	//	{
+	//		shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+	//		meshRenderer->SetMaterial(material->Clone());
+	//	}
+	//	obj->AddComponent(meshRenderer);
+	//	scene->AddGameObject(obj);
+	//}
 #pragma endregion
 
 #pragma region 테스트용 Object

@@ -84,6 +84,7 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT C_ENTER_GAMEDefaultTypeInternal
 constexpr S_ENTER_GAME::S_ENTER_GAME(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : playerid_(uint64_t{0u})
+  , enterplayer_(uint64_t{0u})
   , success_(false){}
 struct S_ENTER_GAMEDefaultTypeInternal {
   constexpr S_ENTER_GAMEDefaultTypeInternal()
@@ -203,6 +204,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ENTER_GAME, playerid_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_ENTER_GAME, success_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_ENTER_GAME, enterplayer_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_CHAT, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -248,10 +250,10 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 21, -1, sizeof(::Protocol::S_ENTER_LOBBY)},
   { 27, -1, sizeof(::Protocol::C_ENTER_GAME)},
   { 34, -1, sizeof(::Protocol::S_ENTER_GAME)},
-  { 41, -1, sizeof(::Protocol::C_CHAT)},
-  { 48, -1, sizeof(::Protocol::S_CHAT)},
-  { 55, -1, sizeof(::Protocol::C_MOVE)},
-  { 67, -1, sizeof(::Protocol::S_MOVE)},
+  { 42, -1, sizeof(::Protocol::C_CHAT)},
+  { 49, -1, sizeof(::Protocol::S_CHAT)},
+  { 56, -1, sizeof(::Protocol::C_MOVE)},
+  { 68, -1, sizeof(::Protocol::S_MOVE)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -275,17 +277,18 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "er\"8\n\rC_ENTER_LOBBY\022\020\n\010playerId\030\001 \001(\004\022\025\n"
   "\risPlayerReady\030\002 \001(\010\"*\n\rS_ENTER_LOBBY\022\031\n"
   "\021isAllPlayersReady\030\001 \001(\010\"1\n\014C_ENTER_GAME"
-  "\022\020\n\010playerId\030\001 \001(\004\022\017\n\007success\030\002 \001(\010\"1\n\014S"
+  "\022\020\n\010playerId\030\001 \001(\004\022\017\n\007success\030\002 \001(\010\"F\n\014S"
   "_ENTER_GAME\022\020\n\010playerId\030\001 \001(\004\022\017\n\007success"
-  "\030\002 \001(\010\"\'\n\006C_CHAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003ms"
-  "g\030\002 \001(\t\"\'\n\006S_CHAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003m"
-  "sg\030\002 \001(\t\"\215\001\n\006C_MOVE\022\020\n\010playerId\030\001 \001(\004\022%\n"
-  "\007objType\030\002 \001(\0162\024.Protocol.ObjectType\022\014\n\004"
-  "XPos\030\003 \001(\002\022\014\n\004YPos\030\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022\017"
-  "\n\007moveDir\030\006 \001(\004\022\017\n\007success\030\007 \001(\010\"f\n\006S_MO"
-  "VE\022\020\n\010playerId\030\001 \001(\004\022\017\n\007success\030\002 \001(\010\022\014\n"
-  "\004XPos\030\003 \001(\002\022\014\n\004YPos\030\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022"
-  "\017\n\007moveDir\030\006 \001(\004b\006proto3"
+  "\030\002 \001(\010\022\023\n\013enterPlayer\030\003 \001(\004\"\'\n\006C_CHAT\022\020\n"
+  "\010playerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"\'\n\006S_CHAT\022\020"
+  "\n\010playerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"\215\001\n\006C_MOVE"
+  "\022\020\n\010playerId\030\001 \001(\004\022%\n\007objType\030\002 \001(\0162\024.Pr"
+  "otocol.ObjectType\022\014\n\004XPos\030\003 \001(\002\022\014\n\004YPos\030"
+  "\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022\017\n\007moveDir\030\006 \001(\004\022\017\n\007"
+  "success\030\007 \001(\010\"f\n\006S_MOVE\022\020\n\010playerId\030\001 \001("
+  "\004\022\017\n\007success\030\002 \001(\010\022\014\n\004XPos\030\003 \001(\002\022\014\n\004YPos"
+  "\030\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022\017\n\007moveDir\030\006 \001(\004b\006p"
+  "roto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -293,7 +296,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 704, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 725, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 10,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -1483,6 +1486,13 @@ const char* S_ENTER_GAME::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_I
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
+      // uint64 enterPlayer = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+          enterplayer_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
       default: {
       handle_unusual:
         if ((tag == 0) || ((tag & 7) == 4)) {
@@ -1524,6 +1534,12 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_success(), target);
   }
 
+  // uint64 enterPlayer = 3;
+  if (this->enterplayer() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(3, this->_internal_enterplayer(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -1545,6 +1561,13 @@ size_t S_ENTER_GAME::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_playerid());
+  }
+
+  // uint64 enterPlayer = 3;
+  if (this->enterplayer() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_enterplayer());
   }
 
   // bool success = 2;
@@ -1585,6 +1608,9 @@ void S_ENTER_GAME::MergeFrom(const S_ENTER_GAME& from) {
 
   if (from.playerid() != 0) {
     _internal_set_playerid(from._internal_playerid());
+  }
+  if (from.enterplayer() != 0) {
+    _internal_set_enterplayer(from._internal_enterplayer());
   }
   if (from.success() != 0) {
     _internal_set_success(from._internal_success());

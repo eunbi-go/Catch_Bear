@@ -35,3 +35,8 @@ bool InGame::IsAlreadyEnterPlayer(uint64 playerId)
 	}
 	return false;
 }
+
+uint64 InGame::GetEnterPlayerNum()
+{
+	return _players.size();
+}

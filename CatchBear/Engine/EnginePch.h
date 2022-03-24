@@ -46,18 +46,18 @@ using namespace Microsoft::WRL;
 #endif
 
 // 각종 typedef
-using int8		= __int8;
-using int16		= __int16;
-using int32		= __int32;
-using int64		= __int64;
-using uint8		= unsigned __int8;
-using uint16	= unsigned __int16;
-using uint32	= unsigned __int32;
-using uint64	= unsigned __int64;
-using Vec2		= DirectX::SimpleMath::Vector2;
-using Vec3		= DirectX::SimpleMath::Vector3;
-using Vec4		= DirectX::SimpleMath::Vector4;
-using Matrix	= DirectX::SimpleMath::Matrix;
+using int8 = __int8;
+using int16 = __int16;
+using int32 = __int32;
+using int64 = __int64;
+using uint8 = unsigned __int8;
+using uint16 = unsigned __int16;
+using uint32 = unsigned __int32;
+using uint64 = unsigned __int64;
+using Vec2 = DirectX::SimpleMath::Vector2;
+using Vec3 = DirectX::SimpleMath::Vector3;
+using Vec4 = DirectX::SimpleMath::Vector4;
+using Matrix = DirectX::SimpleMath::Matrix;
 
 enum class CBV_REGISTER : uint8
 {
@@ -155,6 +155,110 @@ public:								\
 #define DELTA_TIME			GET_SINGLE(Timer)->GetDeltaTime()
 
 #define CONST_BUFFER(type)	GEngine->GetConstantBuffer(type)
+
+////
+#define DIR_FORWARD					0x01
+#define DIR_BACKWARD				0x02
+#define DIR_LEFT					0x04
+#define DIR_RIGHT					0x08
+#define DIR_UP						0x10
+#define DIR_DOWN					0x20
+
+// 3차원 벡터의 연산
+namespace Vector3
+{
+	inline XMFLOAT3 XMVectorToFloat3(XMVECTOR& xmvVector)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, xmvVector);
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 ScalarProduct(XMFLOAT3& xmf3Vector, float fScalar, bool bNormalize = true)
+	{
+		XMFLOAT3 xmf3Result;
+		if (bNormalize)
+			XMStoreFloat3(&xmf3Result, XMVector3Normalize(XMLoadFloat3(&xmf3Vector)) * fScalar);
+		else
+			XMStoreFloat3(&xmf3Result, XMLoadFloat3(&xmf3Vector) * fScalar);
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 Add(const XMFLOAT3& xmf3Vector1, const XMFLOAT3& xmf3Vector2)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMLoadFloat3(&xmf3Vector1) +
+			XMLoadFloat3(&xmf3Vector2)); return(xmf3Result);
+	}
+	inline XMFLOAT3 Add(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2, float fScalar)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMLoadFloat3(&xmf3Vector1) + (XMLoadFloat3(&xmf3Vector2) * fScalar));
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 Subtract(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMLoadFloat3(&xmf3Vector1) - XMLoadFloat3(&xmf3Vector2));
+		return(xmf3Result);
+	}
+	inline float DotProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMVector3Dot(XMLoadFloat3(&xmf3Vector1), XMLoadFloat3(&xmf3Vector2)));
+		return(xmf3Result.x);
+	}
+	inline XMFLOAT3 CrossProduct(XMFLOAT3& xmf3Vector1, XMFLOAT3& xmf3Vector2, bool bNormalize = true)
+	{
+		XMFLOAT3 xmf3Result;
+		if (bNormalize)
+			XMStoreFloat3(&xmf3Result,
+				XMVector3Normalize(XMVector3Cross(XMLoadFloat3(&xmf3Vector1),
+					XMLoadFloat3(&xmf3Vector2))));
+		else
+			XMStoreFloat3(&xmf3Result, XMVector3Cross(XMLoadFloat3(&xmf3Vector1),
+				XMLoadFloat3(&xmf3Vector2)));
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 Normalize(XMFLOAT3& xmf3Vector)
+	{
+		XMFLOAT3 m_xmf3Normal;
+		XMStoreFloat3(&m_xmf3Normal, XMVector3Normalize(XMLoadFloat3(&xmf3Vector)));
+		return(m_xmf3Normal);
+	}
+	inline float Length(XMFLOAT3& xmf3Vector)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMVector3Length(XMLoadFloat3(&xmf3Vector)));
+		return(xmf3Result.x);
+	}
+	inline XMFLOAT3 TransformNormal(XMFLOAT3& xmf3Vector, XMMATRIX& xmmtxTransform)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMVector3TransformNormal(XMLoadFloat3(&xmf3Vector), xmmtxTransform));
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 TransformCoord2(XMFLOAT3& xmf3Vector, XMMATRIX& xmmtxTransform)
+	{
+		XMFLOAT3 xmf3Result;
+		XMStoreFloat3(&xmf3Result, XMVector3TransformCoord(XMLoadFloat3(&xmf3Vector), xmmtxTransform));
+		return(xmf3Result);
+	}
+	inline XMFLOAT3 TransformCoord1(XMFLOAT3& xmf3Vector, XMFLOAT4X4& xmmtx4x4Matrix)
+	{
+		return(TransformCoord2((XMFLOAT3&)xmf3Vector, (XMMATRIX&)XMLoadFloat4x4(&xmmtx4x4Matrix)));
+	}
+}
+
+namespace Matrix4x4
+{
+	inline XMFLOAT4X4 Identity()
+	{
+		XMFLOAT4X4 xmmtx4x4Result;
+		XMStoreFloat4x4(&xmmtx4x4Result, XMMatrixIdentity());
+		return(xmmtx4x4Result);
+	}
+}
+
+////
 
 struct TransformParams
 {

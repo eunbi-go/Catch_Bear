@@ -15,7 +15,7 @@ public:
 	virtual ~Camera();
 
 	virtual void FinalUpdate() override;
-	
+
 	void SetProjectionType(PROJECTION_TYPE type) { _type = type; }
 	PROJECTION_TYPE GetProjectionType() { return _type; }
 
@@ -48,6 +48,9 @@ public:
 
 	Matrix& GetViewMatrix() { return _matView; }
 	Matrix& GetProjectionMatrix() { return _matProjection; }
+
+
+
 
 private:
 	PROJECTION_TYPE _type = PROJECTION_TYPE::PERSPECTIVE;

@@ -32,9 +32,14 @@ void ConstantBuffer::Init(CBV_REGISTER reg, uint32 size, uint32 count)
 
 void ConstantBuffer::CreateBuffer()
 {
-	uint32 bufferSize = _elementSize * _elementCount;
+	uint32 bufferSize = _elementSize * _elementCount;	// Matrix * Skinnied Animation Bone
 	D3D12_HEAP_PROPERTIES heapProperty = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	D3D12_RESOURCE_DESC desc = CD3DX12_RESOURCE_DESC::Buffer(bufferSize);
+
+	//UINT ncbElementBytes = (((sizeof(XMFLOAT4X4) * SKINNED_ANIMATION_BONES) + 255) & ~255); //256의 배수
+	//m_pd3dcbBindPoseBoneOffsets 
+	// = ::CreateBufferResource(pd3dDevice, pd3dCommandList, NULL, ncbElementBytes, D3D12_HEAP_TYPE_UPLOAD, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER, NULL);
+	//m_pd3dcbBindPoseBoneOffsets->Map(0, NULL, (void**)&m_pcbxmf4x4MappedBindPoseBoneOffsets);
 
 	DEVICE->CreateCommittedResource(
 		&heapProperty,
@@ -84,8 +89,8 @@ void ConstantBuffer::Clear()
 void ConstantBuffer::PushGraphicsData(void* buffer, uint32 size)
 {
 	// 디버그용
-	assert(_currentIndex < _elementCount);
-	assert(_elementSize == ((size + 255) & ~255));
+	//assert(_currentIndex < _elementCount);
+	//assert(_elementSize == ((size + 255) & ~255));
 
 	// 해당 인덱스 위치에 요청해준 버퍼를 복사
 	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
@@ -99,15 +104,15 @@ void ConstantBuffer::PushGraphicsData(void* buffer, uint32 size)
 void ConstantBuffer::SetGraphicsGlobalData(void* buffer, uint32 size)
 {
 	// Light와 관련된 정보는 이 함수를 이용해서 세팅함, root signature b0 전역에 넣어줌
-	assert(_elementSize == ((size + 255) & ~255));
+	//assert(_elementSize == ((size + 255) & ~255));
 	::memcpy(&_mappedBuffer[0], buffer, size);
 	GRAPHICS_CMD_LIST->SetGraphicsRootConstantBufferView(0, GetGpuVirtualAddress(0));
 }
 
 void ConstantBuffer::PushComputeData(void* buffer, uint32 size)
 {
-	assert(_currentIndex < _elementCount);
-	assert(_elementSize == ((size + 255) & ~255));
+	//assert(_currentIndex < _elementCount);
+	//assert(_elementSize == ((size + 255) & ~255));
 
 	::memcpy(&_mappedBuffer[_currentIndex * _elementSize], buffer, size);
 

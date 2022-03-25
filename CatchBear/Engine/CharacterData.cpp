@@ -20,7 +20,7 @@ CharacterData::~CharacterData()
 
 void CharacterData::LoadCharacterFromFile(const wstring& path)
 {
-	FILE* pFile = NULL;
+	FILE* pFile;
 
 	// wchar_t -> char*
 	char* pStr;
@@ -28,7 +28,12 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	pStr = new char[iLen];
 	WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, pStr, iLen, 0, 0);
 
-	fopen_s(&pFile, pStr, "rb");
+	//fopen_s(&pFile, pStr, "rb");
+	fopen_s(&pFile, "C:\\EvilbearL.bin", "rb");
+	if (pFile == NULL)
+	{
+		return;
+	}
 	rewind(pFile);
 
 	char pStrTocken[64] = { '\0' };
@@ -473,9 +478,11 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 					frameInfo.matOffset.resize(nFrames);
 
-					AnimationSet*	animSet = _modelInfo->_allAnimationSets->_animationSet[nSet];
-					animSet->_keyFrameTimes[i] = frameInfo.time;
-					nReads = (UINT)fread(&animSet->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);
+					//AnimationSet*	animSet = _modelInfo->_allAnimationSets->_animationSet[nSet];
+					//animSet->_keyFrameTimes[i] = frameInfo.time;
+					_modelInfo->_allAnimationSets->_animationSet[nSet]->_keyFrameTimes[i] = static_cast<float>(frameInfo.time);
+					/*nReads = (UINT)fread(&animSet->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);*/
+					nReads = (UINT)fread(&_modelInfo->_allAnimationSets->_animationSet[nSet]->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);
 
 					//nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
 

@@ -2,6 +2,8 @@
 
 // std::byte 사용하지 않음
 #define _HAS_STD_BYTE 0
+#define _CRT_SECURE_NO_WARNINGS
+
 
 // 각종 include
 #include <windows.h>
@@ -296,6 +298,16 @@ struct TransformParams
 	Matrix	matWV;
 	Matrix	matWVP;
 	Matrix	matViewInv;
+};
+
+struct BoneOffsetParams
+{
+	Matrix matOfset[72];
+};
+
+struct AnimatedBoneParams
+{
+	Matrix matBoneTrans[72];
 };
 
 extern unique_ptr<class Engine> GEngine;

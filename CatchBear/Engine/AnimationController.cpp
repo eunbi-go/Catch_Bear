@@ -9,6 +9,7 @@
 #include "AnimationTrack.h"
 #include "AnimationSet.h"
 #include "Transform.h"
+#include "Engine.h"
 
 AnimationController::AnimationController() : Component(COMPONENT_TYPE::ANIMATOR)
 {
@@ -25,6 +26,7 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 
 	_animSets = model->_allAnimationSets;
 
+	// _vecAnimatedFrame: 애니메이션에 사용되는 뼈들
 	_animatedTrans.resize(model->_vecAnimatedFrame.size());
 	
 	matToParent.resize(model->_vecAnimatedFrame.size());
@@ -38,8 +40,8 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 		matToParent[i] = trans->_matWorld;
 	}
 
-	_boneTransform = make_shared<StructuredBuffer>();
-	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(model->_vecAnimatedFrame.size()), matToParent.data());
+	//_boneTransform = make_shared<StructuredBuffer>();
+	//_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(model->_vecAnimatedFrame.size()));
 
 	// Bone Offset 행렬
 	SkinningInfo	skInfo = skinInfo;
@@ -51,22 +53,38 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
 
 	// OffsetMatrix StructedBuffer 세팅
-	_offsetBuffer = make_shared<StructuredBuffer>();
-	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+	//_offsetBuffer = make_shared<StructuredBuffer>();
+	//_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
+	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t10);
 }
 
 void AnimationController::PushData()
 {
+	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t10);
+	BoneOffsetParams	offset = {};
+
+	for (int i = 0; i < 72; ++i)
+	{
+		offset.matOfset[i] = offsetMat[i];
+	}
+	CONST_BUFFER(CONSTANT_BUFFER_TYPE::BONE_OFFSET)->PushGraphicsData(&offset, sizeof(offset));
+
+	AnimatedBoneParams	matrix = {};
+
+	for (int i = 0; i < 72; ++i)
+	{
+		matrix.matBoneTrans[i] = matToParent[i];
+	}
+
+	CONST_BUFFER(CONSTANT_BUFFER_TYPE::ANIMATED_BONE_TRANS)->PushGraphicsData(&matrix, sizeof(matrix));
+
 	// BoneTrans
 	// 플레이어의 계층구조에서 애니메이션에 사용되는 프레임의 월드행렬을 넘겨야 한다.
-	int	nBones = static_cast<int>(_animatedTrans.size());
-	//_boneTransform->Init(sizeof(Matrix), nBones);
-	_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(matToParent.size()), matToParent.data());
-	_boneTransform->PushGraphicsData(SRV_REGISTER::t8);
+	//_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(matToParent.size()), matToParent.data());
+	//_boneTransform->PushGraphicsData(SRV_REGISTER::t11);
 
 	//// OffsetTrans
-	_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
-	_offsetBuffer->PushGraphicsData(SRV_REGISTER::t9);
+	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::AdvanceTime(float fElapsedTime)
@@ -97,10 +115,8 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
 
 			// 실제 플레이어 모델 뼈의 toParent행렬을 변경해줘야한다!
-			GetGameObject()->GetTransform()->SettoParentMat(_animatedTrans[j]->_name, _animatedTrans[j]->_matToParent);
-
-			// 여기서 변환된 toParent 행렬을 플레이어의 해당 프레임의 toParent 행렬에 넣어줘야 한다.
-			//matToParent[j] = xmf4x4Transform;
+			//GetGameObject()->GetTransform()->SettoParentMat(_animatedTrans[j]->_name, _animatedTrans[j]->_matToParent);
+			GetGameObject()->GetTransform()->FindTransform(_animatedTrans[j]->_name)->_matToParent = xmf4x4Transform;
 		}
 
 	}

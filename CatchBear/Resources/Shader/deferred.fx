@@ -28,8 +28,9 @@ struct VS_OUT
     float3 viewBinormal : BINORMAL;
 };
 
-StructuredBuffer<matrix>            g_offset : register(t9);
-StructuredBuffer<matrix>            g_boneTrans : register(t8);
+
+
+
 
 VS_OUT VS_Main(VS_IN input)
 {
@@ -89,7 +90,9 @@ VS_OUT VS_Main(VS_IN input)
         output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
         output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
        
+
         output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
+        //output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
 
 
 

@@ -31,6 +31,8 @@ void Engine::Init(const WindowInfo& info)
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
+	CreateConstantBuffer(CBV_REGISTER::b3, sizeof(BoneOffsetParams), 1);
+	CreateConstantBuffer(CBV_REGISTER::b4, sizeof(AnimatedBoneParams), 1);
 
 	CreateRenderTargetGroups();
 

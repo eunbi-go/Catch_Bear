@@ -139,7 +139,8 @@ shared_ptr<Transform> Transform::FindTransform(wstring name)
 		if (frame = _child->FindTransform(name))
 			return frame;
 	}
-	return NULL;
+	
+		return NULL;
 }
 
 void Transform::UpdateTransform(Matrix* matParent)

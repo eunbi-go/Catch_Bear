@@ -66,6 +66,7 @@ void AnimationController::PushData()
 	for (int i = 0; i < 72; ++i)
 	{
 		offset.matOfset[i] = offsetMat[i];
+		XMStoreFloat4x4(&offset.matOfset[i], XMMatrixTranspose(XMLoadFloat4x4(&offset.matOfset[i])));
 	}
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::BONE_OFFSET)->PushGraphicsData(&offset, sizeof(offset));
 
@@ -115,7 +116,6 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
 
 			// 실제 플레이어 모델 뼈의 toParent행렬을 변경해줘야한다!
-			//GetGameObject()->GetTransform()->SettoParentMat(_animatedTrans[j]->_name, _animatedTrans[j]->_matToParent);
 			GetGameObject()->GetTransform()->FindTransform(_animatedTrans[j]->_name)->_matToParent = xmf4x4Transform;
 		}
 
@@ -126,7 +126,10 @@ void AnimationController::SetWorldMatrix()
 {
 	for (size_t i = 0; i < _animatedTrans.size(); ++i)
 	{
+		//XMStoreFloat4x4(&m_pcbxmf4x4MappedSkinningBoneTransforms[j], XMMatrixTranspose(XMLoadFloat4x4(&m_ppSkinningBoneFrameCaches[j]->m_xmf4x4World)));
+
 		matToParent[i] = GetGameObject()->GetTransform()->FindTransform(_animatedTrans[i]->_name)->_matWorld;
+		XMStoreFloat4x4(&matToParent[i], XMMatrixTranspose(XMLoadFloat4x4(&matToParent[i])));
 	}
 }
 

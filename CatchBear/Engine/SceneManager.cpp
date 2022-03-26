@@ -176,7 +176,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetTransform()->SetLocalScale(Vec3(30.f, 30.f, 30.f));
 			//gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 180.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 2);
 			scene->AddGameObject(gameObject);
 		}
 

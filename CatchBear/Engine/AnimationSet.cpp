@@ -24,7 +24,8 @@ void AnimationSet::SetPosition(float fTrackPosition)
 {
 	_position = fTrackPosition;
 	int i = 0;
-	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
+	//_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
+	_position = fmod(fTrackPosition, _length);
 	//switch (_ntype)
 	//{
 	//case ANIMATION_TYPE_LOOP:

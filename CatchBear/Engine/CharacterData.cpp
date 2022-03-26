@@ -29,7 +29,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, pStr, iLen, 0, 0);
 
 	//fopen_s(&pFile, pStr, "rb");
-	fopen_s(&pFile, "C:\\EvilbearL.bin", "rb");
+	fopen_s(&pFile, "C:\\EvilbearL2.bin", "rb");
 	if (pFile == NULL)
 	{
 		return;
@@ -258,7 +258,7 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 			nReads = (UINT)::fread(&aabbExtents, sizeof(Vec3), 1, pFile);
 		}
 
-		else if (!strcmp(pStrTocken, "<ControlPoints>:"))
+		else if (!strcmp(pStrTocken, "<Positions>:"))
 		{
 			nReads = (UINT)fread(&nVertices, sizeof(int), 1, pFile);
 
@@ -286,7 +286,7 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 			}
 		}
 
-		else if (!strcmp(pStrTocken, "<UVs>:"))
+		else if (!strcmp(pStrTocken, "<TextureCoords0>:"))
 		{
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
 
@@ -298,6 +298,21 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 
 				for (int i = 0; i < nUVs; ++i)
 					_staticMeshInfo.vertices[i].uv = uv[i];
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<TextureCoords1>:"))
+		{
+			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
+
+			if (nUVs)
+			{
+				Vec2* uv = new Vec2[nUVs];
+
+				nReads = (UINT)fread(uv, sizeof(Vec2), nUVs, pFile);
+
+				//for (int i = 0; i < nUVs; ++i)
+				//	_staticMeshInfo.vertices[i].uv = uv[i];
 			}
 		}
 
@@ -331,6 +346,18 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 			}
 		}
 
+		else if (!strcmp(pStrTocken, "<BiTangents>:"))
+		{
+			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
+
+			if (nTangents)
+			{
+				Vec3* tangent = new Vec3[nTangents];
+
+				nReads = (UINT)fread(tangent, sizeof(Vec3), nTangents, pFile);
+			}
+		}
+
 		else if (!strcmp(pStrTocken, "<SubMeshes>:"))
 		{
 			nSubMeshes = ReadIntegerFromFile(pFile);
@@ -352,6 +379,18 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 				{
 					_staticMeshInfo.indices[nSubMeshes - 1].push_back(subIndices[i]);
 				}
+			}
+		}
+
+		else if (!strcmp(pStrTocken, "<Colors>:"))
+		{
+			int nColors;
+			nReads = (UINT)::fread(&nColors, sizeof(int), 1, pFile);
+			if (nColors > 0)
+			{
+				XMFLOAT4* m_pxmf4Colors;
+				m_pxmf4Colors = new XMFLOAT4[nColors];
+				nReads = (UINT)::fread(m_pxmf4Colors, sizeof(XMFLOAT4), nColors, pFile);
 			}
 		}
 

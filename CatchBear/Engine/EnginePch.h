@@ -167,13 +167,6 @@ struct AnimationFrameInfo
 	vector<Matrix>		matOffset;
 };
 
-struct AnimationFrameInfo2
-{
-	int					key;
-	double				time;
-	Matrix		matOffset;
-};
-
 struct AnimationClipInfo
 {
 	wstring								name;
@@ -186,19 +179,6 @@ struct AnimationClipInfo
 	//FbxTime::EMode	mode;
 	vector<AnimationFrameInfo>	keyFrames;
 	float position = 0.0f;	// 현재 동작 위치
-};
-
-struct AnimationClipInfo2
-{
-	wstring								name;
-	float								startTime;
-	float								endTime;
-	float								length;
-	int32								framePerSec;
-	// 해당 애니메이션의 키 프레임 개수
-	int nkeyFrames;
-	//FbxTime::EMode	mode;
-	vector<vector<AnimationFrameInfo2>>	keyFrames;
 };
 
 // 일단 여기에 스키닝 정보 다 넣어두고 나중에 연결시키기

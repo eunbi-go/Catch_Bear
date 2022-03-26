@@ -1,5 +1,4 @@
 #pragma once
-//#include "Object.h"
 #include "MeshData.h"
 
 class Mesh;
@@ -36,9 +35,6 @@ private:
 	SkinningInfo							_skinningInfo;
 	vector<wstring>							_animationFrameName;
 	vector<shared_ptr<AnimationClipInfo>>	_animationClipInfo;
-
-	vector<vector<AnimationFrameInfo2>>		_allFrameInfo;
-	vector<shared_ptr<AnimationClipInfo2>>	_allAnimationInfos;
 
 	shared_ptr<AnimationModelInfo>			_modelInfo;
 };

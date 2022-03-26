@@ -69,6 +69,9 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 				// Material 생성해서 Reosurces에 추가
 				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
+				shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"PlayerAnimation");
+				
+				material->SetShader(shader);
 
 				MeshRendererInfo	info = {};
 				info.mesh = mesh;
@@ -310,9 +313,6 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 				Vec2* uv = new Vec2[nUVs];
 
 				nReads = (UINT)fread(uv, sizeof(Vec2), nUVs, pFile);
-
-				//for (int i = 0; i < nUVs; ++i)
-				//	_staticMeshInfo.vertices[i].uv = uv[i];
 			}
 		}
 
@@ -439,8 +439,6 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 	int32	nAnimationSets, nFrames;
 	int nSkin;
 	
-	//_modelInfo = make_shared<AnimationModelInfo>();
-
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
 	if (!strcmp(pStrTocken, "<AnimationSets>:"))
@@ -477,8 +475,6 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 				_modelInfo->_vecAnimatedFrame[i] = make_shared<Transform>();
 				_modelInfo->_vecAnimatedFrame[i] = _modelInfo->_rootObject->FindTransform(frameName);
-			
-				int j = 0;
 			}
 		}
 
@@ -517,13 +513,8 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 
 					frameInfo.matOffset.resize(nFrames);
 
-					//AnimationSet*	animSet = _modelInfo->_allAnimationSets->_animationSet[nSet];
-					//animSet->_keyFrameTimes[i] = frameInfo.time;
 					_modelInfo->_allAnimationSets->_animationSet[nSet]->_keyFrameTimes[i] = static_cast<float>(frameInfo.time);
-					/*nReads = (UINT)fread(&animSet->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);*/
 					nReads = (UINT)fread(&_modelInfo->_allAnimationSets->_animationSet[nSet]->_keyFrameTrans[i][0], sizeof(Matrix), nFrames, pFile);
-
-					//nReads = (UINT)fread(&frameInfo.matOffset[0], sizeof(Matrix), nFrames, pFile);
 
 					_animationClipInfo[nSet]->keyFrames[i] = frameInfo;
 				}

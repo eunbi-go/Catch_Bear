@@ -148,18 +148,18 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TestObject
-	//shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-	//vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+	vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
 
-	//for (auto& gameObject : gameObjects)
-	//{
-	//	gameObject->SetName(L"Tree01");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10, -10.f, 50.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
-	//	scene->AddGameObject(gameObject);
-	//}
+	for (auto& gameObject : gameObjects)
+	{
+		gameObject->SetName(L"Tree01");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+		scene->AddGameObject(gameObject);
+	}
 #pragma endregion
 
 #pragma region TestPlayer
@@ -172,11 +172,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Player");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(90, -60.f, 100.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(30.f, 30.f, 30.f));
-			//gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 180.f, 0.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 50.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 2);
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			scene->AddGameObject(gameObject);
 		}
 

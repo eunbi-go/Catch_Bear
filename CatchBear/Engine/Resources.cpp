@@ -572,11 +572,33 @@ void Resources::CreateDefaultShader()
 			SHADER_TYPE::DEFERRED,
 		};
 
+
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info);
 		Add<Shader>(L"Terrain", shader);
 	}
 
+	// Animation
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};		
+		
+		ShaderArg arg =
+		{
+			"VS_Player",
+			"",
+			"",
+			"",
+			"PS_Main"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"PlayerAnimation", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()

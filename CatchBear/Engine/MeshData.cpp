@@ -202,7 +202,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 			nReads = (UINT)fread(&nTangents, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
-			if (nTangents)
+			if (nAllCnt)
 			{
 				Vec3* tangent = new Vec3[nTangents];
 
@@ -271,7 +271,9 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 			pStr = new WCHAR[nSize];
 			MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
 			
-			_staticMeshInfo.material.diffuseTexName = pStr;
+			// SimpleNaturePack_Texture_01
+			//_staticMeshInfo.material.diffuseTexName = pStr;
+			_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);
@@ -297,6 +299,25 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
 
 				float fGlossiness = ReadFloatFromFile(pFile);
+			}
+
+			else if (!strcmp(pStrTocken, "<Phong>"))
+			{
+				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.ambient.z = ReadFloatFromFile(pFile);
+
+				_staticMeshInfo.material.diffuse.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.diffuse.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.diffuse.z = ReadFloatFromFile(pFile);
+
+				_staticMeshInfo.material.specular.x = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.specular.y = ReadFloatFromFile(pFile);
+				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
+
+				float transparencyFactor = ReadFloatFromFile(pFile);
+				float shininess = ReadFloatFromFile(pFile);
+				float reflectionFactor = ReadFloatFromFile(pFile);
 			}
 		}
 

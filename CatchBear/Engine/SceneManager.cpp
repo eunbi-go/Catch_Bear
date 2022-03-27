@@ -148,16 +148,16 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TestObject
-	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
 
 	vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
 
 	for (auto& gameObject : gameObjects)
 	{
-		gameObject->SetName(L"Tree01");
+		gameObject->SetName(L"Tree02");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 		scene->AddGameObject(gameObject);
 	}
 #pragma endregion

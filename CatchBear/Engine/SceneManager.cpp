@@ -148,47 +148,47 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region 
-	// Tree_01
-	shared_ptr<MeshData> meshTree01 = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
+	//// Tree_01
+	//shared_ptr<MeshData> meshTree01 = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-	vector<shared_ptr<GameObject>>	objectsTree01 = meshTree01->Instantiate();
+	//vector<shared_ptr<GameObject>>	objectsTree01 = meshTree01->Instantiate();
 
-	for (auto& gameObject : objectsTree01)
-	{
-		gameObject->SetName(L"Tree01");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : objectsTree01)
+	//{
+	//	gameObject->SetName(L"Tree01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+	//	scene->AddGameObject(gameObject);
+	//}
 
-	// Tree_02
-	shared_ptr<MeshData> meshTree02 = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
+	//// Tree_02
+	//shared_ptr<MeshData> meshTree02 = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
 
-	vector<shared_ptr<GameObject>>	objectsTree02 = meshTree02->Instantiate();
+	//vector<shared_ptr<GameObject>>	objectsTree02 = meshTree02->Instantiate();
 
-	for (auto& gameObject : objectsTree02)
-	{
-		gameObject->SetName(L"Tree02");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : objectsTree02)
+	//{
+	//	gameObject->SetName(L"Tree02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
 
-	// Tree_03
-	shared_ptr<MeshData> meshTree03 = GET_SINGLE(Resources)->LoadFBX(L"Tree_03.bin");
+	//// Tree_03
+	//shared_ptr<MeshData> meshTree03 = GET_SINGLE(Resources)->LoadFBX(L"Tree_03.bin");
 
-	vector<shared_ptr<GameObject>>	objectsTree03 = meshTree03->Instantiate();
+	//vector<shared_ptr<GameObject>>	objectsTree03 = meshTree03->Instantiate();
 
-	for (auto& gameObject : objectsTree03)
-	{
-		gameObject->SetName(L"Tree03");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : objectsTree03)
+	//{
+	//	gameObject->SetName(L"Tree03");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+	//	scene->AddGameObject(gameObject);
+	//}
 
 	//// Mushroom_01
 	//shared_ptr<MeshData> meshMushroom01 = GET_SINGLE(Resources)->LoadFBX(L"Mushroom_01.bin");
@@ -213,7 +213,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Mushroom02");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 30.f));
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	//	scene->AddGameObject(gameObject);
 	//}
@@ -228,7 +228,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	gameObject->SetName(L"Rock01");
 	//	gameObject->SetCheckFrustum(false);
 	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 	//	scene->AddGameObject(gameObject);
 	//}
 
@@ -241,8 +241,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Rock02");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 	//	scene->AddGameObject(gameObject);
 	//}
 
@@ -255,8 +255,22 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Rock03");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Rock_04
+	//shared_ptr<MeshData> meshRock04 = GET_SINGLE(Resources)->LoadFBX(L"Rock_04.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsRock04 = meshRock04->Instantiate();
+	//
+	//for (auto& gameObject : objectsRock04)
+	//{
+	//	gameObject->SetName(L"Rock04");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 	//	scene->AddGameObject(gameObject);
 	//}
 
@@ -269,7 +283,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Stump01");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	//	scene->AddGameObject(gameObject);
 	//}
@@ -283,8 +297,302 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Grass01");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Grass_02
+	//shared_ptr<MeshData> meshGrass02 = GET_SINGLE(Resources)->LoadFBX(L"Grass_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsGrass02 = meshGrass02->Instantiate();
+
+	//for (auto& gameObject : objectsGrass02)
+	//{
+	//	gameObject->SetName(L"Grass02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Branch_01
+	//shared_ptr<MeshData> meshBranch01 = GET_SINGLE(Resources)->LoadFBX(L"Branch_01.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsBranch01 = meshBranch01->Instantiate();
+	//
+	//for (auto& gameObject : objectsBranch01)
+	//{
+	//	gameObject->SetName(L"Branch01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+	
+	//// Bush_01
+	//shared_ptr<MeshData> meshBush01 = GET_SINGLE(Resources)->LoadFBX(L"Bush_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsBush01 = meshBush01->Instantiate();
+
+	//for (auto& gameObject : objectsBush01)
+	//{
+	//	gameObject->SetName(L"Bush01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Bush_02
+	//shared_ptr<MeshData> meshBush02 = GET_SINGLE(Resources)->LoadFBX(L"Bush_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsBush02 = meshBush02->Instantiate();
+
+	//for (auto& gameObject : objectsBush02)
+	//{
+	//	gameObject->SetName(L"Bush02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+	
+	//// Building_05
+	//shared_ptr<MeshData> meshBuilding05 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_building_05.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsBuilding05 = meshBuilding05->Instantiate();
+	//
+	//for (auto& gameObject : objectsBuilding05)
+	//{
+	//	gameObject->SetName(L"Building05");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// chair_01a
+	//shared_ptr<MeshData> meshChair01a = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_chair_01a.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsChair01a = meshChair01a->Instantiate();
+
+	//for (auto& gameObject : objectsChair01a)
+	//{
+	//	gameObject->SetName(L"chair_01a");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// treePine01
+	//shared_ptr<MeshData> meshTreePine01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_tree_pine_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsTreePine01 = meshTreePine01->Instantiate();
+
+	//for (auto& gameObject : objectsTreePine01)
+	//{
+	//	gameObject->SetName(L"treePine01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_hanger_clothes_01
+	//shared_ptr<MeshData> meshHanger01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_hanger_clothes_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsHanger01 = meshHanger01->Instantiate();
+
+	//for (auto& gameObject : objectsHanger01)
+	//{
+	//	gameObject->SetName(L"Hanger01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_rock_01
+	//shared_ptr<MeshData> meshNewRock01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_rock_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsNewRock01 = meshNewRock01->Instantiate();
+
+	//for (auto& gameObject : objectsNewRock01)
+	//{
+	//	gameObject->SetName(L"NewRock01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_rock_02
+	//shared_ptr<MeshData> meshNewRock2 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_rock_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsNewRock02 = meshNewRock2->Instantiate();
+
+	//for (auto& gameObject : objectsNewRock02)
+	//{
+	//	gameObject->SetName(L"NewRock02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_rocks_tiny_01
+	//shared_ptr<MeshData> meshTinyRock = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_rocks_tiny_01.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsTinyRock = meshTinyRock->Instantiate();
+	//
+	//for (auto& gameObject : objectsTinyRock)
+	//{
+	//	gameObject->SetName(L"TinyRock");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_table_01
+	//shared_ptr<MeshData> meshTable01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_table_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsTable01 = meshTable01->Instantiate();
+
+	//for (auto& gameObject : objectsTable01)
+	//{
+	//	gameObject->SetName(L"Table01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_tree_02
+	//shared_ptr<MeshData> meshNewTree02 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_tree_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsNewTree02 = meshNewTree02->Instantiate();
+
+	//for (auto& gameObject : objectsNewTree02)
+	//{
+	//	gameObject->SetName(L"NewTree02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_bush_01
+	//shared_ptr<MeshData> meshNewBush01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_bush_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsNewBush01 = meshNewBush01->Instantiate();
+
+	//for (auto& gameObject : objectsNewBush01)
+	//{
+	//	gameObject->SetName(L"NewBush01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_bush_02
+	//shared_ptr<MeshData> meshNewBush02 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_bush_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsNewBush02 = meshNewBush02->Instantiate();
+
+	//for (auto& gameObject : objectsNewBush02)
+	//{
+	//	gameObject->SetName(L"NewBush02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_bird_house_01
+	//shared_ptr<MeshData> meshBirdHouse01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_bird_house_01.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsBirdHouse01 = meshBirdHouse01->Instantiate();
+	//
+	//for (auto& gameObject : objectsBirdHouse01)
+	//{
+	//	gameObject->SetName(L"BirdHouse01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+	//
+	//// rpgpp_lt_log_wood_01
+	//shared_ptr<MeshData> meshLogWood01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_log_wood_01.bin");
+	//
+	//vector<shared_ptr<GameObject>>	objectsLogWood01 = meshLogWood01->Instantiate();
+	//
+	//for (auto& gameObject : objectsLogWood01)
+	//{
+	//	gameObject->SetName(L"LogWood01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_flower_01
+	//shared_ptr<MeshData> meshFlower01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_flower_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsFlower01 = meshFlower01->Instantiate();
+
+	//for (auto& gameObject : objectsFlower01)
+	//{
+	//	gameObject->SetName(L"Flower01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_flower_02
+	//shared_ptr<MeshData> meshFlower02 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_flower_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsFlower02 = meshFlower02->Instantiate();
+
+	//for (auto& gameObject : objectsFlower02)
+	//{
+	//	gameObject->SetName(L"Flower02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(-10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// rpgpp_lt_flower_03
+	//shared_ptr<MeshData> meshFlower03 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_flower_03.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsFlower03 = meshFlower03->Instantiate();
+
+	//for (auto& gameObject : objectsFlower03)
+	//{
+	//	gameObject->SetName(L"Flower03");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(20.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Fence
+	//shared_ptr<MeshData> meshFlower01 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_flower_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsFlower01 = meshFlower01->Instantiate();
+
+	//for (auto& gameObject : objectsFlower01)
+	//{
+	//	gameObject->SetName(L"Flower01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	//	scene->AddGameObject(gameObject);
 	//}
 #pragma endregion

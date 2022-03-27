@@ -113,6 +113,13 @@ void AnimationController::SetWorldMatrix()
 	}
 }
 
+bool AnimationController::IsAnimationFinish(int nTrack)
+{
+	AnimationSet*	 pAnimationSet = _animSets->_animationSet[_animTracks[nTrack]._nAnimationSet];
+	
+	return pAnimationSet->IsAnimationFinish();
+}
+
 
 void AnimationController::FinalUpdate()
 {

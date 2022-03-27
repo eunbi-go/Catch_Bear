@@ -17,6 +17,7 @@ public:
 private:
 	void KeyCheck();
 	void StateCheck();
+	void AnimationCheck();
 
 private:
 	float	_speed = 5.f;

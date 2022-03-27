@@ -42,6 +42,8 @@ public:
 public:
 	void SetWorldMatrix();
 
+	bool IsAnimationFinish(int nTrack);
+
 private:
 	float									_updateTime = 0.f;
 	int32									_clipIndex = 0;

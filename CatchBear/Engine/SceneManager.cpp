@@ -147,12 +147,27 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region TestObject
-	shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
+#pragma region 
+	// Tree_01
+	shared_ptr<MeshData> meshTree01 = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
-	vector<shared_ptr<GameObject>>	gameObjects = meshData->Instantiate();
+	vector<shared_ptr<GameObject>>	objectsTree01 = meshTree01->Instantiate();
 
-	for (auto& gameObject : gameObjects)
+	for (auto& gameObject : objectsTree01)
+	{
+		gameObject->SetName(L"Tree01");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+		scene->AddGameObject(gameObject);
+	}
+
+	// Tree_02
+	shared_ptr<MeshData> meshTree02 = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
+
+	vector<shared_ptr<GameObject>>	objectsTree02 = meshTree02->Instantiate();
+
+	for (auto& gameObject : objectsTree02)
 	{
 		gameObject->SetName(L"Tree02");
 		gameObject->SetCheckFrustum(false);
@@ -160,6 +175,118 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 		scene->AddGameObject(gameObject);
 	}
+
+	// Tree_03
+	shared_ptr<MeshData> meshTree03 = GET_SINGLE(Resources)->LoadFBX(L"Tree_03.bin");
+
+	vector<shared_ptr<GameObject>>	objectsTree03 = meshTree03->Instantiate();
+
+	for (auto& gameObject : objectsTree03)
+	{
+		gameObject->SetName(L"Tree03");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
+		scene->AddGameObject(gameObject);
+	}
+
+	//// Mushroom_01
+	//shared_ptr<MeshData> meshMushroom01 = GET_SINGLE(Resources)->LoadFBX(L"Mushroom_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsMushromm01 = meshMushroom01->Instantiate();
+
+	//for (auto& gameObject : objectsMushromm01)
+	//{
+	//	gameObject->SetName(L"Mushroom01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 30.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Mushroom_02
+	//shared_ptr<MeshData> meshMushroom02 = GET_SINGLE(Resources)->LoadFBX(L"Mushroom_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsMushromm02 = meshMushroom02->Instantiate();
+
+	//for (auto& gameObject : objectsMushromm02)
+	//{
+	//	gameObject->SetName(L"Mushroom02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Rock_01
+	//shared_ptr<MeshData> meshRock01 = GET_SINGLE(Resources)->LoadFBX(L"Rock_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsRock01 = meshRock01->Instantiate();
+
+	//for (auto& gameObject : objectsRock01)
+	//{
+	//	gameObject->SetName(L"Rock01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Rock_02
+	//shared_ptr<MeshData> meshRock02 = GET_SINGLE(Resources)->LoadFBX(L"Rock_02.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsRock02 = meshRock02->Instantiate();
+
+	//for (auto& gameObject : objectsRock02)
+	//{
+	//	gameObject->SetName(L"Rock02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Rock_03
+	//shared_ptr<MeshData> meshRock03 = GET_SINGLE(Resources)->LoadFBX(L"Rock_03.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsRock03 = meshRock03->Instantiate();
+
+	//for (auto& gameObject : objectsRock03)
+	//{
+	//	gameObject->SetName(L"Rock03");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Stump_01
+	//shared_ptr<MeshData> meshStump01 = GET_SINGLE(Resources)->LoadFBX(L"Stump_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsStump01 = meshStump01->Instantiate();
+
+	//for (auto& gameObject : objectsStump01)
+	//{
+	//	gameObject->SetName(L"Stump01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
+
+	//// Grass_01
+	//shared_ptr<MeshData> meshGrass01 = GET_SINGLE(Resources)->LoadFBX(L"Grass_01.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsGrass01 = meshGrass01->Instantiate();
+
+	//for (auto& gameObject : objectsGrass01)
+	//{
+	//	gameObject->SetName(L"Grass01");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//	scene->AddGameObject(gameObject);
+	//}
 #pragma endregion
 
 #pragma region TestPlayer
@@ -172,38 +299,12 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Player");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 50.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 50.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			scene->AddGameObject(gameObject);
 		}
-
-		//////////////////////////////////////////////////////////////
-		//// Cube
-
-		//shared_ptr<GameObject> obj = make_shared<GameObject>();
-		//obj->AddComponent(make_shared<Transform>());
-		//obj->AddComponent(make_shared<Player>());
-		//obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		//obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 500.f));
-		//obj->SetStatic(false);
-		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		//{
-		//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-		//	meshRenderer->SetMesh(sphereMesh);
-		//}
-		//{
-		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-		//	meshRenderer->SetMaterial(material->Clone());
-		//}
-		//obj->AddComponent(meshRenderer);
-		////obj->SetTestPlayer(obj);
-
-		//////////////////////////////////////////////////////////////
-		//// scene에 gameObject 배치
-		//// 이미 완성된 gameObjec: prefab
-		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 

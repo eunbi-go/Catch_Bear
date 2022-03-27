@@ -11,6 +11,8 @@ public:
 
 	XMFLOAT4X4 GetSRT(int nBone);
 
+	bool IsAnimationFinish();
+
 public:
 	wstring					_name;
 

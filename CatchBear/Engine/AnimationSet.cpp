@@ -24,9 +24,7 @@ AnimationSet::~AnimationSet()
 void AnimationSet::SetPosition(float fTrackPosition)
 {
 	_position = fTrackPosition;
-	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
-
-	//_position = fmod(fTrackPosition, _length);
+	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames -1]);
 }
 
 XMFLOAT4X4 AnimationSet::GetSRT(int nBone)
@@ -44,4 +42,11 @@ XMFLOAT4X4 AnimationSet::GetSRT(int nBone)
 	}
 
 	return trans;
+}
+
+bool AnimationSet::IsAnimationFinish()
+{
+	if (_position >= _keyFrameTimes[_nKeyFrames-2])
+		return true;
+	return false;
 }

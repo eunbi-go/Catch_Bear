@@ -19,6 +19,8 @@ void Player::LateUpdate()
 	//GetTransform()->PreRender();
 	KeyCheck();
 	StateCheck();
+	AnimationCheck();
+
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
@@ -28,37 +30,38 @@ void Player::KeyCheck()
 {
 	Vec3 pos = GetTransform()->GetLocalPosition();
 
-
-	if (INPUT->GetButton(KEY_TYPE::W))
+	if (_curState != JUMP)
 	{
-		_curState = WALK;
-		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+		if (INPUT->GetButton(KEY_TYPE::W))
+		{
+			_curState = WALK;
+			pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+		}
+
+		else if (INPUT->GetButton(KEY_TYPE::S))
+		{
+			_curState = WALK;
+			pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+		}
+
+		else if (INPUT->GetButton(KEY_TYPE::A))
+		{
+			_curState = WALK;
+			pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
+		}
+
+		else if (INPUT->GetButton(KEY_TYPE::D))
+		{
+			_curState = WALK;
+			pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
+		}
+		else	_curState = IDLE;
 	}
 
-	else if (INPUT->GetButton(KEY_TYPE::S))
-	{
-		_curState = WALK;
-		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
-	}
-
-	else if (INPUT->GetButton(KEY_TYPE::A))
-	{
-		_curState = WALK;
-		pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
-	}
-
-	else if (INPUT->GetButton(KEY_TYPE::D))
-	{
-		_curState = WALK;
-		pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
-	}
-
-	else if (INPUT->GetButton(KEY_TYPE::SPACE))
+	if (INPUT->GetButtonUp(KEY_TYPE::SPACE))
 	{
 		_curState = JUMP;
 	}
-
-	else _curState = IDLE;
 
 	GetTransform()->SetLocalPosition(pos);
 
@@ -92,5 +95,14 @@ void Player::StateCheck()
 		}
 
 		_preState = _curState;
+	}
+}
+
+void Player::AnimationCheck()
+{
+	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
+	{
+		if (GetAnimationController()->IsAnimationFinish(0))
+			_curState = IDLE;
 	}
 }

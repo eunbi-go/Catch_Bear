@@ -3,6 +3,11 @@
 
 class Player : public MonoBehaviour
 {
+	enum STATE
+	{
+		IDLE, WALK, DASH, JUMP, ATTACK, END
+	};
+
 public:
 	Player();
 	virtual ~Player();
@@ -11,10 +16,11 @@ public:
 
 private:
 	void KeyCheck();
-
+	void StateCheck();
 
 private:
 	float	_speed = 5.f;
-	
+	STATE	_curState = STATE::END;
+	STATE	_preState = STATE::END;
 };
 

@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "AnimationSet.h"
+#include "Timer.h"
 
 AnimationSet::AnimationSet(float length, int framePerSec, int nKeyFrames, int nSkinnings, wstring name)
 {
@@ -23,49 +24,14 @@ AnimationSet::~AnimationSet()
 void AnimationSet::SetPosition(float fTrackPosition)
 {
 	_position = fTrackPosition;
-	int i = 0;
-	//_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
-	_position = fmod(fTrackPosition, _length);
-	//switch (_ntype)
-	//{
-	//case ANIMATION_TYPE_LOOP:
-	//{
-	//	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
-	//	break;
-	//}
+	_position = fmod(fTrackPosition, _keyFrameTimes[_nKeyFrames - 1]);
 
-	//case ANIMATION_TYPE_ONCE:
-	//	_position = fmod(fTrackPosition, _length);
-	//	//if (m_fPosition >= m_fLength)
-	//	//{
-	//	//	// 이번 동작 끝
-	//	//	i = 1;
-	//	//	//m_fPosition = 0.0f;
-	//	//}
-
-	//	//char buf[100];
-	//	//sprintf_s(buf, "m_fPosition: %d\n", i);
-	//	//OutputDebugStringA(buf);
-	//	break;
-
-	//case ANIMATION_TYPE_PINGPONG:
-	//	break;
-	//}
+	//_position = fmod(fTrackPosition, _length);
 }
 
 XMFLOAT4X4 AnimationSet::GetSRT(int nBone)
 {
 	Matrix	trans = Identity();
-
-	//for (int i = 0; i < (m_nKeyFrames - 1); i++)
-	//{
-	//	if ((m_pfKeyFrameTimes[i] <= m_fPosition) && (m_fPosition <= m_pfKeyFrameTimes[i + 1]))
-	//	{
-	//		float t = (m_fPosition - m_pfKeyFrameTimes[i]) / (m_pfKeyFrameTimes[i + 1] - m_pfKeyFrameTimes[i]);
-	//		xmf4x4Transform = Matrix4x4::Interpolate(m_ppxmf4x4KeyFrameTransforms[i][nBone], m_ppxmf4x4KeyFrameTransforms[i + 1][nBone], t);
-	//		break;
-	//	}
-	//}
 
 	for (int i = 0; i < (_nKeyFrames - 1); i++)
 	{

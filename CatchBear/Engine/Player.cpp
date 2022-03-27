@@ -18,6 +18,7 @@ void Player::LateUpdate()
 {
 	//GetTransform()->PreRender();
 	KeyCheck();
+	StateCheck();
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
@@ -29,18 +30,67 @@ void Player::KeyCheck()
 
 
 	if (INPUT->GetButton(KEY_TYPE::W))
+	{
+		_curState = WALK;
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+	}
 
-	if (INPUT->GetButton(KEY_TYPE::S))
+	else if (INPUT->GetButton(KEY_TYPE::S))
+	{
+		_curState = WALK;
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+	}
 
-	if (INPUT->GetButton(KEY_TYPE::A))
+	else if (INPUT->GetButton(KEY_TYPE::A))
+	{
+		_curState = WALK;
 		pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
+	}
 
-	if (INPUT->GetButton(KEY_TYPE::D))
+	else if (INPUT->GetButton(KEY_TYPE::D))
+	{
+		_curState = WALK;
 		pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
+	}
 
+	else if (INPUT->GetButton(KEY_TYPE::SPACE))
+	{
+		_curState = JUMP;
+	}
+
+	else _curState = IDLE;
 
 	GetTransform()->SetLocalPosition(pos);
 
+}
+
+void Player::StateCheck()
+{
+	if (_curState != _preState)
+	{
+		switch (_curState)
+		{
+		case Player::IDLE:
+			GetAnimationController()->SetTrackAnimationSet(0, 0);
+			break;
+		case Player::WALK:
+			GetAnimationController()->SetTrackAnimationSet(0, 1);
+			break;
+		case Player::DASH:
+			GetAnimationController()->SetTrackAnimationSet(0, 3);
+			break;
+		case Player::JUMP:
+			GetAnimationController()->SetTrackAnimationSet(0, 2);
+			break;
+		case Player::ATTACK:
+			GetAnimationController()->SetTrackAnimationSet(0, 4);
+			break;
+		case Player::END:
+			break;
+		default:
+			break;
+		}
+
+		_preState = _curState;
+	}
 }

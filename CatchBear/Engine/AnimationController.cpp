@@ -40,9 +40,6 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 		matToParent[i] = trans->_matWorld;
 	}
 
-	//_boneTransform = make_shared<StructuredBuffer>();
-	//_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(model->_vecAnimatedFrame.size()));
-
 	// Bone Offset 행렬
 	SkinningInfo	skInfo = skinInfo;
 	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
@@ -51,16 +48,10 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 	offsetMat.resize(boneCnt);
 
 	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
-
-	// OffsetMatrix StructedBuffer 세팅
-	//_offsetBuffer = make_shared<StructuredBuffer>();
-	//_offsetBuffer->Init(sizeof(Matrix), static_cast<uint32>(offsetMat.size()), offsetMat.data());
-	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t10);
 }
 
 void AnimationController::PushData()
 {
-	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t10);
 	BoneOffsetParams	offset = {};
 
 	for (int i = 0; i < 72; ++i)
@@ -70,22 +61,13 @@ void AnimationController::PushData()
 	}
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::BONE_OFFSET)->PushGraphicsData(&offset, sizeof(offset));
 
+
 	AnimatedBoneParams	matrix = {};
 
 	for (int i = 0; i < 72; ++i)
-	{
 		matrix.matBoneTrans[i] = matToParent[i];
-	}
 
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::ANIMATED_BONE_TRANS)->PushGraphicsData(&matrix, sizeof(matrix));
-
-	// BoneTrans
-	// 플레이어의 계층구조에서 애니메이션에 사용되는 프레임의 월드행렬을 넘겨야 한다.
-	//_boneTransform->Init(sizeof(Matrix), static_cast<uint32>(matToParent.size()), matToParent.data());
-	//_boneTransform->PushGraphicsData(SRV_REGISTER::t11);
-
-	//// OffsetTrans
-	//_offsetBuffer->PushGraphicsData(SRV_REGISTER::t9);
 }
 
 void AnimationController::AdvanceTime(float fElapsedTime)
@@ -126,8 +108,6 @@ void AnimationController::SetWorldMatrix()
 {
 	for (size_t i = 0; i < _animatedTrans.size(); ++i)
 	{
-		//XMStoreFloat4x4(&m_pcbxmf4x4MappedSkinningBoneTransforms[j], XMMatrixTranspose(XMLoadFloat4x4(&m_ppSkinningBoneFrameCaches[j]->m_xmf4x4World)));
-
 		matToParent[i] = GetGameObject()->GetTransform()->FindTransform(_animatedTrans[i]->_name)->_matWorld;
 		XMStoreFloat4x4(&matToParent[i], XMMatrixTranspose(XMLoadFloat4x4(&matToParent[i])));
 	}

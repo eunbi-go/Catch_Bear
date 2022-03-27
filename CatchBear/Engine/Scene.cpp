@@ -186,6 +186,12 @@ void Scene::AddGameObject(shared_ptr<GameObject> gameObject)
 	_gameObjects.push_back(gameObject);
 }
 
+void Scene::AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject)
+{
+	//_players[_playerid] = gameObject;
+	_players.emplace(_playerid, gameObject);
+}
+
 void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 {
 	if (gameObject->GetCamera())

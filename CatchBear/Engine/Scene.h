@@ -29,13 +29,16 @@ private:
 
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
+	void AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
 
 	const vector<shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
+	const shared_ptr<GameObject>& GetPlayer(uint64 playerid) { return _players[playerid]; }
 
 private:
 	vector<shared_ptr<GameObject>>		_gameObjects;
 	vector<shared_ptr<class Camera>>	_cameras;
 	vector<shared_ptr<class Light>>		_lights;
+	map<uint64, shared_ptr<GameObject>> _players;
 };
 

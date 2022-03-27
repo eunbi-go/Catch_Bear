@@ -66,15 +66,13 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 
 void SceneManager::MakePlayer(uint64 _playerID)
 {
-	//shared_ptr<Scene> scene = make_shared<Scene>();
-	//if (!bisPlayerCreate)
 	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->SetName(L"Player");
 		obj->AddComponent(make_shared<Transform>());
 		obj->AddComponent(make_shared<Player>());
 		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(200.f + (_playerID * 50.f), 0.f, 500.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(200.f + (_playerID * 100.f), 0.f, 500.f));
 		obj->SetStatic(false);
 		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -86,10 +84,13 @@ void SceneManager::MakePlayer(uint64 _playerID)
 			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
 			meshRenderer->SetMaterial(material->Clone());
 		}
+
+		// 플레이어ID 설정
+		obj->SetPlayerID(_playerID);
+
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
-
-		//bisPlayerCreate = true;
+		scene->AddPlayers(_playerID, obj);
 	}
 }
 

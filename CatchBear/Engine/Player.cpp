@@ -48,7 +48,14 @@ void Player::KeyCheck()
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	_player = GetGameObject();
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
 
 	for (auto& gameObject : gameObjects)
 	{

@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "ClientPacketHandler.h"
 #include "Player.h"
-//#include "Lobby.h"
 #include "GameSession.h"
 #include "Timer.h"
 #include "InGame.h"
+
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 std::mutex m;
@@ -31,7 +31,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	{
 		// PlayerId도 같이 보내줌
 		loginPkt.set_playerid(idGenerator);
-	
+
 		PlayerRef playerRef = MakeShared<Player>();
 		playerRef->playerId = idGenerator++;
 		playerRef->ownerSession = gameSession;
@@ -150,7 +150,8 @@ bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidt
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-	
+
+
 	// 후에는 static오브젝트들 위치 불러와서 플레이어랑 충돌체크함
 	// 일단은 테스트용으로 object위치
 	float staticObjX = 0.f;
@@ -159,13 +160,13 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	float staticObjDepth = 100.f;
 
 	if (pkt.movedir() == 0)
-		cout << "앞으로 이동" << endl;
+		cout << "플레이어 " << pkt.playerid() << " 앞으로 이동" << endl;
 	if (pkt.movedir() == 1)
-		cout << "뒤으로 이동" << endl;
+		cout << "플레이어 " << pkt.playerid() << " 뒤으로 이동" << endl;
 	if (pkt.movedir() == 2)
-		cout << "왼쪽으로 이동" << endl;
+		cout << "플레이어 " << pkt.playerid() << " 왼쪽으로 이동" << endl;
 	if (pkt.movedir() == 3)
-		cout << "오른쪽으로 이동" << endl;
+		cout << "플레이어 " << pkt.playerid() << " 오른쪽으로 이동" << endl;
 
 	cout << "x: " << pkt.xpos() << " / z: " << pkt.zpos() << endl;
 
@@ -200,36 +201,19 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 		movePkt.set_success(false);
 		cout << "충돌함!" << endl;
 
-		//if (pkt.movedir() == 0)
-		//	gameSession->SetMoveDir(MoveDir::UP);
-		//if (pkt.movedir() == 1)
-		//	gameSession->SetMoveDir(MoveDir::DOWN);
-		//if (pkt.movedir() == 2)
-		//	gameSession->SetMoveDir(MoveDir::LEFT);
-		//if (pkt.movedir() == 3)
-		//	gameSession->SetMoveDir(MoveDir::RIGHT);
-
 		switch (gameSession->GetMoveDir())
 		{
 		case MoveDir::UP:
 			movePkt.set_movedir(0);
-			//movePkt.set_zpos(pkt.zpos() - 5.f);
-			//movePkt.set_xpos(pkt.xpos());
 			break;
 		case MoveDir::DOWN:
 			movePkt.set_movedir(1);
-			//movePkt.set_zpos(pkt.zpos() + 5.f);
-			//movePkt.set_xpos(pkt.xpos());
 			break;
 		case MoveDir::LEFT:
 			movePkt.set_movedir(2);
-			//movePkt.set_xpos(pkt.xpos() + 5.f);
-			//movePkt.set_zpos(pkt.zpos());
 			break;
 		case MoveDir::RIGHT:
 			movePkt.set_movedir(3);
-			//movePkt.set_xpos(pkt.xpos() - 5.f);
-			//movePkt.set_zpos(pkt.zpos());
 			break;
 		}
 
@@ -240,8 +224,12 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 		}
 	}
 
+	movePkt.set_playerid(pkt.playerid());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
-	gameSession->Send(sendBuffer);
+	
+	GInGame.Broadcast(sendBuffer);
+	
+	//gameSession->Send(sendBuffer);
 	return true;
 }
 

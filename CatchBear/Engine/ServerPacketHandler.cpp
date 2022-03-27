@@ -147,7 +147,6 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 	Protocol::C_ENTER_GAME enterGamePkt;
 	
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
-
 	// 현재 씬에서 플레이어를 찾는다
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
@@ -198,6 +197,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
 
+		MovePkt.set_playerid(_player->GetPlayerID());
 		MovePkt.set_movedir(0);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
@@ -209,6 +209,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
 
+		MovePkt.set_playerid(_player->GetPlayerID());
 		MovePkt.set_movedir(1);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
@@ -220,6 +221,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
 
+		MovePkt.set_playerid(_player->GetPlayerID());
 		MovePkt.set_movedir(2);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
@@ -231,6 +233,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		MovePkt.set_ypos(_player->GetY());
 		MovePkt.set_zpos(_player->GetZ());
 
+		MovePkt.set_playerid(_player->GetPlayerID());
 		MovePkt.set_movedir(3);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
@@ -256,16 +259,9 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	Protocol::C_MOVE MovePkt;
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+	//const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+	_player = scene->GetPlayer(pkt.playerid());
 
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player")
-		{
-			_player = gameObject;
-			break;
-		}
-	}
 	// 만약 충돌해서 위치가 바뀐다면 위치 다시 바꿔준다.
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
@@ -276,6 +272,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	{
 		if (pkt.movedir() == 0)
 		{
+			float a = pos.x;
 			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
 			_player->GetTransform()->SetLocalPosition(pos);
 		}
@@ -376,7 +373,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	}
 
 	/*_player->GetTransform()->SetLocalPosition(pos);*/
-
 	if (INPUT->GetButton(KEY_TYPE::W))
 	{
 		MovePkt.set_xpos(_player->GetX());
@@ -384,6 +380,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		MovePkt.set_zpos(_player->GetZ());
 
 		MovePkt.set_movedir(0);
+		// gameobject안의 각 클라이언트마다 가진 playerid를 보내줌. 제대로 보낼까 과연
+		MovePkt.set_playerid(_player->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
 	}
@@ -394,6 +392,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		MovePkt.set_zpos(_player->GetZ());
 
 		MovePkt.set_movedir(1);
+		MovePkt.set_playerid(_player->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
 	}
@@ -404,6 +403,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		MovePkt.set_zpos(_player->GetZ());
 
 		MovePkt.set_movedir(2);
+		MovePkt.set_playerid(_player->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
 	}
@@ -414,6 +414,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		MovePkt.set_zpos(_player->GetZ());
 
 		MovePkt.set_movedir(3);
+		MovePkt.set_playerid(_player->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
 		session->Send(sendBuffer);
 	}

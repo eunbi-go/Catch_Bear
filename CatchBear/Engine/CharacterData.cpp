@@ -28,8 +28,9 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	pStr = new char[iLen];
 	WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, pStr, iLen, 0, 0);
 
-	//fopen_s(&pFile, pStr, "rb");
-	fopen_s(&pFile, "C:\\EvilbearL2.bin", "rb");
+	wstring strpath = L"..\\Resources\\Binary\\" + path;
+
+	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
 	if (pFile == NULL)
 	{
 		return;

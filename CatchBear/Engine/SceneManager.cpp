@@ -147,7 +147,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region 
+#pragma region StaticMesh
 	//// Tree_01
 	//shared_ptr<MeshData> meshTree01 = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
@@ -599,7 +599,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL.bin");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 		
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 

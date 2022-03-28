@@ -11,13 +11,15 @@ public:
 	virtual void LateUpdate() override;
 
 public:
-	void FollowPlayer(shared_ptr<GameObject> player);
+	void Revolve(float rotSize, Vec3 playerPos);
 
 private:
 	float		_speed = 5.f;
-	float		_offset = 300.f;
-	float		_angleX = 0.5f;
+	Vec3		_offset;
 
-	bool		_getPlayer = false;
+	///////
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	XMFLOAT3 m_xmf3Offset;		// 플레이어와 카메라의 오프셋을 나타내는 벡터. 주로 3인칭 카메라에서 사용됨
+	///////
 };
 

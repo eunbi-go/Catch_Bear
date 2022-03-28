@@ -36,6 +36,9 @@ public:
 	const shared_ptr<GameObject>& GetPlayer(uint64 playerid) { return _players[playerid]; }
 
 private:
+	// 벡터를 레이어 단계로 구분한다
+	// [0]: 벽, [1]: 몬스터
+	// -> 벡터 하나를 만들어주는 것이 아니라 벡터의 배열 or 벡터의 벡터로 만들어서 구분해서 관리
 	vector<shared_ptr<GameObject>>		_gameObjects;
 	vector<shared_ptr<class Camera>>	_cameras;
 	vector<shared_ptr<class Light>>		_lights;

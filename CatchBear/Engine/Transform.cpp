@@ -25,11 +25,13 @@ void Transform::FinalUpdate()
 	_matLocal = matScale * matRotation * matTranslation;	// 부모의 local space로 가기 위한 행렬
 	_matWorld = _matLocal;									// world space로 가기 위한 행렬
 
-	shared_ptr<Transform> parent = GetParent().lock();
-	if (parent != nullptr)
-	{
-		_matWorld *= parent->GetLocalToWorldMatrix();
-	}
+
+	//shared_ptr<Transform> parent = GetParent().lock();
+	//shared_ptr<Transform> parent = GetParent();
+	//if (parent != nullptr)
+	//{
+	//	_matWorld *= parent->GetLocalToWorldMatrix();
+	//}
 }
 
 void Transform::PushData()
@@ -67,7 +69,6 @@ void Transform::LookAt(const Vec3& dir)
 	matrix.Backward(front);
 
 	_localRotation = DecomposeRotationMatrix(matrix);
-
 }
 
 bool Transform::CloseEnough(const float& a, const float& b, const float& epsilon)
@@ -120,5 +121,72 @@ Vec3 Transform::DecomposeRotationMatrix(const Matrix& rotation)
 	}
 
 	return ret;
+}
+
+shared_ptr<Transform> Transform::FindTransform(wstring name)
+{
+	shared_ptr<Transform>	frame = make_shared<Transform>();
+	if (_name == name) return shared_from_this();
+	
+	if (_sibling)
+	{
+		if (frame = _sibling->FindTransform(name))
+			return frame;
+	}
+	if (_child)
+	{
+		if (frame = _child->FindTransform(name))
+			return frame;
+	}
+	
+	return NULL;
+}
+
+void Transform::UpdateTransform(Matrix* matParent)
+{
+	_matWorld = (matParent) ? Multiply(_matToParent, *matParent) : _matToParent;
+
+	if (_sibling)	_sibling->UpdateTransform(matParent);
+	if (_child)		_child->UpdateTransform(&_matWorld);
+}
+
+void Transform::PreRender()
+{
+	_matToParent._11 = GetRight().x; _matToParent._12 = GetRight().y; _matToParent._13 = GetRight().z;
+	_matToParent._21 = GetUp().x; _matToParent._22 = GetUp().y; _matToParent._23 = GetUp().z;
+	_matToParent._31 = GetLook().x; _matToParent._32 = GetLook().y; _matToParent._33 = GetLook().z;
+	_matToParent._41 = GetLocalPosition().x; _matToParent._42 = GetLocalPosition().y; _matToParent._43 = GetLocalPosition().z;
+
+	_matToParent = Multiply(XMMatrixScaling(_localScale.x, _localScale.y, _localScale.z), _matToParent);
+
+}
+
+
+void Transform::SetChild(shared_ptr<Transform> child)
+{
+	if (child)
+		child->_parent = shared_from_this();
+	if (_child)
+	{
+		if (child)	child->_sibling = _child->_sibling;
+		_child->_sibling = child;
+	}
+	else _child = child;
+}
+
+void Transform::SettoParentMat(wstring name, Matrix toParent)
+{
+	if (name == _name)
+	{
+		_matToParent = toParent;
+		return;
+	}
+
+	else
+	{
+		if (_child)	_child->SettoParentMat(name, toParent);
+		if (_sibling)	_sibling->SettoParentMat(name, toParent);
+	}
+
 }
 

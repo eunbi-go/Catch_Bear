@@ -19,3 +19,8 @@ shared_ptr<Transform> Component::GetTransform()
 {
     return _gameObject.lock()->GetTransform();
 }
+
+shared_ptr<AnimationController> Component::GetAnimationController()
+{
+    return _gameObject.lock()->GetAnimationController();
+}

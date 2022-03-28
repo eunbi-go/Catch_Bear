@@ -8,11 +8,14 @@
 
 void GraphicsDescriptorHeap::Init(uint32 count)
 {
+	// 그룹의 개수
 	_groupCount = count;
 
 	D3D12_DESCRIPTOR_HEAP_DESC desc = {};
+	// 각 그룹마다 레지스터가 몇 개 있는지 설정
+	// CBV_SRV_REGISTER_COUNT - 1: 각 그룹마다 몇 개의 인자를 담아야 하는지
 	desc.NumDescriptors = count * (CBV_SRV_REGISTER_COUNT - 1);	// b0는 전역
-	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+	desc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;	// 무조건!!
 	desc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 
 	DEVICE->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&_descHeap));
@@ -35,6 +38,7 @@ void GraphicsDescriptorHeap::SetCBV(D3D12_CPU_DESCRIPTOR_HANDLE srcHandle, CBV_R
 	DEVICE->CopyDescriptors(1, &destHandle, &destRange, 1, &srcHandle, &srcRange, D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 }
 
+// 데이터들을 하나 하나씩 설정
 void GraphicsDescriptorHeap::SetSRV(D3D12_CPU_DESCRIPTOR_HANDLE srcHandle, SRV_REGISTER reg)
 {
 	D3D12_CPU_DESCRIPTOR_HANDLE destHandle = GetCPUHandle(reg);
@@ -68,8 +72,8 @@ D3D12_CPU_DESCRIPTOR_HANDLE GraphicsDescriptorHeap::GetCPUHandle(uint8 reg)
 	assert(reg > 0);
 
 	D3D12_CPU_DESCRIPTOR_HANDLE handle = _descHeap->GetCPUDescriptorHandleForHeapStart();
-	handle.ptr += _currentGroupIndex * _groupSize;
-	handle.ptr += (reg - 1) * _handleSize;
+	handle.ptr += _currentGroupIndex * _groupSize;	// 그룹 만큼 이동
+	handle.ptr += (reg - 1) * _handleSize;	// 레지스터 번호 만큼 이동
 	return handle;
 }
 

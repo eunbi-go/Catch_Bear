@@ -78,4 +78,17 @@ Texture2D g_tex_4 : register(t4);
 
 SamplerState g_sam_0 : register(s0);
 
+cbuffer cbBoneOffsets : register(b3)
+{
+    float4x4 g_offset[72];
+};
+
+cbuffer cbBoneTransforms : register(b4)
+{
+    float4x4 g_boneTrans[72];
+};
+
+//StructuredBuffer<matrix>            g_offset : register(t10);
+//StructuredBuffer<matrix>            g_boneTrans : register(t11);
+
 #endif

@@ -39,6 +39,10 @@ public:
 
 	shared_ptr<Texture> CreateTextureFromResource(const wstring& name, ComPtr<ID3D12Resource> tex2D);
 
+public:
+	shared_ptr<class MeshData>		LoadFBX(const wstring& path);
+	shared_ptr<class CharacterData>	LoadCharacter(const wstring& path);
+
 private:
 	void CreateDefaultShader();
 	void CreateDefaultMaterial();
@@ -55,14 +59,17 @@ private:
 template<typename T>
 inline shared_ptr<T> Resources::Load(const wstring& key, const wstring& path)
 {
-	// 오브젝트 타입을 추출해 그것에 따라 리소스 배열에서 몇번째인지 선택
+	// 오브젝트 타입을 추출해 
 	OBJECT_TYPE objectType = GetObjectType<T>();
-	KeyObjMap& keyObjMap = _resources[static_cast<uint8>(objectType)];	// 참조값 - 원본 데이터를 건드리는중
+	// 그것에 따라 리소스 배열에서 몇번째인지 선택
+	KeyObjMap& keyObjMap = _resources[static_cast<uint8>(objectType)];	// &: 참조값 - 원본 데이터를 건드리는중
 
+	// key가 존재하면 그대로 return
 	auto findIt = keyObjMap.find(key);
 	if (findIt != keyObjMap.end())
 		return static_pointer_cast<T>(findIt->second);
 
+	// key가 없으면 실제 리소스를 만들고 로드해서 return
 	shared_ptr<T> object = make_shared<T>();
 	object->Load(path);
 	keyObjMap[key] = object;
@@ -106,7 +113,7 @@ inline OBJECT_TYPE Resources::GetObjectType()
 	// GetObjectType()는 객체를 만드는 개념이 아님.
 	// 객체를 만들기 전에 클래스 타입만 보고 판별할 수 있어야 하기 때문에 GetType()으로는 처리할 수 없음
 
-	if (std::is_same_v<T, GameObject>)
+	if (std::is_same_v<T, GameObject>)	// 진짜 GameObject타입이면 반환
 		return OBJECT_TYPE::GAMEOBJECT;
 	else if (std::is_same_v<T, Material>)
 		return OBJECT_TYPE::MATERIAL;

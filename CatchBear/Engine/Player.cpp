@@ -8,6 +8,8 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "CameraScript.h"
+#include "AnimationController.h"
+#include "AnimationTrack.h"
 
 Player::Player()
 {
@@ -20,12 +22,40 @@ Player::~Player()
 void Player::LateUpdate()
 {
 	KeyCheck();
+	StateCheck();
+	AnimationCheck();
+
+	GetAnimationController()->AdvanceTime(DELTA_TIME);
+	GetTransform()->UpdateTransform(NULL);
+	GetAnimationController()->SetWorldMatrix();
 }
 
 void Player::KeyCheck()
 {
-	Vec3 pos = GetTransform()->GetLocalPosition();
+	// 게임종료
+	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
+		::PostQuitMessage(0);
 
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	Vec3 rot = GetTransform()->GetLocalRotation();
+
+	// 현재 씬에서 카메라(Main_Camera)를 가져온다.
+	// 카메라가 가지고 있는 스크립트(CameraScript)에서 Followlayer()를 실행시킨다.
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	_player = GetGameObject();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Main_Camera")
+		{
+			_camera = gameObject;
+			break;
+		}
+	}
+
+	_cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
 	
 	if (INPUT->GetButton(KEY_TYPE::W))
 		//pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
@@ -39,14 +69,43 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::D))
 		//pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 
+	// 이동
+	if (INPUT->GetButton(KEY_TYPE::UP))
+	{
+		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+		_curState = WALK;
+	}
 
-	GetTransform()->SetLocalPosition(pos);
+	if (INPUT->GetButton(KEY_TYPE::DOWN))
+	{
+		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+		_curState = WALK;
+	}
 
-	// 현재 씬에서 카메라(Main_Camera)를 가져온다.
-	// 카메라가 가지고 있는 스크립트(CameraScript)에서 Followlayer()를 실행시킨다.
+	// 회전
+	float delta = 0.f;
+	if (INPUT->GetButton(KEY_TYPE::RIGHT))
+	{
+		rot.y += DELTA_TIME * _rotSpeed;
+		delta = DELTA_TIME * _rotSpeed;
 
-	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+		GetTransform()->SetLocalRotation(rot);
+
+		_curState = IDLE;
+	}
+
+	if (INPUT->GetButton(KEY_TYPE::LEFT))
+	{
+		rot.y -= DELTA_TIME * _rotSpeed;
+		delta = -DELTA_TIME * _rotSpeed;
+
+		_curState = IDLE;
+	}
+
+	if (INPUT->GetButton(KEY_TYPE::SPACE))
+	{
+		_curState = JUMP;
+	}
 
 	for (auto& gameObject : gameObjects)
 	{
@@ -57,16 +116,46 @@ void Player::KeyCheck()
 		}
 	}
 
-	for (auto& gameObject : gameObjects)
+	GetTransform()->SetLocalPosition(pos);
+	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
+}
+
+void Player::StateCheck()
+{
+	if (_curState != _preState)
 	{
-		if (gameObject->GetName() == L"Main_Camera")
+		switch (_curState)
 		{
-			_camera = gameObject;
+		case Player::IDLE:
+			GetAnimationController()->SetTrackAnimationSet(0, 0);
+			break;
+		case Player::WALK:
+			GetAnimationController()->SetTrackAnimationSet(0, 1);
+			break;
+		case Player::DASH:
+			GetAnimationController()->SetTrackAnimationSet(0, 3);
+			break;
+		case Player::JUMP:
+			GetAnimationController()->SetTrackAnimationSet(0, 2);
+			break;
+		case Player::ATTACK:
+			GetAnimationController()->SetTrackAnimationSet(0, 4);
+			break;
+		case Player::END:
+			break;
+		default:
 			break;
 		}
-	}
 
-	shared_ptr<CameraScript> cameraScript = make_shared<CameraScript>();
-	cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
-	cameraScript->FollowPlayer(_player);
+		_preState = _curState;
+	}
+}
+
+void Player::AnimationCheck()
+{
+	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
+	{
+		if (GetAnimationController()->IsAnimationFinish(0))
+			_curState = IDLE;
+	}
 }

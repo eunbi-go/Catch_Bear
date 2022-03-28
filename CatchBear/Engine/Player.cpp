@@ -76,11 +76,13 @@ void Player::KeyCheck()
 		_curState = WALK;
 	}
 
-	if (INPUT->GetButton(KEY_TYPE::DOWN))
+	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
 		_curState = WALK;
 	}
+
+	else _curState = IDLE;
 
 	// È¸Àü
 	float delta = 0.f;

@@ -121,7 +121,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 			nReads = (UINT)::fread(&xmf3Scale, sizeof(XMFLOAT3), 1, pFile);
 			nReads = (UINT)::fread(&xmf3Rotate, sizeof(XMFLOAT3), 1, pFile);
 			nReads = (UINT)::fread(&xmf3Trans, sizeof(XMFLOAT3), 1, pFile);
-			
+
 			//pGameObj->GetTransform()->SetLocalToParent(xmf4x4ToParent);
 			//pGameObj->GetTransform()->SetLocalScale(xmf3Scale);
 			//pGameObj->GetTransform()->SetLocalRotation(xmf3Rotate);
@@ -132,7 +132,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 		{
 			LoadMeshInfoFromFile(pFile);
 		}
-		
+
 		else if (!strcmp(pStrTocken, "<Materials>:"))
 		{
 			LoadMaterialInfoFromFile(pFile);
@@ -155,7 +155,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 		if (!strcmp(pStrTocken, "<ControlPoints>:"))
 		{
 			nReads = (UINT)fread(&nVertices, sizeof(int), 1, pFile);
-			
+
 			if (nVertices)
 			{
 				_staticMeshInfo.vertices.resize(nVertices);
@@ -273,15 +273,16 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 			wchar_t* pStr;
 			pStr = new WCHAR[nSize];
 			MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
-			
+
 			// SimpleNaturePack_Texture_01
 			//_staticMeshInfo.material.diffuseTexName = pStr;
 			//_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
-			_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
+			//_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
+			_staticMeshInfo.material.diffuseTexName = L"paper_diffuse1";
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);
-		
+
 		if (!strcmp(pStrTocken, "<ShadingModel>:"))
 		{
 			ReadStringFromFile(pFile, pStrTocken);
@@ -336,7 +337,7 @@ void MeshData::CreateTextures()
 
 	// Diffuse
 	wstring		fileName = _staticMeshInfo.material.diffuseTexName.c_str();
-	wstring		fullPath = L"..\\Resources\\Texture\\" + fileName + L".dds";
+	wstring		fullPath = L"..\\Resources\\Binary\\" + fileName + L".png";
 	if (!fileName.empty())
 		GET_SINGLE(Resources)->Load<Texture>(fileName, fullPath);
 }
@@ -347,7 +348,7 @@ void MeshData::CreateMaterials()
 
 	shared_ptr<Material>	material = make_shared<Material>();
 	wstring		key = _staticMeshInfo.material.name;
-	
+
 	material->SetName(key);
 	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 

@@ -23,7 +23,7 @@ void Texture::Load(const wstring& path)
 		::LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, _image);
 	
 	HRESULT hr = ::CreateTexture(DEVICE.Get(), _image.GetMetadata(), &_tex2D);
-	
+
 	if (FAILED(hr))
 		assert(nullptr);
 
@@ -84,8 +84,8 @@ void Texture::Load(const wstring& path)
 	DEVICE->CreateShaderResourceView(_tex2D.Get(), &srvDesc, _srvHeapBegin);
 }
 
-void Texture::Create(DXGI_FORMAT format, uint32 width, uint32 height, 
-	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags, 
+void Texture::Create(DXGI_FORMAT format, uint32 width, uint32 height,
+	const D3D12_HEAP_PROPERTIES& heapProperty, D3D12_HEAP_FLAGS heapFlags,
 	D3D12_RESOURCE_FLAGS resFlags, Vec4 clearColor)
 {
 	_desc = CD3DX12_RESOURCE_DESC::Tex2D(format, width, height);

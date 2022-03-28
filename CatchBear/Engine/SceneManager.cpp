@@ -190,8 +190,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			obj->SetStatic(false);
-			obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			gameObject->SetStatic(false);
+			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			scene->AddGameObject(gameObject);
 		}
 	}

@@ -18,11 +18,18 @@ enum
 	RENDER_TARGET_GROUP_COUNT = static_cast<uint8>(RENDER_TARGET_GROUP_TYPE::END)
 };
 
+
+
+// 렌더타겟 그룹을 여러개를 만들어서 다양한 용도로 활용할 것
+// 렌더타겟 자체는 텍스처, 텍스처를 건네줘서 텍스처 위에 ps에 여러 정보를 적을 것
+// 텍스처로 활용할 수 있는 다양한 클래스들: Depth Stencil Buffer, Swap Chain의 2개 버퍼(RTV)
+// -> 텍스처들을 모두 Texture 단일 클래스에 넣을 것
 struct RenderTarget
 {
-	shared_ptr<Texture> target;		// 실질적으로 그릴 대상
+	shared_ptr<Texture> target;		// ps에서 실질적으로 그릴 대상
 	float clearColor[4];			// 매 프레임마다 초기값으로 밀어주는 색상
 };
+
 
 
 // 여러가지의 render targer을 뭉쳐서 관리하는 클래스
@@ -45,10 +52,16 @@ public:
 	void WaitResourceToTarget();
 
 private:
-	RENDER_TARGET_GROUP_TYPE		_groupType;		// 어떤 용도의 그룹으로 사용할 것이냐
-	vector<RenderTarget>			_rtVec;			// RenderTargetGroup에 연결해줄 모든 rt를 벡터로 받고 있음
+	// 어떤 용도의 그룹으로 사용할 것이냐
+	RENDER_TARGET_GROUP_TYPE		_groupType;		
+
+
+	// RenderTargetGroup에 연결해줄 모든 rt를 벡터로 받고 있음
+	vector<RenderTarget>			_rtVec;		
 	uint32							_rtCount;
+
 	shared_ptr<Texture>				_dsTexture;
+
 	ComPtr<ID3D12DescriptorHeap>	_rtvHeap;
 
 private:

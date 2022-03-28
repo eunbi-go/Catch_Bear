@@ -1,5 +1,5 @@
 #pragma once
-#include "Object.h"
+#include "Object.h"	// Object »ó¼Ó
 
 class Shader;
 class Texture;
@@ -13,7 +13,7 @@ struct MaterialParams
 {
 	MaterialParams()
 	{
-		for (int32 i = 0; i < MATERIAL_ARG_COUNT; i++)
+		for (int32 i = 0; i < MATERIAL_ARG_COUNT; i++) 
 		{
 			SetInt(i, 0);
 			SetFloat(i, 0.f);

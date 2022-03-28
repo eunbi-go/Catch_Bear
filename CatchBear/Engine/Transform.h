@@ -1,7 +1,8 @@
 #pragma once
 #include "Component.h"
 
-class Transform : public Component
+
+class Transform : public Component, public enable_shared_from_this<Transform>
 {
 public:
 	Transform();
@@ -28,9 +29,13 @@ public:
 	Vec3 GetUp() { return _matWorld.Up(); }
 	Vec3 GetLook() { return _matWorld.Backward(); }
 
-	void SetLocalPosition(const Vec3& position) { _localPosition = position; }
-	void SetLocalRotation(const Vec3& rotation) { _localRotation = rotation; }
-	void SetLocalScale(const Vec3& scale) { _localScale = scale; }
+	void SetLocalPosition(const Vec3& position) { _localPosition = position; UpdateTransform(NULL);
+	}
+	void SetLocalRotation(const Vec3& rotation) { _localRotation = rotation; UpdateTransform(NULL);
+	}
+	void SetLocalScale(const Vec3& scale) { _localScale = scale; UpdateTransform(NULL);
+	}
+	//void SetLocalToParent(const Matrix& toParent) { _matToParent = toParent; }
 
 	void LookAt(const Vec3& dir);
 
@@ -38,8 +43,19 @@ public:
 	static Vec3 DecomposeRotationMatrix(const Matrix& rotation);
 
 public:
+	shared_ptr<Transform>	FindTransform(wstring name);
+
+	void UpdateTransform(Matrix* matParent);
+	void PreRender();
+
+public:
 	void SetParent(shared_ptr<Transform> parent) { _parent = parent; }
-	weak_ptr<Transform> GetParent() { return _parent; }
+	void SetChild(shared_ptr<Transform> child);
+	void SetName(wstring name) { _name = name; }
+	void SettoParentMat(wstring name, Matrix toParent);
+
+public:
+	shared_ptr<Transform> GetParent() { return _parent; }
 
 private:
 	// TODO: World 위치 관련
@@ -47,9 +63,19 @@ private:
 	Vec3	_localRotation = {};
 	Vec3	_localScale = { 1.f, 1.f, 1.f };
 
+public:
+
 	Matrix	_matLocal = {};
 	Matrix	_matWorld = {};
+	// 계층구조에서 부모에 상대적인 행렬
+	Matrix	_matToParent = {};
 
-	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
+	shared_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김
+	shared_ptr<Transform>		_child;
+	shared_ptr<Transform>		_sibling;
+
+	wstring	_name;
+
+	shared_ptr<Transform>		_root;
 };
 

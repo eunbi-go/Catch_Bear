@@ -8,6 +8,8 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "CameraScript.h"
+#include "AnimationController.h"
+#include "AnimationTrack.h"
 
 Player::Player()
 {
@@ -20,6 +22,12 @@ Player::~Player()
 void Player::LateUpdate()
 {
 	KeyCheck();
+	StateCheck();
+	AnimationCheck();
+
+	GetAnimationController()->AdvanceTime(DELTA_TIME);
+	GetTransform()->UpdateTransform(NULL);
+	GetAnimationController()->SetWorldMatrix();
 }
 
 void Player::KeyCheck()
@@ -51,10 +59,16 @@ void Player::KeyCheck()
 
 	// 이동
 	if (INPUT->GetButton(KEY_TYPE::UP))
+	{
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+		_curState = WALK;
+	}
 
 	if (INPUT->GetButton(KEY_TYPE::DOWN))
+	{
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+		_curState = WALK;
+	}
 
 	// 회전
 	float delta = 0.f;
@@ -64,6 +78,8 @@ void Player::KeyCheck()
 		delta = DELTA_TIME * _rotSpeed;
 
 		GetTransform()->SetLocalRotation(rot);
+
+		_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -71,9 +87,54 @@ void Player::KeyCheck()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
-		GetTransform()->SetLocalRotation(rot);
+		_curState = IDLE;
+	}
+
+	if (INPUT->GetButton(KEY_TYPE::SPACE))
+	{
+		_curState = JUMP;
 	}
 
 	GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
+}
+
+void Player::StateCheck()
+{
+	if (_curState != _preState)
+	{
+		switch (_curState)
+		{
+		case Player::IDLE:
+			GetAnimationController()->SetTrackAnimationSet(0, 0);
+			break;
+		case Player::WALK:
+			GetAnimationController()->SetTrackAnimationSet(0, 1);
+			break;
+		case Player::DASH:
+			GetAnimationController()->SetTrackAnimationSet(0, 3);
+			break;
+		case Player::JUMP:
+			GetAnimationController()->SetTrackAnimationSet(0, 2);
+			break;
+		case Player::ATTACK:
+			GetAnimationController()->SetTrackAnimationSet(0, 4);
+			break;
+		case Player::END:
+			break;
+		default:
+			break;
+		}
+
+		_preState = _curState;
+	}
+}
+
+void Player::AnimationCheck()
+{
+	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
+	{
+		if (GetAnimationController()->IsAnimationFinish(0))
+			_curState = IDLE;
+	}
 }

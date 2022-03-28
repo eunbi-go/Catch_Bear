@@ -56,6 +56,18 @@ void Player::KeyCheck()
 	}
 
 	_cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
+	
+	if (INPUT->GetButton(KEY_TYPE::W))
+		//pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+
+	if (INPUT->GetButton(KEY_TYPE::S))
+		//pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+
+	if (INPUT->GetButton(KEY_TYPE::A))
+		//pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
+
+	if (INPUT->GetButton(KEY_TYPE::D))
+		//pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 
 	// ÀÌµ¿
 	if (INPUT->GetButton(KEY_TYPE::UP))
@@ -93,6 +105,15 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
 		_curState = JUMP;
+	}
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
 	}
 
 	GetTransform()->SetLocalPosition(pos);

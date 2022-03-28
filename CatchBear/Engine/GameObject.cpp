@@ -96,6 +96,21 @@ shared_ptr<MonoBehaviour>& GameObject::GetScript(int index)
 	return _scripts[index];
 }
 
+float GameObject::GetX()
+{
+	return GetTransform()->GetWorldPosition().x;
+}
+
+float GameObject::GetY()
+{
+	return GetTransform()->GetWorldPosition().y;
+}
+
+float GameObject::GetZ()
+{
+	return GetTransform()->GetWorldPosition().z;
+}
+
 shared_ptr<Transform> GameObject::GetTransform()
 {
 	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::TRANSFORM);

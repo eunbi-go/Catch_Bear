@@ -32,6 +32,12 @@ public:
 	shared_ptr<MonoBehaviour>& GetScript(int index);
 
 public:
+	// ServerPacketHandler에서 위치 정보를 제어하기 위한 함수
+	float GetX();
+	float GetY();
+	float GetZ();
+
+public:
 	shared_ptr<Transform> GetTransform();
 	shared_ptr<MeshRenderer> GetMeshRenderer();
 	shared_ptr<Camera> GetCamera();
@@ -52,7 +58,8 @@ public:
 
 	void SetStatic(bool flag) { _static = flag; }
 	bool IsStatic() { return _static; }
-
+	void SetPlayerID(uint64 _id) { _playerID = _id; }
+	uint64 GetPlayerID() { return _playerID; }
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -62,6 +69,7 @@ private:
 	bool	_checkFrustum = true;
 	uint8	_layerIndex = 0;
 	bool	_static = true;
+	uint64  _playerID = 0;
 
 public:
 	char* _pFrameName;

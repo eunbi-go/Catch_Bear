@@ -27,6 +27,9 @@ public:
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 
+public:
+	void MakePlayer(uint64 _playerID);
+
 private:
 	shared_ptr<Scene> LoadTestScene();
 	void LoadMapObjects(shared_ptr<Scene> scene);
@@ -36,5 +39,6 @@ private:
 
 	array<wstring, MAX_LAYER>	_layerNames;		// 레이어 이름, ex) 1번에 해당하는 레이어는 UI다
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
+	bool						bisPlayerCreate = false;
 };
 

@@ -1,6 +1,12 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
-//#include "Player.h"
+#include "SceneManager.h"
+#include "Input.h"
+#include "Scene.h"
+#include "GameObject.h"
+#include "Player.h"
+#include "Transform.h"
+#include "Timer.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -15,18 +21,34 @@ bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
 
 bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 {
-	//if (pkt.success() == false)
-	//	return true;
+	if (pkt.success() == false)
+		return true;
 
-	//GPlayer.playerId = pkt.playerid();
-	//cout << "이 플레이어의 닉네임은 " << GPlayer.name << "이며 ";
-	//cout << "이 클라이언트의 ID는 " << GPlayer.playerId << "입니다!" << endl;
-	//
-	//if (pkt.players().size() == 0)
-	//{
-	//	// 캐릭터 생성창
-	//}
-	//
+	SceneManager::GetInstance()->MakePlayer(pkt.playerid());
+
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	// 현재 씬에서 플레이어를 찾는다
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+
+	_player->SetPlayerID(pkt.playerid());
+	cout << "이 클라이언트의 ID는 " << _player->GetPlayerID() << "입니다!" << endl;
+
+	Protocol::C_ENTER_GAME enterGamePkt;
+	enterGamePkt.set_playerid(_player->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
+
 	//// 입장 UI 버튼 누르면 로비창 입장
 	//Protocol::C_ENTER_LOBBY enterLobbyPkt;
 	//enterLobbyPkt.set_playerid(GPlayer.playerId);
@@ -115,14 +137,107 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	return true;
 }
 
+static uint64 enterPlayerIndex = 0;
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
-	//if (pkt.success() != true)
-	//	return true;
-	//// TODO
-	//Protocol::C_ENTER_GAME enterGamePkt;
-	//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
-	//session->Send(sendBuffer);
+	if (pkt.success() != true)
+		return false;
+
+	// TODO
+	Protocol::C_ENTER_GAME enterGamePkt;
+	
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	// 현재 씬에서 플레이어를 찾는다
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+
+	uint64 enterPlayernum = pkt.enterplayer();
+
+	if (enterPlayerIndex != enterPlayernum)
+	{
+		if (enterPlayernum == 1)	// 2명 접속
+		{
+			if (_player->GetPlayerID() == 0)
+				SceneManager::GetInstance()->MakePlayer(1);		// 0번 플레이어일때 1번 플레이어 만들기
+			if (_player->GetPlayerID() == 1)
+				SceneManager::GetInstance()->MakePlayer(0);		// 1번 플레이어일때 0번 플레이어 만들기
+		}
+		if (enterPlayernum == 2)	// 3명 접속
+		{
+			if (_player->GetPlayerID() == 0)
+				SceneManager::GetInstance()->MakePlayer(2);		// 0번 플레이어일때 2번 플레이어 만들기
+			if (_player->GetPlayerID() == 1)
+				SceneManager::GetInstance()->MakePlayer(2);		// 1번 플레이어일때 2번 플레이어 만들기
+			if (_player->GetPlayerID() == 2) {
+				SceneManager::GetInstance()->MakePlayer(0);		// 2번 플레이어일때 0,1번 플레이어 만들기
+				SceneManager::GetInstance()->MakePlayer(1);
+			}
+		}
+		enterPlayerIndex = enterPlayernum;
+	}
+
+	//_player->SetPlayerID(pkt.playerid());
+	enterGamePkt.set_playerid(_player->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	session->Send(sendBuffer);
+
+	if (INPUT->GetButton(KEY_TYPE::W))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_playerid(_player->GetPlayerID());
+		MovePkt.set_movedir(0);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::S))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_playerid(_player->GetPlayerID());
+		MovePkt.set_movedir(1);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::A))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_playerid(_player->GetPlayerID());
+		MovePkt.set_movedir(2);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::D))
+	{
+		Protocol::C_MOVE MovePkt;
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_playerid(_player->GetPlayerID());
+		MovePkt.set_movedir(3);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
 
 
 	return true;
@@ -140,5 +255,169 @@ bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 {
-	return false;
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	Protocol::C_MOVE MovePkt;
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	//const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+	_player = scene->GetPlayer(pkt.playerid());
+
+	// 만약 충돌해서 위치가 바뀐다면 위치 다시 바꿔준다.
+
+	Vec3 pos = _player->GetTransform()->GetLocalPosition();
+
+	// 여기서 서버에서 받은 위치로 player위치를 바꿔주는 코드가 들어감
+	// 만약 충돌한 상태라면 success가 false로 오겠지?
+	if (pkt.success() == true)
+	{
+		if (pkt.movedir() == 0)
+		{
+			float a = pos.x;
+			pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
+		}
+		if (pkt.movedir() == 1)
+		{
+			pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
+		}
+		if (pkt.movedir() == 2)
+		{
+			pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
+		}
+		if (pkt.movedir() == 3)
+		{
+			pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+			_player->GetTransform()->SetLocalPosition(pos);
+		}
+	}
+	else
+	{
+		// 앞으로 충돌, 뒤,왼,오 이동가능
+		if (pkt.movedir() == 0)
+		{
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 뒤로 충돌, 앞,왼,오 이동가능
+		if (pkt.movedir() == 1)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 왼쪽으로 충돌, 앞,뒤,우 이동가능
+		if (pkt.movedir() == 2)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::D))
+			{
+				pos += _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+		// 오른쪽으로 충돌, 앞,뒤,왼 이동가능
+		if (pkt.movedir() == 3)
+		{
+			if (INPUT->GetButton(KEY_TYPE::W))
+			{
+				pos += _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::S))
+			{
+				pos -= _player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+			if (INPUT->GetButton(KEY_TYPE::A))
+			{
+				pos -= _player->GetTransform()->GetRight() * 5.f * DELTA_TIME;
+				_player->GetTransform()->SetLocalPosition(pos);
+			}
+		}
+	}
+
+	/*_player->GetTransform()->SetLocalPosition(pos);*/
+	if (INPUT->GetButton(KEY_TYPE::W))
+	{
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(0);
+		// gameobject안의 각 클라이언트마다 가진 playerid를 보내줌. 제대로 보낼까 과연
+		MovePkt.set_playerid(_player->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::S))
+	{
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(1);
+		MovePkt.set_playerid(_player->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::A))
+	{
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(2);
+		MovePkt.set_playerid(_player->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+	if (INPUT->GetButton(KEY_TYPE::D))
+	{
+		MovePkt.set_xpos(_player->GetX());
+		MovePkt.set_ypos(_player->GetY());
+		MovePkt.set_zpos(_player->GetZ());
+
+		MovePkt.set_movedir(3);
+		MovePkt.set_playerid(_player->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(MovePkt);
+		session->Send(sendBuffer);
+	}
+
+	return true;
 }

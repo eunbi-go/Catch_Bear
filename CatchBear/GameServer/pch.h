@@ -15,3 +15,7 @@
 
 using GameSessionRef = shared_ptr<class GameSession>;
 using PlayerRef = shared_ptr<class Player>;
+
+#define DELTA_TIME			GET_SINGLE(Timer)->GetDeltaTime()
+
+enum MoveDir { UP, DOWN, LEFT, RIGHT, END };

@@ -7,6 +7,7 @@ enum class OBJECT_TYPE : uint8
 	COMPONENT,
 	MATERIAL,
 	MESH,
+	MESH_DATA,
 	SHADER,
 	TEXTURE,
 
@@ -24,6 +25,7 @@ public:
 	Object(OBJECT_TYPE type);
 	virtual ~Object();
 
+public:
 	OBJECT_TYPE GetType() { return _objectType; }
 
 	void SetName(const wstring& name) { _name = name; }
@@ -35,6 +37,7 @@ public:
 
 protected:
 	friend class Resources;
+	// Resource Load/Save
 	virtual void Load(const wstring& path) { }
 	virtual void Save(const wstring& path) { }
 

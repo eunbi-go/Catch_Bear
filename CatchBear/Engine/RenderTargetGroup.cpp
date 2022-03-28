@@ -10,7 +10,8 @@ void RenderTargetGroup::Create(RENDER_TARGET_GROUP_TYPE groupType, vector<Render
 	_rtCount = static_cast<uint32>(rtVec.size());
 	_dsTexture = dsTexture;
 
-	// rtVec에 있는 모든 내용을 한번에 담는 Descriptor Heap 만든 후 얘를 OMSetRenderTarget을 할때 넘겨줌
+	// rtVec에 있는 모든 내용을 한번에 담는 Descriptor Heap 만든 후 
+	// 얘를 OMSetRenderTarget을 할때 넘겨줌
 	D3D12_DESCRIPTOR_HEAP_DESC heapDesc = {};
 	heapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 	heapDesc.NumDescriptors = _rtCount;

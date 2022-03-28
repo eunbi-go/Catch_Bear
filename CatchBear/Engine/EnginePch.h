@@ -266,7 +266,6 @@ public:								\
 
 #define CONST_BUFFER(type)	GEngine->GetConstantBuffer(type)
 
-<<<<<<< HEAD
 ////
 #define DIR_FORWARD					0x01
 #define DIR_BACKWARD				0x02

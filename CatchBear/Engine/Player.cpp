@@ -39,8 +39,6 @@ void Player::KeyCheck()
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 rot = GetTransform()->GetLocalRotation();
 
-	// 현재 씬에서 카메라(Main_Camera)를 가져온다.
-	// 카메라가 가지고 있는 스크립트(CameraScript)에서 Followlayer()를 실행시킨다.
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
@@ -57,17 +55,6 @@ void Player::KeyCheck()
 
 	_cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
 	
-	if (INPUT->GetButton(KEY_TYPE::W))
-		//pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
-
-	if (INPUT->GetButton(KEY_TYPE::S))
-		//pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
-
-	if (INPUT->GetButton(KEY_TYPE::A))
-		//pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
-
-	if (INPUT->GetButton(KEY_TYPE::D))
-		//pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 
 	// 이동
 	if (INPUT->GetButton(KEY_TYPE::UP))
@@ -101,6 +88,8 @@ void Player::KeyCheck()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
+		GetTransform()->SetLocalRotation(rot);
+
 		_curState = IDLE;
 	}
 
@@ -109,14 +98,6 @@ void Player::KeyCheck()
 		_curState = JUMP;
 	}
 
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player")
-		{
-			_player = gameObject;
-			break;
-		}
-	}
 
 	GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());

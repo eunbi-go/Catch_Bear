@@ -40,14 +40,14 @@ void ItemManager::SetItemPosition()
 
 void ItemManager::CreateItem()
 {
-	if (_itemList.size() >= 9) return;
-
 	_commonItemTimer += DELTA_TIME;
 	_uniqueItemTimer += DELTA_TIME;
 
 	// 일반 아이템 생성, 30초마다 모든 종류(5) 하나씩 -> 총 6번 생성
 	if (_commonItemTimer >= _commonItemTime)
 	{
+		if (_commonItemList.size() >= 9) return;
+
 		shared_ptr<GameObject> item = make_shared<GameObject>();
 		item->SetName(L"CommonItem");
 		item->AddComponent(make_shared<Transform>());
@@ -69,7 +69,7 @@ void ItemManager::CreateItem()
 		}
 
 		item->AddComponent(meshRenderer);
-		_itemList.push_back(item);
+		_commonItemList.push_back(item);
 		shared_ptr<Scene> scene = make_shared<Scene>();
 		scene = GET_SINGLE(SceneManager)->GetActiveScene();
 		scene->AddGameObject(item);

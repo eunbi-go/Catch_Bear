@@ -228,6 +228,7 @@
     <ClInclude Include="RootSignature.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="Shader.h" />
@@ -290,6 +291,7 @@
     <ClCompile Include="RootSignature.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="Shader.cpp" />

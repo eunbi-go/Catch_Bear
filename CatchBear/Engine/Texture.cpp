@@ -21,7 +21,7 @@ void Texture::Load(const wstring& path)
 		::LoadFromTGAFile(path.c_str(), nullptr, _image);
 	else // png, jpg, jpeg, bmp
 		::LoadFromWICFile(path.c_str(), WIC_FLAGS_NONE, nullptr, _image);
-
+	
 	HRESULT hr = ::CreateTexture(DEVICE.Get(), _image.GetMetadata(), &_tex2D);
 	if (FAILED(hr))
 		assert(nullptr);

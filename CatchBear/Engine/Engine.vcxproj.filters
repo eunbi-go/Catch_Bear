@@ -180,6 +180,9 @@
     <ClCompile Include="ItemManager.cpp">
       <Filter>02.Manager</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreManager.cpp">
+      <Filter>02.Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -318,6 +321,9 @@
       <Filter>01.Object\03.Item</Filter>
     </ClInclude>
     <ClInclude Include="ItemManager.h">
+      <Filter>02.Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
       <Filter>02.Manager</Filter>
     </ClInclude>
   </ItemGroup>

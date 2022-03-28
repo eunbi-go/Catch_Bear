@@ -9,6 +9,7 @@
 #include "Resources.h"
 #include "InstancingManager.h"
 #include "ItemManager.h"
+#include "ScoreManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -47,6 +48,7 @@ void Engine::Update()
 	GET_SINGLE(SceneManager)->Update();
 	GET_SINGLE(InstancingManager)->ClearBuffer();
 	GET_SINGLE(ItemManager)->Update();
+	GET_SINGLE(ScoreManager)->Update();
 
 	Render();
 

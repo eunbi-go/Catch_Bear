@@ -47,7 +47,7 @@ private:
 	Vec3	_localRotation = {};
 	Vec3	_localScale = { 1.f, 1.f, 1.f };
 
-	Matrix	_matLocal = {};
+	Matrix	_matLocal = {};	// 중간에 한번 저장해주기 위한 로컬 행렬(부모님 기준으로 한 좌표계)
 	Matrix	_matWorld = {};
 
 	weak_ptr<Transform>		_parent;	// shared_ptr로 만들면 순환관계가 생김

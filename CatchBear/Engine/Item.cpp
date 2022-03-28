@@ -14,10 +14,10 @@ Item::Item()
 {
 }
 
-Item::Item(ITEM itemType)
-{
-	_itemType = itemType;
-}
+//Item::Item(ITEM itemType)
+//{
+//	_itemType = itemType;
+//}
 
 Item::~Item()
 {
@@ -38,7 +38,7 @@ void Item::CreateItem()
 	item->SetName(L"Item");
 	item->AddComponent(make_shared<Transform>());
 	item->AddComponent(make_shared<Item>());
-	item->GetTransform()->SetLocalScale(Vec3(25.f, 25.f, 25.f));
+	item->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	item->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 	item->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 0.f));
 	item->SetStatic(false);

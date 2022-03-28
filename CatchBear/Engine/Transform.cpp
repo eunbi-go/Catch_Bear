@@ -14,6 +14,8 @@ Transform::~Transform()
 
 void Transform::FinalUpdate()
 {
+	// 엔진에서 모든 작업이 끝나고 최종적으로 행렬 관련 연산을 해주기 위한 단계
+	// Awake ~ LateUpdate까지 모두 완료한 후에
 	// 월드 행렬을 만들어줌
 	// SRT 계산
 	Matrix matScale = Matrix::CreateScale(_localScale);
@@ -22,9 +24,11 @@ void Transform::FinalUpdate()
 	matRotation *= Matrix::CreateRotationZ(_localRotation.z);
 	Matrix matTranslation = Matrix::CreateTranslation(_localPosition);
 
+	// SRT 구한 것을 로컬에 넣어줌
+	// 부모가 없는 상태라면 SRT 자체가 월드행렬을 얘기하는 것
 	_matLocal = matScale * matRotation * matTranslation;	// 부모의 local space로 가기 위한 행렬
 	_matWorld = _matLocal;									// world space로 가기 위한 행렬
-
+	
 	shared_ptr<Transform> parent = GetParent().lock();
 	if (parent != nullptr)
 	{
@@ -34,6 +38,7 @@ void Transform::FinalUpdate()
 
 void Transform::PushData()
 {
+	// 데이터를 최종적으로 GPU에 건네줌
 	// WVP, W는 FinalUpdate에서 만듦
 	// View, Projection - Camera에서 만듦
 	TransformParams transformParams = {};

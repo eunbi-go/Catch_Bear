@@ -232,6 +232,38 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	LoadMapObjects(scene);
 #pragma endregion
 
+#pragma region Item
+	// present1
+	// Resources::LoadFBX()
+	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
+	shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
+
+	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
+
+	for (auto& gameObject : objectsPresent1)
+	{
+		gameObject->SetName(L"Present1");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+		scene->AddGameObject(gameObject);
+	}
+
+	// present4
+	shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
+
+	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
+
+	for (auto& gameObject : objectsPresent4)
+	{
+		gameObject->SetName(L"Present4");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+		scene->AddGameObject(gameObject);
+	}
+#pragma endregion
+
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");

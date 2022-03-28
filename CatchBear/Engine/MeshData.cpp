@@ -26,10 +26,10 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 	pStr = new char[iLen];
 	WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, pStr, iLen, 0, 0);
 
+	// 경로 지정
 	wstring strpath = L"..\\Resources\\Binary\\" + path;
 
 	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
-
 	rewind(pFile);
 
 	char pStrTocken[64] = { '\0' };
@@ -64,6 +64,10 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
 
+						// 앞에서 생성한 Mesh, Material을 기반으로 _meshRenders에 추가
+						// 추후에 Instantiate()에서 _meshRenders을 기반으로 메쉬와 재질 정보를 세팅해줌
+						// -> 미리 읽어온 Mesh, Material 정보를 객체로 생성해서 멤버변수(_meshRenders)로 갖고 있다가 
+						//    나중에 다른 클래스에서 해당 메쉬가 필요할 때 이 _meshRenders 정보를 기반으로 생성해서 리턴
 						MeshRendererInfo	info = {};
 						info.mesh = mesh;
 						info.materials = material;
@@ -274,11 +278,18 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 			pStr = new WCHAR[nSize];
 			MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
 
+			// 나중에 정리할거임. 신경X
+			/////////////////////////////////////////////////////////////////////////////////////
 			// SimpleNaturePack_Texture_01
 			//_staticMeshInfo.material.diffuseTexName = pStr;
 			//_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
 			//_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
-			_staticMeshInfo.material.diffuseTexName = L"paper_diffuse1";
+			/////////////////////////////////////////////////////////////////////////////////////
+			
+			if (!strcmp(pStrTocken, "Present"))
+				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse1";
+			else if (!strcmp(pStrTocken, "Present4"))
+				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse4";
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);
@@ -337,7 +348,7 @@ void MeshData::CreateTextures()
 
 	// Diffuse
 	wstring		fileName = _staticMeshInfo.material.diffuseTexName.c_str();
-	wstring		fullPath = L"..\\Resources\\Binary\\" + fileName + L".png";
+	wstring		fullPath = L"..\\Resources\\Texture\\" + fileName + L".png";
 	if (!fileName.empty())
 		GET_SINGLE(Resources)->Load<Texture>(fileName, fullPath);
 }
@@ -367,6 +378,8 @@ void MeshData::CreateMaterials()
 
 vector<shared_ptr<GameObject>> MeshData::Instantiate()
 {
+	// vector: Mesh나 Material이 여러개일 수 있음
+	// 근데 우리는 다 하나씩이라서 별 의미는 없음
 	vector<shared_ptr<GameObject>>	v;
 
 	for (MeshRendererInfo& info : _meshRenders)

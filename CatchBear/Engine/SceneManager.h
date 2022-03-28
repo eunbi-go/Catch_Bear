@@ -29,6 +29,7 @@ public:
 
 private:
 	shared_ptr<Scene> LoadTestScene();
+	void LoadMapObjects(shared_ptr<Scene> scene);
 
 private:
 	shared_ptr<Scene> _activeScene;

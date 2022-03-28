@@ -148,6 +148,163 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
+	LoadMapObjects(scene);
+#pragma endregion
+
+#pragma region TestPlayer
+	{
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+		
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Player");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 50.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			scene->AddGameObject(gameObject);
+		}
+	}
+#pragma endregion
+
+#pragma region Terrain
+	{
+		shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->AddComponent(make_shared<Transform>());
+		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
+		obj->SetStatic(true);
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
+			material->SetInt(0, 0);
+			meshRenderer->SetMaterial(material);
+		}
+		obj->AddComponent(meshRenderer);
+		scene->AddGameObject(obj);
+	}
+#pragma endregion
+
+#pragma region UI_Test
+	for (int32 i = 0; i < 6; i++)
+	{
+		shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI")); // UI
+		obj->AddComponent(make_shared<Transform>());
+		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(-350.f + (i * 120), 250.f, 500.f));
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+
+			shared_ptr<Texture> texture;
+			if (i < 3)
+				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->GetRTTexture(i);
+			else if (i < 5)
+				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::LIGHTING)->GetRTTexture(i - 3);
+			else
+				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SHADOW)->GetRTTexture(0);
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		//obj->AddComponent(meshRenderer);
+		scene->AddGameObject(obj);
+	}
+#pragma endregion
+
+#pragma region Directional Light
+	{
+		shared_ptr<GameObject> light = make_shared<GameObject>();
+		light->AddComponent(make_shared<Transform>());
+		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 500));
+		light->AddComponent(make_shared<Light>());
+		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
+		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
+		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+		light->GetLight()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
+		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+
+		scene->AddGameObject(light);
+	}
+#pragma endregion
+
+	//#pragma region Tessellation Test
+	//	{
+	//		shared_ptr<GameObject> gameObject = make_shared<GameObject>();
+	//		gameObject->AddComponent(make_shared<Transform>());
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0, 300));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(100, 100, 100));
+	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0, 0, 0));
+	//
+	//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+	//		{
+	//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+	//			meshRenderer->SetMesh(mesh);
+	//			meshRenderer->SetMaterial(GET_SINGLE(Resources)->Get<Material>(L"Tessellation"));
+	//		}
+	//		gameObject->AddComponent(meshRenderer);
+	//
+	//		scene->AddGameObject(gameObject);
+	//	}
+	//#pragma endregion
+
+		//
+	//#pragma region Point Light
+	//	{
+	//		shared_ptr<GameObject> light = make_shared<GameObject>();
+	//		light->AddComponent(make_shared<Transform>());
+	//		light->GetTransform()->SetLocalPosition(Vec3(0.f, 100.f, 150.f));
+	//		light->AddComponent(make_shared<Light>());
+	//		//light->GetLight()->SetLightDirection(Vec3(-1.f, -1.f, 0));
+	//		light->GetLight()->SetLightType(LIGHT_TYPE::POINT_LIGHT);
+	//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.5f, 0.0f));
+	//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.3f, 0.0f));
+	//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.3f, 0.0f));
+	//		light->GetLight()->SetLightRange(200.f);
+	//
+	//		scene->AddGameObject(light);
+	//	}
+	//#pragma endregion
+	//
+	//#pragma region Spot Light
+	//	{
+	//		shared_ptr<GameObject> light = make_shared<GameObject>();
+	//		light->AddComponent(make_shared<Transform>());
+	//		light->GetTransform()->SetLocalPosition(Vec3(75.f, 0.f, 150.f));
+	//		light->AddComponent(make_shared<Light>());
+	//		light->GetLight()->SetLightDirection(Vec3(-1.f, 0, 0));
+	//		light->GetLight()->SetLightType(LIGHT_TYPE::SPOT_LIGHT);
+	//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.f, 0.5f));
+	//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.0f, 0.1f));
+	//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.0f, 0.1f));
+	//		light->GetLight()->SetLightRange(200.f);
+	//		light->GetLight()->SetLightAngle(3.14f / 2);
+	//
+	//		scene->AddGameObject(light);
+	//	}
+	//#pragma endregion
+	//
+
+
+	return scene;
+}
+
+void SceneManager::LoadMapObjects(shared_ptr<Scene> scene)
+{
 	//// Tree_01
 	//shared_ptr<MeshData> meshTree01 = GET_SINGLE(Resources)->LoadFBX(L"Tree_01.bin");
 
@@ -329,7 +486,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	//	scene->AddGameObject(gameObject);
 	//}
-	
+
 	//// Bush_01
 	//shared_ptr<MeshData> meshBush01 = GET_SINGLE(Resources)->LoadFBX(L"Bush_01.bin");
 
@@ -357,7 +514,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	//	scene->AddGameObject(gameObject);
 	//}
-	
+
 	//// Building_05
 	//shared_ptr<MeshData> meshBuilding05 = GET_SINGLE(Resources)->LoadFBX(L"rpgpp_lt_building_05.bin");
 	//
@@ -595,156 +752,4 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
 	//	scene->AddGameObject(gameObject);
 	//}
-#pragma endregion
-
-#pragma region TestPlayer
-	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-		
-		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
-		for (auto& gameObject : gameObjects)
-		{
-			gameObject->SetName(L"Player");
-			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 50.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			scene->AddGameObject(gameObject);
-		}
-	}
-#pragma endregion
-
-#pragma region Terrain
-	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
-		obj->SetStatic(true);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
-			material->SetInt(0, 0);
-			meshRenderer->SetMaterial(material);
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-	}
-#pragma endregion
-
-#pragma region UI_Test
-	for (int32 i = 0; i < 6; i++)
-	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI")); // UI
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-350.f + (i * 120), 250.f, 500.f));
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
-
-			shared_ptr<Texture> texture;
-			if (i < 3)
-				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->GetRTTexture(i);
-			else if (i < 5)
-				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::LIGHTING)->GetRTTexture(i - 3);
-			else
-				texture = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SHADOW)->GetRTTexture(0);
-
-			shared_ptr<Material> material = make_shared<Material>();
-			material->SetShader(shader);
-			material->SetTexture(0, texture);
-			meshRenderer->SetMaterial(material);
-		}
-		//obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-	}
-#pragma endregion
-
-#pragma region Directional Light
-	{
-		shared_ptr<GameObject> light = make_shared<GameObject>();
-		light->AddComponent(make_shared<Transform>());
-		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 500));
-		light->AddComponent(make_shared<Light>());
-		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
-		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
-		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
-		light->GetLight()->SetAmbient(Vec3(0.1f, 0.1f, 0.1f));
-		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-
-		scene->AddGameObject(light);
-	}
-#pragma endregion
-
-	//#pragma region Tessellation Test
-	//	{
-	//		shared_ptr<GameObject> gameObject = make_shared<GameObject>();
-	//		gameObject->AddComponent(make_shared<Transform>());
-	//		gameObject->GetTransform()->SetLocalPosition(Vec3(0, 0, 300));
-	//		gameObject->GetTransform()->SetLocalScale(Vec3(100, 100, 100));
-	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0, 0, 0));
-	//
-	//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-	//		{
-	//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-	//			meshRenderer->SetMesh(mesh);
-	//			meshRenderer->SetMaterial(GET_SINGLE(Resources)->Get<Material>(L"Tessellation"));
-	//		}
-	//		gameObject->AddComponent(meshRenderer);
-	//
-	//		scene->AddGameObject(gameObject);
-	//	}
-	//#pragma endregion
-
-		//
-	//#pragma region Point Light
-	//	{
-	//		shared_ptr<GameObject> light = make_shared<GameObject>();
-	//		light->AddComponent(make_shared<Transform>());
-	//		light->GetTransform()->SetLocalPosition(Vec3(0.f, 100.f, 150.f));
-	//		light->AddComponent(make_shared<Light>());
-	//		//light->GetLight()->SetLightDirection(Vec3(-1.f, -1.f, 0));
-	//		light->GetLight()->SetLightType(LIGHT_TYPE::POINT_LIGHT);
-	//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.5f, 0.0f));
-	//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.3f, 0.0f));
-	//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.3f, 0.0f));
-	//		light->GetLight()->SetLightRange(200.f);
-	//
-	//		scene->AddGameObject(light);
-	//	}
-	//#pragma endregion
-	//
-	//#pragma region Spot Light
-	//	{
-	//		shared_ptr<GameObject> light = make_shared<GameObject>();
-	//		light->AddComponent(make_shared<Transform>());
-	//		light->GetTransform()->SetLocalPosition(Vec3(75.f, 0.f, 150.f));
-	//		light->AddComponent(make_shared<Light>());
-	//		light->GetLight()->SetLightDirection(Vec3(-1.f, 0, 0));
-	//		light->GetLight()->SetLightType(LIGHT_TYPE::SPOT_LIGHT);
-	//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.f, 0.5f));
-	//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.0f, 0.1f));
-	//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.0f, 0.1f));
-	//		light->GetLight()->SetLightRange(200.f);
-	//		light->GetLight()->SetLightAngle(3.14f / 2);
-	//
-	//		scene->AddGameObject(light);
-	//	}
-	//#pragma endregion
-	//
-
-
-	return scene;
 }

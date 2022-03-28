@@ -16,7 +16,6 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
-	//GetTransform()->PreRender();
 	KeyCheck();
 	StateCheck();
 	AnimationCheck();
@@ -46,19 +45,19 @@ void Player::KeyCheck()
 
 		else if (INPUT->GetButton(KEY_TYPE::A))
 		{
-			_curState = WALK;
+			_curState = IDLE;
 			pos -= GetTransform()->GetRight() * _speed * DELTA_TIME;
 		}
 
 		else if (INPUT->GetButton(KEY_TYPE::D))
 		{
-			_curState = WALK;
+			_curState = IDLE;
 			pos += GetTransform()->GetRight() * _speed * DELTA_TIME;
 		}
 		else	_curState = IDLE;
 	}
 
-	if (INPUT->GetButtonUp(KEY_TYPE::SPACE))
+	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
 		_curState = JUMP;
 	}

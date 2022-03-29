@@ -32,7 +32,7 @@ void Mesh::Render(uint32 instanceCount, uint32 idx)
 void Mesh::Render(shared_ptr<InstancingBuffer>& buffer, uint32 idx)
 {
 	D3D12_VERTEX_BUFFER_VIEW bufferViews[] = { _vertexBufferView, buffer->GetBufferView() };
-	GRAPHICS_CMD_LIST->IASetVertexBuffers(0, 2, bufferViews);
+	GRAPHICS_CMD_LIST->IASetVertexBuffers(0, 2, bufferViews);	// 이젠 버퍼 두개가 같이 들어감
 	GRAPHICS_CMD_LIST->IASetIndexBuffer(&_vecIndexInfo[idx].bufferView);
 
 	GEngine->GetGraphicsDescHeap()->CommitTable();

@@ -6,19 +6,6 @@
 class Item;
 class GameObject;
 
-enum class ITEM_TYPE
-{
-	COMMON, UNIQUE, TRESURE, END
-};
-
-enum class ITEM_EFFECT
-{
-	/*일반 아이템*/	 SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-	/*유니크 아이템*/ DEBUFF_OFF, STUN,
-	/*보물	   	*/	 NONE,
-	END
-};
-
 class ItemManager
 {
 	DECLARE_SINGLE(ItemManager);
@@ -30,29 +17,26 @@ public:
 
 public:
 	void SetItemPosition();
-	void CreateItem();
+	void CreateCommonItem();
+	void CreateUniqueItem();
+	void CreateTreasure();
 
 public:
-	array<shared_ptr<GameObject>, 3>& GetItemArray() { return _itemArray; }
+	array<list<shared_ptr<GameObject>>, 3>& GetItemArray() { return _itemArray; }
 	list<shared_ptr<GameObject>>& GetCommonItemList() { return _commonItemList; }
 	list<shared_ptr<GameObject>>& GetUniqueItemList() { return _uniqueItemList; }
 	list<shared_ptr<GameObject>>& TreasureList() { return _treasureList; }
 
-	ITEM_TYPE GetItemType() { return _itemType; }
-	ITEM_EFFECT GetItemEffect() { return _itemEffect; }
 
 private:
-	array<shared_ptr<GameObject>, 3>	_itemArray;			// 아이템 리스트 담고있는 어레이
+	array<list<shared_ptr<GameObject>>, 3>	_itemArray;			// 아이템 리스트 담고있는 어레이
 	list<shared_ptr<GameObject>>		_commonItemList;	
 	list<shared_ptr<GameObject>>		_uniqueItemList;
 	list<shared_ptr<GameObject>>		_treasureList;
 
-	array<Vec3, 10>	_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이
-	array<Vec3, 10>	_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이
-	array<Vec3, 5>	_treasurePosArray;	// 보물 좌표 담고있는 어레이
-
-	ITEM_TYPE	_itemType = ITEM_TYPE::END;
-	ITEM_EFFECT	_itemEffect = ITEM_EFFECT::END;
+	array<Vec3, 10>		_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이
+	array<Vec3, 10>		_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이
+	array<Vec3, 5>		_treasurePosArray;	// 보물 좌표 담고있는 어레이
 
 	int		index = 0;
 

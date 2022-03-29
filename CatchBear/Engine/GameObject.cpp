@@ -98,17 +98,17 @@ shared_ptr<MonoBehaviour>& GameObject::GetScript(int index)
 
 float GameObject::GetX()
 {
-	return GetTransform()->GetWorldPosition().x;
+	return GetTransform()->GetLocalPosition().x;
 }
 
 float GameObject::GetY()
 {
-	return GetTransform()->GetWorldPosition().y;
+	return GetTransform()->GetLocalPosition().y;
 }
 
 float GameObject::GetZ()
 {
-	return GetTransform()->GetWorldPosition().z;
+	return GetTransform()->GetLocalPosition().z;
 }
 
 shared_ptr<Transform> GameObject::GetTransform()

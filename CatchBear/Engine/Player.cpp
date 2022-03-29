@@ -10,6 +10,9 @@
 #include "CameraScript.h"
 #include "AnimationController.h"
 #include "AnimationTrack.h"
+#include "ServerPacketHandler.h"
+#include "Session.h"
+#include "ServerSession.h"
 
 Player::Player()
 {
@@ -32,6 +35,8 @@ void Player::LateUpdate()
 
 void Player::KeyCheck()
 {
+	Protocol::C_MOVE pkt;
+
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
@@ -60,12 +65,30 @@ void Player::KeyCheck()
 	{
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
 		_curState = WALK;
+
+		// 서버로 MOVE패킷 전송
+		pkt.set_xpos(pos.x);
+		pkt.set_zpos(pos.z);
+		pkt.set_playerid(_player->GetPlayerID());
+		pkt.set_movedir(0);
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
 		_curState = WALK;
+
+		// 서버로 MOVE패킷 전송
+		pkt.set_xpos(pos.x);
+		pkt.set_zpos(pos.z);
+		pkt.set_playerid(_player->GetPlayerID());
+		pkt.set_movedir(1);
+
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 
 	else _curState = IDLE;
@@ -98,9 +121,10 @@ void Player::KeyCheck()
 	{
 		_curState = JUMP;
 	}
+	
+	
 
-
-	GetTransform()->SetLocalPosition(pos);
+	//GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
 }
 

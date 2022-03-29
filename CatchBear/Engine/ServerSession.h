@@ -14,5 +14,7 @@ public:
 	virtual void OnSend(int32 len) override;
 	virtual void OnDisconnected() override;
 
+
 };
 
+extern PacketSessionRef mysession;

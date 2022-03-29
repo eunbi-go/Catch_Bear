@@ -3,6 +3,7 @@
 #include "ServerPacketHandler.h"
 //#include "Player.h"
 
+PacketSessionRef mysession;
 static bool isConnected = false;
 std::mutex m;
 
@@ -36,12 +37,13 @@ void ServerSession::OnConnected()
 
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
-	PacketSessionRef session = GetPacketSessionRef();
+	mysession = GetPacketSessionRef();
+	//PacketSessionRef session = GetPacketSessionRef();
 	PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
 
 
 	// TODO : packetId 대역 체크
-	ServerPacketHandler::HandlePacket(session, buffer, len);
+	ServerPacketHandler::HandlePacket(mysession, buffer, len);
 }
 
 void ServerSession::OnSend(int32 len)
@@ -53,3 +55,4 @@ void ServerSession::OnDisconnected()
 {
 	//cout << "Disconnected" << endl;
 }
+

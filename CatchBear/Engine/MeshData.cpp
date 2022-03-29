@@ -5,7 +5,7 @@
 #include "Resources.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
-
+#include "GameObject.h"
 
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
@@ -378,22 +378,30 @@ void MeshData::CreateMaterials()
 	GET_SINGLE(Resources)->Add<Material>(material->GetName(), material);
 }
 
-vector<shared_ptr<GameObject>> MeshData::Instantiate()
+shared_ptr<GameObject> MeshData::Instantiate()
 {
-	// vector: Mesh나 Material이 여러개일 수 있음
-	// 근데 우리는 다 하나씩이라서 별 의미는 없음
-	vector<shared_ptr<GameObject>>	v;
+	//// vector: Mesh나 Material이 여러개일 수 있음
+	//// 근데 우리는 다 하나씩이라서 별 의미는 없음
+	//vector<shared_ptr<GameObject>>	v;
 
-	for (MeshRendererInfo& info : _meshRenders)
-	{
-		shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
-		gameObject->AddComponent(make_shared<Transform>());
-		gameObject->AddComponent(make_shared<MeshRenderer>());
-		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
-		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+	//for (MeshRendererInfo& info : _meshRenders)
+	//{
+	//	shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
+	//	gameObject->AddComponent(make_shared<Transform>());
+	//	gameObject->AddComponent(make_shared<MeshRenderer>());
+	//	gameObject->GetMeshRenderer()->SetMesh(info.mesh);
+	//	gameObject->GetMeshRenderer()->SetMaterial(info.materials);
 
-		v.push_back(gameObject);
-	}
+	//	v.push_back(gameObject);
+	//}
 
-	return v;
+	//return v;
+
+	shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
+	gameObject->AddComponent(make_shared<Transform>());
+	gameObject->AddComponent(make_shared<MeshRenderer>());
+	gameObject->GetMeshRenderer()->SetMesh(_meshRenders[0].mesh);
+	gameObject->GetMeshRenderer()->SetMaterial(_meshRenders[0].materials);
+
+	return gameObject;
 }

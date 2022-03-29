@@ -45,7 +45,7 @@ protected:
 public:
 	// 그동안 읽어온 정보를 바탕으로 기본적인 객체 생성해서 리턴
 	// 유니티의 Prefab과 비슷한 개념
-	vector<shared_ptr<GameObject>>	Instantiate();
+	shared_ptr<GameObject>	Instantiate();
 
 protected:
 	shared_ptr<Mesh>				_mesh;

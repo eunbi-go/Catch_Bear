@@ -37,7 +37,7 @@ private:
 	void LoadMapFile(shared_ptr<Scene> scene);
 	void LoadStaticMeshData(wstring name);
 	bool IsMeshExist(wstring name);
-	void AddStaticMesh(vector<shared_ptr<class GameObject>> objects, shared_ptr<Scene> scene, const Vec3& trans, const Vec3& scale, const Vec3& rotate);
+	void AddStaticMesh(shared_ptr<class GameObject> objects, shared_ptr<Scene> scene, const Vec3& trans, const Vec3& scale, const Vec3& rotate);
 
 private:
 	shared_ptr<Scene> _activeScene;

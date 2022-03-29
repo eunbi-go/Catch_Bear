@@ -32,7 +32,12 @@ public:
 
 private:
 	shared_ptr<Scene> LoadTestScene();
+
 	void LoadMapObjects(shared_ptr<Scene> scene);
+	void LoadMapFile(shared_ptr<Scene> scene);
+	void LoadStaticMeshData(wstring name);
+	bool IsMeshExist(wstring name);
+	void AddStaticMesh(vector<shared_ptr<class GameObject>> objects, shared_ptr<Scene> scene, const Vec3& trans, const Vec3& scale, const Vec3& rotate);
 
 private:
 	shared_ptr<Scene> _activeScene;
@@ -40,5 +45,7 @@ private:
 	array<wstring, MAX_LAYER>	_layerNames;		// 레이어 이름, ex) 1번에 해당하는 레이어는 UI다
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
 	bool						bisPlayerCreate = false;
+
+	Map<wstring, shared_ptr<class MeshData>> _mapStaticMeshes;
 };
 

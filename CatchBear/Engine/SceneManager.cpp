@@ -134,7 +134,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		camera->AddComponent(make_shared<Transform>());
 		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
 		camera->AddComponent(make_shared<CameraScript>());
-		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, -20.f));
+		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
 		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
 		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI는 안 찍음
 		scene->AddGameObject(camera);
@@ -156,52 +156,52 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region TestPlayer
-	//{
-	//	shared_ptr<GameObject> obj = make_shared<GameObject>();
-	//	obj->SetName(L"Player");
-	//	obj->AddComponent(make_shared<Transform>());
-	//	obj->AddComponent(make_shared<Player>());
-	//	obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-	//	obj->GetTransform()->SetLocalPosition(Vec3(200, 0.f, 500.f));
-	//	obj->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-	//	obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 0.f));
-
-	//	obj->SetStatic(false);
-	//	obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-	//	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-	//	{
-	//		shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-	//		meshRenderer->SetMesh(sphereMesh);
-	//	}
-	//	{
-	//		shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-	//		meshRenderer->SetMaterial(material->Clone());
-	//	}
-	//	obj->AddComponent(meshRenderer);
-	//	scene->AddGameObject(obj);
-	//}
-#pragma endregion
+//#pragma region TestPlayer
+//	{
+//		shared_ptr<GameObject> obj = make_shared<GameObject>();
+//		obj->SetName(L"Player");
+//		obj->AddComponent(make_shared<Transform>());
+//		obj->AddComponent(make_shared<Player>());
+//		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+//		obj->GetTransform()->SetLocalPosition(Vec3(200, 0.f, 500.f));
+//		obj->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+//		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 0.f));
+//
+//		obj->SetStatic(false);
+//		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+//		{
+//			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+//			meshRenderer->SetMesh(sphereMesh);
+//		}
+//		{
+//			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+//			meshRenderer->SetMaterial(material->Clone());
+//		}
+//		obj->AddComponent(meshRenderer);
+//		scene->AddGameObject(obj);
+//	}
+//#pragma endregion
 
 #pragma region 테스트용 Object
 	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"Wall");
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 700.f));
-		obj->SetStatic(false);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
+		//shared_ptr<GameObject> obj = make_shared<GameObject>();
+		//obj->SetName(L"Wall");
+		//obj->AddComponent(make_shared<Transform>());
+		//obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		//obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 700.f));
+		//obj->SetStatic(false);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
+		//	meshRenderer->SetMesh(sphereMesh);
+		//}
+		//{
+		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+		//	meshRenderer->SetMaterial(material->Clone());
+		//}
+		//obj->AddComponent(meshRenderer);
+		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 
@@ -232,6 +232,38 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	LoadMapObjects(scene);
 #pragma endregion
 
+#pragma region Item
+	// present1
+	// Resources::LoadFBX()
+	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
+	shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
+
+	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
+
+	for (auto& gameObject : objectsPresent1)
+	{
+		gameObject->SetName(L"Present1");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+		scene->AddGameObject(gameObject);
+	}
+
+	// present4
+	shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
+
+	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
+
+	for (auto& gameObject : objectsPresent4)
+	{
+		gameObject->SetName(L"Present4");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 40.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+		scene->AddGameObject(gameObject);
+	}
+#pragma endregion
+
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
@@ -241,15 +273,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 50.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(3.f, 3.f, 3.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			//obj->SetStatic(false);
-			//obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			gameObject->SetStatic(false);
-			gameObject->SetCheckFrustum(false);
+			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			scene->AddGameObject(gameObject);
 		}
 	}

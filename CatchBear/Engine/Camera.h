@@ -49,15 +49,12 @@ public:
 	Matrix& GetViewMatrix() { return _matView; }
 	Matrix& GetProjectionMatrix() { return _matProjection; }
 
-
-
-
 private:
 	PROJECTION_TYPE _type = PROJECTION_TYPE::PERSPECTIVE;
 
 	float	_near = 1.f;
 	float	_far = 1000.f;
-	float	_fov = XM_PI / 4.f;
+	float	_fov = XM_PI / 4.f;	// 45도
 	float	_scale = 1.f;
 	float	_width = 0.f;
 	float	_height = 0.f;
@@ -77,6 +74,8 @@ private:
 
 public:
 	// TEMP - PushData()에 넘겨줄 데이터(임시)
+	// Transform쪽에 PushData()를 할때 카메라의 Matrix를 전달해줘야 하는데
+	// 일단 static으로 담아서 넘겨준다.
 	static Matrix	S_MatView;
 	static Matrix	S_MatProjection;
 

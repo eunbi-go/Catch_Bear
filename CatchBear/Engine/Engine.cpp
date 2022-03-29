@@ -8,6 +8,8 @@
 #include "Light.h"
 #include "Resources.h"
 #include "InstancingManager.h"
+#include "ItemManager.h"
+#include "ScoreManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -41,6 +43,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Input)->Init(info.hwnd);
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
+	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
 }
 
 void Engine::Update()
@@ -49,6 +52,8 @@ void Engine::Update()
 	GET_SINGLE(Timer)->Update();
 	GET_SINGLE(SceneManager)->Update();
 	GET_SINGLE(InstancingManager)->ClearBuffer();
+	//GET_SINGLE(ItemManager)->Update();
+	//GET_SINGLE(ScoreManager)->Update();
 
 	Render();
 

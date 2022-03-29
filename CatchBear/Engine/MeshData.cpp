@@ -319,7 +319,7 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				float fGlossiness = ReadFloatFromFile(pFile);
 			}
 
-			else if (!strcmp(pStrTocken, "<Phong>"))
+			else if (!strcmp(pStrTocken, "Phong"))
 			{
 				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);

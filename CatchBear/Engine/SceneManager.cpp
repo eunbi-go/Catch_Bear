@@ -229,7 +229,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	//LoadMapObjects(scene);
+	LoadMapObjects(scene);
 	//LoadMapFile(scene);
 #pragma endregion
 
@@ -263,6 +263,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 		scene->AddGameObject(gameObject);
 	}
+
+
 #pragma endregion
 
 #pragma region TestPlayer
@@ -411,24 +413,24 @@ void SceneManager::LoadMapObjects(shared_ptr<Scene> scene)
 	{
 		gameObject->SetName(L"Tree01");
 		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -10.f, 30.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 		scene->AddGameObject(gameObject);
 	}
 
-	// Tree_02
-	shared_ptr<MeshData> meshTree02 = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
+	//// Tree_02
+	//shared_ptr<MeshData> meshTree02 = GET_SINGLE(Resources)->LoadFBX(L"Tree_02.bin");
 
-	vector<shared_ptr<GameObject>>	objectsTree02 = meshTree02->Instantiate();
+	//vector<shared_ptr<GameObject>>	objectsTree02 = meshTree02->Instantiate();
 
-	for (auto& gameObject : objectsTree02)
-	{
-		gameObject->SetName(L"Tree02");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 10.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : objectsTree02)
+	//{
+	//	gameObject->SetName(L"Tree02");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.03f, 0.03f, 0.03f));
+	//	scene->AddGameObject(gameObject);
+	//}
 
 	//// Tree_03
 	//shared_ptr<MeshData> meshTree03 = GET_SINGLE(Resources)->LoadFBX(L"Tree_03.bin");

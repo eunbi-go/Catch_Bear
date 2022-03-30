@@ -97,7 +97,7 @@ enum class UAV_REGISTER : uint8
 	u3,
 	u4,
 
-	END,
+	END
 };
 
 enum

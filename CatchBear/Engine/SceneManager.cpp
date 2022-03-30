@@ -224,18 +224,20 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
 	shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
 
-	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
-
-	for (auto& gameObject : objectsPresent1)
+	for (int i = 0; i < 2; ++i)
 	{
-		gameObject->SetName(L"Present1");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -3));
-		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		scene->AddGameObject(gameObject);
-	}
+		vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
 
+		for (auto& gameObject : objectsPresent1)
+		{
+			gameObject->SetName(L"Present1");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -3 + i * 5));
+			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			scene->AddGameObject(gameObject);
+		}
+	}
 
 	// present4
 	shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");

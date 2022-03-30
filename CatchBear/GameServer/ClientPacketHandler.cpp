@@ -41,8 +41,8 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		gameSession->_player = playerRef;
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-		//session->Send(sendBuffer);
-		GInGame.Broadcast(sendBuffer);
+		session->Send(sendBuffer);
+		//GInGame.Broadcast(sendBuffer);
 		//GInGame.mySend(sendBuffer);
 	}
 

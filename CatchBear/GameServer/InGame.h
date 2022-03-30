@@ -10,7 +10,7 @@ public:
 	bool IsAlreadyEnterPlayer(uint64 player);
 	uint64 GetEnterPlayerNum();
 
-	void mySend(SendBufferRef sendbuf);
+	void mySend(uint64 playerID, SendBufferRef sendbuf);
 
 private:
 	USE_LOCK;

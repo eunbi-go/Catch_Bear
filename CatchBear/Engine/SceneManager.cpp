@@ -70,46 +70,25 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 
 void SceneManager::MakePlayer(uint64 _playerID)
 {
-	//shared_ptr<CharacterData> CharacData = make_shared<CharacterData>();
-	//CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+	//shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 
 	//vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+
 	//for (auto& gameObject : gameObjects)
 	//{
 	//	gameObject->SetName(L"Player");
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(15.f + (_playerID * 50.f), -10.f, 50.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 	//	gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 	//	gameObject->AddComponent(make_shared<Player>());
 	//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 	//	gameObject->SetStatic(false);
 	//	gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-	//	gameObject->SetPlayerID(_playerID);
-	//	
 	//	scene->AddGameObject(gameObject);
+
 	//	scene->AddPlayers(_playerID, gameObject);
 	//}
 
-	//{
-	//	shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-
-	//	vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
-	//	for (auto& gameObject : gameObjects)
-	//	{
-	//		gameObject->SetName(L"Player");
-	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f + (_playerID * 50.f), -2.475603f, -1.120835f));
-	//		gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-	//		gameObject->AddComponent(make_shared<Player>());
-	//		gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-	//		gameObject->SetStatic(false);
-	//		gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-	//		scene->AddGameObject(gameObject);
-
-	//		scene->AddPlayers(_playerID, gameObject);
-	//	}
-	//}
 }
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
@@ -232,7 +211,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Present1");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -3 + i * 5));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -3 + i * 10));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			scene->AddGameObject(gameObject);
@@ -261,21 +240,25 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 		
-		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
-		for (auto& gameObject : gameObjects)
+		for (int i = 0; i < 2; ++i)
 		{
-			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-			scene->AddGameObject(gameObject);
+			vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+
+			for (auto& gameObject : gameObjects)
+			{
+				gameObject->SetName(L"Player");
+				gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f + i * 20));
+				gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+				gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+				gameObject->AddComponent(make_shared<Player>());
+				gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+				gameObject->SetStatic(false);
+				gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+				scene->AddGameObject(gameObject);
+			}
 		}
 	}
+
 #pragma endregion
 
 #pragma region Terrain

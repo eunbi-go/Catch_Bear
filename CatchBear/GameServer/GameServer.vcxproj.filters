@@ -16,6 +16,9 @@
     <Filter Include="GameContents\Player">
       <UniqueIdentifier>{d37c77c6-8d96-413c-9bc3-fdc5a00dbcb3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\Scene">
+      <UniqueIdentifier>{00dad853-d774-4da5-a8d3-cf7f64c49bdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServer.cpp">

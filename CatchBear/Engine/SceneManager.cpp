@@ -241,14 +241,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			//gameObject->AddComponent(make_shared<Transform>());
-			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 50.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -10.f, 100.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			gameObject->SetCheckFrustum(false);
 			scene->AddGameObject(gameObject);
 		}
 	}

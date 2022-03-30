@@ -38,7 +38,7 @@ void ItemManager::SetItemPosition()
 	{
 		if (i > 4) y = 100.f;
 
-		_commonPosArray[i] = Vec3((float)(x + i * 50), y, 0.f);
+		_commonPosArray[i] = Vec3((float)(x + i * 50), y, 100.f);
 	}
 }
 

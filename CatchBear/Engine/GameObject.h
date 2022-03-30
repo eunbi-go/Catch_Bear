@@ -68,7 +68,7 @@ private:
 
 	bool	_checkFrustum = true;
 	uint8	_layerIndex = 0;
-	bool	_static = true;
+	bool	_static = false;
 	uint64  _playerID = 0;
 
 public:

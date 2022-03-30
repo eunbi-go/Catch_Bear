@@ -55,7 +55,6 @@ void Player::KeyCheck()
 
 	_cameraScript = static_pointer_cast<CameraScript>(_camera->GetScript(0));
 	
-
 	// 이동
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
@@ -79,8 +78,9 @@ void Player::KeyCheck()
 		delta = DELTA_TIME * _rotSpeed;
 
 		GetTransform()->SetLocalRotation(rot);
-
-		_curState = IDLE;
+		
+		// 이동+회전: WALK
+		if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -90,7 +90,8 @@ void Player::KeyCheck()
 
 		GetTransform()->SetLocalRotation(rot);
 
-		_curState = IDLE;
+		// 이동+회전: WALK
+		if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))

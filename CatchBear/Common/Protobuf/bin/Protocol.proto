@@ -13,7 +13,7 @@ message S_LOGIN
 {
 	bool success = 1;
 	uint64 playerId = 2;
-	repeated Player players = 3; // 아이디 발급 전
+	uint64 enterPlayer = 3;
 }
 
 message C_ENTER_LOBBY

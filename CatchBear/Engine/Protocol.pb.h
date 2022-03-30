@@ -348,28 +348,10 @@ class S_LOGIN final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kPlayersFieldNumber = 3,
     kPlayerIdFieldNumber = 2,
+    kEnterPlayerFieldNumber = 3,
     kSuccessFieldNumber = 1,
   };
-  // repeated .Protocol.Player players = 3;
-  int players_size() const;
-  private:
-  int _internal_players_size() const;
-  public:
-  void clear_players();
-  ::Protocol::Player* mutable_players(int index);
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >*
-      mutable_players();
-  private:
-  const ::Protocol::Player& _internal_players(int index) const;
-  ::Protocol::Player* _internal_add_players();
-  public:
-  const ::Protocol::Player& players(int index) const;
-  ::Protocol::Player* add_players();
-  const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >&
-      players() const;
-
   // uint64 playerId = 2;
   void clear_playerid();
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
@@ -377,6 +359,15 @@ class S_LOGIN final :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // uint64 enterPlayer = 3;
+  void clear_enterplayer();
+  ::PROTOBUF_NAMESPACE_ID::uint64 enterplayer() const;
+  void set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_enterplayer() const;
+  void _internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // bool success = 1;
@@ -395,8 +386,8 @@ class S_LOGIN final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player > players_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 enterplayer_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -1754,40 +1745,24 @@ inline void S_LOGIN::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.S_LOGIN.playerId)
 }
 
-// repeated .Protocol.Player players = 3;
-inline int S_LOGIN::_internal_players_size() const {
-  return players_.size();
+// uint64 enterPlayer = 3;
+inline void S_LOGIN::clear_enterplayer() {
+  enterplayer_ = uint64_t{0u};
 }
-inline int S_LOGIN::players_size() const {
-  return _internal_players_size();
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_LOGIN::_internal_enterplayer() const {
+  return enterplayer_;
 }
-inline ::Protocol::Player* S_LOGIN::mutable_players(int index) {
-  // @@protoc_insertion_point(field_mutable:Protocol.S_LOGIN.players)
-  return players_.Mutable(index);
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_LOGIN::enterplayer() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_LOGIN.enterPlayer)
+  return _internal_enterplayer();
 }
-inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >*
-S_LOGIN::mutable_players() {
-  // @@protoc_insertion_point(field_mutable_list:Protocol.S_LOGIN.players)
-  return &players_;
+inline void S_LOGIN::_internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  enterplayer_ = value;
 }
-inline const ::Protocol::Player& S_LOGIN::_internal_players(int index) const {
-  return players_.Get(index);
-}
-inline const ::Protocol::Player& S_LOGIN::players(int index) const {
-  // @@protoc_insertion_point(field_get:Protocol.S_LOGIN.players)
-  return _internal_players(index);
-}
-inline ::Protocol::Player* S_LOGIN::_internal_add_players() {
-  return players_.Add();
-}
-inline ::Protocol::Player* S_LOGIN::add_players() {
-  // @@protoc_insertion_point(field_add:Protocol.S_LOGIN.players)
-  return _internal_add_players();
-}
-inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Protocol::Player >&
-S_LOGIN::players() const {
-  // @@protoc_insertion_point(field_list:Protocol.S_LOGIN.players)
-  return players_;
+inline void S_LOGIN::set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_enterplayer(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_LOGIN.enterPlayer)
 }
 
 // -------------------------------------------------------------------

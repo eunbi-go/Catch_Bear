@@ -40,3 +40,9 @@ uint64 InGame::GetEnterPlayerNum()
 {
 	return _players.size();
 }
+
+void InGame::mySend(SendBufferRef sendbuf)
+{
+	WRITE_LOCK;
+	_players[0]->ownerSession->Send(sendbuf);
+}

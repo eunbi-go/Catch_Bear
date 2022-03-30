@@ -37,13 +37,16 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		playerRef->ownerSession = gameSession;
 		GInGame.Enter(playerRef);
 		cout << "플레이어ID " << playerRef->playerId << " 인게임 접속완료!" << endl;
-
+		loginPkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
 		gameSession->_player = playerRef;
+
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
+		//session->Send(sendBuffer);
+		GInGame.Broadcast(sendBuffer);
+		//GInGame.mySend(sendBuffer);
 	}
 
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-	session->Send(sendBuffer);
-
+	
 #pragma region 일단나중에
 //	// gameSession의 nickName 벡터에 저장.
 //	gameSession->_nickNames.push_back(pkt.nickname());
@@ -115,14 +118,11 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
+	cout << "플레이어 " << pkt.playerid() << " 인게임 접속함\n";
 	Protocol::S_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_success(true);
 
-	enterGamePkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
-
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
-	// 나중에는 플레이어마다 오너세션 정해서 거기서 Send하는걸로 수정해야할듯
-	//player->ownerSession->Send(sendBuffer);
 	session->Send(sendBuffer);
 
 	return true;
@@ -167,45 +167,45 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 
 	Protocol::S_MOVE movePkt;
 
-	// 여기서 충돌체크하고 앞으로 이동 가능하면 이동가능여부만 보내줌
-	if (gameSession->GetIsCollid() == false)
-	{
-		bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
-		gameSession->SetIsCollid(isCollid);
-		movePkt.set_success(true);
-		switch (pkt.movedir())
-		{
-		case 0:
-			gameSession->SetMoveDir(MoveDir::UP);
-			break;
-		case 1:
-			gameSession->SetMoveDir(MoveDir::DOWN);
-			break;
-		}
-		movePkt.set_movedir(pkt.movedir());
-	}
+	//// 여기서 충돌체크하고 앞으로 이동 가능하면 이동가능여부만 보내줌
+	//if (gameSession->GetIsCollid() == false)
+	//{
+	//	bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+	//	gameSession->SetIsCollid(isCollid);
+	//	movePkt.set_success(true);
+	//	switch (pkt.movedir())
+	//	{
+	//	case 0:
+	//		gameSession->SetMoveDir(MoveDir::UP);
+	//		break;
+	//	case 1:
+	//		gameSession->SetMoveDir(MoveDir::DOWN);
+	//		break;
+	//	}
+	//	movePkt.set_movedir(pkt.movedir());
+	//}
 
-	// 충돌하는순간 방향을 저장해서 그 방향은 MOVE패킷 보내지 않음
-	if (gameSession->GetIsCollid() == true) {
-		movePkt.set_success(false);
-		cout << "충돌함!" << endl;
+	//// 충돌하는순간 방향을 저장해서 그 방향은 MOVE패킷 보내지 않음
+	//if (gameSession->GetIsCollid() == true) {
+	//	movePkt.set_success(false);
+	//	cout << "충돌함!" << endl;
 
-		switch (gameSession->GetMoveDir())
-		{
-		case MoveDir::UP:
-			movePkt.set_movedir(0);
-			break;
-		case MoveDir::DOWN:
-			movePkt.set_movedir(1);
-			break;
-		}
+	//	switch (gameSession->GetMoveDir())
+	//	{
+	//	case MoveDir::UP:
+	//		movePkt.set_movedir(0);
+	//		break;
+	//	case MoveDir::DOWN:
+	//		movePkt.set_movedir(1);
+	//		break;
+	//	}
 
-		bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
-		if (!isCollid)
-		{
-			gameSession->SetIsCollid(isCollid);
-		}
-	}
+	//	bool isCollid = CheckAABB(pkt.xpos(), pkt.zpos(), staticObjX, staticObjZ, 50.f, staticObjWidth, 50.f, staticObjDepth);
+	//	if (!isCollid)
+	//	{
+	//		gameSession->SetIsCollid(isCollid);
+	//	}
+	//}
 
 	movePkt.set_playerid(pkt.playerid());
 	movePkt.set_xpos(pkt.xpos());

@@ -38,10 +38,10 @@ void ServerSession::OnConnected()
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
 	mysession = GetPacketSessionRef();
-	//PacketSessionRef session = GetPacketSessionRef();
+	PacketSessionRef session = GetPacketSessionRef();
 	PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
 
-
+	
 	// TODO : packetId 대역 체크
 	ServerPacketHandler::HandlePacket(mysession, buffer, len);
 }

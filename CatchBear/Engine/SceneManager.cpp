@@ -70,24 +70,46 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 
 void SceneManager::MakePlayer(uint64 _playerID)
 {
-	shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+	shared_ptr<CharacterData> CharacData = make_shared<CharacterData>();
+	CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+
+	if (_playerID == 1)
+	{
+		shared_ptr<CharacterData> CharacData2 = make_shared<CharacterData>();
+		CharacData2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData2->Instantiate();
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Player");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(15.f + (_playerID * 50.f), -10.f, 50.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			gameObject->SetPlayerID(_playerID);
+
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(_playerID, gameObject);
+		}
+	}
 
 	vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
 	for (auto& gameObject : gameObjects)
 	{
 		gameObject->SetName(L"Player");
-		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f + (_playerID * 100.f), -10.f, 50.f));
+		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f + (_playerID * 50.f), -10.f, 50.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 		gameObject->AddComponent(make_shared<Player>());
 		gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 		gameObject->SetStatic(false);
 		gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-		scene->AddGameObject(gameObject);
-
 		gameObject->SetPlayerID(_playerID);
-
+		
+		scene->AddGameObject(gameObject);
 		scene->AddPlayers(_playerID, gameObject);
 	}
 }

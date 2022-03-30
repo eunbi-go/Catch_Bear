@@ -26,7 +26,7 @@ void MeshRenderer::Render()
 	_mesh->Render(1, 0);
 }
 
-void MeshRenderer::Render(shared_ptr<class InstancingBuffer>& buffer)
+void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
 {
 	buffer->PushData();
 
@@ -34,7 +34,6 @@ void MeshRenderer::Render(shared_ptr<class InstancingBuffer>& buffer)
 	if (GetAnimationController())
 	{
 		GetAnimationController()->PushData();
-		//_material->SetInt(1, 1);
 	}
 
 	_material->PushGraphicsData();

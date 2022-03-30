@@ -381,6 +381,7 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 
 		v.push_back(gameObject);
 	}

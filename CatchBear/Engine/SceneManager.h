@@ -39,7 +39,7 @@ private:
 
 private:
 	void LoadMapFile(shared_ptr<Scene> scene);
-	void LoadMap(shared_ptr<Scene> scene);
+	void AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<class GameObject>> gameObj, wstring name, Vec3 trans, Vec3 scale, Vec3 rotate);
 
 
 
@@ -49,11 +49,5 @@ private:
 	array<wstring, MAX_LAYER>	_layerNames;		// 레이어 이름, ex) 1번에 해당하는 레이어는 UI다
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
 	bool						bisPlayerCreate = false;
-
-	// Test용, main에 병합하고 따로 브랜치 생성해서 수정할 것 
-	vector<Vec3>	_transform;
-	vector<Vec3>	_scale;
-	vector<Vec3>	_rotate;
-	vector<wstring>	_objectName;
 };
 

@@ -281,6 +281,10 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse4";
 			else if (!strcmp(pStrTocken, "Nature_Mat_01"))
 				_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
+			else if (!strncmp(pStrTocken, "rpgpp_st_mat_a.041", 6))
+				_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
+			else
+				int k = 0;
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);

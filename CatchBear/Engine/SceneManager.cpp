@@ -251,8 +251,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, 2.f, -1.120835f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, -1.120835f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(4.f, 4.f, 4.f));
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
@@ -268,7 +268,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
 		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0.f, -2.f, 0.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(-8.f, 2.f, 0.f));
 		obj->SetStatic(true);
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -381,14 +381,12 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 	FILE* pFile;
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
-	wstring strpath = L"..\\Resources\\Binary\\Objects.bin";
+	wstring strpath = L"..\\Resources\\Binary\\NaturePackLite_Texture_01.bin";
 
 	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
-	if (pFile == NULL)
-	{
-		return;
-	}
+	if (pFile == NULL)		return;
 	rewind(pFile);
+	int l = 0;
 
 	for (; ;)
 	{
@@ -403,11 +401,8 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
 
-				//if (!strcmp(pStrTocken, "Rock_03"))
-				//{
-				//	fclose(pFile);
-				//	return;
-				//}
+				if (!strcmp(pStrTocken, "Fence_Type1_02_mesh"))
+						return;
 
 				shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 				vector<shared_ptr<GameObject>> obj = meshData->Instantiate();
@@ -424,7 +419,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				if (!strcmp(pStrTocken, "<Scale>:"))
 				{
 					nReads = (UINT)::fread(&scale, sizeof(Vec3), 1, pFile);
-					AddMapObject(scene, obj, name, trans, scale, rotate);
+					AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));
 					break;
 				}
 				

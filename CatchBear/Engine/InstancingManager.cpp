@@ -5,6 +5,7 @@
 #include "MeshRenderer.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Material.h"
 
 void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 {
@@ -40,6 +41,7 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 			}
 
 			shared_ptr<InstancingBuffer>& buffer = _buffers[instanceId];
+			vec[0]->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 			vec[0]->GetMeshRenderer()->Render(buffer);
 		}
 	}

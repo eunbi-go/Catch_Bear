@@ -210,7 +210,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
 	shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
 
-	for (int i = 0; i < 1; ++i)
+	for (int i = 0; i < 2; ++i)
 	{
 		vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
 
@@ -218,27 +218,27 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Present1");
 			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10 + i * 10));
 			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			//gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 			scene->AddGameObject(gameObject);
 		}
 	}
 
-	// present4
-	shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
+	//// present4
+	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
 
-	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
+	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
 
-	for (auto& gameObject : objectsPresent4)
-	{
-		gameObject->SetName(L"Present4");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 3));
-		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		scene->AddGameObject(gameObject);
-	}
+	//for (auto& gameObject : objectsPresent4)
+	//{
+	//	gameObject->SetName(L"Present4");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 3));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//	scene->AddGameObject(gameObject);
+	//}
 
 
 #pragma endregion

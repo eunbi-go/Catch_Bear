@@ -5,6 +5,7 @@
 #include "MeshRenderer.h"
 #include "Transform.h"
 #include "Camera.h"
+#include "Material.h"
 
 // Render()를 호출하는 순간, 카메라에서 분류를 한 오브젝트를 루프를 돌면서 하나씩 그려주는게 아니라
 // InstancingManager에게 렌더링해달라고 모든 물체들을 다 떠넘겨주게 된다.
@@ -62,6 +63,7 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 			// 두번째 버전인 Render()를 호출해준다.
 			// InstancingBuffer를 받아서 한번에 그려주는 역할
 			shared_ptr<InstancingBuffer>& buffer = _buffers[instanceId];
+			vec[0]->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 			vec[0]->GetMeshRenderer()->Render(buffer);
 		}
 	}

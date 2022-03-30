@@ -66,14 +66,29 @@ VS_OUT VS_Player(VS_IN input)
         mtxVertexToBoneWorld += input.weight[i] * mul(g_offset[input.indices[i]], g_boneTrans[input.indices[i]]);
     }
 
-    output.uv = input.uv;
+    // ¿ŒΩ∫≈œΩÃ
+    if (g_int_0 == 1)
+    {
+        output.uv = input.uv;
 
-    output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
-    output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
-    output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
-    output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
+        output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
 
-    output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
+        output.pos = mul(float4(output.viewPos, 1.f), input.matWVP);
+    }
+    else
+    {
+        output.uv = input.uv;
+
+        output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
+
+        output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
+    }
 
     return output;
 }

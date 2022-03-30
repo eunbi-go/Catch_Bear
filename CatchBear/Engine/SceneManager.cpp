@@ -208,22 +208,22 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	// present1
 	// Resources::LoadFBX()
 	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
-	shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
+	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
 
-	for (int i = 0; i < 2; ++i)
-	{
-		vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
 
-		for (auto& gameObject : objectsPresent1)
-		{
-			gameObject->SetName(L"Present1");
-			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10 + i * 10));
-			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-			//gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
-			scene->AddGameObject(gameObject);
-		}
-	}
+	//	for (auto& gameObject : objectsPresent1)
+	//	{
+	//		gameObject->SetName(L"Present1");
+	//		gameObject->SetCheckFrustum(false);
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10 + i * 10));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//		scene->AddGameObject(gameObject);
+	//	}
+	//}
 
 	//// present4
 	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
@@ -260,6 +260,20 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetStatic(false);
 			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			scene->AddGameObject(gameObject);
+		}
+
+		gameObjects = CharacData->Instantiate();
+
+		for (auto&Object : gameObjects)
+		{
+			Object->SetName(L"Player");
+			Object->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10));
+			Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+			Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+			Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			Object->SetStatic(false);
+			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			scene->AddGameObject(Object);
 		}
 	}
 #pragma endregion

@@ -103,13 +103,7 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 	// 프레임 이름으로 바꿔야 함!
 	ReadStringFromFile(pFile, pStrTocken);
 
-	// char -> wchar_t
-	int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
-	wchar_t* pStr;
-	pStr = new WCHAR[nSize];
-	MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
-
-	_staticMeshInfo.material.name = pStr;
+	_staticMeshInfo.material.name = s2ws(pStrTocken);
 
 	for (; ;)
 	{
@@ -272,12 +266,6 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		{
 			ReadStringFromFile(pFile, pStrTocken);
 			_staticMeshInfo.material.name = s2ws(pStrTocken);
-
-			// char -> wchar_t
-			int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
-			wchar_t* pStr;
-			pStr = new WCHAR[nSize];
-			MultiByteToWideChar(CP_ACP, 0, pStrTocken, strlen(pStrTocken) + 1, pStr, nSize);
 
 			// 나중에 정리할거임. 신경X
 			/////////////////////////////////////////////////////////////////////////////////////

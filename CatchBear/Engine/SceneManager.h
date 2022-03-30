@@ -39,6 +39,8 @@ private:
 	bool IsMeshExist(wstring name);
 	void AddStaticMesh(shared_ptr<class GameObject> objects, shared_ptr<Scene> scene, const Vec3& trans, const Vec3& scale, const Vec3& rotate);
 
+	void LoadMap(shared_ptr<Scene> scene);
+
 private:
 	shared_ptr<Scene> _activeScene;
 
@@ -47,5 +49,9 @@ private:
 	bool						bisPlayerCreate = false;
 
 	Map<wstring, shared_ptr<class MeshData>> _mapStaticMeshes;
+	vector<Vec3>	_transform;
+	vector<Vec3>	_scale;
+	vector<Vec3>	_rotate;
+	vector<wstring>	_objectName;
 };
 

@@ -231,12 +231,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region StaticMesh
 	//LoadMapObjects(scene);
 	LoadMapFile(scene);
+	LoadMap(scene);
 #pragma endregion
 
 #pragma region Item
-	//// present1
-	//// Resources::LoadFBX()
-	//// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
+	// present1
+	// Resources::LoadFBX()
+	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
 	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
 
 	//vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
@@ -245,10 +246,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Present1");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -10.f, 40.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -2.f, 5.f));
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 	//	scene->AddGameObject(gameObject);
 	//}
+
 
 	//// present4
 	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
@@ -277,7 +279,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Player");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
@@ -885,6 +887,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				shared_ptr<GameObject> obj;
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
+				_objectName.push_back(name);
 				if (!strcmp(pStrTocken, "Stump_01"))
 				{
 					fclose(pFile);
@@ -894,27 +897,26 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				if (!IsMeshExist(s2ws(pStrTocken)))
 					LoadStaticMeshData(s2ws(pStrTocken));
 
-				//meshData = _mapStaticMeshes[s2ws(pStrTocken)];
 				meshData = GET_SINGLE(Resources)->Get<MeshData>(name + L".bin");
-				obj = meshData->Instantiate();
+				//obj = meshData->Instantiate();
 
-				obj->SetCheckFrustum(false);
-				if (i == 1) obj->SetName(name + L"1");
-				if (i == 2) obj->SetName(name + L"2");
+				//obj->SetCheckFrustum(false);
 				
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				if (!strcmp(pStrTocken, "<Transform>:"))
 				{
 					nReads = (UINT)::fread(&trans, sizeof(Vec3), 1, pFile);
-					obj->GetTransform()->SetLocalPosition(trans);
+					_transform.push_back(trans);
+					//obj->GetTransform()->SetLocalPosition(trans);
 				}
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				if (!strcmp(pStrTocken, "<Rotation>:"))
 				{
 					nReads = (UINT)::fread(&rotate, sizeof(Vec3), 1, pFile);
-					obj->GetTransform()->SetLocalRotation(rotate);
+					_rotate.push_back(rotate);
+					//obj->GetTransform()->SetLocalRotation(rotate);
 				}
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
@@ -922,8 +924,9 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				{
 					nReads = (UINT)::fread(&scale, sizeof(Vec3), 1, pFile);
 					scale = Vec3(10.f, 10.f, 10.f);
-					obj->GetTransform()->SetLocalScale(scale);
-					scene->AddGameObject(obj);
+					_scale.push_back(scale);
+					//obj->GetTransform()->SetLocalScale(scale);
+					//scene->AddGameObject(obj);
 					//AddStaticMesh(obj, scene, trans, scale, rotate);
 					break;
 				}
@@ -948,6 +951,35 @@ void SceneManager::AddStaticMesh(shared_ptr<GameObject> objects, shared_ptr<Scen
 	objects->GetTransform()->SetLocalScale(scale);
 	objects->GetTransform()->SetLocalRotation(rotate);
 	scene->AddGameObject(objects);
+}
+
+void SceneManager::LoadMap(shared_ptr<Scene> scene)
+{
+	for (int i = 0; i < 1; ++i)
+	{
+		vector<shared_ptr<GameObject>> object = GET_SINGLE(Resources)->LoadFBX(_objectName[i] + L".bin")->Instantiate();
+		for (auto& gameObj : object)
+		{
+			gameObj->SetName(_objectName[i] + L"1");
+			gameObj->SetCheckFrustum(false);
+			gameObj->GetTransform()->SetLocalPosition(_transform[i]);
+			gameObj->GetTransform()->SetLocalScale(_scale[i]);
+			gameObj->GetTransform()->SetLocalRotation(_rotate[i]);
+			scene->AddGameObject(gameObj);
+		}
+
+		object = GET_SINGLE(Resources)->LoadFBX(_objectName[i + 2] + L".bin")->Instantiate();
+		
+		for (auto& gameObj : object)
+		{
+			gameObj->SetName(_objectName[i+2] + L"2");
+			gameObj->SetCheckFrustum(false);
+			gameObj->GetTransform()->SetLocalPosition(_transform[i+2]);
+			gameObj->GetTransform()->SetLocalScale(_scale[i+2]);
+			gameObj->GetTransform()->SetLocalRotation(_rotate[i+2]);
+			scene->AddGameObject(gameObj);
+		}
+	}
 }
 
 void SceneManager::LoadStaticMeshData(wstring name)

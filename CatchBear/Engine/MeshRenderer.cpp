@@ -28,6 +28,18 @@ void MeshRenderer::Render()
 
 void MeshRenderer::Render(shared_ptr<class InstancingBuffer>& buffer)
 {
+	//for (uint32 i = 0; i < _materials.size(); i++)
+	//{
+	//	shared_ptr<Material>& material = _materials[i];
+
+	//	if (material == nullptr || material->GetShader() == nullptr)
+	//		continue;
+
+	//	buffer->PushData();
+	//	material->PushGraphicsData();
+	//	_mesh->Render(buffer, i);
+	//}
+
 	buffer->PushData();
 
 	// Animation

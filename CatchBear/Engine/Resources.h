@@ -5,6 +5,7 @@
 #include "Mesh.h"
 #include "Shader.h"
 #include "Texture.h"
+#include "MeshData.h"
 
 class Resources
 {
@@ -123,6 +124,8 @@ inline OBJECT_TYPE Resources::GetObjectType()
 		return OBJECT_TYPE::SHADER;
 	else if (std::is_same_v<T, Texture>)
 		return OBJECT_TYPE::TEXTURE;
+	else if (std::is_same_v<T, MeshData>)
+		return OBJECT_TYPE::MESH_DATA;
 	else if (std::is_convertible_v<T, Component>)
 		return OBJECT_TYPE::COMPONENT;
 	else

@@ -5,7 +5,7 @@
 #include "Resources.h"
 #include "Transform.h"
 #include "MeshRenderer.h"
-
+#include "GameObject.h"
 
 
 MeshData::MeshData() : Object(OBJECT_TYPE::MESH_DATA)
@@ -271,6 +271,7 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		if (nMaterials == 0)
 		{
 			ReadStringFromFile(pFile, pStrTocken);
+			_staticMeshInfo.material.name = s2ws(pStrTocken);
 
 			// char -> wchar_t
 			int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
@@ -290,6 +291,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse1";
 			else if (!strcmp(pStrTocken, "Present4"))
 				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse4";
+			else if (!strcmp(pStrTocken, "Nature_Mat_01"))
+				_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);
@@ -317,7 +320,7 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				float fGlossiness = ReadFloatFromFile(pFile);
 			}
 
-			else if (!strcmp(pStrTocken, "<Phong>"))
+			else if (!strcmp(pStrTocken, "Phong"))
 			{
 				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
@@ -363,6 +366,7 @@ void MeshData::CreateMaterials()
 	material->SetName(key);
 	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 
+	material->SetInt(0, 1);
 
 	{
 		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
@@ -373,7 +377,7 @@ void MeshData::CreateMaterials()
 		if (diffuseTex)	material->SetTexture(0, diffuseTex);
 	}
 
-	GET_SINGLE(Resources)->Add<Material>(material->GetName(), material);
+	GET_SINGLE(Resources)->Add<Material>(key, material);
 }
 
 vector<shared_ptr<GameObject>> MeshData::Instantiate()

@@ -277,10 +277,10 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 				{
 					_staticMeshInfo.vertices[i].pos = pos[i];
 
-					_staticMeshInfo.vertices[i].indices.x = _skinningInfo.boneIndices[i].x;
-					_staticMeshInfo.vertices[i].indices.y = _skinningInfo.boneIndices[i].y;
-					_staticMeshInfo.vertices[i].indices.z = _skinningInfo.boneIndices[i].z;
-					_staticMeshInfo.vertices[i].indices.w = _skinningInfo.boneIndices[i].w;
+					_staticMeshInfo.vertices[i].indices.x = static_cast<float>(_skinningInfo.boneIndices[i].x);
+					_staticMeshInfo.vertices[i].indices.y = static_cast<float>(_skinningInfo.boneIndices[i].y);
+					_staticMeshInfo.vertices[i].indices.z = static_cast<float>(_skinningInfo.boneIndices[i].z);
+					_staticMeshInfo.vertices[i].indices.w = static_cast<float>(_skinningInfo.boneIndices[i].w);
 
 					_staticMeshInfo.vertices[i].weights.x = _skinningInfo.boneWeights[i].x;
 					_staticMeshInfo.vertices[i].weights.y = _skinningInfo.boneWeights[i].y;

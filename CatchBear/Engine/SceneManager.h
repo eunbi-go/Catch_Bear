@@ -24,22 +24,24 @@ public:
 	const wstring& IndexToLayerName(uint8 index) { return _layerNames[index]; }
 	uint8 LayerNameToIndex(const wstring& name);
 
+
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
+
 
 public:
 	void MakePlayer(uint64 _playerID);
 
+
 private:
 	shared_ptr<Scene> LoadTestScene();
 
-	void LoadMapObjects(shared_ptr<Scene> scene);
-	void LoadMapFile(shared_ptr<Scene> scene);
-	void LoadStaticMeshData(wstring name);
-	bool IsMeshExist(wstring name);
-	void AddStaticMesh(shared_ptr<class GameObject> objects, shared_ptr<Scene> scene, const Vec3& trans, const Vec3& scale, const Vec3& rotate);
 
+private:
+	void LoadMapFile(shared_ptr<Scene> scene);
 	void LoadMap(shared_ptr<Scene> scene);
+
+
 
 private:
 	shared_ptr<Scene> _activeScene;
@@ -48,7 +50,7 @@ private:
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
 	bool						bisPlayerCreate = false;
 
-	Map<wstring, shared_ptr<class MeshData>> _mapStaticMeshes;
+	// Test용, main에 병합하고 따로 브랜치 생성해서 수정할 것 
 	vector<Vec3>	_transform;
 	vector<Vec3>	_scale;
 	vector<Vec3>	_rotate;

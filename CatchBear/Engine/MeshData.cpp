@@ -271,6 +271,7 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		if (nMaterials == 0)
 		{
 			ReadStringFromFile(pFile, pStrTocken);
+			_staticMeshInfo.material.name = s2ws(pStrTocken);
 
 			// char -> wchar_t
 			int nSize = MultiByteToWideChar(CP_ACP, 0, pStrTocken, -1, NULL, NULL);
@@ -365,6 +366,7 @@ void MeshData::CreateMaterials()
 	material->SetName(key);
 	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 
+	material->SetInt(0, 1);
 
 	{
 		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
@@ -375,7 +377,7 @@ void MeshData::CreateMaterials()
 		if (diffuseTex)	material->SetTexture(0, diffuseTex);
 	}
 
-	GET_SINGLE(Resources)->Add<Material>(material->GetName(), material);
+	GET_SINGLE(Resources)->Add<Material>(key, material);
 }
 
 vector<shared_ptr<GameObject>> MeshData::Instantiate()

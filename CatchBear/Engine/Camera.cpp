@@ -132,7 +132,7 @@ void Camera::Render_Deferred()
 	S_MatView = _matView;
 	S_MatProjection = _matProjection;
 
-	GET_SINGLE(InstancingManager)->Render(_vecDeferred);
+	GET_SINGLE(InstancingManager) ->Render(_vecDeferred);
 }
 
 void Camera::Render_Forward()

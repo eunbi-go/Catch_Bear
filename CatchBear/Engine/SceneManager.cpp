@@ -225,7 +225,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//}
 
 	//// present4
-	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
+	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"Fence_Type1_02.bin");
 
 	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
 
@@ -233,8 +233,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Present4");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 3));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, 3));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.02f, 0.02f, 0.02f));
 	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 	//	scene->AddGameObject(gameObject);
 	//}
@@ -252,7 +252,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		{
 			gameObject->SetName(L"Player");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, -1.120835f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(4.f, 4.f, 4.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
@@ -265,23 +265,23 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region Terrain
 	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-8.f, 2.f, 0.f));
-		obj->SetStatic(true);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
-			material->SetInt(0, 0);
-			meshRenderer->SetMaterial(material);
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
+		//shared_ptr<GameObject> obj = make_shared<GameObject>();
+		//obj->AddComponent(make_shared<Transform>());
+		//obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
+		//obj->GetTransform()->SetLocalPosition(Vec3(-8.f, 2.f, 0.f));
+		//obj->SetStatic(true);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
+		//	meshRenderer->SetMesh(mesh);
+		//}
+		//{
+		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
+		//	material->SetInt(0, 0);
+		//	meshRenderer->SetMaterial(material);
+		//}
+		//obj->AddComponent(meshRenderer);
+		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 
@@ -402,7 +402,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				wstring name = s2ws(pStrTocken);
 
 				if (!strcmp(pStrTocken, "Fence_Type1_02_mesh"))
-						return;
+					name = L"Fence_Type1_02";
 
 				shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 				vector<shared_ptr<GameObject>> obj = meshData->Instantiate();
@@ -419,7 +419,12 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				if (!strcmp(pStrTocken, "<Scale>:"))
 				{
 					nReads = (UINT)::fread(&scale, sizeof(Vec3), 1, pFile);
-					AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));
+					if (name == L"Fence_Type1_02")
+					{
+						scale = Vec3(0.0098f, 0.02f, 0.02f);
+						AddMapObject(scene, obj, name, trans, scale, rotate);
+					}
+					else AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));
 					break;
 				}
 				

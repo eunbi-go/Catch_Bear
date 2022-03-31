@@ -283,6 +283,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
 			else if (!strncmp(pStrTocken, "rpgpp_st_mat_a.041", 6))
 				_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
+			else if (!strcmp(pStrTocken, "Brown_Wood"))
+				_staticMeshInfo.material.diffuseTexName = L"Colorsheet Wood Brown";
 			else
 				int k = 0;
 		}

@@ -21,6 +21,9 @@ public:
 	void CreateUniqueItem();
 	void CreateTreasure();
 
+private:
+	void Collision_ItemToPlayer();
+
 public:
 	array<list<shared_ptr<GameObject>>, 3>& GetItemArray() { return _itemArray; }
 	list<shared_ptr<GameObject>>& GetCommonItemList() { return _commonItemList; }
@@ -33,6 +36,8 @@ private:
 	list<shared_ptr<GameObject>>		_commonItemList;	
 	list<shared_ptr<GameObject>>		_uniqueItemList;
 	list<shared_ptr<GameObject>>		_treasureList;
+
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	array<Vec3, 10>		_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이
 	array<Vec3, 10>		_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이

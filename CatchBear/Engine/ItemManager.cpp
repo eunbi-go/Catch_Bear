@@ -22,6 +22,8 @@ void ItemManager::Update()
 	CreateCommonItem();
 	CreateUniqueItem();
 	CreateTreasure();
+
+	Collision_ItemToPlayer();
 }
 
 void ItemManager::LateUpdate()
@@ -51,9 +53,9 @@ void ItemManager::CreateCommonItem()
 	{
 		int idx = 0;
 
-		for (int i = 0; i < 5; ++i)
-		{
-			if (_commonItemList.size() >= 5) break;
+//		for (int i = 0; i < 5; ++i)
+//		{
+			if (_commonItemList.size() >= 5) return;
 
 			shared_ptr<GameObject> item = make_shared<GameObject>();
 			item->SetName(L"CommonItem");
@@ -65,6 +67,12 @@ void ItemManager::CreateCommonItem()
 			item->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 			item->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			item->GetTransform()->SetLocalPosition(pos);
+			//item->_boundingBox = BoundingOrientedBox(
+			//	XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(fx, fy, fz), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			item->_boundingExtents = XMFLOAT3(5.f, 5.f, 5.f);
+			item->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
 			shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 			{
 				shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
@@ -105,7 +113,7 @@ void ItemManager::CreateCommonItem()
 			shared_ptr<Scene> scene = make_shared<Scene>();
 			scene = GET_SINGLE(SceneManager)->GetActiveScene();
 			scene->AddGameObject(item);
-		}
+//		}
 
 		_commonItemTimer = 0.f;
 	}
@@ -125,4 +133,31 @@ void ItemManager::CreateUniqueItem()
 
 void ItemManager::CreateTreasure()
 {
+}
+
+void ItemManager::Collision_ItemToPlayer()
+{
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+
+	// 씬 안의 플레이어 찾기
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetName() == L"Player")
+		{
+			_player = gameObject;
+			break;
+		}
+	}
+
+	// 아이템 매니저가 리스트로 담고 있는 아이템들과 플레이어 충돌체크
+	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
+	{
+		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
+		{
+			int a = 0;
+		}
+
+		else item++;
+	}
+
 }

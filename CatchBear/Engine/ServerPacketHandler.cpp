@@ -7,8 +7,9 @@
 #include "Player.h"
 #include "Transform.h"
 #include "Timer.h"
-//#include "Session.h"
 #include "ServerSession.h"
+#include "AnimationController.h"
+#include "AnimationTrack.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -197,9 +198,27 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	pos.y = pkt.ypos();
 	pos.z = pkt.zpos();
 
+	Vec3 rot;
+	rot.y = pkt.yrot();
+
 	//MovePkt.set_playerid(pkt.playerid());
 
+	
+
+	switch (pkt.state())
+	{
+	case Protocol::IDLE:
+		_player->Set_CurState(IDLE);
+		break;
+	case Protocol::WALK:
+		_player->Set_CurState(WALK);
+		break;
+	default:
+		break;
+	}
+
 	_player->GetTransform()->SetLocalPosition(pos);
+	_player->GetTransform()->SetLocalRotation(rot);
 
 	return true;
 }

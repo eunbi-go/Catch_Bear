@@ -74,13 +74,16 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
 		pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_curState = WALK;		
+		//_player->Set_CurState(WALK); 
 
 		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
+		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);
 		pkt.set_movedir(0);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -90,21 +93,32 @@ void Player::KeyCheck()
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_player->Set_CurState(WALK);
 
 		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
+		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);		
 		pkt.set_movedir(1);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 	}
-
-	else _curState = IDLE;
-
+	else
+	{
+		//_player->Set_CurState(IDLE);
+		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
+		pkt.set_zpos(pos.z);
+		pkt.set_yrot(rot.y);
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::IDLE);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+	}
 	// 회전
 	float delta = 0.f;
 	if (INPUT->GetButton(KEY_TYPE::RIGHT))
@@ -112,10 +126,18 @@ void Player::KeyCheck()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
-		GetTransform()->SetLocalRotation(rot);
+		//GetTransform()->SetLocalRotation(rot);
 		
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		if (_player->Get_CurState() != WALK)	_player->Set_CurState(IDLE);
+
+		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
+		pkt.set_zpos(pos.z);
+		pkt.set_yrot(rot.y);
+		pkt.set_playerid(mysession->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -123,15 +145,23 @@ void Player::KeyCheck()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
-		GetTransform()->SetLocalRotation(rot);
+		//GetTransform()->SetLocalRotation(rot);
 
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		if (_player->Get_CurState() != WALK)	_player->Set_CurState(IDLE);
+
+		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
+		pkt.set_zpos(pos.z);
+		pkt.set_yrot(rot.y);
+		pkt.set_playerid(mysession->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
-		_curState = JUMP;
+		_player->Set_CurState(JUMP);
 	}
 	
 	//GetTransform()->SetLocalPosition(pos);
@@ -140,40 +170,54 @@ void Player::KeyCheck()
 
 void Player::StateCheck()
 {
-	if (_curState != _preState)
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	if (mysession == NULL)
+		return;
+
+	for (auto& gameObject : gameObjects)
 	{
-		switch (_curState)
+		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
-		case Player::IDLE:
-			GetAnimationController()->SetTrackAnimationSet(0, 0);
+			_player = gameObject;
 			break;
-		case Player::WALK:
-			GetAnimationController()->SetTrackAnimationSet(0, 1);
+		}
+	}
+	if (_player->Get_CurState() != _player->Get_PreState())
+	{
+		switch (_player->Get_CurState())
+		{
+		case IDLE:
+			_player->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			break;
-		case Player::DASH:
-			GetAnimationController()->SetTrackAnimationSet(0, 3);
+		case WALK:
+			_player->GetAnimationController()->SetTrackAnimationSet(0, 1);
 			break;
-		case Player::JUMP:
-			GetAnimationController()->SetTrackAnimationSet(0, 2);
+		case DASH:
+			_player->GetAnimationController()->SetTrackAnimationSet(0, 3);
 			break;
-		case Player::ATTACK:
-			GetAnimationController()->SetTrackAnimationSet(0, 4);
+		case JUMP:
+			_player->GetAnimationController()->SetTrackAnimationSet(0, 2);
 			break;
-		case Player::END:
+		case ATTACK:
+			_player->GetAnimationController()->SetTrackAnimationSet(0, 4);
+			break;
+		case END:
 			break;
 		default:
 			break;
 		}
 
-		_preState = _curState;
+		_player->Set_PreState(_player->Get_CurState());
 	}
 }
 
 void Player::AnimationCheck()
 {
-	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
+	if (_player->Get_CurState() == DASH || _player->Get_CurState() == JUMP || _player->Get_CurState() == ATTACK)
 	{
 		if (GetAnimationController()->IsAnimationFinish(0))
-			_curState = IDLE;
+			_player->Set_CurState(IDLE);
 	}
 }

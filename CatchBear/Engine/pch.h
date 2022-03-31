@@ -25,4 +25,11 @@
 
 using GameSessionRef = shared_ptr<class GameSession>;
 using PlayerRef = shared_ptr<class Player>;
+
+// 임시로 여기 선언, 팀원들과 상의후 다른곳으로 옮길거
+enum STATE
+{
+	IDLE, WALK, DASH, JUMP, ATTACK, END
+};
+
 #endif //PCH_H

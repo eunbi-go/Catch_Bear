@@ -1375,8 +1375,10 @@ class C_MOVE final :
     kXPosFieldNumber = 3,
     kYPosFieldNumber = 4,
     kZPosFieldNumber = 5,
-    kMoveDirFieldNumber = 6,
-    kSuccessFieldNumber = 7,
+    kMoveDirFieldNumber = 7,
+    kYRotFieldNumber = 6,
+    kSuccessFieldNumber = 8,
+    kStateFieldNumber = 9,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -1423,7 +1425,7 @@ class C_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // uint64 moveDir = 6;
+  // uint64 moveDir = 7;
   void clear_movedir();
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
   void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
@@ -1432,13 +1434,31 @@ class C_MOVE final :
   void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // bool success = 7;
+  // float YRot = 6;
+  void clear_yrot();
+  float yrot() const;
+  void set_yrot(float value);
+  private:
+  float _internal_yrot() const;
+  void _internal_set_yrot(float value);
+  public:
+
+  // bool success = 8;
   void clear_success();
   bool success() const;
   void set_success(bool value);
   private:
   bool _internal_success() const;
   void _internal_set_success(bool value);
+  public:
+
+  // .Protocol.STATE State = 9;
+  void clear_state();
+  ::Protocol::STATE state() const;
+  void set_state(::Protocol::STATE value);
+  private:
+  ::Protocol::STATE _internal_state() const;
+  void _internal_set_state(::Protocol::STATE value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.C_MOVE)
@@ -1454,7 +1474,9 @@ class C_MOVE final :
   float ypos_;
   float zpos_;
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
+  float yrot_;
   bool success_;
+  int state_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1573,7 +1595,9 @@ class S_MOVE final :
     kXPosFieldNumber = 3,
     kYPosFieldNumber = 4,
     kZPosFieldNumber = 5,
-    kMoveDirFieldNumber = 6,
+    kMoveDirFieldNumber = 7,
+    kYRotFieldNumber = 6,
+    kStateFieldNumber = 8,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -1620,13 +1644,31 @@ class S_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // uint64 moveDir = 6;
+  // uint64 moveDir = 7;
   void clear_movedir();
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
   void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
   private:
   ::PROTOBUF_NAMESPACE_ID::uint64 _internal_movedir() const;
   void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // float YRot = 6;
+  void clear_yrot();
+  float yrot() const;
+  void set_yrot(float value);
+  private:
+  float _internal_yrot() const;
+  void _internal_set_yrot(float value);
+  public:
+
+  // .Protocol.STATE State = 8;
+  void clear_state();
+  ::Protocol::STATE state() const;
+  void set_state(::Protocol::STATE value);
+  private:
+  ::Protocol::STATE _internal_state() const;
+  void _internal_set_state(::Protocol::STATE value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.S_MOVE)
@@ -1642,6 +1684,8 @@ class S_MOVE final :
   float ypos_;
   float zpos_;
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
+  float yrot_;
+  int state_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2183,7 +2227,27 @@ inline void C_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.ZPos)
 }
 
-// uint64 moveDir = 6;
+// float YRot = 6;
+inline void C_MOVE::clear_yrot() {
+  yrot_ = 0;
+}
+inline float C_MOVE::_internal_yrot() const {
+  return yrot_;
+}
+inline float C_MOVE::yrot() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.YRot)
+  return _internal_yrot();
+}
+inline void C_MOVE::_internal_set_yrot(float value) {
+  
+  yrot_ = value;
+}
+inline void C_MOVE::set_yrot(float value) {
+  _internal_set_yrot(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.YRot)
+}
+
+// uint64 moveDir = 7;
 inline void C_MOVE::clear_movedir() {
   movedir_ = uint64_t{0u};
 }
@@ -2203,7 +2267,7 @@ inline void C_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.moveDir)
 }
 
-// bool success = 7;
+// bool success = 8;
 inline void C_MOVE::clear_success() {
   success_ = false;
 }
@@ -2221,6 +2285,26 @@ inline void C_MOVE::_internal_set_success(bool value) {
 inline void C_MOVE::set_success(bool value) {
   _internal_set_success(value);
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.success)
+}
+
+// .Protocol.STATE State = 9;
+inline void C_MOVE::clear_state() {
+  state_ = 0;
+}
+inline ::Protocol::STATE C_MOVE::_internal_state() const {
+  return static_cast< ::Protocol::STATE >(state_);
+}
+inline ::Protocol::STATE C_MOVE::state() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.State)
+  return _internal_state();
+}
+inline void C_MOVE::_internal_set_state(::Protocol::STATE value) {
+  
+  state_ = value;
+}
+inline void C_MOVE::set_state(::Protocol::STATE value) {
+  _internal_set_state(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.State)
 }
 
 // -------------------------------------------------------------------
@@ -2327,7 +2411,27 @@ inline void S_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.ZPos)
 }
 
-// uint64 moveDir = 6;
+// float YRot = 6;
+inline void S_MOVE::clear_yrot() {
+  yrot_ = 0;
+}
+inline float S_MOVE::_internal_yrot() const {
+  return yrot_;
+}
+inline float S_MOVE::yrot() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.YRot)
+  return _internal_yrot();
+}
+inline void S_MOVE::_internal_set_yrot(float value) {
+  
+  yrot_ = value;
+}
+inline void S_MOVE::set_yrot(float value) {
+  _internal_set_yrot(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.YRot)
+}
+
+// uint64 moveDir = 7;
 inline void S_MOVE::clear_movedir() {
   movedir_ = uint64_t{0u};
 }
@@ -2345,6 +2449,26 @@ inline void S_MOVE::_internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value)
 inline void S_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_movedir(value);
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.moveDir)
+}
+
+// .Protocol.STATE State = 8;
+inline void S_MOVE::clear_state() {
+  state_ = 0;
+}
+inline ::Protocol::STATE S_MOVE::_internal_state() const {
+  return static_cast< ::Protocol::STATE >(state_);
+}
+inline ::Protocol::STATE S_MOVE::state() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.State)
+  return _internal_state();
+}
+inline void S_MOVE::_internal_set_state(::Protocol::STATE value) {
+  
+  state_ = value;
+}
+inline void S_MOVE::set_state(::Protocol::STATE value) {
+  _internal_set_state(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.State)
 }
 
 #ifdef __GNUC__

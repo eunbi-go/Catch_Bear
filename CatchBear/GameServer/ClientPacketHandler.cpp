@@ -211,6 +211,9 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	movePkt.set_xpos(pkt.xpos());
 	movePkt.set_ypos(pkt.ypos());
 	movePkt.set_zpos(pkt.zpos());
+	movePkt.set_yrot(pkt.yrot());
+	movePkt.set_state(pkt.state());
+
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 	
 	GInGame.Broadcast(sendBuffer);

@@ -59,8 +59,10 @@ message C_MOVE
 	float XPos = 3;
 	float YPos = 4;
 	float ZPos = 5;
-	uint64 moveDir = 6;
-	bool success = 7;
+	float YRot = 6;
+	uint64 moveDir = 7;
+	bool success = 8;
+	STATE State = 9;
 }
 
 message S_MOVE
@@ -70,5 +72,7 @@ message S_MOVE
 	float XPos = 3;
 	float YPos = 4;
 	float ZPos = 5;
-	uint64 moveDir = 6;
+	float YRot = 6;
+	uint64 moveDir = 7;
+	STATE State = 8;
 }

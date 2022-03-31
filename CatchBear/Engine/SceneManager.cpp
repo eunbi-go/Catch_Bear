@@ -258,7 +258,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 
 		// 0번 플레이어
@@ -285,7 +284,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			Object->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10));
 			Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
 			Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-			//Object->AddComponent(make_shared<Player>());
+			Object->AddComponent(make_shared<Player>());
 			Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			Object->SetStatic(false);
 			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠

@@ -23,3 +23,12 @@ enum MoveDir
 	LEFT = 2;
 	RIGHT = 3;
 }
+
+enum STATE
+{
+	IDLE = 0;
+	WALK = 1;
+	DASH = 2;
+	JUMP = 3;
+	ATTACK = 4;
+}

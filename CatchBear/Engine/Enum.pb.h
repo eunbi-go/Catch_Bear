@@ -136,6 +136,34 @@ inline bool MoveDir_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<MoveDir>(
     MoveDir_descriptor(), name, value);
 }
+enum STATE : int {
+  IDLE = 0,
+  WALK = 1,
+  DASH = 2,
+  JUMP = 3,
+  ATTACK = 4,
+  STATE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  STATE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool STATE_IsValid(int value);
+constexpr STATE STATE_MIN = IDLE;
+constexpr STATE STATE_MAX = ATTACK;
+constexpr int STATE_ARRAYSIZE = STATE_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* STATE_descriptor();
+template<typename T>
+inline const std::string& STATE_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, STATE>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function STATE_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    STATE_descriptor(), enum_t_value);
+}
+inline bool STATE_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, STATE* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<STATE>(
+    STATE_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -172,6 +200,11 @@ template <> struct is_proto_enum< ::Protocol::MoveDir> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::MoveDir>() {
   return ::Protocol::MoveDir_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::STATE> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::STATE>() {
+  return ::Protocol::STATE_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

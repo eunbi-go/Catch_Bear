@@ -109,8 +109,14 @@ public:
 	virtual ~PacketSession();
 
 	PacketSessionRef	GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
+	
+	void SetPlayerID(uint64 _ID) { playerID = _ID; }
+	uint64 GetPlayerID() { return playerID; }
 
 protected:
 	virtual int32		OnRecv(BYTE* buffer, int32 len) sealed;
 	virtual void		OnRecvPacket(BYTE* buffer, int32 len) abstract;
+
+public:
+	uint64 playerID = 0;
 };

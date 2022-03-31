@@ -76,8 +76,9 @@ void Player::KeyCheck()
 
 		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
-		pkt.set_playerid(_player->GetPlayerID());
+		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(0);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -91,8 +92,9 @@ void Player::KeyCheck()
 
 		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
-		pkt.set_playerid(_player->GetPlayerID());
+		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(1);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);

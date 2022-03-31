@@ -37,12 +37,12 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		playerRef->ownerSession = gameSession;
 		GInGame.Enter(playerRef);
 		cout << "플레이어ID " << playerRef->playerId << " 인게임 접속완료!" << endl;
-		loginPkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
+		//loginPkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
 		gameSession->_player = playerRef;
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(loginPkt);
-		session->Send(sendBuffer);
-		//GInGame.Broadcast(sendBuffer);
+		//session->Send(sendBuffer);
+		GInGame.Broadcast(sendBuffer);
 		//GInGame.mySend(sendBuffer);
 	}
 
@@ -209,6 +209,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 
 	movePkt.set_playerid(pkt.playerid());
 	movePkt.set_xpos(pkt.xpos());
+	movePkt.set_ypos(pkt.ypos());
 	movePkt.set_zpos(pkt.zpos());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 	

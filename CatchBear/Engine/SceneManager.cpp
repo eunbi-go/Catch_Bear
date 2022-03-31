@@ -68,27 +68,45 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 	return findIt->second;
 }
 
+
+
 void SceneManager::MakePlayer(uint64 _playerID)
 {
-	//shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-
-	//vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
-	//for (auto& gameObject : gameObjects)
 	//{
-	//	gameObject->SetName(L"Player");
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-	//	gameObject->AddComponent(make_shared<Player>());
-	//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-	//	gameObject->SetStatic(false);
-	//	gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-	//	scene->AddGameObject(gameObject);
+	//	shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+	//	vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 
-	//	scene->AddPlayers(_playerID, gameObject);
+	//	for (auto& gameObject : gameObjects)
+	//	{
+	//		gameObject->SetName(L"Player");
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f + 10.f * 0, -47.f, -1.120835f));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+	//		gameObject->AddComponent(make_shared<Player>());
+	//		gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+	//		gameObject->SetStatic(false);
+	//		gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+	//		gameObject->SetPlayerID(0);
+	//		scene->AddGameObject(gameObject);
+	//		scene->AddPlayers(0, gameObject);
+	//	}
+
+	//	gameObjects = CharacData->Instantiate();
+
+	//	for (auto& Object : gameObjects)
+	//	{
+	//		Object->SetName(L"Player");
+	//		Object->GetTransform()->SetLocalPosition(Vec3(5.324442f + 10.f * 1, -47.f, 10));
+	//		Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+	//		Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+	//		Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
+	//		Object->SetStatic(false);
+	//		Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+	//		Object->SetPlayerID(1);
+	//		scene->AddGameObject(Object);
+	//		scene->AddPlayers(1, Object);
+	//	}
 	//}
-
 }
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
@@ -240,8 +258,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-		
-		for (int i = 0; i < 2; ++i)
+
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+
+		// 0번 플레이어
+		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, -1.120835f));
@@ -251,12 +272,14 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->SetStatic(false);
 			gameObject->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			gameObject->SetPlayerID(0);
 			scene->AddGameObject(gameObject);
+			scene->AddPlayers(0, gameObject);
 		}
 
 		gameObjects = CharacData->Instantiate();
-
-		for (auto&Object : gameObjects)
+		// 1번 플레이어
+		for (auto& Object : gameObjects)
 		{
 			Object->SetName(L"Player");
 			Object->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10));
@@ -265,7 +288,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			Object->SetStatic(false);
 			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+			Object->SetPlayerID(1);
 			scene->AddGameObject(Object);
+			scene->AddPlayers(1, Object);
 		}
 	}
 

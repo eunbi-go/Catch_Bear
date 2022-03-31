@@ -41,6 +41,8 @@ void Scene::LateUpdate()
 {
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
+		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == 1)
+			int a = 10;
 		gameObject->LateUpdate();
 	}
 }

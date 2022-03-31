@@ -7,6 +7,8 @@
 #include "Player.h"
 #include "Transform.h"
 #include "Timer.h"
+//#include "Session.h"
+#include "ServerSession.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -25,7 +27,11 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
-	SceneManager::GetInstance()->MakePlayer(pkt.playerid());
+	//SceneManager::GetInstance()->MakePlayer(pkt.playerid());
+
+	// 세션의 playerID를 저장해준다
+	mysession->SetPlayerID(pkt.playerid());
+	uint64 pid = mysession->GetPlayerID();
 
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
@@ -34,42 +40,42 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 	_player->SetPlayerID(pkt.playerid());
 
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == pkt.playerid())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
+	//for (auto& gameObject : gameObjects)
+	//{
+	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == pkt.playerid())
+	//	{
+	//		_player = gameObject;
+	//		break;
+	//	}
+	//}
 
-	uint64 enterPlayernum = pkt.enterplayer();
+	//uint64 enterPlayernum = pkt.enterplayer();
 
-	if (enterPlayerIndex != enterPlayernum)
-	{
-		if (enterPlayernum == 1)	// 2명 접속
-		{
-			if (_player->GetPlayerID() == 0)
-				SceneManager::GetInstance()->MakePlayer(1);		// 0번 플레이어일때 1번 플레이어 만들기
-			if (_player->GetPlayerID() == 1)
-				SceneManager::GetInstance()->MakePlayer(0);		// 1번 플레이어일때 0번 플레이어 만들기
-		}
-		if (enterPlayernum == 2)	// 3명 접속
-		{
-			if (_player->GetPlayerID() == 0)
-				SceneManager::GetInstance()->MakePlayer(2);		// 0번 플레이어일때 2번 플레이어 만들기
-			if (_player->GetPlayerID() == 1)
-				SceneManager::GetInstance()->MakePlayer(2);		// 1번 플레이어일때 2번 플레이어 만들기
-			if (_player->GetPlayerID() == 2) {
-				SceneManager::GetInstance()->MakePlayer(0);		// 2번 플레이어일때 0,1번 플레이어 만들기
-				SceneManager::GetInstance()->MakePlayer(1);
-			}
-		}
-		enterPlayerIndex = enterPlayernum;
-	}
+	//if (enterPlayerIndex != enterPlayernum)
+	//{
+	//	if (enterPlayernum == 1)	// 2명 접속
+	//	{
+	//		if (_player->GetPlayerID() == 0)
+	//			SceneManager::GetInstance()->MakePlayer(1);		// 0번 플레이어일때 1번 플레이어 만들기
+	//		if (_player->GetPlayerID() == 1)
+	//			SceneManager::GetInstance()->MakePlayer(0);		// 1번 플레이어일때 0번 플레이어 만들기
+	//	}
+	//	if (enterPlayernum == 2)	// 3명 접속
+	//	{
+	//		if (_player->GetPlayerID() == 0)
+	//			SceneManager::GetInstance()->MakePlayer(2);		// 0번 플레이어일때 2번 플레이어 만들기
+	//		if (_player->GetPlayerID() == 1)
+	//			SceneManager::GetInstance()->MakePlayer(2);		// 1번 플레이어일때 2번 플레이어 만들기
+	//		if (_player->GetPlayerID() == 2) {
+	//			SceneManager::GetInstance()->MakePlayer(0);		// 2번 플레이어일때 0,1번 플레이어 만들기
+	//			SceneManager::GetInstance()->MakePlayer(1);
+	//		}
+	//	}
+	//	enterPlayerIndex = enterPlayernum;
+	//}
 
 	Protocol::C_ENTER_GAME enterGamePkt;
-	enterGamePkt.set_playerid(_player->GetPlayerID());
+	enterGamePkt.set_playerid(mysession->GetPlayerID());
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
 	session->Send(sendBuffer);
 
@@ -187,6 +193,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 
 	Vec3 pos;
 	pos.x = pkt.xpos();
+	pos.y = pkt.ypos();
 	pos.z = pkt.zpos();
 
 	//MovePkt.set_playerid(pkt.playerid());

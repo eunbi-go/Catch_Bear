@@ -39,23 +39,25 @@ void Player::KeyCheck()
 
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
-		::PostQuitMessage(0);
-
-	Vec3 pos = GetTransform()->GetLocalPosition();
-	Vec3 rot = GetTransform()->GetLocalRotation();
+		::PostQuitMessage(0);	
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	//_player = GetGameObject();
+	if (mysession == NULL)
+		return;
+
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player")
+		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;
 		}
 	}
+	Vec3 pos = _player->GetTransform()->GetLocalPosition();
+	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
 	for (auto& gameObject : gameObjects)
 	{
@@ -71,7 +73,7 @@ void Player::KeyCheck()
 	// 이동
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
-		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
+		pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		_curState = WALK;
 
 		// 서버로 MOVE패킷 전송
@@ -87,7 +89,7 @@ void Player::KeyCheck()
 
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
-		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
+		pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		_curState = WALK;
 
 		// 서버로 MOVE패킷 전송
@@ -132,10 +134,8 @@ void Player::KeyCheck()
 		_curState = JUMP;
 	}
 	
-	
-
 	//GetTransform()->SetLocalPosition(pos);
-	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
+	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 }
 
 void Player::StateCheck()

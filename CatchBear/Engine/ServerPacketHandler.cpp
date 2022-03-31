@@ -189,6 +189,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
 	_player = scene->GetPlayer(pkt.playerid());
 
 	Vec3 pos;

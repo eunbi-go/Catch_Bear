@@ -9,6 +9,7 @@
 #include "AnimationTrack.h"
 #include "AnimationSets.h"
 #include "AnimationSet.h"
+#include "Player.h"
 
 CharacterData::CharacterData() : MeshData()
 {
@@ -536,6 +537,7 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 	{
 		shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
 		gameObject->AddComponent(make_shared<Transform>());
+		//gameObject->AddComponent(make_shared<Player>());
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);

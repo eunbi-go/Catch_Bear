@@ -38,6 +38,8 @@ void ServerSession::OnConnected()
 void ServerSession::OnRecvPacket(BYTE* buffer, int32 len)
 {
 	mysession = GetPacketSessionRef();
+
+
 	PacketSessionRef session = GetPacketSessionRef();
 	PacketHeader* header = reinterpret_cast<PacketHeader*>(buffer);
 

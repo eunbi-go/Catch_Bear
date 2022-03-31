@@ -366,6 +366,8 @@ namespace Matrix4x4
 
 struct TransformParams
 {
+	// 나중에 셰이더 작업을 하면 WVP를 통으로 보내는게 아니라 중간 단계가 필요할 수 있음
+	// 비효율적이라 하더라도 TransformParams를 만들어줄때 사용할것같은 모든 애들을 한번에 다 넘겨줌
 	Matrix	matWorld;
 	Matrix	matView;
 	Matrix	matProjection;

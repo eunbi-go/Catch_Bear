@@ -26,6 +26,8 @@ public:
 	void LateUpdate();
 	void FinalUpdate();
 
+	void UpdateBoundingBox();
+
 public:
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
 	vector<shared_ptr<MonoBehaviour>>& GetScripts() { return _scripts; }
@@ -60,6 +62,7 @@ public:
 	bool IsStatic() { return _static; }
 	void SetPlayerID(uint64 _id) { _playerID = _id; }
 	uint64 GetPlayerID() { return _playerID; }
+
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -68,10 +71,12 @@ private:
 
 	bool	_checkFrustum = true;
 	uint8	_layerIndex = 0;
-	bool	_static = true;
+	bool	_static = false;
 	uint64  _playerID = 0;
 
 public:
 	char* _pFrameName;
+	BoundingOrientedBox _boundingBox;
+	XMFLOAT3	_boundingExtents;
 };
 

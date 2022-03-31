@@ -5,6 +5,7 @@
 // 보물 - 1분에 하나 생성
 class Item;
 class GameObject;
+class MeshData;
 
 class ItemManager
 {
@@ -39,11 +40,16 @@ private:
 
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
+	shared_ptr<MeshData> _commonItemMesh;
+	shared_ptr<MeshData> _uniqueItemMesh;
+
 	array<Vec3, 10>		_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이
 	array<Vec3, 10>		_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이
 	array<Vec3, 5>		_treasurePosArray;	// 보물 좌표 담고있는 어레이
 
-	int		index = 0;
+	int			_commonIndex = 0;
+	int			_uniqueIndex = 0;
+	int			_treasureIndex = 0;
 
 	// 시간은 테스트용
 	float		_commonItemTimer = 0.f;
@@ -51,7 +57,7 @@ private:
 	float		_treasureTimer = 0.f;
 
 	float		_commonItemTime = 5.f;
-	float		_uniqueItemTime = 7.f;
+	float		_uniqueItemTime = 10.f;
 	float		_treasureTime = 10.f;
 };
 

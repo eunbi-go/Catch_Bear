@@ -119,6 +119,11 @@ bool AnimationController::IsAnimationFinish(int nTrack)
 	return pAnimationSet->IsAnimationFinish();
 }
 
+void AnimationController::SetAnimationPosition(int nTrack, float fPosition)
+{
+	_animSets->_animationSet[_animTracks[nTrack]._nAnimationSet]->SetPosition(fPosition);
+}
+
 
 void AnimationController::FinalUpdate()
 {

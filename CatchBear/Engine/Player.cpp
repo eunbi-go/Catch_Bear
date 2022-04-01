@@ -12,6 +12,7 @@
 #include "AnimationTrack.h"
 #include "PlayerState.h"
 #include "IdleState.h"
+#include "MoveState.h"
 
 Player::Player()
 {
@@ -24,9 +25,17 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
-
 	KeyCheck();
 	
+	PlayerState* state = _state->Update(*shared_from_this());
+
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
+
 	//StateCheck();
 	//AnimationCheck();
 	
@@ -44,6 +53,9 @@ void Player::KeyCheck()
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
 
+
+	//////////////////////////////////////////////////////////////////////////
+	/// State Check
 	PlayerState* state = _state->KeyCheck(*shared_from_this());
 
 	if (state != NULL)
@@ -52,6 +64,9 @@ void Player::KeyCheck()
 		_state = state;
 		_state->Enter(*shared_from_this());
 	}
+	//////////////////////////////////////////////////////////////////////////
+
+
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 rot = GetTransform()->GetLocalRotation();
@@ -76,16 +91,16 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_curState = WALK;
 	}
 
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_curState = WALK;
 	}
 
-	else _curState = IDLE;
+	//else _curState = IDLE;
 
 	// 회전
 	float delta = 0.f;
@@ -97,7 +112,7 @@ void Player::KeyCheck()
 		GetTransform()->SetLocalRotation(rot);
 		
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		//if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -113,7 +128,7 @@ void Player::KeyCheck()
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
-		_curState = JUMP;
+		//_curState = JUMP;
 	}
 
 

@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "AnimationController.h"
 #include "JumpState.h"
+#include "AttackState.h"
 
 PlayerState* MoveState::KeyCheck(Player& player)
 {
@@ -14,6 +15,7 @@ PlayerState* MoveState::KeyCheck(Player& player)
 		return NULL;
 	}
 	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
+	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
 	else return new IdleState;
 }
 

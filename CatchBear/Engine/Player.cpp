@@ -13,6 +13,7 @@
 #include "PlayerState.h"
 #include "IdleState.h"
 #include "MoveState.h"
+#include "AttackState.h"
 
 Player::Player()
 {

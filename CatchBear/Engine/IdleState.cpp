@@ -7,12 +7,14 @@
 #include "AnimationController.h"
 #include "MoveState.h"
 #include "JumpState.h"
+#include "AttackState.h"
 
 PlayerState* IdleState::KeyCheck(Player& player)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 		return new MoveState();
 	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
+	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
 	return NULL;
 }
 

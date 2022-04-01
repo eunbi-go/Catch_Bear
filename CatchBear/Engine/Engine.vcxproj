@@ -187,6 +187,7 @@
     <ClInclude Include="AnimationSet.h" />
     <ClInclude Include="AnimationSets.h" />
     <ClInclude Include="AnimationTrack.h" />
+    <ClInclude Include="AttackState.h" />
     <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraScript.h" />
@@ -246,6 +247,7 @@
     <ClCompile Include="AnimationSet.cpp" />
     <ClCompile Include="AnimationSets.cpp" />
     <ClCompile Include="AnimationTrack.cpp" />
+    <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraScript.cpp" />

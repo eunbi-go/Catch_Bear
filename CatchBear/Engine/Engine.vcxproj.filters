@@ -202,6 +202,7 @@
       <Filter>01. Object\00. Component\02. Player</Filter>
     </ClCompile>
     <ClCompile Include="JumpState.cpp" />
+    <ClCompile Include="AttackState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -373,6 +374,7 @@
       <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
     <ClInclude Include="JumpState.h" />
+    <ClInclude Include="AttackState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

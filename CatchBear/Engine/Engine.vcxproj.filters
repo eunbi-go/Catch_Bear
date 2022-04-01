@@ -177,6 +177,7 @@
     <ClCompile Include="Item.cpp">
       <Filter>01.Object\03.Item</Filter>
     </ClCompile>
+    <ClCompile Include="ItemManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -314,6 +315,7 @@
     <ClInclude Include="Item.h">
       <Filter>01.Object\03.Item</Filter>
     </ClInclude>
+    <ClInclude Include="ItemManager.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SimpleMath.inl">

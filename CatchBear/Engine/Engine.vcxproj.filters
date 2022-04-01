@@ -66,9 +66,6 @@
     <ClCompile Include="InstancingManager.cpp">
       <Filter>02. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="ItemManager.cpp">
-      <Filter>02. Manager</Filter>
-    </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>02. Manager</Filter>
     </ClCompile>
@@ -193,6 +190,9 @@
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="ItemManager.cpp">
+      <Filter>02. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -223,9 +223,6 @@
       <Filter>02. Manager</Filter>
     </ClInclude>
     <ClInclude Include="InstancingManager.h">
-      <Filter>02. Manager</Filter>
-    </ClInclude>
-    <ClInclude Include="ItemManager.h">
       <Filter>02. Manager</Filter>
     </ClInclude>
     <ClInclude Include="SceneManager.h">
@@ -355,6 +352,9 @@
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
     <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemManager.h">
+      <Filter>02. Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

@@ -141,7 +141,9 @@ void ItemManager::CreateTreasure()
 
 void ItemManager::Collision_ItemToPlayer()
 {
-	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+	shared_ptr<Scene> scene = make_shared<Scene>();
+	scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	auto& gameObjects = scene->GetGameObjects();
 
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
@@ -153,15 +155,30 @@ void ItemManager::Collision_ItemToPlayer()
 		}
 	}
 
-	// 아이템 매니저가 리스트로 담고 있는 아이템들과 플레이어 충돌체크
-	for (auto item = _commonItemList.begin(); item != _commonItemList.end(); item++)
+	// common item & player
+	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
 	{
 		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
 		{
-			int a = 0;
+			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+			scene->RemoveGameObject(*item);
+			item = _commonItemList.erase(item);
 		}
 
-		// else item++;
+		else item++;
+	}
+
+	// unique item & player
+	for (auto item = _uniqueItemList.begin(); item != _uniqueItemList.end();)
+	{
+		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
+		{
+			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+			scene->RemoveGameObject(*item);
+			item = _uniqueItemList.erase(item);
+		}
+
+		else item++;
 	}
 
 }

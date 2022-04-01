@@ -255,7 +255,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			Object->SetName(L"Player");
 			Object->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
 			Object->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			Object->GetAnimationController()->SetTrackAnimationSet(0, 1);
+			Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			Object->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			Object->AddComponent(make_shared<Player>());
 			Object->SetStatic(false);

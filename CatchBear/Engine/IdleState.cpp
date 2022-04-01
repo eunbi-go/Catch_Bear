@@ -9,8 +9,9 @@
 #include "JumpState.h"
 #include "AttackState.h"
 #include "DashState.h"
+#include "GameObject.h"
 
-PlayerState* IdleState::KeyCheck(Player& player)
+PlayerState* IdleState::KeyCheck(GameObject& player)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 		return new MoveState;
@@ -20,17 +21,17 @@ PlayerState* IdleState::KeyCheck(Player& player)
 	return NULL;
 }
 
-PlayerState* IdleState::Update(Player& player)
+PlayerState* IdleState::Update(GameObject& player)
 {
 	return NULL;
 }
 
-void IdleState::Enter(Player& player)
+void IdleState::Enter(GameObject& player)
 {
 	player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }
 
-void IdleState::End(Player& player)
+void IdleState::End(GameObject& player)
 {
 	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

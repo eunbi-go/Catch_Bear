@@ -62,7 +62,7 @@ public:
 	bool IsStatic() { return _static; }
 	void SetPlayerID(uint64 _id) { _playerID = _id; }
 	uint64 GetPlayerID() { return _playerID; }
-
+	//PlayerState* GetState() { return _state; }
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -78,5 +78,6 @@ public:
 	char* _pFrameName;
 	BoundingOrientedBox _boundingBox;
 	XMFLOAT3	_boundingExtents;
+	class PlayerState* _state;
 };
 

@@ -3,21 +3,22 @@
 #include "Timer.h"
 #include "Player.h"
 #include "AnimationController.h"
+#include "GameObject.h"
 
-PlayerState* DashState::KeyCheck(Player& player)
+PlayerState* DashState::KeyCheck(GameObject& player)
 {
     return nullptr;
 }
 
-PlayerState* DashState::Update(Player& player)
+PlayerState* DashState::Update(GameObject& player)
 {
     return nullptr;
 }
 
-void DashState::Enter(Player& player)
+void DashState::Enter(GameObject& player)
 {
 }
 
-void DashState::End(Player& player)
+void DashState::End(GameObject& player)
 {
 }

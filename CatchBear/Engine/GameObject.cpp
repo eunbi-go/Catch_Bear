@@ -9,6 +9,11 @@
 #include "Terrain.h"
 #include "BaseCollider.h"
 #include "AnimationController.h"
+#include "PlayerState.h"
+#include "IdleState.h"
+#include "MoveState.h"
+#include "AttackState.h"
+#include "DashState.h"
 
 #include "SceneManager.h"
 #include "Scene.h"

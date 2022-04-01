@@ -21,7 +21,7 @@
 Player::Player()
 {
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
-	_state = new IdleState();
+	_player->_state = new IdleState();
 }
 
 Player::~Player()
@@ -63,15 +63,15 @@ void Player::KeyCheck()
 
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	/// State Check
-	//PlayerState* state = _state->KeyCheck(*shared_from_this());
+	//State Check
+	/*PlayerState* state = _state->KeyCheck(*shared_from_this());
 
-	//if (state != NULL)
-	//{
-	//	delete _state;
-	//	_state = state;
-	//	_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}*/
 	//////////////////////////////////////////////////////////////////////////
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
@@ -91,6 +91,27 @@ void Player::KeyCheck()
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
+
+	_player->_state = new IdleState();
+	PlayerState* state = _player->_state->KeyCheck(*_player);
+
+	if (state != NULL)
+	{
+		delete _player->_state;
+		_player->_state = state;
+		_player->_state->Enter(*_player);
+	}
+
+	state = _player->_state->Update(*_player);
+
+	if (state != NULL)
+	{
+		delete _player->_state;
+		_player->_state = state;
+		_player->_state->Enter(*_player);
+	}
+
+	delete _player->_state;
 
 	for (auto& gameObject : gameObjects)
 	{

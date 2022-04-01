@@ -9,7 +9,6 @@
 #include "AnimationTrack.h"
 #include "AnimationSets.h"
 #include "AnimationSet.h"
-#include "Player.h"
 
 CharacterData::CharacterData() : MeshData()
 {
@@ -22,6 +21,7 @@ CharacterData::~CharacterData()
 void CharacterData::LoadCharacterFromFile(const wstring& path)
 {
 	FILE* pFile;
+	_name = path;
 
 	// wchar_t -> char*
 	char* pStr;
@@ -70,7 +70,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 
 				// Material 생성해서 Reosurces에 추가
-				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
+				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_name/*_staticMeshInfo.material.name*/);
 				shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"PlayerAnimation");
 				
 				material->SetShader(shader);
@@ -408,7 +408,7 @@ void CharacterData::LoadMaterialInfoFromFile(FILE* pFile)
 	int		nMaterials = ReadIntegerFromFile(pFile);
 
 	// !나중에 파일에 추가해서 읽어오기!
-	_staticMeshInfo.material.name = L"Player";
+	_staticMeshInfo.material.name = _name;
 
 	ReadStringFromFileForCharac(pFile, pStrTocken);
 
@@ -529,6 +529,30 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 	}
 }
 
+void CharacterData::CreateMaterials()
+{
+	shared_ptr<Material>	material = make_shared<Material>();
+	wstring		key = _staticMeshInfo.material.name;
+
+	material->SetName(key);
+
+	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
+
+	material->SetInt(0, 0);
+
+	if (key != L"Material")
+	{
+		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
+		wstring		fileName = fs::path(diffuseName).filename();
+		wstring		key = fileName;
+
+		shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
+		if (diffuseTex)	material->SetTexture(0, diffuseTex);
+	}
+
+	GET_SINGLE(Resources)->Add<Material>(key, material);
+}
+
 vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 {
 	vector<shared_ptr<GameObject>>	v;
@@ -537,7 +561,6 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 	{
 		shared_ptr<GameObject>	gameObject = make_shared<GameObject>();
 		gameObject->AddComponent(make_shared<Transform>());
-		//gameObject->AddComponent(make_shared<Player>());
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);

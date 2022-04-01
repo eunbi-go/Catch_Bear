@@ -50,7 +50,8 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						fclose(pFile);
 
 						// Resources에 텍스처, 재질 추가
-						CreateTextures();
+						if (strcmp(ws2s(path).c_str(), "Diamond.bin"))
+							CreateTextures();
 						CreateMaterials();
 
 
@@ -119,11 +120,6 @@ GameObject* MeshData::LoadFrameHierarchyFromFile(GameObject* parent, FILE* pFile
 			nReads = (UINT)::fread(&xmf3Scale, sizeof(XMFLOAT3), 1, pFile);
 			nReads = (UINT)::fread(&xmf3Rotate, sizeof(XMFLOAT3), 1, pFile);
 			nReads = (UINT)::fread(&xmf3Trans, sizeof(XMFLOAT3), 1, pFile);
-
-			//pGameObj->GetTransform()->SetLocalToParent(xmf4x4ToParent);
-			//pGameObj->GetTransform()->SetLocalScale(xmf3Scale);
-			//pGameObj->GetTransform()->SetLocalRotation(xmf3Rotate);
-			//pGameObj->GetTransform()->SetLocalPosition(xmf3Trans);
 		}
 
 		else if (!strcmp(pStrTocken, "<Mesh>:"))
@@ -171,7 +167,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
-			if (nUVs)
+			if (nAllCnt)
 			{
 				Vec2* uv = new Vec2[nUVs];
 
@@ -187,7 +183,7 @@ void MeshData::LoadMeshInfoFromFile(FILE* pFile)
 			nReads = (UINT)fread(&nNormals, sizeof(int), 1, pFile);
 			nReads = (UINT)fread(&nAllCnt, sizeof(int), 1, pFile);
 
-			if (nNormals)
+			if (nAllCnt)
 			{
 				Vec3* normal = new Vec3[nNormals];
 
@@ -281,6 +277,12 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"paper_diffuse4";
 			else if (!strcmp(pStrTocken, "Nature_Mat_01"))
 				_staticMeshInfo.material.diffuseTexName = L"SimpleNaturePack_Texture_01";
+			else if (!strncmp(pStrTocken, "rpgpp_st_mat_a.041", 6))
+				_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
+			else if (!strcmp(pStrTocken, "Brown_Wood"))
+				_staticMeshInfo.material.diffuseTexName = L"Colorsheet Wood Brown";
+			else
+				int k = 0;
 		}
 
 		ReadStringFromFile(pFile, pStrTocken);
@@ -352,10 +354,14 @@ void MeshData::CreateMaterials()
 	wstring		key = _staticMeshInfo.material.name;
 
 	material->SetName(key);
-	material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
+	if (key == L"Material")
+		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Treasure"));
+	else
+		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 
 	material->SetInt(0, 1);
 
+	if (key != L"Material")
 	{
 		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
 		wstring		fileName = fs::path(diffuseName).filename();
@@ -381,6 +387,7 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 
 		v.push_back(gameObject);
 	}

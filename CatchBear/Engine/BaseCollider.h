@@ -6,6 +6,7 @@ enum class ColliderType
 	Sphere,
 };
 
+// 모든 Collider의 상위 클래스
 class BaseCollider : public Component
 {
 public:

@@ -21,7 +21,8 @@ enum class KEY_TYPE
 	RBUTTON = VK_RBUTTON,
 
 	ESC = VK_ESCAPE,
-	SPACE = VK_SPACE
+	SPACE = VK_SPACE,
+	CTRL = VK_CONTROL
 };
 
 enum class KEY_STATE

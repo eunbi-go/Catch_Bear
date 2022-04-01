@@ -10,6 +10,9 @@
 #include "BaseCollider.h"
 #include "AnimationController.h"
 
+#include "SceneManager.h"
+#include "Scene.h"
+
 GameObject::GameObject() : Object(OBJECT_TYPE::GAMEOBJECT)
 {
 }
@@ -59,6 +62,8 @@ void GameObject::Update()
 	{
 		script->Update();
 	}
+
+	UpdateBoundingBox();
 }
 
 void GameObject::LateUpdate()
@@ -82,7 +87,24 @@ void GameObject::FinalUpdate()
 		if (component)
 			component->FinalUpdate();
 	}
-	//StateCheck();
+
+}
+
+void GameObject::UpdateBoundingBox()
+{
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		//gameObject->_boundingBox.Transform(
+		//	_boundingBox, XMLoadFloat4x4(&(XMFLOAT4X4)(gameObject->GetTransform()->GetWorldMatrix())));
+		//XMStoreFloat4(&gameObject->_boundingBox.Orientation, XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
+	
+		gameObject->_boundingBox.Center = gameObject->GetTransform()->GetLocalPosition();
+		gameObject->_boundingBox.Extents = _boundingExtents;
+		XMStoreFloat4(&gameObject->_boundingBox.Orientation, 
+			XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
+	}
 }
 
 shared_ptr<Component> GameObject::GetFixedComponent(COMPONENT_TYPE type)
@@ -99,17 +121,17 @@ shared_ptr<MonoBehaviour>& GameObject::GetScript(int index)
 
 float GameObject::GetX()
 {
-	return GetTransform()->GetLocalPosition().x;
+	return GetTransform()->GetWorldPosition().x;
 }
 
 float GameObject::GetY()
 {
-	return GetTransform()->GetLocalPosition().y;
+	return GetTransform()->GetWorldPosition().y;
 }
 
 float GameObject::GetZ()
 {
-	return GetTransform()->GetLocalPosition().z;
+	return GetTransform()->GetWorldPosition().z;
 }
 
 shared_ptr<Transform> GameObject::GetTransform()
@@ -180,34 +202,3 @@ void GameObject::AddComponent(shared_ptr<Component> component)
 		_scripts.push_back(dynamic_pointer_cast<MonoBehaviour>(component));	// 사용자가 커스텀한 컴포넌트
 	}
 }
-
-//void GameObject::StateCheck()
-//{
-//	if (_curState != _preState)
-//	{
-//		switch (_curState)
-//		{
-//		case IDLE:
-//			GetAnimationController()->SetTrackAnimationSet(0, 0);
-//			break;
-//		case WALK:
-//			GetAnimationController()->SetTrackAnimationSet(0, 1);
-//			break;
-//		case DASH:
-//			GetAnimationController()->SetTrackAnimationSet(0, 3);
-//			break;
-//		case JUMP:
-//			GetAnimationController()->SetTrackAnimationSet(0, 2);
-//			break;
-//		case ATTACK:
-//			GetAnimationController()->SetTrackAnimationSet(0, 4);
-//			break;
-//		case END:
-//			break;
-//		default:
-//			break;
-//		}
-//		
-//		_preState = _curState;
-//	}
-//}

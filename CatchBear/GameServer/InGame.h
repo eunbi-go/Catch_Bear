@@ -10,8 +10,6 @@ public:
 	bool IsAlreadyEnterPlayer(uint64 player);
 	uint64 GetEnterPlayerNum();
 
-	void mySend(uint64 playerID, SendBufferRef sendbuf);
-
 private:
 	USE_LOCK;
 	map<uint64, PlayerRef> _players;

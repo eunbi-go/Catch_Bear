@@ -16,11 +16,6 @@ class AnimationController;
 // enable_shared_from_this: this포인터를 스마트 포인터처럼 사용할 때 사용
 class GameObject : public Object, public enable_shared_from_this<GameObject>
 {
-	//enum STATE
-	//{
-	//	IDLE, WALK, DASH, JUMP, ATTACK, END
-	//};
-
 public:
 	GameObject();
 	virtual ~GameObject();
@@ -30,6 +25,8 @@ public:
 	void Update();
 	void LateUpdate();
 	void FinalUpdate();
+
+	void UpdateBoundingBox();
 
 public:
 	shared_ptr<Component> GetFixedComponent(COMPONENT_TYPE type);
@@ -66,13 +63,6 @@ public:
 	void SetPlayerID(uint64 _id) { _playerID = _id; }
 	uint64 GetPlayerID() { return _playerID; }
 
-	STATE Get_CurState() { return _curState; }
-	STATE Get_PreState() { return _preState; }
-	void Set_CurState(STATE _state) { _curState = _state; }
-	void Set_PreState(STATE _state) { _preState = _state; }
-
-	//void StateCheck();
-
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -81,13 +71,12 @@ private:
 
 	bool	_checkFrustum = true;
 	uint8	_layerIndex = 0;
-	bool	_static = true;
+	bool	_static = false;
 	uint64  _playerID = 0;
-
-	STATE	_curState = STATE::END;
-	STATE	_preState = STATE::END;
 
 public:
 	char* _pFrameName;
+	BoundingOrientedBox _boundingBox;
+	XMFLOAT3	_boundingExtents;
 };
 

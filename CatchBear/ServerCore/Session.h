@@ -109,7 +109,7 @@ public:
 	virtual ~PacketSession();
 
 	PacketSessionRef	GetPacketSessionRef() { return static_pointer_cast<PacketSession>(shared_from_this()); }
-	
+
 	void SetPlayerID(uint64 _ID) { playerID = _ID; }
 	uint64 GetPlayerID() { return playerID; }
 

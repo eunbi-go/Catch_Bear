@@ -44,7 +44,6 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 	SkinningInfo	skInfo = skinInfo;
 	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
 
-
 	offsetMat.resize(boneCnt);
 
 	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];
@@ -120,6 +119,11 @@ bool AnimationController::IsAnimationFinish(int nTrack)
 	return pAnimationSet->IsAnimationFinish();
 }
 
+void AnimationController::SetAnimationPosition(int nTrack, float fPosition)
+{
+	_animSets->_animationSet[_animTracks[nTrack]._nAnimationSet]->SetPosition(fPosition);
+}
+
 
 void AnimationController::FinalUpdate()
 {
@@ -128,7 +132,11 @@ void AnimationController::FinalUpdate()
 
 void AnimationController::SetTrackAnimationSet(int nAnimationTrack, int nAnimationSet)
 {
-	if (_animTracks) _animTracks[nAnimationTrack]._nAnimationSet = nAnimationSet;
+	if (_animTracks)
+	{
+		_animTracks[nAnimationTrack]._position = 0.f;
+		_animTracks[nAnimationTrack]._nAnimationSet = nAnimationSet;
+	}
 }
 
 void AnimationController::SetTrackEnable(int nAnimationTrack, bool bEnable)

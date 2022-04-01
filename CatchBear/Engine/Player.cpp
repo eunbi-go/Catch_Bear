@@ -10,12 +10,18 @@
 #include "CameraScript.h"
 #include "AnimationController.h"
 #include "AnimationTrack.h"
+#include "PlayerState.h"
+#include "IdleState.h"
+#include "MoveState.h"
+#include "AttackState.h"
+#include "DashState.h"
 #include "ServerPacketHandler.h"
-#include "Session.h"
 #include "ServerSession.h"
 
 Player::Player()
 {
+	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
+	_state = new IdleState();
 }
 
 Player::~Player()
@@ -24,13 +30,26 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
+	// 서버에서 컨트롤하는 플레이어는 서버에서 위치값도 받아오니까 필요없을듯
 	KeyCheck();
-	StateCheck();
-	AnimationCheck();
 
+	////////////////////////////////////////////////////////////////////
+	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
+	//PlayerState* state = _state->Update(*shared_from_this());
+
+	//if (state != NULL)
+	//{
+	//	delete _state;
+	//	_state = state;
+	//	_state->Enter(*shared_from_this());
+	//}
+	////////////////////////////////////////////////////////////////////
+
+	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
+	
 }
 
 void Player::KeyCheck()
@@ -39,12 +58,25 @@ void Player::KeyCheck()
 
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
-		::PostQuitMessage(0);	
+		::PostQuitMessage(0);
+
+
+	//////////////////////////////////////////////////////////////////////////
+	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
+	/// State Check
+	//PlayerState* state = _state->KeyCheck(*shared_from_this());
+
+	//if (state != NULL)
+	//{
+	//	delete _state;
+	//	_state = state;
+	//	_state->Enter(*shared_from_this());
+	//}
+	//////////////////////////////////////////////////////////////////////////
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	//_player = GetGameObject();
 	if (mysession == NULL)
 		return;
 
@@ -56,6 +88,7 @@ void Player::KeyCheck()
 			break;
 		}
 	}
+
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
@@ -74,16 +107,12 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
 		pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		//_curState = WALK;		
-		//_player->Set_CurState(WALK); 
 
-		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
 		pkt.set_movedir(0);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -93,32 +122,20 @@ void Player::KeyCheck()
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		//_player->Set_CurState(WALK);
 
-		// 서버로 MOVE패킷 전송
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);		
 		pkt.set_movedir(1);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 	}
-	else
-	{
-		//_player->Set_CurState(IDLE);
-		pkt.set_xpos(pos.x);
-		pkt.set_ypos(pos.y);
-		pkt.set_zpos(pos.z);
-		pkt.set_yrot(rot.y);
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
-	}
+
+	//else _curState = IDLE;
+
 	// 회전
 	float delta = 0.f;
 	if (INPUT->GetButton(KEY_TYPE::RIGHT))
@@ -126,11 +143,8 @@ void Player::KeyCheck()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
-		//GetTransform()->SetLocalRotation(rot);
+		GetTransform()->SetLocalRotation(rot);
 		
-		// 이동+회전: WALK
-		if (_player->Get_CurState() != WALK)	_player->Set_CurState(IDLE);
-
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -145,11 +159,6 @@ void Player::KeyCheck()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
-		//GetTransform()->SetLocalRotation(rot);
-
-		// 이동+회전: WALK
-		if (_player->Get_CurState() != WALK)	_player->Set_CurState(IDLE);
-
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -161,63 +170,10 @@ void Player::KeyCheck()
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
-		_player->Set_CurState(JUMP);
+		//_curState = JUMP;
 	}
-	
+
+
 	//GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
-}
-
-void Player::StateCheck()
-{
-	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
-	if (mysession == NULL)
-		return;
-
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
-	if (_player->Get_CurState() != _player->Get_PreState())
-	{
-		switch (_player->Get_CurState())
-		{
-		case IDLE:
-			_player->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			break;
-		case WALK:
-			_player->GetAnimationController()->SetTrackAnimationSet(0, 1);
-			break;
-		case DASH:
-			_player->GetAnimationController()->SetTrackAnimationSet(0, 3);
-			break;
-		case JUMP:
-			_player->GetAnimationController()->SetTrackAnimationSet(0, 2);
-			break;
-		case ATTACK:
-			_player->GetAnimationController()->SetTrackAnimationSet(0, 4);
-			break;
-		case END:
-			break;
-		default:
-			break;
-		}
-
-		_player->Set_PreState(_player->Get_CurState());
-	}
-}
-
-void Player::AnimationCheck()
-{
-	if (_player->Get_CurState() == DASH || _player->Get_CurState() == JUMP || _player->Get_CurState() == ATTACK)
-	{
-		if (GetAnimationController()->IsAnimationFinish(0))
-			_player->Set_CurState(IDLE);
-	}
 }

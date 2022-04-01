@@ -16,7 +16,6 @@
 Player::Player()
 {
 	_state = new IdleState();
-	//_state->Enter(*shared_from_this());
 }
 
 Player::~Player()
@@ -29,7 +28,7 @@ void Player::LateUpdate()
 	KeyCheck();
 	
 	//StateCheck();
-	AnimationCheck();
+	//AnimationCheck();
 	
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);

@@ -200,7 +200,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	//LoadMapFile(scene);
+	LoadMapFile(scene);
 #pragma endregion
 
 #pragma region Item
@@ -279,10 +279,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region Terrain
 	{
-		/*shared_ptr<GameObject> obj = make_shared<GameObject>();
+		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		obj->GetTransform()->SetLocalScale(Vec3(20.f, 500.f, 20.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(-60.f, -3.f, -60.f));
 		obj->SetStatic(true);
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -295,7 +295,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			meshRenderer->SetMaterial(material);
 		}
 		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);*/
+		scene->AddGameObject(obj);
 	}
 #pragma endregion
 

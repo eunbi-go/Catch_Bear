@@ -115,7 +115,7 @@ PS_OUT PS_Treasure(VS_OUT input)
 {
     PS_OUT output = (PS_OUT)0;
 
-    float4 color = float4(0.8f, 1.f, 0.f, 1.f);
+    float4 color = float4(1.f, 1.f, 0.f, 1.f);
 
     output.position = float4(input.pos.xyz, 0.f);
     output.normal = float4(input.viewNormal.xyz, 0.f);

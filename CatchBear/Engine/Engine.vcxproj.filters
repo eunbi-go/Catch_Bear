@@ -192,6 +192,15 @@
     <ClCompile Include="Transform.cpp">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -352,6 +361,15 @@
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

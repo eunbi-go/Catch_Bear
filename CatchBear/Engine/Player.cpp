@@ -10,9 +10,12 @@
 #include "CameraScript.h"
 #include "AnimationController.h"
 #include "AnimationTrack.h"
+#include "PlayerState.h"
+#include "IdleState.h"
 
 Player::Player()
 {
+	_state = new IdleState();
 }
 
 Player::~Player()
@@ -21,9 +24,14 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
+
 	KeyCheck();
-	StateCheck();
-	AnimationCheck();
+	
+	//StateCheck();
+	//AnimationCheck();
+	
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
@@ -35,6 +43,15 @@ void Player::KeyCheck()
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
+
+	PlayerState* state = _state->KeyCheck(*shared_from_this());
+
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 rot = GetTransform()->GetLocalRotation();

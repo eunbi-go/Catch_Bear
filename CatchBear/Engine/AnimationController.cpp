@@ -44,7 +44,6 @@ void AnimationController::SetModelInfo(shared_ptr<AnimationModelInfo> model, Ski
 	SkinningInfo	skInfo = skinInfo;
 	const int32 boneCnt = static_cast<int32>(skInfo.boneOffsets.size());
 
-
 	offsetMat.resize(boneCnt);
 
 	for (int32 i = 0; i < boneCnt; ++i)	offsetMat[i] = skInfo.boneOffsets[i];

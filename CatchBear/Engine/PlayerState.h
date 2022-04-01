@@ -1,18 +1,20 @@
 #pragma once
 class Player;
-class IdleState;
 
 class PlayerState
 {
 public:
+	PlayerState() { }
 	virtual ~PlayerState() { }
 
 public:
 	// 현재 눌린 키를 받아야 함
-	virtual void KeyCheck(Player& player);
-	virtual void Update(shared_ptr<Player> player) {}
+	virtual PlayerState* KeyCheck(Player& player) = 0;
+	virtual void Update(Player& player) = 0;
+	virtual void Enter(Player& player) = 0;
 
 public:
-	static IdleState idle;
+	static class IdleState idle;
+	static class MoveState move;
 };
 

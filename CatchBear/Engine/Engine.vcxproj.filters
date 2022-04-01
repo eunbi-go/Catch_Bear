@@ -198,6 +198,9 @@
     <ClCompile Include="IdleState.cpp">
       <Filter>01. Object\00. Component\02. Player</Filter>
     </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -363,6 +366,9 @@
       <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
     <ClInclude Include="IdleState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
       <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
   </ItemGroup>

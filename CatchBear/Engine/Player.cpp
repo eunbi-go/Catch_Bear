@@ -11,10 +11,12 @@
 #include "AnimationController.h"
 #include "AnimationTrack.h"
 #include "PlayerState.h"
+#include "IdleState.h"
 
 Player::Player()
 {
-	//_state = make_shared<PlayerState>();
+	_state = new IdleState();
+	//_state->Enter(*shared_from_this());
 }
 
 Player::~Player()
@@ -23,10 +25,10 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
-	//_state->KeyCheck(*shared_from_this());
 
 	KeyCheck();
-	StateCheck();
+	
+	//StateCheck();
 	AnimationCheck();
 	
 	Vec3 pos = GetTransform()->GetLocalPosition();
@@ -42,6 +44,15 @@ void Player::KeyCheck()
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
+
+	PlayerState* state = _state->KeyCheck(*shared_from_this());
+
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	Vec3 rot = GetTransform()->GetLocalRotation();

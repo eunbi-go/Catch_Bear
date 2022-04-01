@@ -5,45 +5,20 @@
 #include "Transform.h"
 #include "Timer.h"
 #include "AnimationController.h"
+#include "MoveState.h"
 
-void IdleState::KeyCheck(shared_ptr<Player> player)
+PlayerState* IdleState::KeyCheck(Player& player)
 {
-	Vec3 pos = player->GetTransform()->GetLocalPosition();
-
-	if (INPUT->GetButton(KEY_TYPE::UP))
-	{
-		pos += player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-		//player->GetTransform()->SetLocalPosition(pos);
-		//
-		//player->_state = PlayerState::idle;
-		//player->GetAnimationController()->SetTrackAnimationSet(0, 1);
-	}
-
-	//if (INPUT->GetButton(KEY_TYPE::DOWN))
-	//{
-	//	pos -= player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-	//	player->GetTransform()->SetLocalPosition(pos);
-
-	//	player->GetAnimationController()->SetTrackAnimationSet(0, 1);
-	//}
-
-	//if (INPUT->GetButton(KEY_TYPE::RIGHT))
-	//{
-	//	pos += player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-	//	player->GetTransform()->SetLocalPosition(pos);
-
-	//	player->GetAnimationController()->SetTrackAnimationSet(0, 1);
-	//}
-
-	//if (INPUT->GetButton(KEY_TYPE::LEFT))
-	//{
-	//	pos += player->GetTransform()->GetLook() * 5.f * DELTA_TIME;
-	//	player->GetTransform()->SetLocalPosition(pos);
-
-	//	player->GetAnimationController()->SetTrackAnimationSet(0, 1);
-	//}
+	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
+		return new MoveState();
+	return NULL;
 }
 
-void IdleState::Update(shared_ptr<Player> player)
+void IdleState::Update(Player& player)
 {
+}
+
+void IdleState::Enter(Player& player)
+{
+	player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }

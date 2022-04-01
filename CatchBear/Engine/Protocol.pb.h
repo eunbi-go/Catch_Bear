@@ -1377,8 +1377,9 @@ class C_MOVE final :
     kZPosFieldNumber = 5,
     kMoveDirFieldNumber = 7,
     kYRotFieldNumber = 6,
-    kSuccessFieldNumber = 8,
     kStateFieldNumber = 9,
+    kSuccessFieldNumber = 8,
+    kIsKeyDownFieldNumber = 10,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -1443,6 +1444,15 @@ class C_MOVE final :
   void _internal_set_yrot(float value);
   public:
 
+  // .Protocol.STATE State = 9;
+  void clear_state();
+  ::Protocol::STATE state() const;
+  void set_state(::Protocol::STATE value);
+  private:
+  ::Protocol::STATE _internal_state() const;
+  void _internal_set_state(::Protocol::STATE value);
+  public:
+
   // bool success = 8;
   void clear_success();
   bool success() const;
@@ -1452,13 +1462,13 @@ class C_MOVE final :
   void _internal_set_success(bool value);
   public:
 
-  // .Protocol.STATE State = 9;
-  void clear_state();
-  ::Protocol::STATE state() const;
-  void set_state(::Protocol::STATE value);
+  // bool isKeyDown = 10;
+  void clear_iskeydown();
+  bool iskeydown() const;
+  void set_iskeydown(bool value);
   private:
-  ::Protocol::STATE _internal_state() const;
-  void _internal_set_state(::Protocol::STATE value);
+  bool _internal_iskeydown() const;
+  void _internal_set_iskeydown(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.C_MOVE)
@@ -1475,8 +1485,9 @@ class C_MOVE final :
   float zpos_;
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
   float yrot_;
-  bool success_;
   int state_;
+  bool success_;
+  bool iskeydown_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1591,10 +1602,11 @@ class S_MOVE final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
-    kSuccessFieldNumber = 2,
     kXPosFieldNumber = 3,
     kYPosFieldNumber = 4,
     kZPosFieldNumber = 5,
+    kSuccessFieldNumber = 2,
+    kIsKeyDownFieldNumber = 9,
     kMoveDirFieldNumber = 7,
     kYRotFieldNumber = 6,
     kStateFieldNumber = 8,
@@ -1606,15 +1618,6 @@ class S_MOVE final :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  public:
-
-  // bool success = 2;
-  void clear_success();
-  bool success() const;
-  void set_success(bool value);
-  private:
-  bool _internal_success() const;
-  void _internal_set_success(bool value);
   public:
 
   // float XPos = 3;
@@ -1642,6 +1645,24 @@ class S_MOVE final :
   private:
   float _internal_zpos() const;
   void _internal_set_zpos(float value);
+  public:
+
+  // bool success = 2;
+  void clear_success();
+  bool success() const;
+  void set_success(bool value);
+  private:
+  bool _internal_success() const;
+  void _internal_set_success(bool value);
+  public:
+
+  // bool isKeyDown = 9;
+  void clear_iskeydown();
+  bool iskeydown() const;
+  void set_iskeydown(bool value);
+  private:
+  bool _internal_iskeydown() const;
+  void _internal_set_iskeydown(bool value);
   public:
 
   // uint64 moveDir = 7;
@@ -1679,10 +1700,11 @@ class S_MOVE final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
-  bool success_;
   float xpos_;
   float ypos_;
   float zpos_;
+  bool success_;
+  bool iskeydown_;
   ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
   float yrot_;
   int state_;
@@ -2307,6 +2329,26 @@ inline void C_MOVE::set_state(::Protocol::STATE value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.State)
 }
 
+// bool isKeyDown = 10;
+inline void C_MOVE::clear_iskeydown() {
+  iskeydown_ = false;
+}
+inline bool C_MOVE::_internal_iskeydown() const {
+  return iskeydown_;
+}
+inline bool C_MOVE::iskeydown() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.isKeyDown)
+  return _internal_iskeydown();
+}
+inline void C_MOVE::_internal_set_iskeydown(bool value) {
+  
+  iskeydown_ = value;
+}
+inline void C_MOVE::set_iskeydown(bool value) {
+  _internal_set_iskeydown(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.isKeyDown)
+}
+
 // -------------------------------------------------------------------
 
 // S_MOVE
@@ -2469,6 +2511,26 @@ inline void S_MOVE::_internal_set_state(::Protocol::STATE value) {
 inline void S_MOVE::set_state(::Protocol::STATE value) {
   _internal_set_state(value);
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.State)
+}
+
+// bool isKeyDown = 9;
+inline void S_MOVE::clear_iskeydown() {
+  iskeydown_ = false;
+}
+inline bool S_MOVE::_internal_iskeydown() const {
+  return iskeydown_;
+}
+inline bool S_MOVE::iskeydown() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.isKeyDown)
+  return _internal_iskeydown();
+}
+inline void S_MOVE::_internal_set_iskeydown(bool value) {
+  
+  iskeydown_ = value;
+}
+inline void S_MOVE::set_iskeydown(bool value) {
+  _internal_set_iskeydown(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.isKeyDown)
 }
 
 #ifdef __GNUC__

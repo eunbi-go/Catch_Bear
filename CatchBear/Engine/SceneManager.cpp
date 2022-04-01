@@ -19,6 +19,8 @@
 #include "AnimationController.h"
 #include "AnimationTrack.h"
 
+#include "IdleState.h"
+
 shared_ptr<Scene> scene = make_shared<Scene>();
 
 void SceneManager::Update()
@@ -244,6 +246,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
+			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 		}
@@ -264,6 +267,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			Object->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			Object->SetPlayerID(1);
+			Object->_state = new IdleState();
 			scene->AddGameObject(Object);
 			scene->AddPlayers(1, Object);
 		}

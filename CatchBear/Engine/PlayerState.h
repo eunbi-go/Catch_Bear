@@ -20,5 +20,7 @@ public:
 	static class JumpState jump;
 	static class AttackState attack;
 	static class DashState dash;
+	
+	STATE curState = STATE::END;
 };
 

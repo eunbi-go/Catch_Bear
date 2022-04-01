@@ -172,6 +172,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	movePkt.set_zpos(pkt.zpos());
 	movePkt.set_yrot(pkt.yrot());
 	movePkt.set_state(pkt.state());
+	movePkt.set_iskeydown(pkt.iskeydown());
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 

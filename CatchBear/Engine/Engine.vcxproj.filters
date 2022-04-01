@@ -192,6 +192,12 @@
     <ClCompile Include="TableDescriptorHeap.cpp">
       <Filter>00. Engine</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -352,6 +358,12 @@
     </ClInclude>
     <ClInclude Include="TableDescriptorHeap.h">
       <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -200,13 +200,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	LoadMapFile(scene);
+	//LoadMapFile(scene);
 #pragma endregion
 
 #pragma region Item
-	//// present1
-	//// Resources::LoadFBX()
-	//// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
+	// present1
+	// Resources::LoadFBX()
+	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
 	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
 
 	//for (int i = 0; i < 1; ++i)
@@ -239,7 +239,20 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	scene->AddGameObject(gameObject);
 	//}
 
+	// Diamond
+	//shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Diamond.bin");
 
+	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
+
+	//for (auto& gameObject : objectsPresent4)
+	//{
+	//	gameObject->SetName(L"Present4");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, 6));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//	scene->AddGameObject(gameObject);
+	//}
 #pragma endregion
 
 #pragma region TestPlayer
@@ -251,7 +264,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, -1.120835f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -2.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
 			gameObject->AddComponent(make_shared<Player>());
@@ -265,23 +278,23 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region Terrain
 	{
-		//shared_ptr<GameObject> obj = make_shared<GameObject>();
-		//obj->AddComponent(make_shared<Transform>());
-		//obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		//obj->GetTransform()->SetLocalPosition(Vec3(-8.f, 2.f, 0.f));
-		//obj->SetStatic(true);
-		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		//{
-		//	shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
-		//	meshRenderer->SetMesh(mesh);
-		//}
-		//{
-		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
-		//	material->SetInt(0, 0);
-		//	meshRenderer->SetMaterial(material);
-		//}
-		//obj->AddComponent(meshRenderer);
-		//scene->AddGameObject(obj);
+		/*shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->AddComponent(make_shared<Transform>());
+		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		obj->SetStatic(true);
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
+			material->SetInt(0, 0);
+			meshRenderer->SetMaterial(material);
+		}
+		obj->AddComponent(meshRenderer);
+		scene->AddGameObject(obj);*/
 	}
 #pragma endregion
 

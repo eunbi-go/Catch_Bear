@@ -1,7 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
 
-class Player : public MonoBehaviour
+class Player : public MonoBehaviour, public enable_shared_from_this<Player>
 {
 	enum STATE
 	{
@@ -20,7 +20,7 @@ private:
 	void AnimationCheck();
 
 private:
-	float	_speed = 5.f;
+	float	_speed = 15.f;
 	float	_rotSpeed = 2.f;
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
@@ -30,5 +30,8 @@ private:
 private:
 	STATE	_curState = STATE::END;
 	STATE	_preState = STATE::END;
+
+public:
+	class PlayerState* _state;
 };
 

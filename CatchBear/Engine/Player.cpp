@@ -10,9 +10,11 @@
 #include "CameraScript.h"
 #include "AnimationController.h"
 #include "AnimationTrack.h"
+#include "PlayerState.h"
 
 Player::Player()
 {
+	//_state = make_shared<PlayerState>();
 }
 
 Player::~Player()
@@ -21,9 +23,14 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
+	//_state->KeyCheck(*shared_from_this());
+
 	KeyCheck();
 	StateCheck();
 	AnimationCheck();
+	
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);

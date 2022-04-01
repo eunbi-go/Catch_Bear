@@ -43,13 +43,9 @@ private:
 	shared_ptr<MeshData> _commonItemMesh;
 	shared_ptr<MeshData> _uniqueItemMesh;
 
-	array<Vec3, 20>		_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이 - 총30개 생성됨
-	array<Vec3, 10>		_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이 - 총 6개 생성됨
-	array<Vec3, 5>		_treasurePosArray;	// 보물 좌표 담고있는 어레이 - 총 3개 생성됨
-
-	int			_commonIndex = 0;
-	int			_uniqueIndex = 0;
-	int			_treasureIndex = 0;
+	array<Vec3, 30>		_itemPosArray;
+	int		_itemIndex = 0;
+	int		_maxItemIndex = 29;
 
 	// 시간은 테스트용
 	float		_commonItemTimer = 0.f;

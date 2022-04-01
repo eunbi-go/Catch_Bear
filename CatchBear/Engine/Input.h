@@ -21,6 +21,7 @@ enum class KEY_TYPE
 	RBUTTON = VK_RBUTTON,
 
 	ESC = VK_ESCAPE,
+	SPACE = VK_SPACE
 };
 
 enum class KEY_STATE
@@ -34,7 +35,9 @@ enum class KEY_STATE
 
 enum
 {
-	KEY_TYPE_COUNT = static_cast<int32>(UINT8_MAX + 1),	// 0 ~ 255 사용
+	// [0]  ~ [255] Index
+	KEY_TYPE_COUNT = static_cast<int32>(UINT8_MAX + 1),	
+
 	KEY_STATE_COUNT = static_cast<int32>(KEY_STATE::END),
 };
 
@@ -46,12 +49,16 @@ public:
 	void Init(HWND hwnd);
 	void Update();
 
+
 	// 누르고 있을 때
 	bool GetButton(KEY_TYPE key) { return GetState(key) == KEY_STATE::PRESS; }
+
 	// 맨 처음 눌렀을 때
 	bool GetButtonDown(KEY_TYPE key) { return GetState(key) == KEY_STATE::DOWN; }
+
 	// 맨 처음 눌렀다 뗐을 때
 	bool GetButtonUp(KEY_TYPE key) { return GetState(key) == KEY_STATE::UP; }
+
 
 	const POINT& GetMousePos() { return _mousePos; }
 
@@ -60,7 +67,10 @@ private:
 
 private:
 	HWND _hwnd;
+
+	// 각 키에 해당하는 상태 관리
 	vector<KEY_STATE> _states;
+
 	POINT _mousePos = {};
 };
 

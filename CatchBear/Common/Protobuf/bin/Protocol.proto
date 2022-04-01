@@ -30,11 +30,14 @@ message S_ENTER_LOBBY
 message C_ENTER_GAME
 {
 	uint64 playerId = 1;
+	bool success = 2;
 }
 
 message S_ENTER_GAME
 {
-	bool success = 1;
+	uint64 playerId = 1;
+	bool success = 2;
+	uint64 enterPlayer = 3;
 }
 
 message C_CHAT
@@ -51,18 +54,21 @@ message S_CHAT
 
 message C_MOVE
 {
-	ObjectType objType = 1;
-	float XPos = 2;
-	float YPos = 3;
-	float ZPos = 4;
-	uint64 moveDir = 5;
+	uint64 playerId = 1;
+	ObjectType objType = 2;
+	float XPos = 3;
+	float YPos = 4;
+	float ZPos = 5;
+	uint64 moveDir = 6;
+	bool success = 7;
 }
 
 message S_MOVE
 {
-	bool success = 1;
-	float XPos = 2;
-	float YPos = 3;
-	float ZPos = 4;
-	uint64 moveDir = 5;
+	uint64 playerId = 1;
+	bool success = 2;
+	float XPos = 3;
+	float YPos = 4;
+	float ZPos = 5;
+	uint64 moveDir = 6;
 }

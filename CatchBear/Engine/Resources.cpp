@@ -1,6 +1,8 @@
 #include "pch.h"
 #include "Resources.h"
 #include "Engine.h"
+#include "MeshData.h"
+#include "CharacterData.h"
 
 void Resources::Init()
 {
@@ -319,6 +321,41 @@ shared_ptr<Texture> Resources::CreateTextureFromResource(const wstring& name, Co
 	return texture;
 }
 
+shared_ptr<class MeshData> Resources::LoadFBX(const wstring& path)
+{
+	wstring		key = path;
+
+	shared_ptr<MeshData>	meshData = Get<MeshData>(key);
+	if (meshData)	return meshData;
+
+	meshData = make_shared<MeshData>();
+
+	// MeshData::LoadMeshFromFile()
+	// 실질적으로 바이너리 파일을 로드하는 함수
+	meshData->LoadMeshFromFile(path);
+
+	meshData->SetName(key);
+	Add(key, meshData);
+
+	return meshData;
+}
+
+shared_ptr<class CharacterData> Resources::LoadCharacter(const wstring& path)
+{
+	wstring		key = path;
+
+	shared_ptr<CharacterData>	meshData = Get<CharacterData>(key);
+	if (meshData)	return meshData;
+
+	meshData = make_shared<CharacterData>();
+
+	meshData->LoadCharacterFromFile(path);
+	meshData->SetName(key);
+	Add(key, meshData);
+
+	return meshData;
+}
+
 void Resources::CreateDefaultShader()
 {
 	// Skybox
@@ -538,11 +575,33 @@ void Resources::CreateDefaultShader()
 			SHADER_TYPE::DEFERRED,
 		};
 
+
+
 		shared_ptr<Shader> shader = make_shared<Shader>();
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info);
 		Add<Shader>(L"Terrain", shader);
 	}
 
+	// Animation
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};		
+		
+		ShaderArg arg =
+		{
+			"VS_Player",
+			"",
+			"",
+			"",
+			"PS_Main"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"PlayerAnimation", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()

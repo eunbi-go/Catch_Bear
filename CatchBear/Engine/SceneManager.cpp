@@ -14,6 +14,13 @@
 #include "Resources.h"
 #include "ParticleSystem.h"
 #include "Player.h"
+#include "MeshData.h"
+#include "CharacterData.h"
+#include "AnimationController.h"
+#include "AnimationTrack.h"
+#include "SphereCollider.h"
+
+shared_ptr<Scene> scene = make_shared<Scene>();
 
 void SceneManager::Update()
 {
@@ -62,6 +69,86 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 	return findIt->second;
 }
 
+shared_ptr<class GameObject> SceneManager::Pick(int32 screenX, int32 screenY)
+{
+	shared_ptr<Camera> camera = GetActiveScene()->GetMainCamera();
+
+	float width = static_cast<float>(GEngine->GetWindow().width);
+	float height = static_cast<float>(GEngine->GetWindow().height);
+
+	Matrix projectionMatrix = camera->GetProjectionMatrix();
+
+	// ViewSpace에서 Picking 진행
+	float viewX = (+2.0f * screenX / width - 1.0f) / projectionMatrix(0, 0);
+	float viewY = (-2.0f * screenY / height + 1.0f) / projectionMatrix(1, 1);
+
+	Matrix viewMatrix = camera->GetViewMatrix();
+	Matrix viewMatrixInv = viewMatrix.Invert();
+
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+
+	float minDistance = FLT_MAX;
+	shared_ptr<GameObject> picked;
+
+	for (auto& gameObject : gameObjects)
+	{
+		if (gameObject->GetCollider() == nullptr)
+			continue;
+
+		// ViewSpace에서의 Ray 정의
+		Vec4 rayOrigin = Vec4(0.0f, 0.0f, 0.0f, 1.0f);
+		Vec4 rayDir = Vec4(viewX, viewY, 1.0f, 0.0f);
+
+		// WorldSpace에서의 Ray 정의
+		rayOrigin = XMVector3TransformCoord(rayOrigin, viewMatrixInv);
+		rayDir = XMVector3TransformNormal(rayDir, viewMatrixInv);
+		rayDir.Normalize();
+
+		// WorldSpace에서 연산
+		float distance = 0.f;
+		if (gameObject->GetCollider()->Intersects(rayOrigin, rayDir, OUT distance) == false)
+			continue;
+
+		if (distance < minDistance)
+		{
+			minDistance = distance;
+			picked = gameObject;
+		}
+	}
+
+	return picked;
+}
+
+void SceneManager::MakePlayer(uint64 _playerID)
+{
+	{
+		shared_ptr<GameObject> obj = make_shared<GameObject>();
+		obj->SetName(L"Player");
+		obj->AddComponent(make_shared<Transform>());
+		obj->AddComponent(make_shared<Player>());
+		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(200.f + (_playerID * 100.f), 0.f, 500.f));
+		obj->SetStatic(false);
+		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+			meshRenderer->SetMesh(sphereMesh);
+		}
+		{
+			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
+			meshRenderer->SetMaterial(material->Clone());
+		}
+
+		// 플레이어ID 설정
+		obj->SetPlayerID(_playerID);
+
+		obj->AddComponent(meshRenderer);
+		scene->AddGameObject(obj);
+		scene->AddPlayers(_playerID, obj);
+	}
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask
@@ -89,8 +176,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-	shared_ptr<Scene> scene = make_shared<Scene>();
-
 #pragma region Camera
 	{
 		shared_ptr<GameObject> camera = make_shared<GameObject>();
@@ -98,7 +183,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		camera->AddComponent(make_shared<Transform>());
 		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
 		camera->AddComponent(make_shared<CameraScript>());
-		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, -20.f));
+		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
 		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
 		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI는 안 찍음
 		scene->AddGameObject(camera);
@@ -120,26 +205,26 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region TestPlayer
+#pragma region TestObject
 	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"Player");
+		obj->SetName(L"OBJ");
 		obj->AddComponent(make_shared<Transform>());
-		obj->AddComponent(make_shared<Player>());
-		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		obj->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 0.f));
+		obj->AddComponent(make_shared<SphereCollider>());
+		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 300.f));
 		obj->SetStatic(false);
-		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
+			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
 			meshRenderer->SetMesh(sphereMesh);
 		}
 		{
 			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
 			meshRenderer->SetMaterial(material->Clone());
 		}
+		dynamic_pointer_cast<SphereCollider>(obj->GetCollider())->SetRadius(0.5f);
+		dynamic_pointer_cast<SphereCollider>(obj->GetCollider())->SetCenter(Vec3(0.f, 0.f, 0.f));
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
 	}
@@ -168,27 +253,93 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
+#pragma region StaticMesh
+	//LoadMapFile(scene);
+	//LoadMap(scene);
+#pragma endregion
 
+#pragma region Item
+	// present1
+	// Resources::LoadFBX()
+	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
+	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
+
+	//for (int i = 0; i < 2; ++i)
+	//{
+	//	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
+
+	//	for (auto& gameObject : objectsPresent1)
+	//	{
+	//		gameObject->SetName(L"Present1");
+	//		gameObject->SetCheckFrustum(false);
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -3 + i * 5));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//		scene->AddGameObject(gameObject);
+	//	}
+	//}
+
+	//// present4
+	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
+
+	//for (auto& gameObject : objectsPresent4)
+	//{
+	//	gameObject->SetName(L"Present4");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, 3));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//	scene->AddGameObject(gameObject);
+	//}
+
+
+#pragma endregion
+
+#pragma region TestPlayer
+	{
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+		
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Player");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.475603f, -1.120835f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+			gameObject->SetCheckFrustum(false);
+			scene->AddGameObject(gameObject);
+		}
+	}
+#pragma endregion
 
 #pragma region Terrain
 	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
-		obj->SetStatic(true);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
-			meshRenderer->SetMesh(mesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
-			material->SetInt(0, 0);
-			meshRenderer->SetMaterial(material);
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
+		//shared_ptr<GameObject> obj = make_shared<GameObject>();
+		//obj->AddComponent(make_shared<Transform>());
+		//obj->GetTransform()->SetLocalScale(Vec3(1000.f, 1000.f, 50.f));
+		//obj->GetTransform()->SetLocalPosition(Vec3(-500.f, -50.f, 0.f));
+		//obj->SetStatic(true);
+		//shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		//{
+		//	shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadTerrainMesh();
+		//	meshRenderer->SetMesh(mesh);
+		//}
+		//{
+		//	shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"Terrain");
+		//	material->SetInt(0, 0);
+		//	meshRenderer->SetMaterial(material);
+		//}
+		//obj->AddComponent(meshRenderer);
+		//scene->AddGameObject(obj);
 	}
 #pragma endregion
 
@@ -281,4 +432,94 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 
 	return scene;
+}
+
+void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
+{
+	FILE* pFile;
+	char pStrTocken[64] = { '\0' };
+	UINT	nReads = 0;
+	wstring strpath = L"..\\Resources\\Binary\\Objects.bin";
+
+	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
+	if (pFile == NULL)
+	{
+		return;
+	}
+	rewind(pFile);
+
+	int i = 0;
+
+
+	for (; ;)
+	{
+		ReadStringFromFileForCharac(pFile, pStrTocken);
+
+		for (; ;)
+		{
+			if (!strcmp(pStrTocken, "<ObjectName>:"))
+			{
+				Vec3 scale, rotate, trans;
+				++i;
+
+				shared_ptr<MeshData> meshData;
+				shared_ptr<GameObject> obj;
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				wstring name = s2ws(pStrTocken);
+				_objectName.push_back(name);
+				if (!strcmp(pStrTocken, "Stump_01"))
+				{
+					fclose(pFile);
+					return;
+				}
+
+				meshData = GET_SINGLE(Resources)->Get<MeshData>(name + L".bin");
+				
+
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				if (!strcmp(pStrTocken, "<Transform>:"))
+				{
+					nReads = (UINT)::fread(&trans, sizeof(Vec3), 1, pFile);
+					_transform.push_back(trans);
+					//obj->GetTransform()->SetLocalPosition(trans);
+				}
+
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				if (!strcmp(pStrTocken, "<Rotation>:"))
+				{
+					nReads = (UINT)::fread(&rotate, sizeof(Vec3), 1, pFile);
+					_rotate.push_back(rotate);
+					//obj->GetTransform()->SetLocalRotation(rotate);
+				}
+
+				ReadStringFromFileForCharac(pFile, pStrTocken);
+				if (!strcmp(pStrTocken, "<Scale>:"))
+				{
+					nReads = (UINT)::fread(&scale, sizeof(Vec3), 1, pFile);
+					scale = Vec3(10.f, 10.f, 10.f);
+					_scale.push_back(scale);
+					//obj->GetTransform()->SetLocalScale(scale);
+					//scene->AddGameObject(obj);
+					break;
+				}
+			}
+		}
+	}
+}
+
+void SceneManager::LoadMap(shared_ptr<Scene> scene)
+{
+	for (int i = 0; i < 4; ++i)
+	{
+		vector<shared_ptr<GameObject>> object = GET_SINGLE(Resources)->LoadFBX(_objectName[i] + L".bin")->Instantiate();
+		for (auto& gameObj : object)
+		{
+			gameObj->SetName(_objectName[i] + L"1");
+			gameObj->SetCheckFrustum(false);
+			gameObj->GetTransform()->SetLocalPosition(_transform[i]);
+			gameObj->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
+			gameObj->GetTransform()->SetLocalRotation(_rotate[i]);
+			scene->AddGameObject(gameObj);
+		}
+	}
 }

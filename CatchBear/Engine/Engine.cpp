@@ -8,6 +8,8 @@
 #include "Light.h"
 #include "Resources.h"
 #include "InstancingManager.h"
+#include "ItemManager.h"
+#include "ScoreManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -21,13 +23,18 @@ void Engine::Init(const WindowInfo& info)
 	_graphicsCmdQueue->Init(_device->GetDevice(), _swapChain);
 	_computeCmdQueue->Init(_device->GetDevice());
 	_swapChain->Init(info, _device->GetDevice(), _device->GetDXGI(), _graphicsCmdQueue->GetCmdQueue());
+	
 	_rootSignature->Init();
 	_graphicsDescHeap->Init(256);
+
 	_computeDescHeap->Init();
 	
+	// 특정 레지스터와 Constant Buffer 설정
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
+	CreateConstantBuffer(CBV_REGISTER::b3, sizeof(BoneOffsetParams), 1);
+	CreateConstantBuffer(CBV_REGISTER::b4, sizeof(AnimatedBoneParams), 1);
 
 	CreateRenderTargetGroups();
 
@@ -36,6 +43,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Input)->Init(info.hwnd);
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
+	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
 }
 
 void Engine::Update()
@@ -44,6 +52,8 @@ void Engine::Update()
 	GET_SINGLE(Timer)->Update();
 	GET_SINGLE(SceneManager)->Update();
 	GET_SINGLE(InstancingManager)->ClearBuffer();
+	GET_SINGLE(ItemManager)->Update();
+	GET_SINGLE(ScoreManager)->Update();
 
 	Render();
 

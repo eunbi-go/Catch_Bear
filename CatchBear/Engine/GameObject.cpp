@@ -8,6 +8,10 @@
 #include "ParticleSystem.h"
 #include "Terrain.h"
 #include "BaseCollider.h"
+#include "AnimationController.h"
+
+#include "SceneManager.h"
+#include "Scene.h"
 
 GameObject::GameObject() : Object(OBJECT_TYPE::GAMEOBJECT)
 {
@@ -58,6 +62,8 @@ void GameObject::Update()
 	{
 		script->Update();
 	}
+
+	UpdateBoundingBox();
 }
 
 void GameObject::LateUpdate()
@@ -66,7 +72,7 @@ void GameObject::LateUpdate()
 	{
 		if (component)
 			component->LateUpdate();
-	}
+}
 
 	for (shared_ptr<MonoBehaviour>& script : _scripts)
 	{
@@ -81,6 +87,24 @@ void GameObject::FinalUpdate()
 		if (component)
 			component->FinalUpdate();
 	}
+
+}
+
+void GameObject::UpdateBoundingBox()
+{
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+
+	for (auto& gameObject : gameObjects)
+	{
+		//gameObject->_boundingBox.Transform(
+		//	_boundingBox, XMLoadFloat4x4(&(XMFLOAT4X4)(gameObject->GetTransform()->GetWorldMatrix())));
+		//XMStoreFloat4(&gameObject->_boundingBox.Orientation, XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
+	
+		gameObject->_boundingBox.Center = gameObject->GetTransform()->GetLocalPosition();
+		gameObject->_boundingBox.Extents = _boundingExtents;
+		XMStoreFloat4(&gameObject->_boundingBox.Orientation, 
+			XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
+	}
 }
 
 shared_ptr<Component> GameObject::GetFixedComponent(COMPONENT_TYPE type)
@@ -93,6 +117,21 @@ shared_ptr<Component> GameObject::GetFixedComponent(COMPONENT_TYPE type)
 shared_ptr<MonoBehaviour>& GameObject::GetScript(int index)
 {
 	return _scripts[index];
+}
+
+float GameObject::GetX()
+{
+	return GetTransform()->GetWorldPosition().x;
+}
+
+float GameObject::GetY()
+{
+	return GetTransform()->GetWorldPosition().y;
+}
+
+float GameObject::GetZ()
+{
+	return GetTransform()->GetWorldPosition().z;
 }
 
 shared_ptr<Transform> GameObject::GetTransform()
@@ -135,6 +174,12 @@ shared_ptr<BaseCollider> GameObject::GetCollider()
 {
 	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::COLLIDER);
 	return static_pointer_cast<BaseCollider>(component);
+}
+
+shared_ptr<AnimationController> GameObject::GetAnimationController()
+{
+	shared_ptr<Component> component = GetFixedComponent(COMPONENT_TYPE::ANIMATOR);
+	return static_pointer_cast<AnimationController>(component);
 }
 
 void GameObject::AddComponent(shared_ptr<Component> component)

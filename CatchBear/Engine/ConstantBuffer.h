@@ -5,6 +5,8 @@ enum class CONSTANT_BUFFER_TYPE : uint8
 	GLOBAL,			// 전역 데이터를 가지고 있을 것임(Light 같은)
 	TRANSFORM,
 	MATERIAL,
+	BONE_OFFSET,
+	ANIMATED_BONE_TRANS,
 	END
 };
 

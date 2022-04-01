@@ -33,9 +33,12 @@ void Input::Update()
 			// 이전 프레임에 키를 누른 상태라면 PRESS
 			if (state == KEY_STATE::PRESS || state == KEY_STATE::DOWN)
 				state = KEY_STATE::PRESS;
+			// 그게 아니라 키보드를 뗀 상태에서 맨 처음으로 키보드를 누른 상태라면
 			else
 				state = KEY_STATE::DOWN;
 		}
+
+		// 키가 안 눌려 있으면 false
 		else
 		{
 			KEY_STATE& state = _states[key];

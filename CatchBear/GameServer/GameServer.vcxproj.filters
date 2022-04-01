@@ -13,6 +13,9 @@
     <Filter Include="GameContents">
       <UniqueIdentifier>{87ecb0c8-a463-4f2f-8da3-49a7bcdfb77a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameContents\Player">
+      <UniqueIdentifier>{d37c77c6-8d96-413c-9bc3-fdc5a00dbcb3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameServer.cpp">
@@ -39,11 +42,20 @@
     <ClCompile Include="Enum.pb.cc">
       <Filter>Protocol</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>GameContents</Filter>
-    </ClCompile>
     <ClCompile Include="Lobby.cpp">
       <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="InGame.cpp">
+      <Filter>GameContents</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>GameContents\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="SimpleMath.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -68,11 +80,20 @@
     <ClInclude Include="Enum.pb.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>GameContents</Filter>
-    </ClInclude>
     <ClInclude Include="Lobby.h">
       <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="InGame.h">
+      <Filter>GameContents</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>GameContents\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="SimpleMath.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +108,9 @@
     </None>
     <None Include="..\Common\Protobuf\bin\GenPackets.bat">
       <Filter>Protocol</Filter>
+    </None>
+    <None Include="SimpleMath.inl">
+      <Filter>Utils</Filter>
     </None>
   </ItemGroup>
 </Project>

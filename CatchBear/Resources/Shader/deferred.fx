@@ -77,14 +77,29 @@ VS_OUT VS_Player(VS_IN input)
         mtxVertexToBoneWorld += input.weight[i] * mul(g_offset[input.indices[i]], g_boneTrans[input.indices[i]]);
     }
 
-    output.uv = input.uv;
+    // ¿ŒΩ∫≈œΩÃ
+    if (g_int_0 == 1)
+    {
+        output.uv = input.uv;
 
-    output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
-    output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
-    output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
-    output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
+        output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
 
-    output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
+        output.pos = mul(float4(output.viewPos, 1.f), input.matWVP);
+    }
+    else
+    {
+        output.uv = input.uv;
+
+        output.viewPos = mul(float4(input.pos, 1.f), mtxVertexToBoneWorld).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), (float3x3)mtxVertexToBoneWorld).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal).xyz);
+
+        output.pos = mul(float4(output.viewPos, 1.f), g_matWVP);
+    }
 
     return output;
 }
@@ -117,6 +132,19 @@ PS_OUT PS_Main(VS_OUT input)
 
     output.position = float4(input.pos.xyz, 0.f);
     output.normal = float4(viewNormal.xyz, 0.f);
+    output.color = color;
+
+    return output;
+}
+
+PS_OUT PS_Treasure(VS_OUT input)
+{
+    PS_OUT output = (PS_OUT)0;
+
+    float4 color = float4(1.f, 1.f, 0.f, 1.f);
+
+    output.position = float4(input.pos.xyz, 0.f);
+    output.normal = float4(input.viewNormal.xyz, 0.f);
     output.color = color;
 
     return output;

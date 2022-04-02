@@ -137,9 +137,6 @@ void Camera::Render_Deferred()
 	// 물체가 하나만 그려야 하는 경우도 있을 것이고,
 	// 그게 아니라 뭉쳐서 그려야 할 경우도 있을 것임.
 	GET_SINGLE(InstancingManager)->Render(_vecDeferred);
-//=======
-//	GET_SINGLE(InstancingManager) ->Render(_vecDeferred);
-//>>>>>>> main
 }
 
 void Camera::Render_Forward()

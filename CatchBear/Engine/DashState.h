@@ -1,15 +1,21 @@
 #pragma once
 #include "PlayerState.h"
+class Player;
 
-class MoveState : public PlayerState
+class DashState : public PlayerState
 {
 public:
-	MoveState() {}
+	DashState() {}
+	DashState(float fTime) : _fDashTime(fTime) { }
 
-public:
+public: 
 	virtual PlayerState* KeyCheck(Player& player);
 	virtual PlayerState* Update(Player& player);
 	virtual void Enter(Player& player);
 	virtual void End(Player& player);
+
+private:
+	float	_fDashTime = 0.f;
+	bool	_isStop = false;
 };
 

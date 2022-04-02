@@ -190,20 +190,39 @@
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="ItemManager.cpp">
       <Filter>02. Manager</Filter>
 =======
     <ClCompile Include="PlayerState.cpp">
       <Filter>01. Object\00. Component\02. Player</Filter>
+=======
+    <ClCompile Include="AttackState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="IdleState.cpp">
-      <Filter>01. Object\00. Component\02. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="MoveState.cpp">
-      <Filter>01. Object\00. Component\02. Player</Filter>
+    <ClCompile Include="DashState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
 >>>>>>> main
     </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+<<<<<<< HEAD
+      <Filter>01. Object\00. Component\02. Player</Filter>
+>>>>>>> main
+=======
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+>>>>>>> main
+    </ClCompile>
+    <ClCompile Include="DashRestState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -363,20 +382,39 @@
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
 <<<<<<< HEAD
+<<<<<<< HEAD
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="ItemManager.h">
       <Filter>02. Manager</Filter>
 =======
     <ClInclude Include="PlayerState.h">
       <Filter>01. Object\00. Component\02. Player</Filter>
+=======
+    <ClInclude Include="AttackState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="IdleState.h">
-      <Filter>01. Object\00. Component\02. Player</Filter>
-    </ClInclude>
-    <ClInclude Include="MoveState.h">
-      <Filter>01. Object\00. Component\02. Player</Filter>
+    <ClInclude Include="DashState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
 >>>>>>> main
     </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+<<<<<<< HEAD
+      <Filter>01. Object\00. Component\02. Player</Filter>
+>>>>>>> main
+=======
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+>>>>>>> main
+    </ClInclude>
+    <ClInclude Include="DashRestState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">
@@ -440,6 +478,9 @@
     </Filter>
     <Filter Include="07. Utils">
       <UniqueIdentifier>{f0f1cd54-1c7d-4f80-8f75-6757bf8144ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\00. Component\02. Player\State">
+      <UniqueIdentifier>{41968de1-65ab-46f1-9eda-b1827301d943}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

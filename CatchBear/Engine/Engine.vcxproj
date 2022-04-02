@@ -187,6 +187,7 @@
     <ClInclude Include="AnimationSet.h" />
     <ClInclude Include="AnimationSets.h" />
     <ClInclude Include="AnimationTrack.h" />
+    <ClInclude Include="AttackState.h" />
     <ClInclude Include="BaseCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraScript.h" />
@@ -195,6 +196,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
     <ClInclude Include="d3dx12.h" />
+    <ClInclude Include="DashRestState.h" />
+    <ClInclude Include="DashState.h" />
     <ClInclude Include="Device.h" />
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EnginePch.h" />
@@ -207,6 +210,7 @@
     <ClInclude Include="InstancingManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="JumpState.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -245,6 +249,7 @@
     <ClCompile Include="AnimationSet.cpp" />
     <ClCompile Include="AnimationSets.cpp" />
     <ClCompile Include="AnimationTrack.cpp" />
+    <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BaseCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraScript.cpp" />
@@ -252,6 +257,8 @@
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="DashRestState.cpp" />
+    <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Device.cpp" />
     <ClCompile Include="Engine.cpp" />
     <ClCompile Include="EnginePch.cpp" />
@@ -269,6 +276,7 @@
     <ClCompile Include="InstancingManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />

@@ -275,19 +275,19 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 		}
 
-		gameObjects = CharacData->Instantiate();
+		//gameObjects = CharacData->Instantiate();
 
-		for (auto&Object : gameObjects)
-		{
-			Object->SetName(L"Player");
-			Object->GetTransform()->SetLocalPosition(Vec3(0.f, -0.f, 0.f));
-			Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-			Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-			Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			Object->SetStatic(false);
-			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-			scene->AddGameObject(Object);
-		}
+		//for (auto&Object : gameObjects)
+		//{
+		//	Object->SetName(L"Player");
+		//	Object->GetTransform()->SetLocalPosition(Vec3(0.f, -0.f, 0.f));
+		//	Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
+		//	Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+		//	Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	Object->SetStatic(false);
+		//	Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
+		//	scene->AddGameObject(Object);
+		//}
 	}
 #pragma endregion
 

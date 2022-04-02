@@ -200,7 +200,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	//LoadMapFile(scene);
+	LoadMapFile(scene);
 #pragma endregion
 
 #pragma region Item
@@ -274,24 +274,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			gameObject->SetCheckFrustum(false);
 			scene->AddGameObject(gameObject);
-		}
-
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-
-		for (auto&Object : gameObjects2)
-		{
-			Object->SetName(L"Player!!");
-			Object->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
-			Object->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			Object->GetAnimationController()->SetTrackAnimationSet(0, 1);
-			Object->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			Object->AddComponent(make_shared<Player>());
-			Object->SetStatic(false);
-			Object->_boundingBox = BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-			Object->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
-			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-			scene->AddGameObject(Object);
 		}
 	}
 #pragma endregion

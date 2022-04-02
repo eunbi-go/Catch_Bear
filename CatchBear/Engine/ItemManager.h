@@ -42,6 +42,7 @@ private:
 
 	shared_ptr<MeshData> _commonItemMesh;
 	shared_ptr<MeshData> _uniqueItemMesh;
+	shared_ptr<MeshData> _treasureMesh;
 
 	array<Vec3, 30>		_itemPosArray;
 	int		_itemIndex = 0;

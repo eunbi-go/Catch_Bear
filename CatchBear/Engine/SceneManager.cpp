@@ -246,8 +246,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//{
 	//	gameObject->SetName(L"Present4");
 	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -2.f, 6));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 270.f, 0.f));
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+	//	gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
 	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 	//	scene->AddGameObject(gameObject);

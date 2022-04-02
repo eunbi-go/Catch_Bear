@@ -18,15 +18,16 @@ void ItemManager::Init()
 
 	_commonItemMesh = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");	// common
 	_uniqueItemMesh = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");	// unique
+	_treasureMesh = GET_SINGLE(Resources)->LoadFBX(L"Diamond.bin");		// treasure
 
 	SetItemPosition();
 }
 
 void ItemManager::Update()
 {
-	//CreateCommonItem();
-	//CreateUniqueItem();
-	//CreateTreasure();
+	CreateCommonItem();
+	CreateUniqueItem();
+	CreateTreasure();
 
 	Collision_ItemToPlayer();
 }
@@ -37,8 +38,7 @@ void ItemManager::LateUpdate()
 
 void ItemManager::SetItemPosition()
 {
-	// 회의때 -2로 정했는데 플레이어 y가 0이라 충돌이 안돼서 나중에 -2로 바꿔야하면 수정하겠삼!
-	float y = 0.f;		// y값은 다 똑같
+	float y = -2.f;		// y값은 다 똑같
 
 #pragma region ItemPos
 	// 좌표 순서좀 섞어야한다. 하지만 귀찮다 나중에 ,, ~
@@ -167,6 +167,44 @@ void ItemManager::CreateUniqueItem()
 
 void ItemManager::CreateTreasure()
 {
+	// 보물 생성, 1분마다 하나씩 생성 -> 총 3번 생성
+	_treasureTimer += DELTA_TIME;
+
+	if (_treasureTimer >= _treasureTime)	// test 10초
+	{
+		vector<shared_ptr<GameObject>>	treasure = _treasureMesh->Instantiate();
+
+		for (auto& gameObject : treasure)
+		{
+			gameObject->SetName(L"Treasure");
+			gameObject->SetCheckFrustum(false);
+
+			// 아이템 어레이에서 좌표값 꺼내오기
+			if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+			Vec3 pos = _itemPosArray[_itemIndex++];
+
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
+			gameObject->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			gameObject->AddComponent(make_shared<Item>());
+
+			// Item enum값 설정 - ItemType, ItemEffect
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemType(ITEM_TYPE::TRESURE);
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemEffect((ITEM_EFFECT)(7));
+			_treasureList.push_back(gameObject);
+
+
+			shared_ptr<Scene> scene = make_shared<Scene>();
+			scene = GET_SINGLE(SceneManager)->GetActiveScene();
+			scene->AddGameObject(gameObject);
+		}
+
+		_treasureTimer = 0.f;
+	}
 }
 
 void ItemManager::Collision_ItemToPlayer()

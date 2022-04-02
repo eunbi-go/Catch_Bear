@@ -19,6 +19,8 @@
 #include "AnimationController.h"
 #include "AnimationTrack.h"
 
+#include "IdleState.h"
+
 shared_ptr<Scene> scene = make_shared<Scene>();
 
 void SceneManager::Update()
@@ -68,35 +70,6 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 	return findIt->second;
 }
 
-void SceneManager::MakePlayer(uint64 _playerID)
-{
-	{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"Player");
-		obj->AddComponent(make_shared<Transform>());
-		obj->AddComponent(make_shared<Player>());
-		obj->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(200.f + (_playerID * 100.f), 0.f, 500.f));
-		obj->SetStatic(false);
-		obj->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadCubeMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-
-		// 플레이어ID 설정
-		obj->SetPlayerID(_playerID);
-
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-		scene->AddPlayers(_playerID, obj);
-	}
-}
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
@@ -257,7 +230,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-		
+
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 
 		for (auto& gameObject : gameObjects)
@@ -273,8 +246,30 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(0);
+			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
+			scene->AddPlayers(0, gameObject);
 		}
+		/*vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		for (auto& gameObject : gameObjects2)
+		{
+			gameObject->SetName(L"Player");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(1);
+			gameObject->_state = new IdleState();
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(1, gameObject);
+		}*/
 	}
 #pragma endregion
 

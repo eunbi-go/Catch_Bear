@@ -8,8 +8,9 @@
 #include "AnimationController.h"
 #include "Timer.h"
 #include "IdleState.h"
+#include "GameObject.h"
 
-PlayerState* DashRestState::KeyCheck(Player& player)
+PlayerState* DashRestState::KeyCheck(GameObject& player)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 		return new DashState(_fDashTime);
@@ -18,7 +19,7 @@ PlayerState* DashRestState::KeyCheck(Player& player)
 	return NULL;
 }
 
-PlayerState* DashRestState::Update(Player& player)
+PlayerState* DashRestState::Update(GameObject& player)
 {
 	_fDashTime += DELTA_TIME;
 	if (_fDashTime >= 5.f)
@@ -26,11 +27,11 @@ PlayerState* DashRestState::Update(Player& player)
     return nullptr;
 }
 
-void DashRestState::Enter(Player& player)
+void DashRestState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }
 
-void DashRestState::End(Player& player)
+void DashRestState::End(GameObject& player)
 {
 }

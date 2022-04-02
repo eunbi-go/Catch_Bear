@@ -7,8 +7,8 @@ public:
 	JumpState() {}
 
 public:
-	virtual PlayerState* KeyCheck(Player& player);
-	virtual PlayerState* Update(Player& player);
-	virtual void Enter(Player& player);
-	virtual void End(Player& player);
+	virtual PlayerState* KeyCheck(GameObject& player);
+	virtual PlayerState* Update(GameObject& player);
+	virtual void Enter(GameObject& player);
+	virtual void End(GameObject& player);
 };

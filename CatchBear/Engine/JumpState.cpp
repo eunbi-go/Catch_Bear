@@ -3,13 +3,14 @@
 #include "Player.h"
 #include "AnimationController.h"
 #include "IdleState.h"
+#include "GameObject.h"
 
-PlayerState* JumpState::KeyCheck(Player& player)
+PlayerState* JumpState::KeyCheck(GameObject& player)
 {
     return NULL;
 }
 
-PlayerState* JumpState::Update(Player& player)
+PlayerState* JumpState::Update(GameObject& player)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
@@ -19,12 +20,12 @@ PlayerState* JumpState::Update(Player& player)
     return NULL;
 }
 
-void JumpState::Enter(Player& player)
+void JumpState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 2);
 }
 
-void JumpState::End(Player& player)
+void JumpState::End(GameObject& player)
 {
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

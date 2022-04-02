@@ -30,6 +30,6 @@ private:
 	STATE	_preState = STATE::END;
 
 public:
-	class PlayerState* _state;
+	//class PlayerState* _state;
 };
 

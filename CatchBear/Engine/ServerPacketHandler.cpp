@@ -45,40 +45,6 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 	_player->SetPlayerID(pkt.playerid());
 
-	//for (auto& gameObject : gameObjects)
-	//{
-	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == pkt.playerid())
-	//	{
-	//		_player = gameObject;
-	//		break;
-	//	}
-	//}
-
-	//uint64 enterPlayernum = pkt.enterplayer();
-
-	//if (enterPlayerIndex != enterPlayernum)
-	//{
-	//	if (enterPlayernum == 1)	// 2명 접속
-	//	{
-	//		if (_player->GetPlayerID() == 0)
-	//			SceneManager::GetInstance()->MakePlayer(1);		// 0번 플레이어일때 1번 플레이어 만들기
-	//		if (_player->GetPlayerID() == 1)
-	//			SceneManager::GetInstance()->MakePlayer(0);		// 1번 플레이어일때 0번 플레이어 만들기
-	//	}
-	//	if (enterPlayernum == 2)	// 3명 접속
-	//	{
-	//		if (_player->GetPlayerID() == 0)
-	//			SceneManager::GetInstance()->MakePlayer(2);		// 0번 플레이어일때 2번 플레이어 만들기
-	//		if (_player->GetPlayerID() == 1)
-	//			SceneManager::GetInstance()->MakePlayer(2);		// 1번 플레이어일때 2번 플레이어 만들기
-	//		if (_player->GetPlayerID() == 2) {
-	//			SceneManager::GetInstance()->MakePlayer(0);		// 2번 플레이어일때 0,1번 플레이어 만들기
-	//			SceneManager::GetInstance()->MakePlayer(1);
-	//		}
-	//	}
-	//	enterPlayerIndex = enterPlayernum;
-	//}
-
 	Protocol::C_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_playerid(mysession->GetPlayerID());
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
@@ -212,11 +178,14 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	switch (pkt.state())
 	{
 	case Protocol::IDLE:
-		state = new IdleState;
-		delete _player->_state;
-		_player->_state = state;
-		_player->_state->Enter(*_player);
-		_player->_state->curState = STATE::IDLE;
+		if (!_player->_state->curState == STATE::IDLE)
+		{
+			state = new IdleState;
+			delete _player->_state;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::IDLE;
+		}
 		break;
 	case Protocol::WALK:
 		if (!_player->_state->curState == STATE::WALK)

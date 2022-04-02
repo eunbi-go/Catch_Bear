@@ -1,6 +1,6 @@
 #pragma once
 class Player;
-
+class GameObject;
 class PlayerState
 {
 public:
@@ -8,10 +8,10 @@ public:
 	virtual ~PlayerState() { }
 
 public:
-	virtual PlayerState* KeyCheck(Player& player) = 0;
-	virtual PlayerState* Update(Player& player) = 0;
-	virtual void Enter(Player& player) = 0;
-	virtual void End(Player& player) = 0;
+	virtual PlayerState* KeyCheck(GameObject& player) = 0;
+	virtual PlayerState* Update(GameObject& player) = 0;
+	virtual void Enter(GameObject& player) = 0;
+	virtual void End(GameObject& player) = 0;
 
 public:
 	static class IdleState idle;
@@ -20,5 +20,7 @@ public:
 	static class AttackState attack;
 	static class DashState dash;
 	static class DashRestState dashRest;
+
+	STATE curState = STATE::END;
 };
 

@@ -4,29 +4,28 @@
 #include "AnimationController.h"
 #include "Input.h"
 #include "IdleState.h"
-#include "GameObject.h"
 
-PlayerState* AttackState::KeyCheck(GameObject& player)
+PlayerState* AttackState::KeyCheck(Player& player)
 {
     return nullptr;
 }
 
-void AttackState::Update(GameObject& player)
+PlayerState* AttackState::Update(Player& player)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
-        player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
-        //return new IdleState;
+        player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+        return new IdleState;
     }
-    //return NULL;
+    return NULL;
 }
 
-void AttackState::Enter(GameObject& player)
+void AttackState::Enter(Player& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 4);
 }
 
-void AttackState::End(GameObject& player)
+void AttackState::End(Player& player)
 {
-    player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
+    player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

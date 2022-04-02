@@ -43,7 +43,7 @@ public:
 	void SetWorldMatrix();
 
 	bool IsAnimationFinish(int nTrack);
-	//void SetAnimationPosition(int nTrack, float fPosition);
+	void SetAnimationPosition(int nTrack, float fPosition);
 
 private:
 	float									_updateTime = 0.f;

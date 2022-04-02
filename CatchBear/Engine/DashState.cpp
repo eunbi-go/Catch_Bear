@@ -3,22 +3,40 @@
 #include "Timer.h"
 #include "Player.h"
 #include "AnimationController.h"
-#include "GameObject.h"
+#include "Input.h"
+#include "IdleState.h"
+#include "DashRestState.h"
 
-PlayerState* DashState::KeyCheck(GameObject& player)
+PlayerState* DashState::KeyCheck(Player& player)
 {
-    return nullptr;
+    if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
+    {
+        return NULL;
+    }
+    else return new DashRestState(_fDashTime);
+
+    return NULL;
 }
 
-void DashState::Update(GameObject& player)
+PlayerState* DashState::Update(Player& player)
 {
-   // return nullptr;
+    // 5초 동안만 유지됨
+    _fDashTime += DELTA_TIME;
+    if (_fDashTime >= 5.f)
+    {
+        int k = 0;
+        _fDashTime = 0.f;
+        return new IdleState;
+    }
+
+    return NULL;
 }
 
-void DashState::Enter(GameObject& player)
+void DashState::Enter(Player& player)
 {
+    player.GetAnimationController()->SetTrackAnimationSet(0, 3);
 }
 
-void DashState::End(GameObject& player)
+void DashState::End(Player& player)
 {
 }

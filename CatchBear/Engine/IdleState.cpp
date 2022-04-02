@@ -9,24 +9,28 @@
 #include "JumpState.h"
 #include "AttackState.h"
 #include "DashState.h"
-#include "GameObject.h"
 
-PlayerState* IdleState::KeyCheck(GameObject& player)
+PlayerState* IdleState::KeyCheck(Player& player)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
-		return new MoveState();
+		return new MoveState;
+	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
+	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
+	else if (INPUT->GetButton(KEY_TYPE::Q)) return new DashState;
 	return NULL;
 }
 
-void IdleState::Update(GameObject& player)
+PlayerState* IdleState::Update(Player& player)
 {
+	return NULL;
 }
 
-void IdleState::Enter(GameObject& player)
+void IdleState::Enter(Player& player)
 {
 	player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }
 
-void IdleState::End(GameObject& player)
+void IdleState::End(Player& player)
 {
+	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

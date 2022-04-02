@@ -27,7 +27,8 @@ private:
 	void LoadMaterialInfoFromFile(FILE* pFile);
 
 	void LoadAnimationInfo(FILE* pFile);
-
+	void CreateMaterials();
+		
 public:
 	vector<shared_ptr<GameObject>>	Instantiate();
 
@@ -37,5 +38,7 @@ private:
 	vector<shared_ptr<AnimationClipInfo>>	_animationClipInfo;
 
 	shared_ptr<AnimationModelInfo>			_modelInfo;
+
+	wstring _name;
 };
 

@@ -8,13 +8,15 @@
 #include "MoveState.h"
 #include "JumpState.h"
 #include "AttackState.h"
+#include "DashState.h"
 
 PlayerState* IdleState::KeyCheck(Player& player)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
-		return new MoveState();
+		return new MoveState;
 	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
 	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
+	//else if (INPUT->GetButtonDown(KEY_TYPE::Q)) return new DashState;
 	return NULL;
 }
 

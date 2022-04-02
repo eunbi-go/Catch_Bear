@@ -18,5 +18,6 @@ public:
 	static class MoveState move;
 	static class JumpState jump;
 	static class AttackState attack;
+	static class DashState dash;
 };
 

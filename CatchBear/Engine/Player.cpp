@@ -14,9 +14,11 @@
 #include "IdleState.h"
 #include "MoveState.h"
 #include "AttackState.h"
+#include "DashState.h"
 
 Player::Player()
 {
+	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
 	_state = new IdleState();
 }
 
@@ -26,26 +28,30 @@ Player::~Player()
 
 void Player::LateUpdate()
 {
+	// 서버에서 컨트롤하는 플레이어는 서버에서 위치값도 받아오니까 필요없을듯
 	KeyCheck();
-	
-	PlayerState* state = _state->Update(*shared_from_this());
 
-	if (state != NULL)
-	{
-		delete _state;
-		_state = state;
-		_state->Enter(*shared_from_this());
-	}
+	////////////////////////////////////////////////////////////////////
+	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
+	//PlayerState* state = _state->Update(*shared_from_this());
 
-	//StateCheck();
-	//AnimationCheck();
-	
+	//if (state != NULL)
+	//{
+	//	delete _state;
+	//	_state = state;
+	//	_state->Enter(*shared_from_this());
+	//}
+	////////////////////////////////////////////////////////////////////
+
+
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
+	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
+	
 }
 
 void Player::KeyCheck()
@@ -56,15 +62,16 @@ void Player::KeyCheck()
 
 
 	//////////////////////////////////////////////////////////////////////////
+	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	/// State Check
-	PlayerState* state = _state->KeyCheck(*shared_from_this());
+	//PlayerState* state = _state->KeyCheck(*shared_from_this());
 
-	if (state != NULL)
-	{
-		delete _state;
-		_state = state;
-		_state->Enter(*shared_from_this());
-	}
+	//if (state != NULL)
+	//{
+	//	delete _state;
+	//	_state = state;
+	//	_state->Enter(*shared_from_this());
+	//}
 	//////////////////////////////////////////////////////////////////////////
 
 
@@ -124,7 +131,7 @@ void Player::KeyCheck()
 		GetTransform()->SetLocalRotation(rot);
 
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		//if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
@@ -135,44 +142,4 @@ void Player::KeyCheck()
 
 	GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
-}
-
-void Player::StateCheck()
-{
-	if (_curState != _preState)
-	{
-		switch (_curState)
-		{
-		case Player::IDLE:
-			GetAnimationController()->SetTrackAnimationSet(0, 0);
-			break;
-		case Player::WALK:
-			GetAnimationController()->SetTrackAnimationSet(0, 1);
-			break;
-		case Player::DASH:
-			GetAnimationController()->SetTrackAnimationSet(0, 3);
-			break;
-		case Player::JUMP:
-			GetAnimationController()->SetTrackAnimationSet(0, 2);
-			break;
-		case Player::ATTACK:
-			GetAnimationController()->SetTrackAnimationSet(0, 4);
-			break;
-		case Player::END:
-			break;
-		default:
-			break;
-		}
-
-		_preState = _curState;
-	}
-}
-
-void Player::AnimationCheck()
-{
-	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
-	{
-		if (GetAnimationController()->IsAnimationFinish(0))
-			_curState = IDLE;
-	}
 }

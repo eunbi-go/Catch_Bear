@@ -11,14 +11,14 @@ PlayerState* AttackState::KeyCheck(GameObject& player)
     return nullptr;
 }
 
-PlayerState* AttackState::Update(GameObject& player)
+void AttackState::Update(GameObject& player)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
-        player.GetAnimationController()->SetAnimationPosition(0, 0.f);
-        return new IdleState;
+        player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
+        //return new IdleState;
     }
-    return NULL;
+    //return NULL;
 }
 
 void AttackState::Enter(GameObject& player)
@@ -28,5 +28,5 @@ void AttackState::Enter(GameObject& player)
 
 void AttackState::End(GameObject& player)
 {
-    player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+    player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
 }

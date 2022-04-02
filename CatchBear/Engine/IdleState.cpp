@@ -18,12 +18,15 @@ PlayerState* IdleState::KeyCheck(GameObject& player)
 	return NULL;
 }
 
-PlayerState* IdleState::Update(GameObject& player)
+void IdleState::Update(GameObject& player)
 {
-	return NULL;
 }
 
 void IdleState::Enter(GameObject& player)
 {
 	player.GetAnimationController()->SetTrackAnimationSet(0, 0);
+}
+
+void IdleState::End(GameObject& player)
+{
 }

@@ -10,9 +10,9 @@ PlayerState* DashState::KeyCheck(GameObject& player)
     return nullptr;
 }
 
-PlayerState* DashState::Update(GameObject& player)
+void DashState::Update(GameObject& player)
 {
-    return nullptr;
+   // return nullptr;
 }
 
 void DashState::Enter(GameObject& player)

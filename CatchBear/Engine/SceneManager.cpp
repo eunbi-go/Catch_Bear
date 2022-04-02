@@ -241,8 +241,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			//gameObject->_boundingBox = BoundingOrientedBox(
-			//	XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			gameObject->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
@@ -262,8 +262,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			Object->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			Object->AddComponent(make_shared<Player>());
 			Object->SetStatic(false);
-			//Object->_boundingBox = BoundingOrientedBox(
-			//	XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			Object->_boundingBox = BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			Object->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
 			Object->SetPlayerID(1);

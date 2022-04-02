@@ -16,9 +16,8 @@ PlayerState* MoveState::KeyCheck(GameObject& player)
 	else return new IdleState;
 }
 
-PlayerState* MoveState::Update(GameObject& player)
+void MoveState::Update(GameObject& player)
 {
-	return NULL;
 }
 
 void MoveState::Enter(GameObject& player)
@@ -28,6 +27,6 @@ void MoveState::Enter(GameObject& player)
 
 void MoveState::End(GameObject& player)
 {
-	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+	player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
 }
 

@@ -10,14 +10,14 @@ PlayerState* JumpState::KeyCheck(GameObject& player)
     return NULL;
 }
 
-PlayerState* JumpState::Update(GameObject& player)
+void JumpState::Update(GameObject& player)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
-        player.GetAnimationController()->SetAnimationPosition(0, 0.f);
-        return new IdleState;
+        player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
+        //return new IdleState;
     }
-    return NULL;
+    //return NULL;
 }
 
 void JumpState::Enter(GameObject& player)
@@ -27,5 +27,5 @@ void JumpState::Enter(GameObject& player)
 
 void JumpState::End(GameObject& player)
 {
-    player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+    player.GetAnimationController()->SetTrackAnimationSet(0, 0.f);
 }

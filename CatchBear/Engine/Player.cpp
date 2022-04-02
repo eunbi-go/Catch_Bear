@@ -29,6 +29,8 @@ void Player::LateUpdate()
 	
 	//StateCheck();
 	//AnimationCheck();
+	_state->Update(*shared_from_this());
+
 	
 	Vec3 pos = GetTransform()->GetLocalPosition();
 	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
@@ -76,16 +78,16 @@ void Player::KeyCheck()
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
 		pos += GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_curState = WALK;
 	}
 
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{
 		pos -= GetTransform()->GetLook() * _speed * DELTA_TIME;
-		_curState = WALK;
+		//_curState = WALK;
 	}
 
-	else _curState = IDLE;
+	//else _curState = IDLE;
 
 	// 회전
 	float delta = 0.f;
@@ -97,7 +99,7 @@ void Player::KeyCheck()
 		GetTransform()->SetLocalRotation(rot);
 		
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		//if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -108,12 +110,12 @@ void Player::KeyCheck()
 		GetTransform()->SetLocalRotation(rot);
 
 		// 이동+회전: WALK
-		if (_curState != WALK)	_curState = IDLE;
+		//if (_curState != WALK)	_curState = IDLE;
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::SPACE))
 	{
-		_curState = JUMP;
+		//_curState = JUMP;
 	}
 
 

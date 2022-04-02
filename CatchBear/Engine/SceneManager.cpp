@@ -272,6 +272,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
 			gameObject->SetCheckFrustum(false);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			scene->AddGameObject(gameObject);
 		}
 

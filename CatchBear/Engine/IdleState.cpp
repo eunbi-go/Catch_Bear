@@ -16,7 +16,7 @@ PlayerState* IdleState::KeyCheck(Player& player)
 		return new MoveState;
 	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
 	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
-	//else if (INPUT->GetButtonDown(KEY_TYPE::Q)) return new DashState;
+	else if (INPUT->GetButton(KEY_TYPE::Q)) return new DashState;
 	return NULL;
 }
 

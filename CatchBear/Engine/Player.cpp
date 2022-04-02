@@ -15,6 +15,7 @@
 #include "MoveState.h"
 #include "AttackState.h"
 #include "DashState.h"
+#include "DashRestState.h"
 
 Player::Player()
 {
@@ -33,14 +34,15 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	//PlayerState* state = _state->Update(*shared_from_this());
+	PlayerState* state = _state->Update(*shared_from_this());
 
-	//if (state != NULL)
-	//{
-	//	delete _state;
-	//	_state = state;
-	//	_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		_state->End(*shared_from_this());
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 	////////////////////////////////////////////////////////////////////
 
 
@@ -63,15 +65,15 @@ void Player::KeyCheck()
 
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	/// State Check
-	//PlayerState* state = _state->KeyCheck(*shared_from_this());
+	// State Check
+	PlayerState* state = _state->KeyCheck(*shared_from_this());
 
-	//if (state != NULL)
-	//{
-	//	delete _state;
-	//	_state = state;
-	//	_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 

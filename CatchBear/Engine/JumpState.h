@@ -1,10 +1,10 @@
 #pragma once
 #include "PlayerState.h"
 
-class MoveState : public PlayerState
+class JumpState : public PlayerState
 {
 public:
-	MoveState() {}
+	JumpState() {}
 
 public:
 	virtual PlayerState* KeyCheck(Player& player);
@@ -12,4 +12,3 @@ public:
 	virtual void Enter(Player& player);
 	virtual void End(Player& player);
 };
-

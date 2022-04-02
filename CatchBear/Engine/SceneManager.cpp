@@ -200,7 +200,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	LoadMapFile(scene);
+	//LoadMapFile(scene);
 #pragma endregion
 
 #pragma region Item
@@ -263,10 +263,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
 			gameObject->_boundingBox = BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -275,20 +276,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			scene->AddGameObject(gameObject);
 		}
-
-		//gameObjects = CharacData->Instantiate();
-
-		//for (auto&Object : gameObjects)
-		//{
-		//	Object->SetName(L"Player");
-		//	Object->GetTransform()->SetLocalPosition(Vec3(0.f, -0.f, 0.f));
-		//	Object->GetTransform()->SetLocalScale(Vec3(5.f, 5.f, 5.f));
-		//	Object->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-		//	Object->GetAnimationController()->SetTrackAnimationSet(0, 0);
-		//	Object->SetStatic(false);
-		//	Object->SetCheckFrustum(false);	// 컬링 오류나서 컬링하지 않도록 설정해둠
-		//	scene->AddGameObject(Object);
-		//}
 	}
 #pragma endregion
 

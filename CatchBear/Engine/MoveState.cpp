@@ -4,8 +4,6 @@
 #include "IdleState.h"
 #include "Player.h"
 #include "AnimationController.h"
-#include "JumpState.h"
-#include "AttackState.h"
 #include "GameObject.h"
 
 PlayerState* MoveState::KeyCheck(GameObject& player)
@@ -15,8 +13,6 @@ PlayerState* MoveState::KeyCheck(GameObject& player)
 		// 현재 상태 유지
 		return NULL;
 	}
-	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
-	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
 	else return new IdleState;
 }
 
@@ -34,3 +30,4 @@ void MoveState::End(GameObject& player)
 {
 	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }
+

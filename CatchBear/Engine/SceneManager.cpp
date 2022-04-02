@@ -172,7 +172,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	//LoadMapFile(scene);
+	LoadMapFile(scene);
 #pragma endregion
 
 #pragma region Item
@@ -229,7 +229,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
-		
+
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 
 		for (auto& gameObject : gameObjects)
@@ -253,7 +253,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 
-		for (auto&Object : gameObjects2)
+		for (auto& Object : gameObjects2)
 		{
 			Object->SetName(L"Player");
 			Object->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));

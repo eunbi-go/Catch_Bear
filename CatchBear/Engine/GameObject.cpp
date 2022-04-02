@@ -18,6 +18,9 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
+#include "SceneManager.h"
+#include "Scene.h"
+
 GameObject::GameObject() : Object(OBJECT_TYPE::GAMEOBJECT)
 {
 }

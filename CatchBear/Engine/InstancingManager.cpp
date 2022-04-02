@@ -6,8 +6,6 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "Material.h"
-#include "Timer.h"
-#include "AnimationController.h"
 
 // Render()를 호출하는 순간, 카메라에서 분류를 한 오브젝트를 루프를 돌면서 하나씩 그려주는게 아니라
 // InstancingManager에게 렌더링해달라고 모든 물체들을 다 떠넘겨주게 된다.
@@ -35,26 +33,10 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 		const vector<shared_ptr<GameObject>>& vec = pair.second;
 
 		// 만약 물체가 하나밖에 없다면 기존과 마찬가지로 일반적인 Render() 활용
-
-		// 1. 만약 플레이어라면 하나씩 호출해줘야 함
-		if (vec[0]->GetAnimationController() != NULL)
+		if (vec.size() == 1)
 		{
-			for (int i = 0; i < vec.size(); ++i)
-			{
-				// SetInt(0, 0): 인스턴싱 사용X
-				vec[i]->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-				vec[i]->GetMeshRenderer()->Render();
-
-			}
-			continue;
-		}
-		// 2. 플레이어 외 객체
-		else if (vec.size() == 1)
-		{
-			vec[0]->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			vec[0]->GetMeshRenderer()->Render();
 		}
-
 
 		// 인스턴싱이 적용이 되어야 한다면
 		// 모든 물체들을 다 한번에 그려주기 위해서 물체들을 모아주고 있다.

@@ -192,3 +192,43 @@ void Player::KeyCheck()
 	//GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 }
+
+void Player::StateCheck()
+{
+	if (_curState != _preState)
+	{
+		switch (_curState)
+		{
+		case Player::IDLE:
+			GetAnimationController()->SetTrackAnimationSet(0, 0);
+			break;
+		case Player::WALK:
+			GetAnimationController()->SetTrackAnimationSet(0, 1);
+			break;
+		case Player::DASH:
+			GetAnimationController()->SetTrackAnimationSet(0, 3);
+			break;
+		case Player::JUMP:
+			GetAnimationController()->SetTrackAnimationSet(0, 2);
+			break;
+		case Player::ATTACK:
+			GetAnimationController()->SetTrackAnimationSet(0, 4);
+			break;
+		case Player::END:
+			break;
+		default:
+			break;
+		}
+
+		_preState = _curState;
+	}
+}
+
+void Player::AnimationCheck()
+{
+	if (_curState == DASH || _curState == JUMP || _curState == ATTACK)
+	{
+		if (GetAnimationController()->IsAnimationFinish(0))
+			_curState = IDLE;
+	}
+}

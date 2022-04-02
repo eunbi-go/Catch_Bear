@@ -38,7 +38,7 @@ void ItemManager::LateUpdate()
 void ItemManager::SetItemPosition()
 {
 	// 회의때 -2로 정했는데 플레이어 y가 0이라 충돌이 안돼서 나중에 -2로 바꿔야하면 수정하겠삼!
-	float y = -2.f;		// y값은 다 똑같
+	float y = 0.f;		// y값은 다 똑같
 
 #pragma region ItemPos
 	// 좌표 순서좀 섞어야한다. 하지만 귀찮다 나중에 ,, ~

@@ -14,6 +14,9 @@ public:
 
 	virtual void LateUpdate() override;
 
+public:
+	void AddPlayerItem(shared_ptr<GameObject> item);
+
 private:
 	void KeyCheck();
 
@@ -24,6 +27,8 @@ private:
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();
 	shared_ptr<class CameraScript>	_cameraScript = make_shared<CameraScript>();
+
+	vector<shared_ptr<GameObject>>	_playerItem;
 
 private:
 	STATE	_curState = STATE::END;

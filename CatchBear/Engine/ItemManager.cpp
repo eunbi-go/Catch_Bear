@@ -11,6 +11,7 @@
 #include "Scene.h"
 #include "SceneManager.h"
 #include "MeshData.h"
+#include "Player.h"
 
 void ItemManager::Init()
 {
@@ -183,7 +184,7 @@ void ItemManager::CreateTreasure()
 			if (_itemIndex > _maxItemIndex) _itemIndex = 0;
 			Vec3 pos = _itemPosArray[_itemIndex++];
 
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalPosition(pos);
 			gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
@@ -228,7 +229,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
 		{
-			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+			static_pointer_cast<Player>(_player)->AddPlayerItem(*item);
 			scene->RemoveGameObject(*item);
 			item = _commonItemList.erase(item);
 		}

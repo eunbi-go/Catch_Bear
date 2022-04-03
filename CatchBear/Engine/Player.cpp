@@ -55,6 +55,23 @@ void Player::LateUpdate()
 	
 }
 
+void Player::AddPlayerItem(shared_ptr<GameObject> item)
+{
+	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
+	// 아이템을 3개 지니고 있으면 맨처음 아이템 삭제
+	if (_playerItem.size() < 3)
+	{
+		_playerItem.push_back(item);
+		int a = 0;
+	}
+
+	//auto findIt = std::find(_gameObjects.begin(), _gameObjects.end(), gameObject);
+	//if (findIt != _gameObjects.end())
+	//{
+	//	_gameObjects.erase(findIt);
+	//}
+}
+
 void Player::KeyCheck()
 {
 	// 게임종료

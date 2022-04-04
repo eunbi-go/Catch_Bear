@@ -12,5 +12,7 @@ public:
 	void Start();
 	void Update();
 	void LateUpdate();
+
+private:
 };
 

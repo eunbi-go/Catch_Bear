@@ -297,11 +297,14 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TimerUI
-	shared_ptr<GameObject> timerUI = make_shared<TimerUI>();
-	timerUI->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-	timerUI->AddComponent(make_shared<Transform>());
-	timerUI->GetTransform()->SetLocalScale(Vec3(200.f, 200.f, 200.f));
-	timerUI->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 500.f));
+	// minute
+	shared_ptr<GameObject> minuteTimer = make_shared<TimerUI>();
+	minuteTimer->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	minuteTimer->SetName(L"minuteTimer");
+	minuteTimer->AddComponent(make_shared<Transform>());
+	minuteTimer->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	minuteTimer->GetTransform()->SetLocalPosition(Vec3(-100.f, 340.f, 500.f));
+
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	{
 		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
@@ -309,14 +312,65 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	{
 		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer1", L"..\\Resources\\Texture\\timerr.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer0", L"..\\Resources\\Texture\\timer\\timer_0.png");
 		shared_ptr<Material> material = make_shared<Material>();
 		material->SetShader(shader);
 		material->SetTexture(0, texture);
 		meshRenderer->SetMaterial(material);
 	}
-	timerUI->AddComponent(meshRenderer);
-	scene->AddGameObject(timerUI);
+	minuteTimer->AddComponent(meshRenderer);
+
+	scene->AddGameObject(minuteTimer);
+
+	// tenSec
+	shared_ptr<GameObject> sec1Timer = make_shared<TimerUI>();
+	sec1Timer->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	sec1Timer->SetName(L"tenSecond");
+	sec1Timer->AddComponent(make_shared<Transform>());
+	sec1Timer->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	sec1Timer->GetTransform()->SetLocalPosition(Vec3(20.f, 340.f, 500.f));
+
+	shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		meshRenderer1->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer1", L"..\\Resources\\Texture\\timer\\timer_1.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		meshRenderer1->SetMaterial(material);
+	}
+	sec1Timer->AddComponent(meshRenderer1);
+
+	scene->AddGameObject(sec1Timer);
+
+	// oneSec
+	shared_ptr<GameObject> sec2Timer = make_shared<TimerUI>();
+	sec2Timer->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	sec2Timer->SetName(L"oneSecond");
+	sec2Timer->AddComponent(make_shared<Transform>());
+	sec2Timer->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	sec2Timer->GetTransform()->SetLocalPosition(Vec3(100.f, 340.f, 500.f));
+
+	shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		meshRenderer2->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer2", L"..\\Resources\\Texture\\timer\\timer_2.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		meshRenderer2->SetMaterial(material);
+	}
+	sec2Timer->AddComponent(meshRenderer2);
+
+	scene->AddGameObject(sec2Timer);
 #pragma endregion
 
 #pragma region UI_Test

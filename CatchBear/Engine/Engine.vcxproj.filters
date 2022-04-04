@@ -210,7 +210,9 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="DashRestState.cpp" />
+    <ClCompile Include="DashRestState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -390,7 +392,9 @@
     <ClInclude Include="PlayerState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="DashRestState.h" />
+    <ClInclude Include="DashRestState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">
@@ -457,6 +461,9 @@
     </Filter>
     <Filter Include="01. Object\00. Component\02. Player\State">
       <UniqueIdentifier>{41968de1-65ab-46f1-9eda-b1827301d943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI">
+      <UniqueIdentifier>{98b76126-c239-4a19-aef5-b36da4894bef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

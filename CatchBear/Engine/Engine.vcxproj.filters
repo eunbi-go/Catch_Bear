@@ -213,6 +213,9 @@
     <ClCompile Include="DashRestState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
+    <ClCompile Include="TimerUI.cpp">
+      <Filter>01. Object\02. UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -394,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="DashRestState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUI.h">
+      <Filter>01. Object\02. UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

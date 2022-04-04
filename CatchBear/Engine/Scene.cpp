@@ -8,6 +8,8 @@
 #include "Engine.h"
 #include "Resources.h"
 #include "ServerSession.h"
+#include "Timer.h"
+#include "MeshRenderer.h"
 
 void Scene::Awake()
 {
@@ -32,6 +34,7 @@ void Scene::Start()
 
 void Scene::Update()
 {
+	SetTimer();
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
 		gameObject->Update();
@@ -197,6 +200,26 @@ void Scene::PushLightData()
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));
 }
 
+void Scene::SetTimer()
+{
+	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");
+
+	_curTime += DELTA_TIME;
+	float fTime = 180.0f - _curTime;
+
+	if (_curTime < 60.0f)
+	{
+		// minute = 0
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer3", L"..\\Resources\\Texture\\timer\\timer_3.png");
+		mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+	}
+	else
+	{
+		shared_ptr<Texture> texture2 = GET_SINGLE(Resources)->Load<Texture>(L"Timer4", L"..\\Resources\\Texture\\timer\\timer_4.png");
+		mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture2);
+	}
+}
+
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)
 {
 	if (gameObject->GetCamera() != nullptr)
@@ -236,5 +259,16 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 	if (findIt != _gameObjects.end())
 	{
 		_gameObjects.erase(findIt);
+	}
+}
+
+shared_ptr<GameObject> Scene::GetGameObject(wstring name)
+{
+	for (size_t i = 0; i < _gameObjects.size(); ++i)
+	{
+		if (_gameObjects[i]->GetName() == name)
+		{
+			return _gameObjects[i];
+		}
 	}
 }

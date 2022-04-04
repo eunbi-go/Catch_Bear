@@ -210,9 +210,8 @@ void ItemManager::CreateTreasure()
 
 void ItemManager::Collision_ItemToPlayer()
 {
-	shared_ptr<Scene> scene = make_shared<Scene>();
-	scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	auto& gameObjects = scene->GetGameObjects();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
@@ -230,7 +229,7 @@ void ItemManager::Collision_ItemToPlayer()
 		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
 		{
 			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
-			static_pointer_cast<Player>(_player)->AddPlayerItem(*item);
+			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);
 			scene->RemoveGameObject(*item);
 			item = _commonItemList.erase(item);
 		}

@@ -12,9 +12,11 @@ public:
 	Player();
 	virtual ~Player();
 
+	virtual void Update() override;
 	virtual void LateUpdate() override;
 
 public:
+	void CollisionToItem();
 	void AddPlayerItem(shared_ptr<GameObject> item);
 
 private:

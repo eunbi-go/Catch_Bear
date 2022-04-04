@@ -17,6 +17,8 @@
 #include "DashState.h"
 #include "DashRestState.h"
 
+#include "ItemManager.h"
+
 Player::Player()
 {
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
@@ -24,6 +26,10 @@ Player::Player()
 }
 
 Player::~Player()
+{
+}
+
+void Player::Update()
 {
 }
 
@@ -55,6 +61,27 @@ void Player::LateUpdate()
 	
 }
 
+void Player::CollisionToItem()
+{
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	auto& itemList = GET_SINGLE(ItemManager)->GetCommonItemList();
+
+	for (auto item = itemList.begin(); item != itemList.end();)
+	{
+		if ((*item)->_boundingBox.Intersects(GetGameObject()->_boundingBox))
+		{
+			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+			AddPlayerItem(*item);
+			scene->RemoveGameObject(*item);
+			item = itemList.erase(item);
+		}
+
+		else item++;
+	}
+}
+
 void Player::AddPlayerItem(shared_ptr<GameObject> item)
 {
 	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
@@ -64,12 +91,6 @@ void Player::AddPlayerItem(shared_ptr<GameObject> item)
 		_playerItem.push_back(item);
 		int a = 0;
 	}
-
-	//auto findIt = std::find(_gameObjects.begin(), _gameObjects.end(), gameObject);
-	//if (findIt != _gameObjects.end())
-	//{
-	//	_gameObjects.erase(findIt);
-	//}
 }
 
 void Player::KeyCheck()

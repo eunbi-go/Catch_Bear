@@ -12,6 +12,8 @@
 #include "SceneManager.h"
 #include "MeshData.h"
 
+#include "ServerSession.h"
+
 void ItemManager::Init()
 {
 	_itemArray = { _commonItemList, _uniqueItemList, _treasureList };
@@ -24,7 +26,7 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	//CreateCommonItem();
+	CreateCommonItem();
 	//CreateUniqueItem();
 	//CreateTreasure();
 
@@ -74,7 +76,7 @@ void ItemManager::CreateCommonItem()
 				item->GetTransform()->SetLocalPosition(pos);
 				item->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-				item->_boundingExtents = XMFLOAT3(5.f, 5.f, 5.f);
+				item->_boundingExtents = XMFLOAT3(2.f, 2.f, 2.f);
 				item->_boundingBox = BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 				item->AddComponent(make_shared<Item>());
@@ -163,5 +165,4 @@ void ItemManager::Collision_ItemToPlayer()
 
 		// else item++;
 	}
-
 }

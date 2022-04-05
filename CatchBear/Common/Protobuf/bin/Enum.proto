@@ -13,7 +13,9 @@ enum ObjectType
 {
 	PLAYER = 0;
 	WALL = 1;
-	ITEM = 2;
+	COMMONITEM = 2;
+	UNIQEITEM = 3;
+	TREASURE = 4;
 }
 
 enum MoveDir
@@ -31,4 +33,11 @@ enum STATE
 	DASH = 2;
 	JUMP = 3;
 	ATTACK = 4;
+}
+
+enum ItemType
+{
+	COMMON = 0;
+	UNIQE = 1;
+	TREASURE = 2;
 }

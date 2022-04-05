@@ -62,6 +62,8 @@ public:
 	bool IsStatic() { return _static; }
 	void SetPlayerID(uint64 _id) { _playerID = _id; }
 	uint64 GetPlayerID() { return _playerID; }
+	bool GetIsAllowPlayerMove() { return _isAllowPlayerMove; }
+	void SetIsAllowPlayerMove(bool _isAllow) { _isAllowPlayerMove = _isAllow; }
 
 private:
 	// 일반적인 컴포넌트(고정)
@@ -73,6 +75,7 @@ private:
 	uint8	_layerIndex = 0;
 	bool	_static = false;
 	uint64  _playerID = 0;
+	bool	_isAllowPlayerMove;
 
 public:
 	char* _pFrameName;

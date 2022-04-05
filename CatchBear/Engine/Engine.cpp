@@ -10,6 +10,7 @@
 #include "InstancingManager.h"
 #include "ItemManager.h"
 #include "ScoreManager.h"
+#include "CollidManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -54,6 +55,7 @@ void Engine::Update()
 	GET_SINGLE(InstancingManager)->ClearBuffer();
 	GET_SINGLE(ItemManager)->Update();
 	GET_SINGLE(ScoreManager)->Update();
+	GET_SINGLE(CollidManager)->Update();
 
 	Render();
 

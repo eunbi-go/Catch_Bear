@@ -19,6 +19,7 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
+
 Player::Player()
 {
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
@@ -110,8 +111,9 @@ void Player::KeyCheck()
 	// 이동
 	if (INPUT->GetButton(KEY_TYPE::UP))
 	{
-		pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-
+		if (_player->GetIsAllowPlayerMove())
+			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
+		
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -121,8 +123,13 @@ void Player::KeyCheck()
 		pkt.set_iskeydown(true);
 		pkt.set_movedir(0);
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (_player->GetIsAllowPlayerMove()) {
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		else
+			int a = 10;
+		
 	}
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
 	{

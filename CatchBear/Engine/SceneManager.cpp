@@ -21,6 +21,8 @@
 
 #include "IdleState.h"
 
+#include "ServerSession.h"
+
 shared_ptr<Scene> scene = make_shared<Scene>();
 
 void SceneManager::Update()
@@ -457,6 +459,10 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 		object->GetTransform()->SetLocalPosition(trans);
 		object->GetTransform()->SetLocalScale(scale);
 		object->GetTransform()->SetLocalRotation(rotate);
+		object->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+		object->_boundingBox = BoundingOrientedBox(
+			XMFLOAT3(0.0f, 0.0f, 0.0f), object->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 		scene->AddGameObject(object);
+		scene->AddStaticObj(object);
 	}
 }

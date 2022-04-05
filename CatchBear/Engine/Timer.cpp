@@ -20,6 +20,7 @@ void Timer::Update()
 
 	// 누적 시간 계산
 	_frameTime += _deltaTime;
+	_AllTime += _deltaTime;
 
 	// 1초가 넘어가면 0으로 세팅됨
 	if (_frameTime > 1.f)

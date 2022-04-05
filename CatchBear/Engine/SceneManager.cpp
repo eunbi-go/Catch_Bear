@@ -311,7 +311,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		meshRenderer->SetMesh(mesh);
 	}
 	{
-		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 		shared_ptr<Material> material = make_shared<Material>();
 		material->SetShader(shader);
@@ -336,7 +336,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		meshRenderer1->SetMesh(mesh);
 	}
 	{
-		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer1", L"..\\Resources\\Texture\\timer\\timer1.png");
 		shared_ptr<Material> material = make_shared<Material>();
 		material->SetShader(shader);
@@ -361,7 +361,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		meshRenderer2->SetMesh(mesh);
 	}
 	{
-		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Texture");
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer2", L"..\\Resources\\Texture\\timer\\timer2.png");
 		shared_ptr<Material> material = make_shared<Material>();
 		material->SetShader(shader);

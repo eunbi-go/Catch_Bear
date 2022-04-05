@@ -35,6 +35,12 @@ void Scene::Start()
 void Scene::Update()
 {
 	SetTimer();
+
+	int time = (int)_curTime;
+	float time2 = _curTime / 2.f;
+	int time3 = time % 2;
+	CONST_BUFFER(CONSTANT_BUFFER_TYPE::TIME)->PushGraphicsData(&time, sizeof(int));
+
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
 		gameObject->Update();
@@ -195,6 +201,7 @@ void Scene::PushLightData()
 
 		lightParams.lights[lightParams.lightCount] = lightInfo;
 		lightParams.lightCount++;
+		lightParams.time = GET_SINGLE(Timer)->GetAllTime();
 	}
 
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));

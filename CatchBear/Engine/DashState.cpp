@@ -25,8 +25,15 @@ PlayerState* DashState::Update(Player& player)
     if (_fDashTime >= 5.f)
     {
         int k = 0;
+        player.SetPlayerSpeed(_fOriginalSpeed);
+        player.SetCurItem(Player::ITEM::SPEED_UP, false);
         _fDashTime = 0.f;
         return new IdleState;
+    }
+
+    else if (_fDashTime < 5.f)
+    {
+        player.SetPlayerSpeed(_fDashSpeed);
     }
 
     return NULL;

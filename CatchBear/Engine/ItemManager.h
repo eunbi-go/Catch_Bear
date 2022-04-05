@@ -21,7 +21,7 @@ public:
 	void CreateUniqueItem();
 	void CreateTreasure();
 
-public:
+private:
 	void Collision_ItemToPlayer();
 
 public:

@@ -102,7 +102,7 @@ void ItemManager::CreateCommonItem()
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
-				item->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				item->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 				item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
 				item->_boundingBox = BoundingOrientedBox(
@@ -111,7 +111,8 @@ void ItemManager::CreateCommonItem()
 
 				// Item enum°ª ¼³Á¤ - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::STUN);
 				_commonItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -144,7 +145,7 @@ void ItemManager::CreateUniqueItem()
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
-				item->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+				item->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 				item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
 				item->_boundingBox = BoundingOrientedBox(
@@ -203,7 +204,6 @@ void ItemManager::CreateTreasure()
 			scene = GET_SINGLE(SceneManager)->GetActiveScene();
 			scene->AddGameObject(gameObject);
 		}
-
 		_treasureTimer = 0.f;
 	}
 }

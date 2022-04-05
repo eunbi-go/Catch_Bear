@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "GameObject.h"
 #include "Scene.h"
+#include "Transform.h"
 
 void CollidManager::Update()
 {
@@ -31,7 +32,9 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	{
 		if ((*mapobj)->_boundingBox.Intersects(_player->_boundingBox))
 		{
+			Vec3 lk = _player->GetTransform()->GetLook();
 			_player->SetIsAllowPlayerMove(false);
+			break;
 		}
 		else
 			_player->SetIsAllowPlayerMove(true);

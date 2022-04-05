@@ -76,7 +76,7 @@ void ItemManager::CreateCommonItem()
 				item->GetTransform()->SetLocalPosition(pos);
 				item->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-				item->_boundingExtents = XMFLOAT3(2.f, 2.f, 2.f);
+				item->_boundingExtents = XMFLOAT3(1.f, 1.f, 1.f);
 				item->_boundingBox = BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 				item->AddComponent(make_shared<Item>());

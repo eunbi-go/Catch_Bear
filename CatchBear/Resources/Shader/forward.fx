@@ -119,13 +119,16 @@ float4 PS_TimerTex(VS_TEX_OUT input) : SV_Target
     if (g_tex_on_0)
         color = g_tex_0.Sample(g_sam_0, input.uv);
     int time = (int)g_time;
-    if (time % 2 == 0)
+    if (time > 100)
     {
-        color.x = 1.f;
-        return color;
+        if (time % 2 == 0)
+        {
+            color.x = 1.f;
+            return color;
+        }
+        
     }
-    else
-        return color;
+    return color;
 }
 
 #endif

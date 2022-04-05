@@ -174,34 +174,34 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	_player->GetTransform()->SetLocalPosition(pos);
 	_player->GetTransform()->SetLocalRotation(rot);
 
-	PlayerState* state;
-	switch (pkt.state())
-	{
-	case Protocol::IDLE:
-		if (!_player->_state->curState == STATE::IDLE)
-		{
-			state = new IdleState;
-			delete _player->_state;
-			_player->_state = state;
-			_player->_state->Enter(*_player);
-			_player->_state->curState = STATE::IDLE;
-		}
-		break;
-	case Protocol::WALK:
-		if (!_player->_state->curState == STATE::WALK)
-		{
-			state = new MoveState;
-			delete _player->_state;
-			_player->_state = state;
-			_player->_state->Enter(*_player);
-			_player->_state->curState = STATE::WALK;
-		}
-		if (pkt.iskeydown() == false)
-			_player->_state->End(*_player);
-		break;
-	default:
-		break;
-	}
+	//PlayerState* state;
+	//switch (pkt.state())
+	//{
+	//case Protocol::IDLE:
+	//	if (!_player->_state->curState == STATE::IDLE)
+	//	{
+	//		state = new IdleState;
+	//		delete _player->_state;
+	//		_player->_state = state;
+	//		_player->_state->Enter(*_player);
+	//		_player->_state->curState = STATE::IDLE;
+	//	}
+	//	break;
+	//case Protocol::WALK:
+	//	if (!_player->_state->curState == STATE::WALK)
+	//	{
+	//		state = new MoveState;
+	//		delete _player->_state;
+	//		_player->_state = state;
+	//		_player->_state->Enter(*_player);
+	//		_player->_state->curState = STATE::WALK;
+	//	}
+	//	if (pkt.iskeydown() == false)
+	//		_player->_state->End(*_player);
+	//	break;
+	//default:
+	//	break;
+	//}
 
 	return true;
 }

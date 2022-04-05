@@ -5,27 +5,28 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* JumpState::KeyCheck(GameObject& player)
+PlayerState* JumpState::KeyCheck(Player& player, STATE ePlayer)
 {
     return NULL;
 }
 
-PlayerState* JumpState::Update(GameObject& player)
+PlayerState* JumpState::Update(Player& player, STATE ePlayer)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
         player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+        ePlayer = STATE::IDLE;
         return new IdleState;
     }
     return NULL;
 }
 
-void JumpState::Enter(GameObject& player)
+void JumpState::Enter(Player& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 2);
 }
 
-void JumpState::End(GameObject& player)
+void JumpState::End(Player& player)
 {
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

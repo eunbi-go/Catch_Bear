@@ -22,7 +22,7 @@
 Player::Player()
 {
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
-	_player->_state = new IdleState();
+	_state = new IdleState();
 }
 
 Player::~Player()
@@ -36,15 +36,15 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	//PlayerState* state = _player->_state->Update(*shared_from_this());
+	PlayerState* state = _state->Update(*shared_from_this(), _curState);
 
-	//if (state != NULL)
-	//{
-	//	_player->_state->End(*shared_from_this());
-	//	delete _player->_state;
-	//	_player->_state = state;
-	//	_player->_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		_state->End(*shared_from_this());
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 	////////////////////////////////////////////////////////////////////
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
@@ -83,14 +83,14 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
-	//PlayerState* state = _player->_state->KeyCheck(*shared_from_this());
+	PlayerState* state = _state->KeyCheck(*shared_from_this(), _curState);
 
-	//if (state != NULL)
-	//{
-	//	delete _player->_state;
-	//	_player->_state = state;
-	//	_player->_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*shared_from_this());
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();

@@ -203,21 +203,35 @@ void Scene::PushLightData()
 void Scene::SetTimer()
 {
 	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");
-
+	shared_ptr<GameObject> tTimer = GetGameObject(L"tenSecond");
+	shared_ptr<GameObject> oTimer = GetGameObject(L"oneSecond");
+	shared_ptr<Texture> textureMinute, textureTenSec, textureOneSec;
 	_curTime += DELTA_TIME;
-	float fTime = 180.0f - _curTime;
+	float time = 180.0f - _curTime;
+	if (_curTime >= 180.0f)
+		int k = 0;
 
-	if (_curTime < 60.0f)
-	{
-		// minute = 0
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Timer3", L"..\\Resources\\Texture\\timer\\timer_3.png");
-		mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
-	}
-	else
-	{
-		shared_ptr<Texture> texture2 = GET_SINGLE(Resources)->Load<Texture>(L"Timer4", L"..\\Resources\\Texture\\timer\\timer_4.png");
-		mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture2);
-	}
+	// minuteTimer
+	int minute = (int)(_curTime / 60.f);
+	if (minute == 0)
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer2", L"..\\Resources\\Texture\\timer\\timer2.png");
+	else if (minute == 1)
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer1", L"..\\Resources\\Texture\\timer\\timer1.png");
+	else if (minute == 2)
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
+
+	// secondTimer
+	int second = (int)(time) % 60;
+	int ten = second / 10;
+	int one = second % 10;
+	wstring texTenName = L"timer" + s2ws(to_string(ten));
+	wstring texOneName = L"timer" + s2ws(to_string(one));
+	
+	textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
+	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
+	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
+	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
 }
 
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)

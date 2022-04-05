@@ -216,6 +216,8 @@
     <ClCompile Include="TimerUI.cpp">
       <Filter>01. Object\02. UI</Filter>
     </ClCompile>
+    <ClCompile Include="SlowState.cpp" />
+    <ClCompile Include="SlowRestState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -401,6 +403,8 @@
     <ClInclude Include="TimerUI.h">
       <Filter>01. Object\02. UI</Filter>
     </ClInclude>
+    <ClInclude Include="SlowState.h" />
+    <ClInclude Include="SlowRestState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

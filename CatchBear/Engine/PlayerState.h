@@ -19,6 +19,8 @@ public:
 	static class AttackState attack;
 	static class DashState dash;
 	static class DashRestState dashRest;
+	static class SlowState slow;
+	static class SlowRestState slowRest;
 
 	STATE curState = STATE::END;
 };

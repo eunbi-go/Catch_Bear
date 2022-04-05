@@ -10,6 +10,7 @@
 #include "AttackState.h"
 #include "DashState.h"
 #include "GameObject.h"
+#include "SlowState.h"
 
 PlayerState* IdleState::KeyCheck(Player& player, STATE ePlayer)
 {

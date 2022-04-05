@@ -18,6 +18,8 @@
 #include "DashRestState.h"
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
+#include "SlowRestState.h"
+#include "SlowState.h"
 
 Player::Player()
 {

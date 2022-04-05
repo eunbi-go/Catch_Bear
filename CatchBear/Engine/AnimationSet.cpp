@@ -46,7 +46,7 @@ XMFLOAT4X4 AnimationSet::GetSRT(int nBone)
 
 bool AnimationSet::IsAnimationFinish()
 {
-	if (_position >= _keyFrameTimes[_nKeyFrames - 2])
+	if (_position >= _keyFrameTimes[_nKeyFrames - 3])
 	{
 		_position = 0.f;
 		return true;

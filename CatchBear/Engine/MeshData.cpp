@@ -50,7 +50,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						fclose(pFile);
 
 						// Resources에 텍스처, 재질 추가
-						if (strcmp(ws2s(path).c_str(), "Diamond.bin"))
+						if (strcmp(ws2s(path).c_str(), "Diamond.bin") && strcmp(ws2s(path).c_str(), "Cuboid.bin"))
 							CreateTextures();
 						CreateMaterials();
 
@@ -354,14 +354,14 @@ void MeshData::CreateMaterials()
 	wstring		key = _staticMeshInfo.material.name;
 
 	material->SetName(key);
-	if (key == L"Material")
+	if (key == L"Material" || key == L"Blank")
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Treasure"));
 	else
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 
 	material->SetInt(0, 1);
 
-	if (key != L"Material")
+	if (key != L"Material" && key != L"Blank")
 	{
 		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
 		wstring		fileName = fs::path(diffuseName).filename();

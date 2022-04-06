@@ -178,6 +178,20 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region Item
+	//// Cuboid
+	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"Cuboid.bin");
+
+	//vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
+	//for (auto& gameObject : objectsPresent1)
+	//{
+	//	gameObject->SetName(L"Cuboid");
+	//	gameObject->SetCheckFrustum(false);
+	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 2.f, 3.f));
+	//	gameObject->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+	//	scene->AddGameObject(gameObject);
+	//}
+
 	// present1
 	// Resources::LoadFBX()
 	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
@@ -211,21 +225,21 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//	scene->AddGameObject(gameObject);
 	//}
 
-	//// Diamond
-	//shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Diamond.bin");
+	// Diamond
+	shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Cuboid.bin");
 
-	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent5->Instantiate();
+	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent5->Instantiate();
 
-	//for (auto& gameObject : objectsPresent4)
-	//{
-	//	gameObject->SetName(L"Present4");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	scene->AddGameObject(gameObject);
-	//}
+	for (auto& gameObject : objectsPresent4)
+	{
+		gameObject->SetName(L"Present4");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		scene->AddGameObject(gameObject);
+	}
 #pragma endregion
 
 #pragma region TestPlayer

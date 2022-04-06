@@ -14,7 +14,7 @@
 #include "SlowRestState.h"
 #include "StunState.h"
 
-PlayerState* StunState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* StunState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     return NULL;
 }

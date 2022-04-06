@@ -250,11 +250,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(1.f, 1.f, 1.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
-			gameObject->_state = new IdleState();
+			//gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 		}
-		/*vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
 			gameObject->SetName(L"Player");
@@ -264,15 +264,15 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
+			gameObject->_boundingExtents = XMFLOAT3(1.f, 1.f, 1.f);
 			gameObject->_boundingBox = BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
+			//gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
-		}*/
+		}
 	}
 #pragma endregion
 

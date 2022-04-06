@@ -6,7 +6,7 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* AttackState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* AttackState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     return nullptr;
 }

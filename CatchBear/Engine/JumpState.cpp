@@ -5,7 +5,7 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* JumpState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* JumpState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     return NULL;
 }

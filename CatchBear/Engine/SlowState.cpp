@@ -9,7 +9,7 @@
 #include "SlowRestState.h"
 #include "GameObject.h"
 
-PlayerState* SlowState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* SlowState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
     {

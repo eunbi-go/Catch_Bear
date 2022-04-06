@@ -9,7 +9,7 @@
 #include "GameObject.h"
 #include "Timer.h"
 
-PlayerState* MoveState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* MoveState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{

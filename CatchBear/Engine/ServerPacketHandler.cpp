@@ -14,6 +14,10 @@
 #include "MoveState.h"
 #include "AttackState.h"
 #include "DashState.h"
+#include "DashRestState.h"
+#include "SlowRestState.h"
+#include "SlowState.h"
+#include "StunState.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -175,20 +179,12 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	_player->GetTransform()->SetLocalRotation(rot);
 
 	// 본인의 플레이어가 아닐때만 애니메이션 동기화 시켜줌
-	//if (_player->GetPlayerID() != mysession->GetPlayerID())
-	//{
-		PlayerState* state;
+	if (_player->GetPlayerID() != mysession->GetPlayerID())
+	{
 		switch (pkt.state())
 		{
 		case Protocol::IDLE:
-			if (!_player->_state->curState == STATE::IDLE)
-			{
-				state = new IdleState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::IDLE;
-			}
+			PlayerState* state = IdleState();
 			break;
 		case Protocol::WALK:
 			if (!_player->_state->curState == STATE::WALK)
@@ -199,13 +195,11 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::WALK;
 			}
-			if (pkt.iskeydown() == false)
-				_player->_state->End(*_player);
 			break;
 		default:
 			break;
 		}
-	//}
+	}
 
 	return true;
 }

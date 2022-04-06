@@ -13,7 +13,7 @@
 #include "SlowState.h"
 #include "StunState.h"
 
-PlayerState* IdleState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* IdleState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{

@@ -8,7 +8,7 @@
 #include "DashRestState.h"
 #include "GameObject.h"
 
-PlayerState* DashState::KeyCheck(GameObject& player, STATE ePlayer)
+PlayerState* DashState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
     {

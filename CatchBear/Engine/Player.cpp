@@ -26,6 +26,7 @@
 #include "Item.h"
 #include "Light.h"
 
+Protocol::C_MOVE pkt;
 
 Player::Player()
 {
@@ -50,20 +51,20 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	PlayerState* state = _state->Update(*GetGameObject(), _curState);
-	GetGameObject()->_curState = _curState;
+	PlayerState* state = _state->Update(*_player, _curState);
+	_player->_curState = _curState;
 
 	if (state != NULL)
 	{
-		_state->End(*GetGameObject());
+		_state->End(*_player);
 		delete _state;
 		_state = state;
-		_state->Enter(*GetGameObject());
+		_state->Enter(*_player);
 	}
 	////////////////////////////////////////////////////////////////////
 
-	Vec3 pos = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
+	/*Vec3 pos = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);*/
 
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
@@ -106,14 +107,25 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
-	PlayerState* state = _state->KeyCheck(*GetGameObject(), _curState);
-	GetGameObject()->_curState = _curState;
+	PlayerState* state = _state->KeyCheck(*_player, _curState);
+	_player->_curState = _curState;
 
 	if (state != NULL)
 	{
 		delete _state;
 		_state = state;
-		_state->Enter(*GetGameObject());
+		_state->Enter(*_player);
+	}
+	if (_player->_curState == STATE::WALK)
+		int a = 10;
+	switch (_player->_curState)
+	{
+	case STATE::IDLE:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::IDLE);
+	case STATE::WALK:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::IDLE);
 	}
 	//////////////////////////////////////////////////////////////////////////
 
@@ -124,8 +136,6 @@ void Player::KeyCheck()
 void Player::Move()
 {
 	if (_bStunned) return;
-
-	Protocol::C_MOVE pkt;
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
@@ -155,7 +165,7 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
+		//pkt.set_state(Protocol::WALK);
 		pkt.set_iskeydown(true);
 		pkt.set_movedir(0);
 
@@ -176,25 +186,25 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
+		//pkt.set_state(Protocol::WALK);
 		pkt.set_iskeydown(true);
 		pkt.set_movedir(1);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 	}
-	else		// 여기서 프레임마다 패킷 보내는게 맘에 안듬 나중에 수정할꺼임
-	{
-		pkt.set_xpos(pos.x);
-		pkt.set_ypos(pos.y);
-		pkt.set_zpos(pos.z);
-		pkt.set_yrot(rot.y);
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_iskeydown(false);
+	//else		// 여기서 프레임마다 패킷 보내는게 맘에 안듬 나중에 수정할꺼임
+	//{
+	//	pkt.set_xpos(pos.x);
+	//	pkt.set_ypos(pos.y);
+	//	pkt.set_zpos(pos.z);
+	//	pkt.set_yrot(rot.y);
+	//	pkt.set_playerid(mysession->GetPlayerID());
+	//	//pkt.set_iskeydown(false);
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
-	}
+	//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	//	mysession->Send(sendBuffer);
+	//}
 
 	Vec3 look = GetTransform()->GetLook();
 	int a = 0;
@@ -231,8 +241,8 @@ void Player::Move()
 		mysession->Send(sendBuffer);
 	}
 
-	GetTransform()->SetLocalPosition(pos);
-	_cameraScript->Revolve(delta, GetTransform()->GetLocalPosition());
+	//GetTransform()->SetLocalPosition(pos);
+	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 }
 
 void Player::KeyCheck_Item()

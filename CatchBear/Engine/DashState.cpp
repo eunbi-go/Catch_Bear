@@ -28,9 +28,8 @@ PlayerState* DashState::Update(GameObject& player, STATE ePlayer)
     _fDashTime += DELTA_TIME;
     if (_fDashTime >= 5.f)
     {
-        int k = 0;
-        //player.SetPlayerSpeed(_fOriginalSpeed);
-        //player.SetCurItem(Player::ITEM::SPEED_UP, false);
+        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fOriginalSpeed);
+        static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_UP, false);
         _fDashTime = 0.f;
         ePlayer = STATE::IDLE;
         return new IdleState;
@@ -38,7 +37,7 @@ PlayerState* DashState::Update(GameObject& player, STATE ePlayer)
 
     else if (_fDashTime < 5.f)
     {
-       // player.SetPlayerSpeed(_fDashSpeed);
+        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fDashSpeed);
     }
 
     return NULL;

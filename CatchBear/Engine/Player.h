@@ -1,6 +1,8 @@
 #pragma once
 #include "MonoBehaviour.h"
 
+class CameraScript;
+
 class Player : public MonoBehaviour, public enable_shared_from_this<Player>
 {
 public:
@@ -28,9 +30,11 @@ public:
 
 	void SetCurItem(Player::ITEM curItem, bool value) { _curPlayerItem[curItem] = value; }	// 이 함수 사용해서 플레이어에게 아이템 효과 부여
 	void SetPlayerSpeed(float speed) { _speed = speed; }
+	void SetPlayerStunned(bool value) { _bStunned = value; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerOriginalSpeed() { return _originalSpeed; }
+	const bool GetPlayerStunned() { return _bStunned; }
 	
 private:
 	void KeyCheck();
@@ -69,7 +73,7 @@ private:
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();
-	shared_ptr<class CameraScript>	_cameraScript = make_shared<CameraScript>();
+	shared_ptr<CameraScript>	_cameraScript = make_shared<CameraScript>();
 
 	array<bool, Player::ITEM::ITEM_END> _curPlayerItem;	// 플레이어가 사용중인or당하는중인 아이템 확인하기 위한 배열
 	vector<shared_ptr<GameObject>>	_playerItemVec;	// 플레이어가 가지고 있는 아이템 넣어두는 벡터(최대 3개)

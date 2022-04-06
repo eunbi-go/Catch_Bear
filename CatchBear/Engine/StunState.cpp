@@ -21,10 +21,14 @@ PlayerState* StunState::KeyCheck(GameObject& player, STATE ePlayer)
 
 PlayerState* StunState::Update(GameObject& player, STATE ePlayer)
 {
-    // 5초 동안만 유지됨
+    // 5초 동안만 유지됨 -> (수정) 스턴은 3초임네다 !
     _fTime += DELTA_TIME;
-    if (_fTime >= 5.f)
+    
+    if (_fTime >= 3.f)
     {
+        static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::STUN, false);
+        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
+
         ePlayer = _ePreState;
         switch (_ePreState)
         {
@@ -56,8 +60,8 @@ PlayerState* StunState::Update(GameObject& player, STATE ePlayer)
             return new IdleState;
             break;
         }
-        _fTime = 0.f;
 
+        _fTime = 0.f;
     }
 
     return NULL;

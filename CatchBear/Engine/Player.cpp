@@ -122,7 +122,6 @@ void Player::KeyCheck()
 
 void Player::Move()
 {
-
 	if (_bStunned) return;
 
 	Protocol::C_MOVE pkt;
@@ -321,13 +320,13 @@ void Player::ApplyItemEffect()
 void Player::Item_SpeedUp()
 {
 	// 스피드 변경 전 한번만 하도록
-	//if (_speed == _originalSpeed)
-	//{
-	//	_state->End(*shared_from_this());
-	//	delete _state;
-	//	_state = new DashState;
-	//	_state->Enter(*shared_from_this());
-	//}
+	if (_speed == _originalSpeed)
+	{
+		_state->End(*GetGameObject());
+		delete _state;
+		_state = new DashState;
+		_state->Enter(*GetGameObject());
+	}
 }
 
 void Player::Item_Teleport()
@@ -344,6 +343,7 @@ void Player::Item_Shield()
 {
 	// 쉴드 상태라면 디버프 방어
 	// 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
+	// 밑에서 위로 뭔가 올라오는 파티클 효과 추가 - 쉴드 상태인걸 알 수 있도록
 	_fShieldTime += DELTA_TIME;
 	
 	if (_fShieldTime <= 5.f)
@@ -393,14 +393,14 @@ void Player::Item_Stun()
 
 void Player::SlowDown()
 {
-	//// 자신 제외 모든 플레이어 5초동안 속도 감소
-	//if (_speed == _originalSpeed)
-	//{
-	//	_state->End(*shared_from_this());
-	//	delete _state;
-	//	_state = new MoveState;
-	//	_state->Enter(*shared_from_this());
-	//}
+	// 자신 제외 모든 플레이어 5초동안 속도 감소
+	if (_speed == _originalSpeed)
+	{
+		_state->End(*GetGameObject());
+		delete _state;
+		_state = new SlowState;
+		_state->Enter(*GetGameObject());
+	}
 }
 
 void Player::Blinded()
@@ -412,7 +412,11 @@ void Player::Blinded()
 	auto& lights = scene->GetLights();
 
 	for (auto& light : lights)
-		static_pointer_cast<Light>(light)->SetDiffuse(Vec3(0.05f, 0.05f, 0.05f));
+	{
+		static_pointer_cast<Light>(light)->SetDiffuse(Vec3(0.f, 0.f, 0.f));
+		static_pointer_cast<Light>(light)->SetAmbient(Vec3(0.01f, 0.01f, 0.01f));
+		static_pointer_cast<Light>(light)->SetSpecular(Vec3(0.01f, 0.01f, 0.01f));
+	}
 
 	if (_fBlindTime > 5.f)
 	{
@@ -427,16 +431,13 @@ void Player::Blinded()
 void Player::Stunned()
 {
 	// 유니크 아이템 - 3초간 스턴
-	_fStunTime += DELTA_TIME;
-
-	if (_fStunTime <= 300.f)
+	if (!_bStunned)
 	{
 		_bStunned = true;
-	}
-	else
-	{
-		_bStunned = false;
-		_fStunTime = 0.f;
-		_curPlayerItem[Player::ITEM::STUN] = false;
+
+		_state->End(*GetGameObject());
+		delete _state;
+		_state = new StunState;
+		_state->Enter(*GetGameObject());
 	}
 }

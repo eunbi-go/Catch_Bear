@@ -216,9 +216,15 @@
     <ClCompile Include="TimerUI.cpp">
       <Filter>01. Object\02. UI</Filter>
     </ClCompile>
-    <ClCompile Include="SlowState.cpp" />
-    <ClCompile Include="SlowRestState.cpp" />
-    <ClCompile Include="StunState.cpp" />
+    <ClCompile Include="SlowRestState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="SlowState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="StunState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -404,9 +410,15 @@
     <ClInclude Include="TimerUI.h">
       <Filter>01. Object\02. UI</Filter>
     </ClInclude>
-    <ClInclude Include="SlowState.h" />
-    <ClInclude Include="SlowRestState.h" />
-    <ClInclude Include="StunState.h" />
+    <ClInclude Include="SlowRestState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="SlowState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="StunState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

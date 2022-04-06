@@ -15,5 +15,8 @@ public:
 
 private:
 	float _fTime = 0.f;
+
+	float	_fSlowSpeed = 5.f;
+	float	_fOriginalSpeed = 10.f;
 };
 

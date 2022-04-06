@@ -27,12 +27,13 @@ void CollidManager::ColiisionPlayerToStaticObj()
 
 	auto& staticObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetStaticObj();
 
-	// 아이템 매니저가 리스트로 담고 있는 아이템들과 플레이어 충돌체크
 	for (auto mapobj = staticObjects.begin(); mapobj != staticObjects.end(); mapobj++)
 	{
 		if ((*mapobj)->_boundingBox.Intersects(_player->_boundingBox))
 		{
 			Vec3 lk = _player->GetTransform()->GetLook();
+			float ox = (*mapobj)->GetTransform()->GetLocalPosition().x;
+			float oz = (*mapobj)->GetTransform()->GetLocalPosition().z;
 			_player->SetIsAllowPlayerMove(false);
 			break;
 		}

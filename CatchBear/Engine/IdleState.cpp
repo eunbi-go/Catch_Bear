@@ -10,18 +10,36 @@
 #include "AttackState.h"
 #include "DashState.h"
 #include "GameObject.h"
+#include "SlowState.h"
+#include "StunState.h"
 
-PlayerState* IdleState::KeyCheck(GameObject& player)
+PlayerState* IdleState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
+	{
+		ePlayer = STATE::WALK;
 		return new MoveState;
-	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
-	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
-	else if (INPUT->GetButton(KEY_TYPE::Q)) return new DashState;
+	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE))
+	{
+		ePlayer = STATE::JUMP;
+		return new JumpState;
+	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))
+	{
+		ePlayer = STATE::ATTACK;
+		return new AttackState;
+	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::W))
+	{
+		ePlayer = STATE::STUN;
+		return new StunState;
+	}
+	ePlayer = STATE::IDLE;
 	return NULL;
 }
 
-PlayerState* IdleState::Update(GameObject& player)
+PlayerState* IdleState::Update(GameObject& player, STATE ePlayer)
 {
 	return NULL;
 }

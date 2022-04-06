@@ -10,20 +10,34 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* DashRestState::KeyCheck(GameObject& player)
+PlayerState* DashRestState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
+	{
+		ePlayer = STATE::DASH;
 		return new DashState(_fDashTime);
-	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) return new JumpState;
-	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))	return new AttackState;
+	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE))
+	{
+		ePlayer = STATE::JUMP;
+		return new JumpState;
+	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))
+	{
+		ePlayer = STATE::ATTACK;
+		return new AttackState;
+	}
 	return NULL;
 }
 
-PlayerState* DashRestState::Update(GameObject& player)
+PlayerState* DashRestState::Update(GameObject& player, STATE ePlayer)
 {
 	_fDashTime += DELTA_TIME;
 	if (_fDashTime >= 5.f)
+	{
+		ePlayer = STATE::IDLE;
 		return new IdleState;
+	}
     return nullptr;
 }
 

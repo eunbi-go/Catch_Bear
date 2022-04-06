@@ -27,6 +27,9 @@ public:
 private:
 	void PushLightData();
 
+private:
+	void SetTimer();
+
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
 	void AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject);
@@ -37,6 +40,9 @@ public:
 
 	const shared_ptr<GameObject>& GetPlayer(uint64 playerid) { return _players[playerid]; }
 	const vector<shared_ptr<GameObject>>& GetStaticObj() { return _vecStaticObject; }
+	shared_ptr<GameObject> GetGameObject(wstring name);
+
+	vector<shared_ptr<class Light>>	GetLights() { return _lights; }
 
 private:
 	// 벡터를 레이어 단계로 구분한다
@@ -50,5 +56,6 @@ private:
 	map<uint64, shared_ptr<GameObject>>		_players;
 	vector<shared_ptr<GameObject>>			_vecStaticObject;
 	//////////////////////////////////////////////////////////
-};
 
+	float	_curTime = 0.0f;
+};

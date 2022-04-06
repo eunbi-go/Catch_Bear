@@ -34,6 +34,7 @@ struct LightParams
 	uint32		lightCount;		// 조명 개수
 	Vec3		padding;
 	LightInfo	lights[50];		// 쉐이더에 모든 정보를 묶어서 통으로 넣어줌
+	float		time;
 };
 
 class Light : public Component

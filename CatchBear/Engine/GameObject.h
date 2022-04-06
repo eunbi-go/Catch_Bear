@@ -82,4 +82,6 @@ public:
 	BoundingOrientedBox _boundingBox;
 	XMFLOAT3	_boundingExtents;
 	class PlayerState* _state;
+
+	STATE _curState;
 };

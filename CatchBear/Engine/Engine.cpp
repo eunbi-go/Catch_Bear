@@ -36,6 +36,7 @@ void Engine::Init(const WindowInfo& info)
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b3, sizeof(BoneOffsetParams), 4);
 	CreateConstantBuffer(CBV_REGISTER::b4, sizeof(AnimatedBoneParams), 4);
+	CreateConstantBuffer(CBV_REGISTER::b5, sizeof(TimeParams), 4);
 
 	CreateRenderTargetGroups();
 

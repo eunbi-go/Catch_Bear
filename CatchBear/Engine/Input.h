@@ -17,6 +17,12 @@ enum class KEY_TYPE
 	Z = 'Z',
 	C = 'C',
 
+	TEST_KEY = 'T',
+
+	NUM1 = '1',
+	NUM2 = '2',
+	NUM3 = '3',
+
 	LBUTTON = VK_LBUTTON,
 	RBUTTON = VK_RBUTTON,
 

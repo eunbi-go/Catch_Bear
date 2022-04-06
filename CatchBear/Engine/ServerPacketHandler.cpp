@@ -206,6 +206,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			break;
 		}
 	//}
+
 	return true;
 }
 

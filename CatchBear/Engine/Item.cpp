@@ -8,7 +8,3 @@ Item::Item()
 Item::~Item()
 {
 }
-
-void Item::Update()
-{
-}

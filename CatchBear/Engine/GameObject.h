@@ -63,6 +63,12 @@ public:
 	void SetPlayerID(uint64 _id) { _playerID = _id; }
 	uint64 GetPlayerID() { return _playerID; }
 
+	void SetBoundingExtents(XMFLOAT3 extents) { _boundingExtents = extents; }
+	void SetBoundingBox(BoundingOrientedBox boundingBox) { _boundingBox = boundingBox; }
+
+	const BoundingOrientedBox GetBoundingBox() { return _boundingBox; }
+	const XMFLOAT3 GetBoundingExtents() { return _boundingExtents; }
+
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -74,10 +80,12 @@ private:
 	bool	_static = false;
 	uint64  _playerID = 0;
 
+	BoundingOrientedBox		_boundingBox;
+	XMFLOAT3				_boundingExtents;
+
 public:
 	char* _pFrameName;
-	BoundingOrientedBox _boundingBox;
-	XMFLOAT3	_boundingExtents;
+
 	class PlayerState* _state;
 
 	STATE _curState;

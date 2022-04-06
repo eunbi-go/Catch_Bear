@@ -243,9 +243,16 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->_boundingBox = BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-			gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+
+			gameObject->SetBoundingExtents(XMFLOAT3(3.f, 3.f, 3.f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+
+
+			//gameObject->_boundingBox = BoundingOrientedBox(
+			//	XMFLOAT3(0.0f, 0.0f, 0.0f), XMFLOAT3(3.f, 3.f, 3.f), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			//gameObject->_boundingExtents = XMFLOAT3(3.f, 3.f, 3.f);
+
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();

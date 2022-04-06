@@ -218,6 +218,7 @@
     </ClCompile>
     <ClCompile Include="SlowState.cpp" />
     <ClCompile Include="SlowRestState.cpp" />
+    <ClCompile Include="StunState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -405,6 +406,7 @@
     </ClInclude>
     <ClInclude Include="SlowState.h" />
     <ClInclude Include="SlowRestState.h" />
+    <ClInclude Include="StunState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

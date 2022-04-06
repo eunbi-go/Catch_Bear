@@ -9,7 +9,7 @@
 #include "Timer.h"
 #include "IdleState.h"
 
-PlayerState* SlowRestState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* SlowRestState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{
@@ -29,7 +29,7 @@ PlayerState* SlowRestState::KeyCheck(Player& player, STATE ePlayer)
 	return NULL;
 }
 
-PlayerState* SlowRestState::Update(Player& player, STATE ePlayer)
+PlayerState* SlowRestState::Update(GameObject& player, STATE ePlayer)
 {
 	_fTime += DELTA_TIME;
 	if (_fTime >= 5.f)
@@ -40,10 +40,10 @@ PlayerState* SlowRestState::Update(Player& player, STATE ePlayer)
 	return nullptr;
 }
 
-void SlowRestState::Enter(Player& player)
+void SlowRestState::Enter(GameObject& player)
 {
 }
 
-void SlowRestState::End(Player& player)
+void SlowRestState::End(GameObject& player)
 {
 }

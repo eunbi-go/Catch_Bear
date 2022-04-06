@@ -8,7 +8,7 @@
 #include "DashRestState.h"
 #include "GameObject.h"
 
-PlayerState* DashState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* DashState::KeyCheck(GameObject& player, STATE ePlayer)
 {
     if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
     {
@@ -22,7 +22,7 @@ PlayerState* DashState::KeyCheck(Player& player, STATE ePlayer)
     return NULL;
 }
 
-PlayerState* DashState::Update(Player& player, STATE ePlayer)
+PlayerState* DashState::Update(GameObject& player, STATE ePlayer)
 {
     // 5초 동안만 유지됨
     _fDashTime += DELTA_TIME;
@@ -37,11 +37,11 @@ PlayerState* DashState::Update(Player& player, STATE ePlayer)
     return NULL;
 }
 
-void DashState::Enter(Player& player)
+void DashState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 3);
 }
 
-void DashState::End(Player& player)
+void DashState::End(GameObject& player)
 {
 }

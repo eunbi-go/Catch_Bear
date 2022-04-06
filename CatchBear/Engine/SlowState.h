@@ -8,10 +8,10 @@ public:
 	SlowState(float fTime) : _fTime(fTime) { }
 
 public:
-	virtual PlayerState* KeyCheck(Player& player, STATE ePlayer);
-	virtual PlayerState* Update(Player& player, STATE ePlayer);
-	virtual void Enter(Player& player);
-	virtual void End(Player& player);
+	virtual PlayerState* KeyCheck(GameObject& player, STATE ePlayer);
+	virtual PlayerState* Update(GameObject& player, STATE ePlayer);
+	virtual void Enter(GameObject& player);
+	virtual void End(GameObject& player);
 
 private:
 	float _fTime = 0.f;

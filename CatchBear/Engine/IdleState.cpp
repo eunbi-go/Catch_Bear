@@ -11,8 +11,9 @@
 #include "DashState.h"
 #include "GameObject.h"
 #include "SlowState.h"
+#include "StunState.h"
 
-PlayerState* IdleState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* IdleState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{
@@ -29,21 +30,26 @@ PlayerState* IdleState::KeyCheck(Player& player, STATE ePlayer)
 		ePlayer = STATE::ATTACK;
 		return new AttackState;
 	}
+	else if (INPUT->GetButtonDown(KEY_TYPE::W))
+	{
+		ePlayer = STATE::STUN;
+		return new StunState;
+	}
 	ePlayer = STATE::IDLE;
 	return NULL;
 }
 
-PlayerState* IdleState::Update(Player& player, STATE ePlayer)
+PlayerState* IdleState::Update(GameObject& player, STATE ePlayer)
 {
 	return NULL;
 }
 
-void IdleState::Enter(Player& player)
+void IdleState::Enter(GameObject& player)
 {
 	player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }
 
-void IdleState::End(Player& player)
+void IdleState::End(GameObject& player)
 {
 	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

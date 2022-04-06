@@ -20,6 +20,7 @@
 #include "ServerSession.h"
 #include "SlowRestState.h"
 #include "SlowState.h"
+#include "StunState.h"
 
 Player::Player()
 {
@@ -38,14 +39,15 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	PlayerState* state = _state->Update(*shared_from_this(), _curState);
+	PlayerState* state = _state->Update(*GetGameObject(), _curState);
+	GetGameObject()->_curState = _curState;
 
 	if (state != NULL)
 	{
-		_state->End(*shared_from_this());
+		_state->End(*GetGameObject());
 		delete _state;
 		_state = state;
-		_state->Enter(*shared_from_this());
+		_state->Enter(*GetGameObject());
 	}
 	////////////////////////////////////////////////////////////////////
 
@@ -85,13 +87,14 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
-	PlayerState* state = _state->KeyCheck(*shared_from_this(), _curState);
+	PlayerState* state = _state->KeyCheck(*GetGameObject(), _curState);
+	GetGameObject()->_curState = _curState;
 
 	if (state != NULL)
 	{
 		delete _state;
 		_state = state;
-		_state->Enter(*shared_from_this());
+		_state->Enter(*GetGameObject());
 	}
 	//////////////////////////////////////////////////////////////////////////
 

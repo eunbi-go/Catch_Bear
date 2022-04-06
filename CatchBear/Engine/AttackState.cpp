@@ -6,12 +6,12 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* AttackState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* AttackState::KeyCheck(GameObject& player, STATE ePlayer)
 {
     return nullptr;
 }
 
-PlayerState* AttackState::Update(Player& player, STATE ePlayer)
+PlayerState* AttackState::Update(GameObject& player, STATE ePlayer)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
@@ -22,12 +22,12 @@ PlayerState* AttackState::Update(Player& player, STATE ePlayer)
     return NULL;
 }
 
-void AttackState::Enter(Player& player)
+void AttackState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 4);
 }
 
-void AttackState::End(Player& player)
+void AttackState::End(GameObject& player)
 {
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

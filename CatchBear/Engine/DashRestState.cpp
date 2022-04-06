@@ -10,7 +10,7 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* DashRestState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* DashRestState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{
@@ -30,7 +30,7 @@ PlayerState* DashRestState::KeyCheck(Player& player, STATE ePlayer)
 	return NULL;
 }
 
-PlayerState* DashRestState::Update(Player& player, STATE ePlayer)
+PlayerState* DashRestState::Update(GameObject& player, STATE ePlayer)
 {
 	_fDashTime += DELTA_TIME;
 	if (_fDashTime >= 5.f)
@@ -41,11 +41,11 @@ PlayerState* DashRestState::Update(Player& player, STATE ePlayer)
     return nullptr;
 }
 
-void DashRestState::Enter(Player& player)
+void DashRestState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 0);
 }
 
-void DashRestState::End(Player& player)
+void DashRestState::End(GameObject& player)
 {
 }

@@ -8,7 +8,7 @@
 #include "AttackState.h"
 #include "GameObject.h"
 
-PlayerState* MoveState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* MoveState::KeyCheck(GameObject& player, STATE ePlayer)
 {
 	if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
 	{
@@ -33,18 +33,18 @@ PlayerState* MoveState::KeyCheck(Player& player, STATE ePlayer)
 	}
 }
 
-PlayerState* MoveState::Update(Player& player, STATE ePlayer)
+PlayerState* MoveState::Update(GameObject& player, STATE ePlayer)
 {
 	ePlayer = STATE::WALK;
 	return NULL;
 }
 
-void MoveState::Enter(Player& player)
+void MoveState::Enter(GameObject& player)
 {
 	player.GetAnimationController()->SetTrackAnimationSet(0, 1);
 }
 
-void MoveState::End(Player& player)
+void MoveState::End(GameObject& player)
 {
 	player.GetAnimationController()->SetAnimationPosition(0, 0.f);
 }

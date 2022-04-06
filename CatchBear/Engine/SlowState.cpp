@@ -7,8 +7,9 @@
 #include "Timer.h"
 #include "IdleState.h"
 #include "SlowRestState.h"
+#include "GameObject.h"
 
-PlayerState* SlowState::KeyCheck(Player& player, STATE ePlayer)
+PlayerState* SlowState::KeyCheck(GameObject& player, STATE ePlayer)
 {
     if (INPUT->GetButton(KEY_TYPE::UP) || INPUT->GetButton(KEY_TYPE::DOWN))
     {
@@ -22,7 +23,7 @@ PlayerState* SlowState::KeyCheck(Player& player, STATE ePlayer)
     return NULL;
 }
 
-PlayerState* SlowState::Update(Player& player, STATE ePlayer)
+PlayerState* SlowState::Update(GameObject& player, STATE ePlayer)
 {
     // 5초 동안만 유지됨
     _fTime += DELTA_TIME;
@@ -36,13 +37,13 @@ PlayerState* SlowState::Update(Player& player, STATE ePlayer)
     return NULL;
 }
 
-void SlowState::Enter(Player& player)
+void SlowState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 1);
     player.GetAnimationController()->SetTrackSpeed(0, 0.2f);
 }
 
-void SlowState::End(Player& player)
+void SlowState::End(GameObject& player)
 {
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
     player.GetAnimationController()->SetTrackSpeed(0, 1.f);

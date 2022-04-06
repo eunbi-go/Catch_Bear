@@ -18,6 +18,9 @@
 #include "DashRestState.h"
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
+#include "SlowRestState.h"
+#include "SlowState.h"
+#include "StunState.h"
 
 #include "ItemManager.h"
 #include "Item.h"
@@ -46,15 +49,16 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	//PlayerState* state = _player->_state->Update(*shared_from_this());
+	PlayerState* state = _state->Update(*GetGameObject(), _curState);
+	GetGameObject()->_curState = _curState;
 
-	//if (state != NULL)
-	//{
-	//	_player->_state->End(*shared_from_this());
-	//	delete _player->_state;
-	//	_player->_state = state;
-	//	_player->_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		_state->End(*GetGameObject());
+		delete _state;
+		_state = state;
+		_state->Enter(*GetGameObject());
+	}
 	////////////////////////////////////////////////////////////////////
 
 	Vec3 pos = GetTransform()->GetLocalPosition();
@@ -100,15 +104,16 @@ void Player::KeyCheck()
 
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	//// State Check
-	//PlayerState* state = _player->_state->KeyCheck(*shared_from_this());
+	// State Check
+	PlayerState* state = _state->KeyCheck(*GetGameObject(), _curState);
+	GetGameObject()->_curState = _curState;
 
-	//if (state != NULL)
-	//{
-	//	delete _player->_state;
-	//	_player->_state = state;
-	//	_player->_state->Enter(*shared_from_this());
-	//}
+	if (state != NULL)
+	{
+		delete _state;
+		_state = state;
+		_state->Enter(*GetGameObject());
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	Move();

@@ -34,7 +34,7 @@ using PlayerRef = shared_ptr<class Player>;
 
 enum STATE
 {
-	IDLE, WALK, DASH, JUMP, ATTACK, END
+	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW_REST, STUN, END
 };
 
 #endif //PCH_H

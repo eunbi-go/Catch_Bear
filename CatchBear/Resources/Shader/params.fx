@@ -25,6 +25,7 @@ cbuffer GLOBAL_PARAMS : register(b0)
     int         g_lightCount;
     float3      g_lightPadding;
     LightInfo   g_light[50];
+    float       g_time;
 }
 
 cbuffer TRANSFORM_PARAMS : register(b1)
@@ -88,7 +89,9 @@ cbuffer cbBoneTransforms : register(b4)
     float4x4 g_boneTrans[72];
 };
 
-//StructuredBuffer<matrix>            g_offset : register(t10);
-//StructuredBuffer<matrix>            g_boneTrans : register(t11);
+cbuffer cbBoneTransforms : register(b5)
+{
+    int g_deltaTime;
+};
 
 #endif

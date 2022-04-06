@@ -1,37 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <FxCompile Include="..\Resources\Shader\compute.fx">
-      <Filter>04. Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resources\Shader\deferred.fx">
-      <Filter>04. Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resources\Shader\forward.fx">
-      <Filter>04. Shader</Filter>
-    </FxCompile>
-    <FxCompile Include="..\Resources\Shader\lighting.fx">
-      <Filter>04. Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Resources\Shader\params.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\particle.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Resources\Shader\skybox.fx">
-      <Filter>04. Shader</Filter>
-    </FxCompile>
     <FxCompile Include="..\Resources\Shader\shadow.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
-    <FxCompile Include="..\Resources\Shader\tessellation.fx">
+    <FxCompile Include="..\Resources\Shader\skybox.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\terrain.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
     <FxCompile Include="..\Resources\Shader\utils.fx">
+      <Filter>04. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\tessellation.fx">
+      <Filter>04. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\lighting.fx">
+      <Filter>04. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\deferred.fx">
+      <Filter>04. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\compute.fx">
+      <Filter>04. Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resources\Shader\forward.fx">
       <Filter>04. Shader</Filter>
     </FxCompile>
   </ItemGroup>
@@ -48,10 +48,10 @@
     <ClCompile Include="AnimationTrack.cpp">
       <Filter>08. Animation</Filter>
     </ClCompile>
-    <ClCompile Include="AttackState.cpp">
-      <Filter>08. Animation</Filter>
-    </ClCompile>
     <ClCompile Include="BaseCollider.cpp">
+      <Filter>01. Object\00. Component\03. Collider</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereCollider.cpp">
       <Filter>01. Object\00. Component\03. Collider</Filter>
     </ClCompile>
     <ClCompile Include="Camera.cpp">
@@ -59,51 +59,6 @@
     </ClCompile>
     <ClCompile Include="CameraScript.cpp">
       <Filter>01. Object\00. Component\01. Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="CharacterData.cpp">
-      <Filter>08. Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="CommandQueue.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="ConstantBuffer.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Device.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="InstancingBuffer.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="RootSignature.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="RenderTargetGroup.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="SwapChain.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="TableDescriptorHeap.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="StructuredBuffer.cpp">
-      <Filter>00. Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="DashRestState.cpp">
-      <Filter>08. Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="DashState.cpp">
-      <Filter>08. Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="IdleState.cpp">
-      <Filter>08. Animation</Filter>
     </ClCompile>
     <ClCompile Include="Input.cpp">
       <Filter>02. Manager</Filter>
@@ -123,44 +78,44 @@
     <ClCompile Include="Scene.cpp">
       <Filter>02. Manager</Filter>
     </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>02. Manager</Filter>
+    <ClCompile Include="CharacterData.cpp">
+      <Filter>08. Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="ConstantBuffer.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="CommandQueue.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancingBuffer.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RenderTargetGroup.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="RootSignature.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="StructuredBuffer.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="SwapChain.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="TableDescriptorHeap.cpp">
+      <Filter>00. Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="Device.cpp">
+      <Filter>00. Engine</Filter>
     </ClCompile>
     <ClCompile Include="Frustum.cpp">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="EnginePch.cpp">
-      <Filter>07. Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>01. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Object.cpp">
-      <Filter>01. Object</Filter>
-    </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>01. Object\00. Component\02. Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Resources.cpp">
-      <Filter>03. Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Material.cpp">
-      <Filter>03. Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>03. Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>03. Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>03. Resource</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>01. Object\00. Component\03. Collider</Filter>
     </ClCompile>
     <ClCompile Include="Enum.pb.cc">
       <Filter>05. Protocol</Filter>
@@ -171,22 +126,34 @@
     <ClCompile Include="Struct.pb.cc">
       <Filter>05. Protocol</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerState.cpp">
-      <Filter>08. Animation</Filter>
+    <ClCompile Include="Material.cpp">
+      <Filter>03. Resource</Filter>
     </ClCompile>
-    <ClCompile Include="MoveState.cpp">
-      <Filter>08. Animation</Filter>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>03. Resource</Filter>
     </ClCompile>
-    <ClCompile Include="JumpState.cpp">
-      <Filter>08. Animation</Filter>
+    <ClCompile Include="Resources.cpp">
+      <Filter>03. Resource</Filter>
     </ClCompile>
-    <ClCompile Include="MeshData.cpp">
-      <Filter>08. Animation</Filter>
+    <ClCompile Include="Shader.cpp">
+      <Filter>03. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Texture.cpp">
+      <Filter>03. Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>01. Object\00. Component\02. Player</Filter>
     </ClCompile>
     <ClCompile Include="Item.cpp">
       <Filter>01. Object\01. Item</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="Object.cpp">
+      <Filter>01. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>01. Object</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystem.cpp">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
     <ClCompile Include="MonoBehaviour.cpp">
@@ -195,24 +162,63 @@
     <ClCompile Include="MeshRenderer.cpp">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
-    <ClCompile Include="ParticleSystem.cpp">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClCompile>
-    <ClCompile Include="pch.cpp">
-      <Filter>07. Utils</Filter>
-    </ClCompile>
     <ClCompile Include="ServerPacketHandler.cpp">
       <Filter>06. Server</Filter>
     </ClCompile>
     <ClCompile Include="ServerSession.cpp">
       <Filter>06. Server</Filter>
     </ClCompile>
+    <ClCompile Include="MeshData.cpp">
+      <Filter>08. Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="EnginePch.cpp">
+      <Filter>07. Utils</Filter>
+    </ClCompile>
     <ClCompile Include="SimpleMath.cpp">
       <Filter>07. Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="pch.cpp">
+      <Filter>07. Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>02. Manager</Filter>
     </ClCompile>
     <ClCompile Include="Terrain.cpp">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClCompile>
+    <ClCompile Include="AttackState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="DashState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="IdleState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="MoveState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="DashRestState.cpp">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerUI.cpp">
+      <Filter>01. Object\02. UI</Filter>
+    </ClCompile>
+    <ClCompile Include="SlowState.cpp" />
+    <ClCompile Include="SlowRestState.cpp" />
+    <ClCompile Include="StunState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -227,10 +233,10 @@
     <ClInclude Include="AnimationTrack.h">
       <Filter>08. Animation</Filter>
     </ClInclude>
-    <ClInclude Include="AttackState.h">
-      <Filter>08. Animation</Filter>
-    </ClInclude>
     <ClInclude Include="BaseCollider.h">
+      <Filter>01. Object\00. Component\03. Collider</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereCollider.h">
       <Filter>01. Object\00. Component\03. Collider</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
@@ -238,51 +244,6 @@
     </ClInclude>
     <ClInclude Include="CameraScript.h">
       <Filter>01. Object\00. Component\01. Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="CharacterData.h">
-      <Filter>08. Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="CommandQueue.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="ConstantBuffer.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Device.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="InstancingBuffer.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="RootSignature.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderTargetGroup.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="SwapChain.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="TableDescriptorHeap.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="StructuredBuffer.h">
-      <Filter>00. Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="DashRestState.h">
-      <Filter>08. Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="DashState.h">
-      <Filter>08. Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="IdleState.h">
-      <Filter>08. Animation</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>02. Manager</Filter>
@@ -302,47 +263,44 @@
     <ClInclude Include="Scene.h">
       <Filter>02. Manager</Filter>
     </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>02. Manager</Filter>
+    <ClInclude Include="CharacterData.h">
+      <Filter>08. Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="ConstantBuffer.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="CommandQueue.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancingBuffer.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RenderTargetGroup.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="RootSignature.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="StructuredBuffer.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="SwapChain.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="TableDescriptorHeap.h">
+      <Filter>00. Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Device.h">
+      <Filter>00. Engine</Filter>
     </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="d3dx12.h">
-      <Filter>07. Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="EnginePch.h">
-      <Filter>07. Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>01. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Object.h">
-      <Filter>01. Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>01. Object\00. Component\02. Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Resources.h">
-      <Filter>03. Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Material.h">
-      <Filter>03. Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>03. Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>03. Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>03. Resource</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>01. Object\00. Component\03. Collider</Filter>
     </ClInclude>
     <ClInclude Include="Enum.pb.h">
       <Filter>05. Protocol</Filter>
@@ -353,22 +311,34 @@
     <ClInclude Include="Struct.pb.h">
       <Filter>05. Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="PlayerState.h">
-      <Filter>08. Animation</Filter>
+    <ClInclude Include="Material.h">
+      <Filter>03. Resource</Filter>
     </ClInclude>
-    <ClInclude Include="MoveState.h">
-      <Filter>08. Animation</Filter>
+    <ClInclude Include="Mesh.h">
+      <Filter>03. Resource</Filter>
     </ClInclude>
-    <ClInclude Include="JumpState.h">
-      <Filter>08. Animation</Filter>
+    <ClInclude Include="Resources.h">
+      <Filter>03. Resource</Filter>
     </ClInclude>
-    <ClInclude Include="MeshData.h">
-      <Filter>08. Animation</Filter>
+    <ClInclude Include="Shader.h">
+      <Filter>03. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Texture.h">
+      <Filter>03. Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>01. Object\00. Component\02. Player</Filter>
     </ClInclude>
     <ClInclude Include="Item.h">
       <Filter>01. Object\01. Item</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="Object.h">
+      <Filter>01. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>01. Object</Filter>
+    </ClInclude>
+    <ClInclude Include="ParticleSystem.h">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
     <ClInclude Include="MonoBehaviour.h">
@@ -377,24 +347,66 @@
     <ClInclude Include="MeshRenderer.h">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
-    <ClInclude Include="ParticleSystem.h">
-      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
-    </ClInclude>
-    <ClInclude Include="pch.h">
-      <Filter>07. Utils</Filter>
-    </ClInclude>
     <ClInclude Include="ServerPacketHandler.h">
       <Filter>06. Server</Filter>
     </ClInclude>
     <ClInclude Include="ServerSession.h">
       <Filter>06. Server</Filter>
     </ClInclude>
+    <ClInclude Include="MeshData.h">
+      <Filter>08. Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="d3dx12.h">
+      <Filter>07. Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="EnginePch.h">
+      <Filter>07. Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>07. Utils</Filter>
+    </ClInclude>
     <ClInclude Include="SimpleMath.h">
       <Filter>07. Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>02. Manager</Filter>
     </ClInclude>
     <ClInclude Include="Terrain.h">
       <Filter>01. Object\00. Component\00. BasicComponent</Filter>
     </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>01. Object\00. Component\00. BasicComponent</Filter>
+    </ClInclude>
+    <ClInclude Include="AttackState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="DashState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="IdleState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="MoveState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="DashRestState.h">
+      <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUI.h">
+      <Filter>01. Object\02. UI</Filter>
+    </ClInclude>
+    <ClInclude Include="SlowState.h" />
+    <ClInclude Include="SlowRestState.h" />
+    <ClInclude Include="StunState.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">
@@ -415,49 +427,55 @@
   </ItemGroup>
   <ItemGroup>
     <Filter Include="00. Engine">
-      <UniqueIdentifier>{3f4539a5-47d6-40de-b0c7-32c9b2d61605}</UniqueIdentifier>
+      <UniqueIdentifier>{ef6769b9-2c9a-419a-91a4-41685d78ef99}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object">
-      <UniqueIdentifier>{3a0ce313-e703-4ecc-8c2a-db5244e76bc3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02. Manager">
-      <UniqueIdentifier>{c5f59d9c-4e46-42f1-84f6-af8672b5f668}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="03. Resource">
-      <UniqueIdentifier>{7672584a-ebe9-4471-96e3-c715f411a742}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="04. Shader">
-      <UniqueIdentifier>{6b04c8fe-b2a7-49ab-a6ae-2a6b54014696}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="05. Protocol">
-      <UniqueIdentifier>{e5b70133-ae64-4116-a564-c8672c6ca8b0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="06. Server">
-      <UniqueIdentifier>{e9fcbdc5-51b4-4133-8785-b70fd247fc88}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="07. Utils">
-      <UniqueIdentifier>{a411191a-a9af-4ee0-a4f5-88711014927b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="08. Animation">
-      <UniqueIdentifier>{7881c806-a91e-4501-853e-4438cc048930}</UniqueIdentifier>
+      <UniqueIdentifier>{0b38946d-e824-44c0-aa38-ecfe389ffdde}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object\00. Component">
-      <UniqueIdentifier>{29d90926-1bce-44f8-bf2a-e2838801f87b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="01. Object\01. Item">
-      <UniqueIdentifier>{9bcfe353-3bbd-4cfb-ab66-f0e19a4d02e9}</UniqueIdentifier>
+      <UniqueIdentifier>{bf4dca01-d39a-4495-afd3-5dd694ad1564}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object\00. Component\00. BasicComponent">
-      <UniqueIdentifier>{cc594a70-cea2-457e-9dda-afce7a05a575}</UniqueIdentifier>
+      <UniqueIdentifier>{eed93d16-940a-433b-b96b-11cd96a07de5}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object\00. Component\01. Camera">
-      <UniqueIdentifier>{ebbf664a-e3f2-4568-8e20-43eaaaeecd79}</UniqueIdentifier>
+      <UniqueIdentifier>{5f8b7cca-5c6b-4e66-b276-37d8d8504716}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object\00. Component\02. Player">
-      <UniqueIdentifier>{33925335-983e-4431-aa85-44aab5f1641f}</UniqueIdentifier>
+      <UniqueIdentifier>{c0986679-a6ac-40d6-8df1-a9cf5e4c667c}</UniqueIdentifier>
     </Filter>
     <Filter Include="01. Object\00. Component\03. Collider">
-      <UniqueIdentifier>{801e57d2-0b78-4bb2-b1d4-c79cf6fc28c2}</UniqueIdentifier>
+      <UniqueIdentifier>{18c38134-2585-461b-8d8f-28172fda7b11}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\01. Item">
+      <UniqueIdentifier>{501b7337-88e5-4ad9-a077-f44afca3b1c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02. Manager">
+      <UniqueIdentifier>{d062d9ee-4f80-420a-9b93-90deafed09f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03. Resource">
+      <UniqueIdentifier>{0dcaf69a-d6e9-4eb7-a335-ad70cca34a9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04. Shader">
+      <UniqueIdentifier>{98aaf47e-5908-45aa-bcbe-53fa1a767629}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Protocol">
+      <UniqueIdentifier>{60750ce2-75ef-44d8-900e-52bbea9084dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="06. Server">
+      <UniqueIdentifier>{1c56558f-b0b1-42ea-a1a6-9807f835456c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08. Animation">
+      <UniqueIdentifier>{58128828-8b47-413e-ba41-d196ef154641}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="07. Utils">
+      <UniqueIdentifier>{f0f1cd54-1c7d-4f80-8f75-6757bf8144ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\00. Component\02. Player\State">
+      <UniqueIdentifier>{41968de1-65ab-46f1-9eda-b1827301d943}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI">
+      <UniqueIdentifier>{98b76126-c239-4a19-aef5-b36da4894bef}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

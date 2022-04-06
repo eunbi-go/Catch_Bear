@@ -3,10 +3,11 @@
 
 class Player : public MonoBehaviour, public enable_shared_from_this<Player>
 {
-	enum STATE
-	{
-		IDLE, WALK, DASH, JUMP, ATTACK, END
-	};
+public:
+	//enum STATE
+	//{
+	//	IDLE, WALK, DASH, JUMP, ATTACK, END
+	//};
 
 public:
 	enum ITEM

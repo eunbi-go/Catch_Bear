@@ -6,16 +6,17 @@
 #include "IdleState.h"
 #include "GameObject.h"
 
-PlayerState* AttackState::KeyCheck(GameObject& player)
+PlayerState* AttackState::KeyCheck(GameObject& player, STATE ePlayer)
 {
     return nullptr;
 }
 
-PlayerState* AttackState::Update(GameObject& player)
+PlayerState* AttackState::Update(GameObject& player, STATE ePlayer)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {
         player.GetAnimationController()->SetAnimationPosition(0, 0.f);
+        ePlayer = STATE::IDLE;
         return new IdleState;
     }
     return NULL;

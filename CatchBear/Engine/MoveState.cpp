@@ -24,23 +24,26 @@ PlayerState* MoveState::KeyCheck(GameObject& player)
 PlayerState* MoveState::Update(GameObject& player)
 {
 	// 플레이어가 속도 감소 상태일때
-	if (player.GetCurItem(Player::ITEM::SPEED_DOWN))
-	{
-		_fSpeedDownTime += DELTA_TIME;
 
-		if (_fSpeedDownTime <= 5.f)
-		{
-			player.SetPlayerSpeed(_fSlowSpeed);
-		}
+	////static_pointer_cast<Player>(player.GetScript(0))->GetCurItem(Player::ITEM::SPEED_DOWN)
 
-		else
-		{
-			player.SetPlayerSpeed(player.GetPlayerOriginalSpeed());
-			_fSpeedDownTime = 0.f;
-			player.SetCurItem(Player::ITEM::SPEED_DOWN, false);
-		}
+	//if (static_pointer_cast<Player>(player.GetScript(0))->GetCurItem(Player::ITEM::SPEED_DOWN))
+	//{
+	//	_fSpeedDownTime += DELTA_TIME;
 
-	}
+	//	if (_fSpeedDownTime <= 5.f)
+	//	{
+	//		player.SetPlayerSpeed(_fSlowSpeed);
+	//	}
+
+	//	else
+	//	{
+	//		player.SetPlayerSpeed(player.GetPlayerOriginalSpeed());
+	//		_fSpeedDownTime = 0.f;
+	//		player.SetCurItem(Player::ITEM::SPEED_DOWN, false);
+	//	}
+
+	//}
 
 	return NULL;
 }

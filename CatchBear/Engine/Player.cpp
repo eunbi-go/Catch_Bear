@@ -79,17 +79,15 @@ void Player::AddPlayerItem(shared_ptr<GameObject> item)
 
 void Player::KeyCheck()
 {
-	Protocol::C_MOVE pkt;
-
 	// 게임종료
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
 
-	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
 	if (mysession == NULL)
 		return;
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	for (auto& gameObject : gameObjects)
 	{
@@ -102,15 +100,15 @@ void Player::KeyCheck()
 
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	// State Check
-	PlayerState* state = _player->_state->KeyCheck(*shared_from_this());
+	//// State Check
+	//PlayerState* state = _player->_state->KeyCheck(*shared_from_this());
 
-	if (state != NULL)
-	{
-		delete _player->_state;
-		_player->_state = state;
-		_player->_state->Enter(*shared_from_this());
-	}
+	//if (state != NULL)
+	//{
+	//	delete _player->_state;
+	//	_player->_state = state;
+	//	_player->_state->Enter(*shared_from_this());
+	//}
 	//////////////////////////////////////////////////////////////////////////
 
 	Move();
@@ -119,8 +117,13 @@ void Player::KeyCheck()
 
 void Player::Move()
 {
+
 	if (_bStunned) return;
 
+	Protocol::C_MOVE pkt;
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
@@ -313,13 +316,13 @@ void Player::ApplyItemEffect()
 void Player::Item_SpeedUp()
 {
 	// 스피드 변경 전 한번만 하도록
-	if (_speed == _originalSpeed)
-	{
-		_state->End(*shared_from_this());
-		delete _state;
-		_state = new DashState;
-		_state->Enter(*shared_from_this());
-	}
+	//if (_speed == _originalSpeed)
+	//{
+	//	_state->End(*shared_from_this());
+	//	delete _state;
+	//	_state = new DashState;
+	//	_state->Enter(*shared_from_this());
+	//}
 }
 
 void Player::Item_Teleport()
@@ -385,14 +388,14 @@ void Player::Item_Stun()
 
 void Player::SlowDown()
 {
-	// 자신 제외 모든 플레이어 5초동안 속도 감소
-	if (_speed == _originalSpeed)
-	{
-		_state->End(*shared_from_this());
-		delete _state;
-		_state = new MoveState;
-		_state->Enter(*shared_from_this());
-	}
+	//// 자신 제외 모든 플레이어 5초동안 속도 감소
+	//if (_speed == _originalSpeed)
+	//{
+	//	_state->End(*shared_from_this());
+	//	delete _state;
+	//	_state = new MoveState;
+	//	_state->Enter(*shared_from_this());
+	//}
 }
 
 void Player::Blinded()

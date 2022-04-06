@@ -104,19 +104,10 @@ void GameObject::UpdateBoundingBox()
 
 	for (auto& gameObject : gameObjects)
 	{
-		//gameObject->_boundingBox.Transform(
-		//	_boundingBox, XMLoadFloat4x4(&(XMFLOAT4X4)(gameObject->GetTransform()->GetWorldMatrix())));
-		//XMStoreFloat4(&gameObject->_boundingBox.Orientation, XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
-	
 		gameObject->_boundingBox.Center = gameObject->GetTransform()->GetLocalPosition();
-		gameObject->_boundingBox.Extents = _boundingExtents;
+		//gameObject->_boundingBox.Extents = gameObject->GetBoundingExtents();
 		XMStoreFloat4(&gameObject->_boundingBox.Orientation, 
 			XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
-
-		if (gameObject->GetName() == L"Player")
-		{
-			int a = 0;
-		}
 	}
 }
 

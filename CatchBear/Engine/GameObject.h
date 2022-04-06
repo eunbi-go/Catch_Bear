@@ -65,6 +65,12 @@ public:
 	bool GetIsAllowPlayerMove() { return _isAllowPlayerMove; }
 	void SetIsAllowPlayerMove(bool _isAllow) { _isAllowPlayerMove = _isAllow; }
 
+	void SetBoundingExtents(XMFLOAT3 extents) { _boundingExtents = extents; }
+	void SetBoundingBox(BoundingOrientedBox boundingBox) { _boundingBox = boundingBox; }
+
+	const BoundingOrientedBox GetBoundingBox() { return _boundingBox; }
+	const XMFLOAT3 GetBoundingExtents() { return _boundingExtents; }
+
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -77,10 +83,12 @@ private:
 	uint64  _playerID = 0;
 	bool	_isAllowPlayerMove;
 
+	BoundingOrientedBox		_boundingBox;
+	XMFLOAT3				_boundingExtents;
+
 public:
 	char* _pFrameName;
-	BoundingOrientedBox _boundingBox;
-	XMFLOAT3	_boundingExtents;
+
 	class PlayerState* _state;
 
 	STATE _curState;

@@ -3,7 +3,6 @@
 // 일반 아이템 - 30초마다 모든 일반 아이템(5개) 하나씩 생성 -> 총 6번 생성됨
 // 유니크 아이템 - 1분마다 모든 유니크 아이템(2개) 하나씩 생성 -> 총 3번 생성됨
 // 보물 - 1분에 하나 생성
-class Item;
 class GameObject;
 class MeshData;
 
@@ -42,14 +41,11 @@ private:
 
 	shared_ptr<MeshData> _commonItemMesh;
 	shared_ptr<MeshData> _uniqueItemMesh;
+	shared_ptr<MeshData> _treasureMesh;
 
-	array<Vec3, 10>		_commonPosArray;	// 일반 아이템 좌표 담고있는 어레이
-	array<Vec3, 10>		_uniquePosArray;	// 유니크 아이템 좌표 담고있는 어레이
-	array<Vec3, 5>		_treasurePosArray;	// 보물 좌표 담고있는 어레이
-
-	int			_commonIndex = 0;
-	int			_uniqueIndex = 0;
-	int			_treasureIndex = 0;
+	array<Vec3, 30>		_itemPosArray;
+	int		_itemIndex = 0;
+	int		_maxItemIndex = 29;
 
 	// 시간은 테스트용
 	float		_commonItemTimer = 0.f;

@@ -17,5 +17,8 @@ public:
 private:
 	float	_fDashTime = 0.f;
 	bool	_isStop = false;
+
+	float	_fDashSpeed = 20.f;
+	float	_fOriginalSpeed = 10.f;
 };
 

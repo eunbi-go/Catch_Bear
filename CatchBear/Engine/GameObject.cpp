@@ -112,6 +112,11 @@ void GameObject::UpdateBoundingBox()
 		gameObject->_boundingBox.Extents = _boundingExtents;
 		XMStoreFloat4(&gameObject->_boundingBox.Orientation, 
 			XMQuaternionNormalize(XMLoadFloat4(&gameObject->_boundingBox.Orientation)));
+
+		if (gameObject->GetName() == L"Player")
+		{
+			int a = 0;
+		}
 	}
 }
 

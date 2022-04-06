@@ -26,9 +26,6 @@ public:
 	virtual ~Item();
 
 public:
-	virtual void Update() override;
-
-public:
 	ITEM_TYPE GetItemType() { return _itemType; }
 	ITEM_EFFECT GetItemEffect() { return _itemEffect; }
 

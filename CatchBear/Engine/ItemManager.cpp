@@ -104,9 +104,15 @@ void ItemManager::CreateCommonItem()
 				item->GetTransform()->SetLocalPosition(pos);
 				item->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-				item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				item->_boundingBox = BoundingOrientedBox(
-					XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
+				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
+				item->SetBoundingBox(BoundingOrientedBox(
+					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+
+				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
+				//item->_boundingBox = BoundingOrientedBox(
+				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -147,9 +153,16 @@ void ItemManager::CreateUniqueItem()
 				item->GetTransform()->SetLocalPosition(pos);
 				item->GetTransform()->SetLocalScale(Vec3(2.f, 2.f, 2.f));
 				item->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-				item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				item->_boundingBox = BoundingOrientedBox(
-					XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
+				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
+				item->SetBoundingBox(BoundingOrientedBox(
+					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+
+
+				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
+				//item->_boundingBox = BoundingOrientedBox(
+				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -189,9 +202,16 @@ void ItemManager::CreateTreasure()
 			gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-			gameObject->_boundingBox = BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
+			gameObject->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+
+
+			//gameObject->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
+			//gameObject->_boundingBox = BoundingOrientedBox(
+			//	XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+
 			gameObject->AddComponent(make_shared<Item>());
 
 			// Item enum값 설정 - ItemType, ItemEffect
@@ -226,7 +246,7 @@ void ItemManager::Collision_ItemToPlayer()
 	// common item & player
 	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
 	{
-		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
+		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
 			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);
@@ -240,7 +260,7 @@ void ItemManager::Collision_ItemToPlayer()
 	// unique item & player
 	for (auto item = _uniqueItemList.begin(); item != _uniqueItemList.end();)
 	{
-		if ((*item)->_boundingBox.Intersects(_player->_boundingBox))
+		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
 			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 			scene->RemoveGameObject(*item);

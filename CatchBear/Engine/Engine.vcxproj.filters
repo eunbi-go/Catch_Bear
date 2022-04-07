@@ -213,9 +213,6 @@
     <ClCompile Include="DashRestState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="TimerUI.cpp">
-      <Filter>01. Object\02. UI</Filter>
-    </ClCompile>
     <ClCompile Include="SlowRestState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
@@ -227,6 +224,12 @@
     </ClCompile>
     <ClCompile Include="TagMark.cpp">
       <Filter>01. Object\00. Component\04. TagMark</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerUI.cpp">
+      <Filter>01. Object\02. UI\00. Timer</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemSlotUI.cpp">
+      <Filter>01. Object\02. UI\01. ItemSlot</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -410,9 +413,6 @@
     <ClInclude Include="DashRestState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="TimerUI.h">
-      <Filter>01. Object\02. UI</Filter>
-    </ClInclude>
     <ClInclude Include="SlowRestState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClInclude>
@@ -424,6 +424,12 @@
     </ClInclude>
     <ClInclude Include="TagMark.h">
       <Filter>01. Object\00. Component\04. TagMark</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUI.h">
+      <Filter>01. Object\02. UI\00. Timer</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemSlotUI.h">
+      <Filter>01. Object\02. UI\01. ItemSlot</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -497,6 +503,12 @@
     </Filter>
     <Filter Include="01. Object\00. Component\04. TagMark">
       <UniqueIdentifier>{95bc72c7-5295-44b1-ad17-9e9bfa6693ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI\00. Timer">
+      <UniqueIdentifier>{289bb9c2-aab3-4226-8baa-effbe9ca4b36}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI\01. ItemSlot">
+      <UniqueIdentifier>{61d68dd4-dd8d-46cd-a50e-4e6ab4032a7f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

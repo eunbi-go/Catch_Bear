@@ -21,6 +21,7 @@
 #include "AnimationTrack.h"
 
 #include "IdleState.h"
+#include "TagMark.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -226,7 +227,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	//}
 
 	// Diamond
-	shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Cuboid.bin");
+	// Heart
+	shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
 
 	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent5->Instantiate();
 
@@ -235,9 +237,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->SetName(L"Present4");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
 	}
 #pragma endregion

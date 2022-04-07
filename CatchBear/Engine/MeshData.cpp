@@ -312,6 +312,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 
 			else if (!strcmp(pStrTocken, "Phong"))
 			{
+				ReadStringFromFile(pFile, pStrTocken);
+
 				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.z = ReadFloatFromFile(pFile);
@@ -324,9 +326,15 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.specular.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
 
+				float emissiveX = ReadFloatFromFile(pFile);
+				float emissiveY = ReadFloatFromFile(pFile);
+				float emissiveZ = ReadFloatFromFile(pFile);
+
 				float transparencyFactor = ReadFloatFromFile(pFile);
 				float shininess = ReadFloatFromFile(pFile);
 				float reflectionFactor = ReadFloatFromFile(pFile);
+
+				ReadStringFromFile(pFile, pStrTocken);
 			}
 		}
 
@@ -354,14 +362,14 @@ void MeshData::CreateMaterials()
 	wstring		key = _staticMeshInfo.material.name;
 
 	material->SetName(key);
-	if (key == L"Material" || key == L"Blank")
+	if (key == L"Material")
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Treasure"));
 	else
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 
 	material->SetInt(0, 1);
 
-	if (key != L"Material" && key != L"Blank")
+	if (key != L"Material")
 	{
 		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
 		wstring		fileName = fs::path(diffuseName).filename();

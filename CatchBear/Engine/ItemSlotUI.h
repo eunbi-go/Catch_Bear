@@ -1,16 +1,11 @@
 #pragma once
 #include "MonoBehaviour.h"
+#include "Item.h"
+
 class GameObject;
 
 class ItemSlotUI : public MonoBehaviour
 {
-public:
-	enum ITEM
-	{
-		SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-		DEBUFF_OFF, STUN, ITEM_END
-	};
-
 public:
 	ItemSlotUI();
 	virtual ~ItemSlotUI();
@@ -19,6 +14,12 @@ public:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 
+public:
+	void SetItem(ITEM_EFFECT item);
+
+	ITEM_EFFECT GetItem() { return _settingItem; }
+
 private:
-	shared_ptr<GameObject>		_itemSlot = make_shared<GameObject>();
+	shared_ptr<GameObject>		_itemSlot;
+	ITEM_EFFECT	_settingItem = ITEM_EFFECT::END;
 };

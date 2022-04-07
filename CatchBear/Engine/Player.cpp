@@ -25,6 +25,7 @@
 #include "ItemManager.h"
 #include "Item.h"
 #include "Light.h"
+#include "ItemSlotManager.h"
 
 Player::Player()
 {
@@ -78,6 +79,11 @@ void Player::AddPlayerItem(shared_ptr<GameObject> item)
 	if (_playerItemVec.size() < 3)
 	{
 		_playerItemVec.push_back(item);
+
+		// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+		ITEM_EFFECT itemType = static_pointer_cast<Item>(item->GetScript(0))->GetItemEffect();
+		
+		GET_SINGLE(ItemSlotManager)->AddItem(itemType);
 	}
 }
 

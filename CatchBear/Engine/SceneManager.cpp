@@ -23,6 +23,7 @@
 #include "IdleState.h"
 #include "TagMark.h"
 #include "ItemSlotUI.h"
+#include "ItemSlotManager.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -270,6 +271,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	itemSlot1->AddComponent(itemSlotRenderer);
 
 	scene->AddGameObject(itemSlot1);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(1, itemSlot1);
 
 	// 2.
 	shared_ptr<GameObject> itemSlot2 = make_shared<GameObject>();
@@ -296,6 +298,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	itemSlot2->AddComponent(itemSlot2Renderer);
 
 	scene->AddGameObject(itemSlot2);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(2, itemSlot2);
 
 	// 3.
 	shared_ptr<GameObject> itemSlot3 = make_shared<GameObject>();
@@ -322,6 +325,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	itemSlot3->AddComponent(itemSlot3Renderer);
 
 	scene->AddGameObject(itemSlot3);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(3, itemSlot3);
 #pragma endregion
 
 #pragma region Terrain

@@ -210,6 +210,7 @@
     <ClInclude Include="InstancingManager.h" />
     <ClInclude Include="Item.h" />
     <ClInclude Include="ItemManager.h" />
+    <ClInclude Include="ItemSlotManager.h" />
     <ClInclude Include="ItemSlotUI.h" />
     <ClInclude Include="JumpState.h" />
     <ClInclude Include="Light.h" />
@@ -282,6 +283,7 @@
     <ClCompile Include="InstancingManager.cpp" />
     <ClCompile Include="Item.cpp" />
     <ClCompile Include="ItemManager.cpp" />
+    <ClCompile Include="ItemSlotManager.cpp" />
     <ClCompile Include="ItemSlotUI.cpp" />
     <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Light.cpp" />

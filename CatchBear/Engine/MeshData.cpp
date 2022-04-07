@@ -65,6 +65,9 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
 
+						if (path == L"Heart.bin")
+							material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+
 						// 앞에서 생성한 Mesh, Material을 기반으로 _meshRenders에 추가
 						// 추후에 Instantiate()에서 _meshRenders을 기반으로 메쉬와 재질 정보를 세팅해줌
 						// -> 미리 읽어온 Mesh, Material 정보를 객체로 생성해서 멤버변수(_meshRenders)로 갖고 있다가 

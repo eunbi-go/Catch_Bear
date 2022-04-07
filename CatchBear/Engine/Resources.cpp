@@ -648,6 +648,27 @@ void Resources::CreateDefaultShader()
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
 		Add<Shader>(L"Treasure", shader);
 	}
+
+	// TagMark
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};
+
+		ShaderArg arg =
+		{
+			"VS_Main",
+			"",
+			"",
+			"",
+			"PS_TagMark"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"TagMark", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()

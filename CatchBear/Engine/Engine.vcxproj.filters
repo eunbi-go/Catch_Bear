@@ -225,7 +225,9 @@
     <ClCompile Include="StunState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
-    <ClCompile Include="TagMark.cpp" />
+    <ClCompile Include="TagMark.cpp">
+      <Filter>01. Object\00. Component\04. TagMark</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -420,7 +422,9 @@
     <ClInclude Include="StunState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClInclude>
-    <ClInclude Include="TagMark.h" />
+    <ClInclude Include="TagMark.h">
+      <Filter>01. Object\00. Component\04. TagMark</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

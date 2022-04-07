@@ -178,73 +178,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	LoadMapFile(scene);
 #pragma endregion
 
-#pragma region Item
-	//// Cuboid
-	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"Cuboid.bin");
-
-	//vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
-	//for (auto& gameObject : objectsPresent1)
-	//{
-	//	gameObject->SetName(L"Cuboid");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 2.f, 3.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	scene->AddGameObject(gameObject);
-	//}
-
-	// present1
-	// Resources::LoadFBX()
-	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
-	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
-
-	//for (int i = 0; i < 2; ++i)
-	//{
-	//	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
-	//	for (auto& gameObject : objectsPresent1)
-	//	{
-	//		gameObject->SetName(L"Present1");
-	//		gameObject->SetCheckFrustum(false);
-	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10 + i * 10));
-	//		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-	//		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//		scene->AddGameObject(gameObject);
-	//	}
-	//}
-
-	//// present4
-	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
-	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
-
-	//for (auto& gameObject : objectsPresent4)
-	//{
-	//	gameObject->SetName(L"Present4");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 3));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	scene->AddGameObject(gameObject);
-	//}
-
-	// Diamond
-	// Heart
-	shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
-
-	vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent5->Instantiate();
-
-	for (auto& gameObject : objectsPresent4)
-	{
-		gameObject->SetName(L"Present4");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		gameObject->AddComponent(make_shared<TagMark>());
-		scene->AddGameObject(gameObject);
-	}
-#pragma endregion
-
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
@@ -288,6 +221,25 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
 		}*/
+	}
+#pragma endregion
+
+#pragma region TagMark
+	// Heart
+	shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
+
+	vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+	for (auto& gameObject : objectsHeart)
+	{
+		gameObject->SetName(L"PlayerTag");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->AddComponent(make_shared<TagMark>());
+		scene->AddGameObject(gameObject);
 	}
 #pragma endregion
 

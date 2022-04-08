@@ -26,8 +26,8 @@ void ItemManager::Init()
 
 void ItemManager::Update()
 {
-	CreateCommonItem();
-	CreateUniqueItem();
+	//CreateCommonItem();
+	//CreateUniqueItem();
 	CreateTreasure();
 
 	Collision_ItemToPlayer();

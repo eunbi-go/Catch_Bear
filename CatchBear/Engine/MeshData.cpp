@@ -19,6 +19,7 @@ MeshData::~MeshData()
 void MeshData::LoadMeshFromFile(const wstring& path)
 {
 	FILE* pFile = NULL;
+	_meshName = path;
 
 	// wchar_t -> char*
 	char* pStr;
@@ -50,7 +51,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						fclose(pFile);
 
 						// Resources에 텍스처, 재질 추가
-						if (strcmp(ws2s(path).c_str(), "Diamond.bin") && strcmp(ws2s(path).c_str(), "Cuboid.bin"))
+						if (strcmp(ws2s(path).c_str(), "Diamond.bin") && strcmp(ws2s(path).c_str(), "Heart.bin"))
 							CreateTextures();
 						CreateMaterials();
 
@@ -61,12 +62,10 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
 						mesh->SetName(path);
 						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
+						_staticMeshInfo.material.name = path;
 
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
-
-						if (path == L"Heart.bin")
-							material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 
 						// 앞에서 생성한 Mesh, Material을 기반으로 _meshRenders에 추가
 						// 추후에 Instantiate()에서 _meshRenders을 기반으로 메쉬와 재질 정보를 세팅해줌
@@ -265,6 +264,11 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		{
 			ReadStringFromFile(pFile, pStrTocken);
 			_staticMeshInfo.material.name = s2ws(pStrTocken);
+			
+			if (!strcmp(pStrTocken, "Material"))
+			{
+				_staticMeshInfo.material.name = _meshName;
+			}
 
 			// 나중에 정리할거임. 신경X
 			/////////////////////////////////////////////////////////////////////////////////////
@@ -362,11 +366,14 @@ void MeshData::CreateMaterials()
 	// 우리가 사용하는 Static Mesh, Player Model은 Material이 모두 하나
 
 	shared_ptr<Material>	material = make_shared<Material>();
+	
 	wstring		key = _staticMeshInfo.material.name;
 
 	material->SetName(key);
-	if (key == L"Material")
+	if (key == L"Diamond.bin")
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Treasure"));
+	else if (key == L"Heart.bin")
+		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 	else
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 

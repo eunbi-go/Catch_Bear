@@ -177,7 +177,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	LoadMapFile(scene);
+	//LoadMapFile(scene);
 #pragma endregion
 
 #pragma region TestPlayer
@@ -247,6 +247,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
 	}

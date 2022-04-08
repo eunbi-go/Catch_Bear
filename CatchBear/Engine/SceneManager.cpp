@@ -177,7 +177,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	//LoadMapFile(scene);
+	LoadMapFile(scene);
 #pragma endregion
 
 #pragma region TestPlayer

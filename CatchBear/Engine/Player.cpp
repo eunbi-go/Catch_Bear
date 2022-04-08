@@ -61,6 +61,40 @@ void Player::LateUpdate()
 		_state = state;
 		_state->Enter(*_player);
 	}
+
+#pragma region 애니메이션동기화
+	switch (_player->_curState)
+	{
+	case STATE::WALK:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);
+		break;
+	case STATE::JUMP:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::JUMP);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	case STATE::ATTACK:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::ATTACK);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	case STATE::STUN:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::STUN);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	}
+#pragma endregion 애니메이션동기화
 	////////////////////////////////////////////////////////////////////
 
 	/*Vec3 pos = GetTransform()->GetLocalPosition();
@@ -116,17 +150,52 @@ void Player::KeyCheck()
 		_state = state;
 		_state->Enter(*_player);
 	}
-	if (_player->_curState == STATE::WALK)
+
+#pragma region 애니메이션동기화
+	if (_player->GetPlayerID() != mysession->GetPlayerID())	//디버깅용
 		int a = 10;
+
 	switch (_player->_curState)
 	{
 	case STATE::IDLE:
+	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
+		pkt.set_state(Protocol::WALK);
+		break;
+
+	case STATE::JUMP:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::JUMP);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
 	}
+	case STATE::ATTACK:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::ATTACK);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	case STATE::STUN:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::STUN);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	}
+#pragma endregion 애니메이션동기화
 	//////////////////////////////////////////////////////////////////////////
 
 	Move();
@@ -165,8 +234,6 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		//pkt.set_state(Protocol::WALK);
-		pkt.set_iskeydown(true);
 		pkt.set_movedir(0);
 
 		if (_player->GetIsAllowPlayerMove()) {
@@ -186,25 +253,11 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		//pkt.set_state(Protocol::WALK);
-		pkt.set_iskeydown(true);
 		pkt.set_movedir(1);
 
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 	}
-	//else		// 여기서 프레임마다 패킷 보내는게 맘에 안듬 나중에 수정할꺼임
-	//{
-	//	pkt.set_xpos(pos.x);
-	//	pkt.set_ypos(pos.y);
-	//	pkt.set_zpos(pos.z);
-	//	pkt.set_yrot(rot.y);
-	//	pkt.set_playerid(mysession->GetPlayerID());
-	//	//pkt.set_iskeydown(false);
-
-	//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-	//	mysession->Send(sendBuffer);
-	//}
 
 	Vec3 look = GetTransform()->GetLook();
 	int a = 0;
@@ -216,15 +269,20 @@ void Player::Move()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
-		//GetTransform()->SetLocalRotation(rot);
+		Vec3 pl = _player->GetTransform()->GetLook();
+		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
+			pl.x << ", " << pl.y << ", " << pl.z << endl;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
+
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
+
+		_player->GetTransform()->SetLocalRotation(rot);
 	}
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
@@ -232,6 +290,10 @@ void Player::Move()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
+		Vec3 pl = _player->GetTransform()->GetLook();
+		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
+			pl.x << ", " << pl.y << ", " << pl.z << endl;
+
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -239,9 +301,11 @@ void Player::Move()
 		pkt.set_playerid(mysession->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
+
+		_player->GetTransform()->SetLocalRotation(rot);
 	}
 
-	//GetTransform()->SetLocalPosition(pos);
+	_player->GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 }
 

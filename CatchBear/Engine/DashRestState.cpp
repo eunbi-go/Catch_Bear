@@ -30,7 +30,7 @@ PlayerState* DashRestState::KeyCheck(GameObject& player, STATE& ePlayer)
 	return NULL;
 }
 
-PlayerState* DashRestState::Update(GameObject& player, STATE ePlayer)
+PlayerState* DashRestState::Update(GameObject& player, STATE& ePlayer)
 {
 	_fDashTime += DELTA_TIME;
 	if (_fDashTime >= 5.f)

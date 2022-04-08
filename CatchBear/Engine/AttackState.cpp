@@ -11,7 +11,7 @@ PlayerState* AttackState::KeyCheck(GameObject& player, STATE& ePlayer)
     return nullptr;
 }
 
-PlayerState* AttackState::Update(GameObject& player, STATE ePlayer)
+PlayerState* AttackState::Update(GameObject& player, STATE& ePlayer)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {

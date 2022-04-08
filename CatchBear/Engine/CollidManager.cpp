@@ -29,16 +29,19 @@ void CollidManager::ColiisionPlayerToStaticObj()
 
 	for (auto mapobj = staticObjects.begin(); mapobj != staticObjects.end(); mapobj++)
 	{
-		if ((*mapobj)->_boundingBox.Intersects(_player->_boundingBox))
+		if ((*mapobj)->GetName() == L"Tree_01" || (*mapobj)->GetName() == L"Tree_02" ||
+			(*mapobj)->GetName() == L"Tree_03" || (*mapobj)->GetName() == L"Rock_02" ||
+			(*mapobj)->GetName() == L"Rock_03" || (*mapobj)->GetName() == L"Fence_Type1_02")
 		{
-			Vec3 lk = _player->GetTransform()->GetLook();
-			float ox = (*mapobj)->GetTransform()->GetLocalPosition().x;
-			float oz = (*mapobj)->GetTransform()->GetLocalPosition().z;
-			_player->SetIsAllowPlayerMove(false);
-			break;
+			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+			{
+				_player->SetIsAllowPlayerMove(false);
+				break;
+			}
+			else
+				_player->SetIsAllowPlayerMove(true);
 		}
-		else
-			_player->SetIsAllowPlayerMove(true);
 
 	}
 }
+

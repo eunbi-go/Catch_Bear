@@ -18,6 +18,7 @@
 #include "SlowRestState.h"
 #include "SlowState.h"
 #include "StunState.h"
+#include "JumpState.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -175,25 +176,64 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	Vec3 rot;
 	rot.y = pkt.yrot();
 
-	_player->GetTransform()->SetLocalPosition(pos);
-	_player->GetTransform()->SetLocalRotation(rot);
+	PlayerState* state;
 
-	// 본인의 플레이어가 아닐때만 애니메이션 동기화 시켜줌
+	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
+		_player->GetTransform()->SetLocalRotation(rot);
+		_player->GetTransform()->SetLocalPosition(pos);
+		
 		switch (pkt.state())
 		{
 		case Protocol::IDLE:
-			PlayerState* state = IdleState();
+			if (_player->_state->curState != STATE::IDLE)
+			{
+				state = new IdleState;
+				delete _player->_state;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::IDLE;
+			}
 			break;
 		case Protocol::WALK:
-			if (!_player->_state->curState == STATE::WALK)
+			if (_player->_state->curState != STATE::WALK)
 			{
 				state = new MoveState;
 				delete _player->_state;
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::WALK;
+			}
+			break;
+		case Protocol::JUMP:
+			if (_player->_state->curState != STATE::JUMP)
+			{
+				state = new JumpState;
+				delete _player->_state;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::JUMP;
+			}
+			break;
+		case Protocol::ATTACK:
+			if (_player->_state->curState != STATE::ATTACK)
+			{
+				state = new AttackState;
+				delete _player->_state;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::ATTACK;
+			}
+			break;
+		case Protocol::STUN:
+			if (_player->_state->curState != STATE::STUN)
+			{
+				state = new StunState;
+				delete _player->_state;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::STUN;
 			}
 			break;
 		default:

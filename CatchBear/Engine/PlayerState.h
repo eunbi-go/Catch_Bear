@@ -9,7 +9,7 @@ public:
 
 public:
 	virtual PlayerState* KeyCheck(GameObject& player, STATE& ePlayer) = 0;
-	virtual PlayerState* Update(GameObject& player, STATE ePlayer) = 0;
+	virtual PlayerState* Update(GameObject& player, STATE& ePlayer) = 0;
 	virtual void Enter(GameObject& player) = 0;
 	virtual void End(GameObject& player) = 0;
 

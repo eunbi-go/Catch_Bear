@@ -10,7 +10,7 @@ PlayerState* JumpState::KeyCheck(GameObject& player, STATE& ePlayer)
     return NULL;
 }
 
-PlayerState* JumpState::Update(GameObject& player, STATE ePlayer)
+PlayerState* JumpState::Update(GameObject& player, STATE& ePlayer)
 {
     if (player.GetAnimationController()->IsAnimationFinish(0))
     {

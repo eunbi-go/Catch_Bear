@@ -29,7 +29,7 @@ PlayerState* SlowRestState::KeyCheck(GameObject& player, STATE& ePlayer)
 	return NULL;
 }
 
-PlayerState* SlowRestState::Update(GameObject& player, STATE ePlayer)
+PlayerState* SlowRestState::Update(GameObject& player, STATE& ePlayer)
 {
 	_fTime += DELTA_TIME;
 	if (_fTime >= 5.f)

@@ -245,16 +245,16 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(3.f, 3.f, 3.f));
+			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
-			//gameObject->_state = new IdleState();
+			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 		}
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		/*vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
 			gameObject->SetName(L"Player");
@@ -264,15 +264,15 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->_boundingExtents = XMFLOAT3(1.f, 1.f, 1.f);
-			gameObject->_boundingBox = BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+			gameObject->SetBoundingExtents(XMFLOAT3(3.f, 3.f, 3.f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(1);
-			//gameObject->_state = new IdleState();
+			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
-		}
+		}*/
 	}
 #pragma endregion
 
@@ -536,9 +536,41 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 		object->GetTransform()->SetLocalPosition(trans);
 		object->GetTransform()->SetLocalScale(scale);
 		object->GetTransform()->SetLocalRotation(rotate);
-		object->_boundingExtents = XMFLOAT3(1.f, 1.0f, 1.0f);
-		object->_boundingBox = BoundingOrientedBox(
-			XMFLOAT3(0.0f, 0.0f, 0.0f), object->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
+		if (name == L"Tree_01") {
+			object->SetBoundingExtents(XMFLOAT3(1.3f, 2.7f, 1.2f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 2.7f, 1.2f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else if (name == L"Tree_02") {
+			object->SetBoundingExtents(XMFLOAT3(0.8f, 2.1f, 0.8f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 2.0f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else if (name == L"Tree_03") {
+			object->SetBoundingExtents(XMFLOAT3(1.8f, 2.4f, 1.5f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.1f, 2.4f, -0.1f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else if (name == L"Rock_02") {
+			object->SetBoundingExtents(XMFLOAT3(0.08748f, 0.04690f, 0.08150f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else if (name == L"Rock_03") {
+			object->SetBoundingExtents(XMFLOAT3(0.15f, 0.075f, 0.15f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.1f, 0.001f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else if (name == L"Fence_Type1_02") {
+			object->SetBoundingExtents(XMFLOAT3(1.f, 0.7f, 0.1f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(-0.9f, 0.6f, -2.4f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
+		else {
+			object->SetBoundingExtents(XMFLOAT3(0.f, 0.0f, 0.0f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(-0.9f, 0.6f, -2.4f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
 		scene->AddGameObject(object);
 		scene->AddStaticObj(object);
 	}

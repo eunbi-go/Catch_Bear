@@ -225,6 +225,9 @@
     <ClCompile Include="StunState.cpp">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
     </ClCompile>
+    <ClCompile Include="CollidManager.cpp">
+      <Filter>02. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="StunState.h">
       <Filter>01. Object\00. Component\02. Player\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CollidManager.h">
+      <Filter>02. Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

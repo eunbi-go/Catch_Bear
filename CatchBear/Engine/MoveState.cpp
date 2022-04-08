@@ -34,7 +34,7 @@ PlayerState* MoveState::KeyCheck(GameObject& player, STATE& ePlayer)
 	}
 }
 
-PlayerState* MoveState::Update(GameObject& player, STATE ePlayer)
+PlayerState* MoveState::Update(GameObject& player, STATE& ePlayer)
 {
 	// 플레이어가 속도 감소 상태일때
 

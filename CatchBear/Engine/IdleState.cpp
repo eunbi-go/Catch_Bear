@@ -39,7 +39,7 @@ PlayerState* IdleState::KeyCheck(GameObject& player, STATE& ePlayer)
 	return NULL;
 }
 
-PlayerState* IdleState::Update(GameObject& player, STATE ePlayer)
+PlayerState* IdleState::Update(GameObject& player, STATE& ePlayer)
 {
 	return NULL;
 }

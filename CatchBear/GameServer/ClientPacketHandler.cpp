@@ -157,12 +157,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	float staticObjWidth = 100.f;
 	float staticObjDepth = 100.f;
 
-	if (pkt.movedir() == 0)
-		cout << "플레이어 " << pkt.playerid() << " 앞으로 이동" << endl;
-	if (pkt.movedir() == 1)
-		cout << "플레이어 " << pkt.playerid() << " 뒤으로 이동" << endl;
-
-	cout << "x: " << pkt.xpos() << " / z: " << pkt.zpos() << endl;
+	cout << "플레이어 " << pkt.playerid() << " yrot : " << pkt.yrot() << endl;;
 
 	Protocol::S_MOVE movePkt;
 

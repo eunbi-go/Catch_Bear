@@ -23,7 +23,7 @@ PlayerState* SlowState::KeyCheck(GameObject& player, STATE& ePlayer)
     return NULL;
 }
 
-PlayerState* SlowState::Update(GameObject& player, STATE ePlayer)
+PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
 {
     // 5초 동안만 유지됨
     _fTime += DELTA_TIME;

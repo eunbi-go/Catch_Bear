@@ -19,7 +19,7 @@ PlayerState* StunState::KeyCheck(GameObject& player, STATE& ePlayer)
     return NULL;
 }
 
-PlayerState* StunState::Update(GameObject& player, STATE ePlayer)
+PlayerState* StunState::Update(GameObject& player, STATE& ePlayer)
 {
     // 5초 동안만 유지됨 -> (수정) 스턴은 3초임네다 !
     _fTime += DELTA_TIME;

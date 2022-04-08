@@ -33,11 +33,5 @@ enum STATE
 	DASH = 2;
 	JUMP = 3;
 	ATTACK = 4;
-}
-
-enum ItemType
-{
-	COMMON = 0;
-	UNIQE = 1;
-	TREASURE = 2;
+	STUN = 5;
 }

@@ -22,7 +22,7 @@ PlayerState* DashState::KeyCheck(GameObject& player, STATE& ePlayer)
     return NULL;
 }
 
-PlayerState* DashState::Update(GameObject& player, STATE ePlayer)
+PlayerState* DashState::Update(GameObject& player, STATE& ePlayer)
 {
     // 5초 동안만 유지됨
     _fDashTime += DELTA_TIME;

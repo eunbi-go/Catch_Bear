@@ -16,6 +16,7 @@ public:
 
 public:
 	void SetItem(ITEM_EFFECT item);
+	void UseItem();
 
 	ITEM_EFFECT GetItem() { return _settingItem; }
 

@@ -59,3 +59,11 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 	// ÅØ½ºÃ³ ¹Ù²ãÁà¾ß ÇÔ
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texItem);
 }
+
+void ItemSlotUI::UseItem()
+{
+	_settingItem = ITEM_EFFECT::END;
+
+	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+}

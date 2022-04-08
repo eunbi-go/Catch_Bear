@@ -37,3 +37,19 @@ void ItemSlotManager::AddItem(ITEM_EFFECT itemType)
 	}
 }
 
+void ItemSlotManager::UseItem(int nSlot)
+{
+	switch (nSlot)
+	{
+	case 1:
+		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+		break;
+	case 2:
+		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+		break;
+	case 3:
+		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+		break;
+	}
+}
+

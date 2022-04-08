@@ -234,6 +234,9 @@
     <ClCompile Include="ItemSlotManager.cpp">
       <Filter>02. Manager</Filter>
     </ClCompile>
+    <ClCompile Include="CollidManager.cpp">
+      <Filter>02. Manager</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -435,6 +438,9 @@
       <Filter>01. Object\02. UI\01. ItemSlot</Filter>
     </ClInclude>
     <ClInclude Include="ItemSlotManager.h">
+      <Filter>02. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="CollidManager.h">
       <Filter>02. Manager</Filter>
     </ClInclude>
   </ItemGroup>

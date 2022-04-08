@@ -21,6 +21,9 @@
 #include "AnimationTrack.h"
 
 #include "IdleState.h"
+#include "TagMark.h"
+#include "ItemSlotUI.h"
+#include "ItemSlotManager.h"
 
 #include "ServerSession.h"
 
@@ -179,57 +182,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	LoadMapFile(scene);
 #pragma endregion
 
-#pragma region Item
-	// present1
-	// Resources::LoadFBX()
-	// fbx기반으로 된 바이너리 파일을 로드 & 로드한 정보를 바탕으로 MeshData 객체 생성해서 리턴
-	//shared_ptr<MeshData> meshPresent1 = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
-
-	//for (int i = 0; i < 2; ++i)
-	//{
-	//	vector<shared_ptr<GameObject>>	objectsPresent1 = meshPresent1->Instantiate();
-	//	for (auto& gameObject : objectsPresent1)
-	//	{
-	//		gameObject->SetName(L"Present1");
-	//		gameObject->SetCheckFrustum(false);
-	//		gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 10 + i * 10));
-	//		gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-	//		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//		scene->AddGameObject(gameObject);
-	//	}
-	//}
-
-	//// present4
-	//shared_ptr<MeshData> meshPresent4 = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");
-	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent4->Instantiate();
-
-	//for (auto& gameObject : objectsPresent4)
-	//{
-	//	gameObject->SetName(L"Present4");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(5.324442f, -47.f, 3));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(10.f, 10.f, 10.f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	scene->AddGameObject(gameObject);
-	//}
-
-	//// Diamond
-	//shared_ptr<MeshData> meshPresent5 = GET_SINGLE(Resources)->LoadFBX(L"Diamond.bin");
-
-	//vector<shared_ptr<GameObject>>	objectsPresent4 = meshPresent5->Instantiate();
-
-	//for (auto& gameObject : objectsPresent4)
-	//{
-	//	gameObject->SetName(L"Present4");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 270.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	scene->AddGameObject(gameObject);
-	//}
-#pragma endregion
-
 #pragma region TestPlayer
 	{
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
@@ -274,6 +226,109 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddPlayers(1, gameObject);
 		}*/
 	}
+#pragma endregion
+
+#pragma region TagMark
+	// Heart
+	shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
+
+	vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+	for (auto& gameObject : objectsHeart)
+	{
+		gameObject->SetName(L"PlayerTag");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		gameObject->AddComponent(make_shared<TagMark>());
+		scene->AddGameObject(gameObject);
+	}
+#pragma endregion
+
+#pragma region ItemSlotUI
+	// 1.
+	shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+	itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemSlot1->SetName(L"ItemSlot1");
+	itemSlot1->AddComponent(make_shared<Transform>());
+	itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemSlot1->GetTransform()->SetLocalPosition(Vec3(-450.f, -300.f, 500.f));
+	itemSlot1->AddComponent(make_shared<ItemSlotUI>());
+
+	shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemSlotRenderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemSlotRenderer->SetMaterial(material);
+	}
+	itemSlot1->AddComponent(itemSlotRenderer);
+
+	scene->AddGameObject(itemSlot1);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(1, itemSlot1);
+
+	// 2.
+	shared_ptr<GameObject> itemSlot2 = make_shared<GameObject>();
+	itemSlot2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemSlot2->SetName(L"ItemSlot2");
+	itemSlot2->AddComponent(make_shared<Transform>());
+	itemSlot2->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemSlot2->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
+	itemSlot2->AddComponent(make_shared<ItemSlotUI>());
+
+	shared_ptr<MeshRenderer> itemSlot2Renderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemSlot2Renderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemSlot2Renderer->SetMaterial(material);
+	}
+	itemSlot2->AddComponent(itemSlot2Renderer);
+
+	scene->AddGameObject(itemSlot2);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(2, itemSlot2);
+
+	// 3.
+	shared_ptr<GameObject> itemSlot3 = make_shared<GameObject>();
+	itemSlot3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemSlot3->SetName(L"ItemSlot3");
+	itemSlot3->AddComponent(make_shared<Transform>());
+	itemSlot3->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemSlot3->GetTransform()->SetLocalPosition(Vec3(-210.f, -300.f, 500.f));
+	itemSlot3->AddComponent(make_shared<ItemSlotUI>());
+
+	shared_ptr<MeshRenderer> itemSlot3Renderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemSlot3Renderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemSlot3Renderer->SetMaterial(material);
+	}
+	itemSlot3->AddComponent(itemSlot3Renderer);
+
+	scene->AddGameObject(itemSlot3);
+	GET_SINGLE(ItemSlotManager)->SetItemSlot(3, itemSlot3);
 #pragma endregion
 
 #pragma region Terrain

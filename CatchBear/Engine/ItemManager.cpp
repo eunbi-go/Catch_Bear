@@ -120,8 +120,8 @@ void ItemManager::CreateCommonItem()
 
 				// Item enum값 설정 - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
-				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::BLIND);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::BLIND);
 				_commonItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -252,7 +252,7 @@ void ItemManager::Collision_ItemToPlayer()
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
 			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);
+			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
 			scene->RemoveGameObject(*item);
 			item = _commonItemList.erase(item);
 		}

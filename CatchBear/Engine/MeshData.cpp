@@ -19,6 +19,7 @@ MeshData::~MeshData()
 void MeshData::LoadMeshFromFile(const wstring& path)
 {
 	FILE* pFile = NULL;
+	_meshName = path;
 
 	// wchar_t -> char*
 	char* pStr;
@@ -50,7 +51,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						fclose(pFile);
 
 						// Resources에 텍스처, 재질 추가
-						if (strcmp(ws2s(path).c_str(), "Diamond.bin"))
+						if (strcmp(ws2s(path).c_str(), "Diamond.bin") && strcmp(ws2s(path).c_str(), "Heart.bin"))
 							CreateTextures();
 						CreateMaterials();
 
@@ -61,6 +62,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
 						mesh->SetName(path);
 						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
+						_staticMeshInfo.material.name = path;
 
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
@@ -262,6 +264,11 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 		{
 			ReadStringFromFile(pFile, pStrTocken);
 			_staticMeshInfo.material.name = s2ws(pStrTocken);
+			
+			if (!strcmp(pStrTocken, "Material"))
+			{
+				_staticMeshInfo.material.name = _meshName;
+			}
 
 			// 나중에 정리할거임. 신경X
 			/////////////////////////////////////////////////////////////////////////////////////
@@ -312,6 +319,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 
 			else if (!strcmp(pStrTocken, "Phong"))
 			{
+				ReadStringFromFile(pFile, pStrTocken);
+
 				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.z = ReadFloatFromFile(pFile);
@@ -324,9 +333,15 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.specular.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
 
+				float emissiveX = ReadFloatFromFile(pFile);
+				float emissiveY = ReadFloatFromFile(pFile);
+				float emissiveZ = ReadFloatFromFile(pFile);
+
 				float transparencyFactor = ReadFloatFromFile(pFile);
 				float shininess = ReadFloatFromFile(pFile);
 				float reflectionFactor = ReadFloatFromFile(pFile);
+
+				ReadStringFromFile(pFile, pStrTocken);
 			}
 		}
 
@@ -351,11 +366,14 @@ void MeshData::CreateMaterials()
 	// 우리가 사용하는 Static Mesh, Player Model은 Material이 모두 하나
 
 	shared_ptr<Material>	material = make_shared<Material>();
+	
 	wstring		key = _staticMeshInfo.material.name;
 
 	material->SetName(key);
-	if (key == L"Material")
+	if (key == L"Diamond.bin")
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Treasure"));
+	else if (key == L"Heart.bin")
+		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 	else
 		material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"Deferred"));
 

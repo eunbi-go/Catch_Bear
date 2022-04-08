@@ -62,7 +62,6 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						mesh->CreateStaticMeshFromFBX(&_staticMeshInfo);
 						mesh->SetName(path);
 						GET_SINGLE(Resources)->Add<Mesh>(mesh->GetName(), mesh);
-						_staticMeshInfo.material.name = path;
 
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
@@ -405,7 +404,7 @@ vector<shared_ptr<GameObject>> MeshData::Instantiate()
 		gameObject->AddComponent(make_shared<MeshRenderer>());
 		gameObject->GetMeshRenderer()->SetMesh(info.mesh);
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
-		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
+		//gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 1);
 
 		v.push_back(gameObject);
 	}

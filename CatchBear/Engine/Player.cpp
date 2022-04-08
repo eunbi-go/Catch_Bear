@@ -25,6 +25,7 @@
 #include "ItemManager.h"
 #include "Item.h"
 #include "Light.h"
+#include "ItemSlotManager.h"
 
 Player::Player()
 {
@@ -78,6 +79,10 @@ void Player::AddPlayerItem(shared_ptr<GameObject> item)
 	if (_playerItemVec.size() < 3)
 	{
 		_playerItemVec.push_back(item);
+
+		// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+		ITEM_EFFECT itemType = static_pointer_cast<Item>(item->GetScript(0))->GetItemEffect();
+		GET_SINGLE(ItemSlotManager)->AddItem(itemType);
 	}
 }
 
@@ -235,16 +240,19 @@ void Player::KeyCheck_Item()
 	{
 		if (_playerItemVec.empty()) return;
 		UseItem(0);
+		GET_SINGLE(ItemSlotManager)->UseItem(1);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
 		if (_playerItemVec.size() < 1) return;
 		UseItem(1);
+		GET_SINGLE(ItemSlotManager)->UseItem(2);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
 		if (_playerItemVec.size() < 2) return;
 		UseItem(2);
+		GET_SINGLE(ItemSlotManager)->UseItem(3);
 	}
 
 	if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))

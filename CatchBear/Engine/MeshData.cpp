@@ -50,7 +50,7 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 						fclose(pFile);
 
 						// Resources에 텍스처, 재질 추가
-						if (strcmp(ws2s(path).c_str(), "Diamond.bin"))
+						if (strcmp(ws2s(path).c_str(), "Diamond.bin") && strcmp(ws2s(path).c_str(), "Cuboid.bin"))
 							CreateTextures();
 						CreateMaterials();
 
@@ -64,6 +64,9 @@ void MeshData::LoadMeshFromFile(const wstring& path)
 
 						// - material
 						shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_staticMeshInfo.material.name);
+
+						if (path == L"Heart.bin")
+							material->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 
 						// 앞에서 생성한 Mesh, Material을 기반으로 _meshRenders에 추가
 						// 추후에 Instantiate()에서 _meshRenders을 기반으로 메쉬와 재질 정보를 세팅해줌
@@ -312,6 +315,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 
 			else if (!strcmp(pStrTocken, "Phong"))
 			{
+				ReadStringFromFile(pFile, pStrTocken);
+
 				_staticMeshInfo.material.ambient.x = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.ambient.z = ReadFloatFromFile(pFile);
@@ -324,9 +329,15 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.specular.y = ReadFloatFromFile(pFile);
 				_staticMeshInfo.material.specular.z = ReadFloatFromFile(pFile);
 
+				float emissiveX = ReadFloatFromFile(pFile);
+				float emissiveY = ReadFloatFromFile(pFile);
+				float emissiveZ = ReadFloatFromFile(pFile);
+
 				float transparencyFactor = ReadFloatFromFile(pFile);
 				float shininess = ReadFloatFromFile(pFile);
 				float reflectionFactor = ReadFloatFromFile(pFile);
+
+				ReadStringFromFile(pFile, pStrTocken);
 			}
 		}
 

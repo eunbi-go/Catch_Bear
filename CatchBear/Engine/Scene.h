@@ -44,6 +44,8 @@ public:
 
 	vector<shared_ptr<class Light>>	GetLights() { return _lights; }
 
+	int GetEnterPlayerNum() { return _players.size(); }
+
 private:
 	// 벡터를 레이어 단계로 구분한다
 	// [0]: 벽, [1]: 몬스터

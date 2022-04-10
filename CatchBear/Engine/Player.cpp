@@ -142,14 +142,16 @@ void Player::KeyCheck()
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
+	//for (auto& gameObject : gameObjects)
+	//{
+	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+	//	{
+	//		_player = gameObject;
+	//		break;
+	//	}
+	//}
+
+	_player = scene->GetPlayer(mysession->GetPlayerID());
 
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
@@ -369,12 +371,12 @@ void Player::UseItem(int itemNum)
 		break;
 	case ITEM_EFFECT::SPEED_DOWN:
 		// 다른 플레이어들의 속도 감소시켜야함
-		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
+		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
 		break;
 	case ITEM_EFFECT::BLIND:
 		// 다른 플레이어들의 시야 흐리게
-		_curPlayerItem[Player::ITEM::BLIND] = true;	// test
+		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
 	case ITEM_EFFECT::DEBUFF_OFF:
@@ -383,7 +385,7 @@ void Player::UseItem(int itemNum)
 		break;
 	case ITEM_EFFECT::STUN:
 		// 다른 플레이어들 스턴걸기
-		_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
 		Item_Stun();
 		break;
 	}
@@ -474,10 +476,25 @@ void Player::Item_SpeedDown()
 	// 다른 플레이어들 속도 감소시키기 위한 함수
 	// 서버에서 해야하나 ?
 	// 클라에서 함수가 따로 필요 없으면 삭제함
+
+	/////////////// prod by. wc ///////////////
+	Protocol::C_USE_DEBUFITEM pkt;
+	pkt.set_fromplayerid(mysession->GetPlayerID());
+	pkt.set_itemtype(Protocol::DEBUF_SPEEDDOWN);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
+	///////////////////////////////////////////
 }
 
 void Player::Item_Blind()
 {
+	/////////////// prod by. wc ///////////////
+	Protocol::C_USE_DEBUFITEM pkt;
+	pkt.set_fromplayerid(mysession->GetPlayerID());
+	pkt.set_itemtype(Protocol::DEBUF_BLIND);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
+	///////////////////////////////////////////
 }
 
 void Player::Item_DebuffOff()
@@ -493,6 +510,13 @@ void Player::Item_DebuffOff()
 
 void Player::Item_Stun()
 {
+	/////////////// prod by. wc ///////////////
+	Protocol::C_USE_DEBUFITEM pkt;
+	pkt.set_fromplayerid(mysession->GetPlayerID());
+	pkt.set_itemtype(Protocol::DEBUF_STUN);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
+	///////////////////////////////////////////
 }
 
 void Player::SlowDown()
@@ -539,9 +563,9 @@ void Player::Stunned()
 	{
 		_bStunned = true;
 
-		_state->End(*GetGameObject());
+		_state->End(*_player);
 		delete _state;
 		_state = new StunState;
-		_state->Enter(*GetGameObject());
+		_state->Enter(*_player);
 	}
 }

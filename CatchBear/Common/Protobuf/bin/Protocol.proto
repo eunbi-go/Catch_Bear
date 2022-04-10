@@ -78,3 +78,15 @@ message S_MOVE
 	STATE State = 8;
 	bool isKeyDown = 9;
 }
+
+message C_USE_DEBUFITEM
+{
+	uint64 fromplayerid = 1;
+	DEBUFITEMTYPE itemtype = 2;
+}
+
+message S_USE_DEBUFITEM
+{
+	uint64 targetplayerid = 1;
+	DEBUFITEMTYPE itemtype = 2;
+}

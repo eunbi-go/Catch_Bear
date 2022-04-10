@@ -121,7 +121,7 @@ void ItemManager::CreateCommonItem()
 				// Item enum°ª ¼³Á¤ - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
 				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::SPEED_UP);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::STUN);
 				_commonItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();

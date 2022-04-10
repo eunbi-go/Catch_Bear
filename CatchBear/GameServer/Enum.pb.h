@@ -170,6 +170,32 @@ inline bool STATE_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<STATE>(
     STATE_descriptor(), name, value);
 }
+enum DEBUFITEMTYPE : int {
+  DEBUF_SPEEDDOWN = 0,
+  DEBUF_BLIND = 1,
+  DEBUF_STUN = 2,
+  DEBUFITEMTYPE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  DEBUFITEMTYPE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool DEBUFITEMTYPE_IsValid(int value);
+constexpr DEBUFITEMTYPE DEBUFITEMTYPE_MIN = DEBUF_SPEEDDOWN;
+constexpr DEBUFITEMTYPE DEBUFITEMTYPE_MAX = DEBUF_STUN;
+constexpr int DEBUFITEMTYPE_ARRAYSIZE = DEBUFITEMTYPE_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DEBUFITEMTYPE_descriptor();
+template<typename T>
+inline const std::string& DEBUFITEMTYPE_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, DEBUFITEMTYPE>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function DEBUFITEMTYPE_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    DEBUFITEMTYPE_descriptor(), enum_t_value);
+}
+inline bool DEBUFITEMTYPE_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, DEBUFITEMTYPE* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<DEBUFITEMTYPE>(
+    DEBUFITEMTYPE_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -211,6 +237,11 @@ template <> struct is_proto_enum< ::Protocol::STATE> : ::std::true_type {};
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::STATE>() {
   return ::Protocol::STATE_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::DEBUFITEMTYPE> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::DEBUFITEMTYPE>() {
+  return ::Protocol::DEBUFITEMTYPE_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

@@ -143,21 +143,9 @@ bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 	return true;
 }
 
-// 충돌을 위한 AABB검사
-bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidth, float ADepth, float BDepth);
-
 bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-
-	// 후에는 static오브젝트들 위치 불러와서 플레이어랑 충돌체크함
-	// 일단은 테스트용으로 object위치
-	float staticObjX = 0.f;
-	float staticObjZ = 700.f;
-	float staticObjWidth = 100.f;
-	float staticObjDepth = 100.f;
-
-	cout << "플레이어 " << pkt.playerid() << " yrot : " << pkt.yrot() << endl;;
 
 	Protocol::S_MOVE movePkt;
 
@@ -172,23 +160,17 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 
 	GInGame.Broadcast(sendBuffer);
-
-	//gameSession->Send(sendBuffer);
 	return true;
 }
 
-
-bool CheckAABB(float AX, float AZ, float BX, float BZ, float AWidth, float BWidth, float ADepth, float BDepth)
+bool Handle_C_USE_DEBUFITEM(PacketSessionRef& session, Protocol::C_USE_DEBUFITEM& pkt)
 {
-	float ALeft = AX - (AWidth / 2);
-	float BLeft = BX - (BWidth / 2);
-	float AFront = AZ - (ADepth / 2);
-	float BFront = BZ - (BDepth / 2);
+	Protocol::S_USE_DEBUFITEM s_pkt;
+	s_pkt.set_itemtype(pkt.itemtype());
 
-	if (BLeft + BWidth > ALeft && ALeft + AWidth > BLeft
-		&& BFront + BDepth > AFront && AFront + ADepth > BFront)
-	{
-		return true;
-	}
-	return false;
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
+	//GInGame.Broadcast(sendBuffer);
+	GInGame.ExceptBroadcast(pkt.fromplayerid(), sendBuffer);
+
+	return true;
 }

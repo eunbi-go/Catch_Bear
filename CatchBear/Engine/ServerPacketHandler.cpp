@@ -269,5 +269,33 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	return true;
 }
 
+bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_player = scene->GetPlayer(mysession->GetPlayerID());
+
+	//for (int i = 0; i < scene->GetEnterPlayerNum(); ++i)
+	//{
+		//_player = scene->GetPlayer(pkt.targetplayerid());
+		switch (pkt.itemtype())
+		{
+		case Protocol::DEBUF_BLIND:
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::BLIND, true);
+			break;
+		case Protocol::DEBUF_SPEEDDOWN:
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, true);
+			break;
+		case Protocol::DEBUF_STUN:
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
+			break;
+		default:
+			break;
+		}
+	//}
+
+	return true;
+}
+
 
 

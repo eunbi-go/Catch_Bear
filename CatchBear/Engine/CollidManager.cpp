@@ -4,6 +4,7 @@
 #include "GameObject.h"
 #include "Scene.h"
 #include "Transform.h"
+#include "ServerSession.h"
 
 void CollidManager::Update()
 {
@@ -18,7 +19,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player")
+		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;

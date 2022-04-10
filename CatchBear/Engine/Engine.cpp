@@ -54,9 +54,9 @@ void Engine::Update()
 	GET_SINGLE(Timer)->Update();
 	GET_SINGLE(SceneManager)->Update();
 	GET_SINGLE(InstancingManager)->ClearBuffer();
-	//GET_SINGLE(ItemManager)->Update();
+	GET_SINGLE(ItemManager)->Update();
 	GET_SINGLE(ScoreManager)->Update();
-	GET_SINGLE(CollidManager)->Update();
+	//GET_SINGLE(CollidManager)->Update();
 
 	Render();
 

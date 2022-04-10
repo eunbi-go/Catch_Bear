@@ -94,6 +94,14 @@ void Player::LateUpdate()
 		mysession->Send(sendBuffer);
 		break;
 	}
+	case STATE::DASH:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::DASH);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
 	}
 #pragma endregion 애니메이션동기화
 	////////////////////////////////////////////////////////////////////
@@ -170,11 +178,6 @@ void Player::KeyCheck()
 		mysession->Send(sendBuffer);
 		break;
 	}
-	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
-		break;
-
 	case STATE::JUMP:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -195,6 +198,14 @@ void Player::KeyCheck()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::STUN);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+		break;
+	}
+	case STATE::DASH:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::DASH);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 		break;
@@ -411,10 +422,14 @@ void Player::Item_SpeedUp()
 	// 스피드 변경 전 한번만 하도록
 	if (_speed == _originalSpeed)
 	{
-		_state->End(*GetGameObject());
-		delete _state;
-		_state = new DashState;
-		_state->Enter(*GetGameObject());
+		_state->End(*_player);
+		delete _state;_state = new DashState;
+		_state->Enter(*_player);
+
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::DASH);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 }
 

@@ -199,11 +199,14 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		case Protocol::WALK:
 			if (_player->_state->curState != STATE::WALK)
 			{
-				state = new MoveState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::WALK;
+				if (_player->_state->curState != STATE::DASH)
+				{
+					state = new MoveState;
+					delete _player->_state;
+					_player->_state = state;
+					_player->_state->Enter(*_player);
+					_player->_state->curState = STATE::WALK;
+				}
 			}
 			break;
 		case Protocol::JUMP:
@@ -234,6 +237,28 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::STUN;
+			}
+			break;
+		case Protocol::DASH:
+			if (_player->_state->curState != STATE::DASH)
+			{
+				_player->_state->End(*_player);
+				delete _player->_state;
+				state = new DashState;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::DASH;
+			}
+			break;
+		case Protocol::DASHREST:
+			if (_player->_state->curState != STATE::DASH_REST)
+			{
+				_player->_state->End(*_player);
+				delete _player->_state;
+				state = new DashRestState;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::DASH_REST;
 			}
 			break;
 		default:

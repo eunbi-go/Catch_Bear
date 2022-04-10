@@ -120,8 +120,8 @@ void ItemManager::CreateCommonItem()
 
 				// Item enum값 설정 - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
-				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::BLIND);
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::SPEED_UP);
 				_commonItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -239,7 +239,7 @@ void ItemManager::Collision_ItemToPlayer()
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player")
+		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;

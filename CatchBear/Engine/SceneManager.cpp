@@ -206,7 +206,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 		}
-		/*vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
 			gameObject->SetName(L"Player");
@@ -224,7 +224,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
-		}*/
+		}
 	}
 #pragma endregion
 

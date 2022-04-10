@@ -7,6 +7,7 @@
 #include "IdleState.h"
 #include "DashRestState.h"
 #include "GameObject.h"
+#include "ServerSession.h"
 
 PlayerState* DashState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
@@ -38,6 +39,7 @@ PlayerState* DashState::Update(GameObject& player, STATE& ePlayer)
     else if (_fDashTime < 5.f)
     {
         static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fDashSpeed);
+        ePlayer = STATE::DASH;
     }
 
     return NULL;

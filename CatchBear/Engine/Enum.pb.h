@@ -145,12 +145,15 @@ enum STATE : int {
   JUMP = 3,
   ATTACK = 4,
   STUN = 5,
+  DASHREST = 6,
+  SLOW = 7,
+  SLOWREST = 8,
   STATE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   STATE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool STATE_IsValid(int value);
 constexpr STATE STATE_MIN = IDLE;
-constexpr STATE STATE_MAX = STUN;
+constexpr STATE STATE_MAX = SLOWREST;
 constexpr int STATE_ARRAYSIZE = STATE_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* STATE_descriptor();

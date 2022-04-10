@@ -34,4 +34,7 @@ enum STATE
 	JUMP = 3;
 	ATTACK = 4;
 	STUN = 5;
+	DASHREST = 6;
+	SLOW = 7;
+	SLOWREST = 8;
 }

@@ -4,6 +4,10 @@
 #include "ItemSlotUI.h"
 #include "GameObject.h"
 #include "Player.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "CoolTime.h"
+#include "Transform.h"
 
 void ItemSlotManager::SetItemSlot(int nSlot, shared_ptr<GameObject> slot)
 {
@@ -39,16 +43,29 @@ void ItemSlotManager::AddItem(ITEM_EFFECT itemType)
 
 void ItemSlotManager::UseItem(int nSlot)
 {
+	Vec3 pos, scale;
 	switch (nSlot)
 	{
 	case 1:
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+
+		pos = _itemSlot1->GetTransform()->GetLocalPosition();
+		scale = _itemSlot1->GetTransform()->GetLocalScale();
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))->SetInitData(pos, scale);
 		break;
 	case 2:
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+
+		pos = _itemSlot2->GetTransform()->GetLocalPosition();
+		scale = _itemSlot2->GetTransform()->GetLocalScale();
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))->SetInitData(pos, scale);
 		break;
 	case 3:
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+
+		pos = _itemSlot3->GetTransform()->GetLocalPosition();
+		scale = _itemSlot3->GetTransform()->GetLocalScale();
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime3")->GetScript(0))->SetInitData(pos, scale);
 		break;
 	}
 }

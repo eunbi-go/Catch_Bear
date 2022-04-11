@@ -196,6 +196,7 @@
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="CoolTime.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DashRestState.h" />
     <ClInclude Include="DashState.h" />
@@ -266,6 +267,7 @@
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="CoolTime.cpp" />
     <ClCompile Include="DashRestState.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Device.cpp" />

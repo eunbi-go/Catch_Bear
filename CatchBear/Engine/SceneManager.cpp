@@ -24,6 +24,7 @@
 #include "TagMark.h"
 #include "ItemSlotUI.h"
 #include "ItemSlotManager.h"
+#include "CoolTime.h"
 
 #include "ServerSession.h"
 
@@ -276,6 +277,33 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	scene->AddGameObject(itemSlot1);
 	GET_SINGLE(ItemSlotManager)->SetItemSlot(1, itemSlot1);
 
+	// 1-1.
+	shared_ptr<GameObject> itemCoolTime1 = make_shared<GameObject>();
+	itemCoolTime1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemCoolTime1->SetName(L"ItemCoolTime1");
+	itemCoolTime1->AddComponent(make_shared<Transform>());
+	itemCoolTime1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemCoolTime1->GetTransform()->SetLocalPosition(Vec3(-450.f, -300.f, 500.f));
+	itemCoolTime1->AddComponent(make_shared<CoolTime>());
+	itemCoolTime1->_isRender = false;
+
+	shared_ptr<MeshRenderer> itemCoolTimeRenderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemCoolTimeRenderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemCoolTime", L"..\\Resources\\Texture\\coolTime.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemCoolTimeRenderer->SetMaterial(material);
+	}
+	itemCoolTime1->AddComponent(itemCoolTimeRenderer);
+
+	scene->AddGameObject(itemCoolTime1);
+
 	// 2.
 	shared_ptr<GameObject> itemSlot2 = make_shared<GameObject>();
 	itemSlot2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
@@ -303,6 +331,33 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	scene->AddGameObject(itemSlot2);
 	GET_SINGLE(ItemSlotManager)->SetItemSlot(2, itemSlot2);
 
+	// 2-2.
+	shared_ptr<GameObject> itemCoolTime2 = make_shared<GameObject>();
+	itemCoolTime2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemCoolTime2->SetName(L"itemCoolTime2");
+	itemCoolTime2->AddComponent(make_shared<Transform>());
+	itemCoolTime2->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemCoolTime2->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
+	itemCoolTime2->AddComponent(make_shared<CoolTime>());
+	itemCoolTime2->_isRender = false;
+
+	shared_ptr<MeshRenderer> itemCoolTime2Renderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemCoolTime2Renderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemCoolTime", L"..\\Resources\\Texture\\coolTime.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemCoolTime2Renderer->SetMaterial(material);
+	}
+	itemCoolTime2->AddComponent(itemCoolTime2Renderer);
+
+	scene->AddGameObject(itemCoolTime2);
+
 	// 3.
 	shared_ptr<GameObject> itemSlot3 = make_shared<GameObject>();
 	itemSlot3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
@@ -329,6 +384,33 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 	scene->AddGameObject(itemSlot3);
 	GET_SINGLE(ItemSlotManager)->SetItemSlot(3, itemSlot3);
+
+	// 3-2
+	shared_ptr<GameObject> itemCoolTime3 = make_shared<GameObject>();
+	itemCoolTime3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemCoolTime3->SetName(L"itemCoolTime3");
+	itemCoolTime3->AddComponent(make_shared<Transform>());
+	itemCoolTime3->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemCoolTime3->GetTransform()->SetLocalPosition(Vec3(-210.f, -300.f, 500.f));
+	itemCoolTime3->AddComponent(make_shared<CoolTime>());
+	itemCoolTime3->_isRender = false;
+
+	shared_ptr<MeshRenderer> itemCoolTime3Renderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemCoolTime3Renderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemCoolTime", L"..\\Resources\\Texture\\coolTime.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemCoolTime3Renderer->SetMaterial(material);
+	}
+	itemCoolTime3->AddComponent(itemCoolTime3Renderer);
+
+	scene->AddGameObject(itemCoolTime3);
 #pragma endregion
 
 #pragma region Terrain

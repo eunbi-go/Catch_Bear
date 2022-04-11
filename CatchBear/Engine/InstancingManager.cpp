@@ -25,8 +25,11 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 	
 	for (shared_ptr<GameObject>& gameObject : gameObjects)
 	{
-		const uint64 instanceId = gameObject->GetMeshRenderer()->GetInstanceID();
-		cache[instanceId].push_back(gameObject);
+		if (gameObject->_isRender)
+		{
+			const uint64 instanceId = gameObject->GetMeshRenderer()->GetInstanceID();
+			cache[instanceId].push_back(gameObject);
+		}
 	}
 
 	// 모든 물체를 다 분류했으면 지금까지 저장된 맵에 있는 모든 정보를 돌면서

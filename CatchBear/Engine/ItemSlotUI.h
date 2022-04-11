@@ -17,10 +17,13 @@ public:
 public:
 	void SetItem(ITEM_EFFECT item);
 	void UseItem();
+	void CheckItem();
 
 	ITEM_EFFECT GetItem() { return _settingItem; }
 
 private:
 	shared_ptr<GameObject>		_itemSlot;
 	ITEM_EFFECT	_settingItem = ITEM_EFFECT::END;
+	float	_fCoolTime = 0.f;
+	bool	_isCoolTime = false;
 };

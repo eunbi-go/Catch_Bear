@@ -5,6 +5,8 @@
 #include "Material.h"
 #include "Component.h"
 #include "Resources.h"
+#include "Timer.h"
+#include "Transform.h"
 
 ItemSlotUI::ItemSlotUI()
 {
@@ -16,6 +18,29 @@ ItemSlotUI::~ItemSlotUI()
 
 void ItemSlotUI::Update()
 {
+	if (_isCoolTime)
+	{
+		if (_fCoolTime >= 0.6f)
+		{
+			_fCoolTime -= DELTA_TIME;
+
+			float fScale = 5.f / _fCoolTime;
+			Vec3	localScale = GetGameObject()->GetTransform()->GetLocalScale();
+			GetGameObject()->GetTransform()->SetLocalScale(Vec3(localScale.x, localScale.y - fScale, localScale.z));
+
+			float fPos = fScale / 2.f;
+			Vec3	localPos = GetGameObject()->GetTransform()->GetLocalPosition();
+			GetGameObject()->GetTransform()->SetLocalPosition(Vec3(localPos.x, localPos.y - fPos, localPos.z));
+		}
+		else
+		{
+			_fCoolTime = 0;
+			_isCoolTime = false;
+
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+		}
+	}
 }
 
 void ItemSlotUI::LateUpdate()
@@ -62,8 +87,47 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 
 void ItemSlotUI::UseItem()
 {
+	// 사용한 아이템 종류를 확인한 후, 제한시간 설정하고
+	CheckItem();
+	// 세팅된 아이템은 초기화
 	_settingItem = ITEM_EFFECT::END;
 
-	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	// after
+	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\coolTime.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+
+	//// before
+	//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	//GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+}
+
+void ItemSlotUI::CheckItem()
+{
+	switch (_settingItem)
+	{
+	case ITEM_EFFECT::SPEED_UP:
+		_isCoolTime = true;
+		_fCoolTime = 5.f;
+		break;
+	case ITEM_EFFECT::TELEPORT:
+		break;
+	case ITEM_EFFECT::SHIELD:
+		_isCoolTime = true;
+		_fCoolTime = 5.f;
+		break;
+	case ITEM_EFFECT::SPEED_DOWN:
+		_isCoolTime = true;
+		_fCoolTime = 5.f;
+		break;
+	case ITEM_EFFECT::BLIND:
+		_isCoolTime = true;
+		_fCoolTime = 5.f;
+		break;
+	case ITEM_EFFECT::DEBUFF_OFF:
+		break;
+	case ITEM_EFFECT::STUN:
+		_isCoolTime = true;
+		_fCoolTime = 5.f;
+		break;
+	}
 }

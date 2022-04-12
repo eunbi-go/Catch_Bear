@@ -87,6 +87,28 @@ message C_USE_DEBUFITEM
 
 message S_USE_DEBUFITEM
 {
-	uint64 targetplayerid = 1;
+	uint64 fromplayerid = 1;
 	DEBUFITEMTYPE itemtype = 2;
+}
+
+message C_USE_STUN
+{
+	uint64 fromplayerid = 1;
+}
+
+message S_USE_STUN
+{
+	uint64 fromplayerid = 1;
+}
+
+message C_COLLIDPLAYERTOPLAYER
+{
+	uint64 fromplayerid = 1;
+	uint64 toplayerid = 2;
+}
+
+message S_COLLIDPLAYERTOPLAYER
+{
+	uint64 fromplayerid = 1;
+	uint64 toplayerid = 2;
 }

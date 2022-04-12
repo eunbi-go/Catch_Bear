@@ -511,9 +511,8 @@ void Player::Item_DebuffOff()
 void Player::Item_Stun()
 {
 	/////////////// prod by. wc ///////////////
-	Protocol::C_USE_DEBUFITEM pkt;
+	Protocol::C_USE_STUN pkt;
 	pkt.set_fromplayerid(mysession->GetPlayerID());
-	pkt.set_itemtype(Protocol::DEBUF_STUN);
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 	mysession->Send(sendBuffer);
 	///////////////////////////////////////////

@@ -5,10 +5,13 @@
 #include "Scene.h"
 #include "Transform.h"
 #include "ServerSession.h"
+#include "ServerPacketHandler.h"
+#include "PlayerState.h"
 
 void CollidManager::Update()
 {
-	ColiisionPlayerToStaticObj();
+	//ColiisionPlayerToStaticObj();
+	CollisionPlayerToPlayer();
 }
 
 void CollidManager::ColiisionPlayerToStaticObj()
@@ -41,6 +44,40 @@ void CollidManager::ColiisionPlayerToStaticObj()
 			}
 			else
 				_player->SetIsAllowPlayerMove(true);
+		}
+
+	}
+}
+
+void CollidManager::CollisionPlayerToPlayer()
+{
+	auto& players = GET_SINGLE(SceneManager)->GetActiveScene()->GetVecPlayers();
+	shared_ptr<GameObject>	_tagplayer = make_shared<GameObject>();
+
+	// 술래 찾기
+	for (int i = 0; i < 2; ++i)
+	{
+		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i)->GetIsTagger() == true)
+			_tagplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);
+	}
+
+	for (auto pl = players.begin(); pl != players.end(); pl++)
+	{
+		if ((*pl)->GetIsTagger() == false)
+		{
+			if (_tagplayer->_state->curState != STATE::STUN)
+			{
+				if ((*pl)->GetBoundingBox().Intersects(_tagplayer->GetBoundingBox()))
+				{
+					Protocol::C_COLLIDPLAYERTOPLAYER collidPkt;
+					collidPkt.set_fromplayerid(_tagplayer->GetPlayerID());
+					collidPkt.set_toplayerid((*pl)->GetPlayerID());
+
+					auto sendBuffer = ServerPacketHandler::MakeSendBuffer(collidPkt);
+					mysession->Send(sendBuffer);
+					break;
+				}
+			}
 		}
 
 	}

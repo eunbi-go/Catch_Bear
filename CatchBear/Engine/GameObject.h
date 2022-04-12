@@ -71,6 +71,9 @@ public:
 	const BoundingOrientedBox GetBoundingBox() { return _boundingBox; }
 	const XMFLOAT3 GetBoundingExtents() { return _boundingExtents; }
 
+	const bool GetIsTagger() { return _isTagger; }
+	void SetIsTagger(bool _istag) { _isTagger = _istag; }
+
 private:
 	// 일반적인 컴포넌트(고정)
 	array<shared_ptr<Component>, FIXED_COMPONENT_COUNT> _components;	
@@ -81,7 +84,8 @@ private:
 	uint8	_layerIndex = 0;
 	bool	_static = false;
 	uint64  _playerID = 0;
-	bool	_isAllowPlayerMove;
+	bool	_isAllowPlayerMove = true;
+	bool	_isTagger = false;			// 술래인가?
 
 	BoundingOrientedBox		_boundingBox;
 	XMFLOAT3				_boundingExtents;

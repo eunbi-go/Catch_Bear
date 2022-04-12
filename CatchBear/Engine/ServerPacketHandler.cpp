@@ -189,11 +189,14 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 		case Protocol::IDLE:
 			if (_player->_state->curState != STATE::IDLE)
 			{
-				state = new IdleState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::IDLE;
+				if (_player->_state->curState != STATE::STUN)
+				{
+					state = new IdleState;
+					delete _player->_state;
+					_player->_state = state;
+					_player->_state->Enter(*_player);
+					_player->_state->curState = STATE::IDLE;
+				}
 			}
 			break;
 		case Protocol::WALK:
@@ -275,25 +278,70 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
-	//for (int i = 0; i < scene->GetEnterPlayerNum(); ++i)
-	//{
-		//_player = scene->GetPlayer(pkt.targetplayerid());
-		switch (pkt.itemtype())
-		{
-		case Protocol::DEBUF_BLIND:
-			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::BLIND, true);
-			break;
-		case Protocol::DEBUF_SPEEDDOWN:
-			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, true);
-			break;
-		case Protocol::DEBUF_STUN:
-			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
-			break;
-		default:
-			break;
-		}
-	//}
+	switch (pkt.itemtype())
+	{
+	case Protocol::DEBUF_BLIND:
+		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::BLIND, true);
+		break;
+	case Protocol::DEBUF_SPEEDDOWN:
+		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, true);
+		break;
+	default:
+		break;
+	}
 
+	return true;
+}
+
+bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	//_player = scene->GetPlayer(mysession->GetPlayerID());
+
+	PlayerState* state;
+	for (int i = 0; i < scene->GetEnterPlayerNum(); ++i)
+	{
+		_player = scene->GetPlayer(i);
+
+		if (_player->GetPlayerID() == pkt.fromplayerid())
+			continue;
+
+		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
+		if (_player->_state->curState != STATE::STUN)
+		{
+			state = new StunState;
+			delete _player->_state;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::STUN;
+		}
+		
+	}
+	return true;
+}
+
+bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLIDPLAYERTOPLAYER& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	PlayerState* state;
+	// 원래 술래였다면 술래아니게
+	_player = scene->GetPlayer(pkt.fromplayerid());
+	_player->SetIsTagger(false);
+
+	// 술래아닌데 부딪혔다면 술래로
+	_player = scene->GetPlayer(pkt.toplayerid());
+	_player->SetIsTagger(true);
+	// 새롭게 술래가 됐다면 스턴
+	if (_player->_state->curState != STATE::STUN)
+	{
+		state = new StunState;
+		delete _player->_state;
+		_player->_state = state;
+		_player->_state->Enter(*_player);
+		_player->_state->curState = STATE::STUN;
+	}
 	return true;
 }
 

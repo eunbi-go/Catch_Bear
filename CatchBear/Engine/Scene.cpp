@@ -261,6 +261,11 @@ void Scene::AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject)
 	_players.emplace(_playerid, gameObject);
 }
 
+void Scene::AddVecPlayers(shared_ptr<GameObject> gameObject)
+{
+	_vecPlayers.push_back(gameObject);
+}
+
 void Scene::AddStaticObj(shared_ptr<GameObject> gameobject)
 {
 	_vecStaticObject.push_back(gameobject);

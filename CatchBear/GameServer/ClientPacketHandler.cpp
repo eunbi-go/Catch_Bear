@@ -167,10 +167,31 @@ bool Handle_C_USE_DEBUFITEM(PacketSessionRef& session, Protocol::C_USE_DEBUFITEM
 {
 	Protocol::S_USE_DEBUFITEM s_pkt;
 	s_pkt.set_itemtype(pkt.itemtype());
-
+	s_pkt.set_fromplayerid(pkt.fromplayerid());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
 	//GInGame.Broadcast(sendBuffer);
 	GInGame.ExceptBroadcast(pkt.fromplayerid(), sendBuffer);
+
+	return true;
+}
+
+bool Handle_C_USE_STUN(PacketSessionRef& session, Protocol::C_USE_STUN& pkt)
+{
+	Protocol::S_USE_STUN s_pkt;
+	s_pkt.set_fromplayerid(pkt.fromplayerid());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
+	GInGame.Broadcast(sendBuffer);
+
+	return true;
+}
+
+bool Handle_C_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::C_COLLIDPLAYERTOPLAYER& pkt)
+{
+	Protocol::S_COLLIDPLAYERTOPLAYER collidpkt;
+	collidpkt.set_fromplayerid(pkt.fromplayerid());
+	collidpkt.set_toplayerid(pkt.toplayerid());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(collidpkt);
+	GInGame.Broadcast(sendBuffer);
 
 	return true;
 }

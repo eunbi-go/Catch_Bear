@@ -203,8 +203,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
+			gameObject->SetIsTagger(true);		// 일단은 0번플레이어가 술래
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
+			scene->AddVecPlayers(gameObject);
 		}
 		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects2)
@@ -216,7 +218,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(3.f, 3.f, 3.f));
+			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -224,7 +226,27 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
+			scene->AddVecPlayers(gameObject);
 		}
+		/*vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		for (auto& gameObject : gameObjects3)
+		{
+			gameObject->SetName(L"Player");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 10.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(2);
+			gameObject->_state = new IdleState();
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(2, gameObject);
+		}*/
 	}
 #pragma endregion
 

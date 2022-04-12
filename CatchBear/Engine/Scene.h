@@ -33,13 +33,16 @@ private:
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
 	void AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject);
+	void AddVecPlayers(shared_ptr<GameObject> gameObject);
 	void AddStaticObj(shared_ptr<GameObject> gameobject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
 
 	const vector<shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
 
 	const shared_ptr<GameObject>& GetPlayer(uint64 playerid) { return _players[playerid]; }
+	const map<uint64, shared_ptr<GameObject>>& GetPlayer() { return _players; }
 	const vector<shared_ptr<GameObject>>& GetStaticObj() { return _vecStaticObject; }
+	const vector<shared_ptr<GameObject>>& GetVecPlayers() { return _vecPlayers; }
 	shared_ptr<GameObject> GetGameObject(wstring name);
 
 	vector<shared_ptr<class Light>>	GetLights() { return _lights; }
@@ -57,6 +60,7 @@ private:
 	/////////// made by wc ///////////////////////////////////
 	map<uint64, shared_ptr<GameObject>>		_players;
 	vector<shared_ptr<GameObject>>			_vecStaticObject;
+	vector<shared_ptr<GameObject>>			_vecPlayers;
 	//////////////////////////////////////////////////////////
 
 	float	_curTime = 0.0f;

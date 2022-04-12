@@ -21,7 +21,13 @@ void TagMark::Update()
 	rotation.y += DELTA_TIME * _fRotationSpeed;
 	GetTransform()->SetLocalRotation(rotation);
 
-	_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
+	//_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
+	for (int i = 0; i < 2; ++i)
+	{
+		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i)->GetIsTagger() == true)
+			_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);
+	}
+
 	Vec3 transform = _target->GetTransform()->GetLocalPosition();
 	transform.y += 2.f;
 	GetTransform()->SetLocalPosition(transform);

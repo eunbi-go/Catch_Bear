@@ -18,6 +18,10 @@ enum : uint16
 	PKT_S_MOVE = 1009,
 	PKT_C_USE_DEBUFITEM = 1010,
 	PKT_S_USE_DEBUFITEM = 1011,
+	PKT_C_USE_STUN = 1012,
+	PKT_S_USE_STUN = 1013,
+	PKT_C_COLLIDPLAYERTOPLAYER = 1014,
+	PKT_S_COLLIDPLAYERTOPLAYER = 1015,
 };
 
 // Custom Handlers
@@ -28,6 +32,8 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt);
 bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM& pkt);
+bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt);
+bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLIDPLAYERTOPLAYER& pkt);
 
 class ServerPacketHandler
 {
@@ -42,6 +48,8 @@ public:
 		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
 		GPacketHandler[PKT_S_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_MOVE>(Handle_S_MOVE, session, buffer, len); };
 		GPacketHandler[PKT_S_USE_DEBUFITEM] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_DEBUFITEM>(Handle_S_USE_DEBUFITEM, session, buffer, len); };
+		GPacketHandler[PKT_S_USE_STUN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_STUN>(Handle_S_USE_STUN, session, buffer, len); };
+		GPacketHandler[PKT_S_COLLIDPLAYERTOPLAYER] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_COLLIDPLAYERTOPLAYER>(Handle_S_COLLIDPLAYERTOPLAYER, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -55,6 +63,8 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_C_MOVE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_USE_DEBUFITEM& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_DEBUFITEM); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_USE_STUN& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_STUN); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_COLLIDPLAYERTOPLAYER& pkt) { return MakeSendBuffer(pkt, PKT_C_COLLIDPLAYERTOPLAYER); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

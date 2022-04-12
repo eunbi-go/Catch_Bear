@@ -1,4 +1,7 @@
 #include "pch.h"
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "ClientPacketHandler.h"
 #include "Player.h"
 #include "GameSession.h"
@@ -118,12 +121,41 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 
 	cout << "플레이어 " << pkt.playerid() << " 인게임 접속함\n";
+
 	Protocol::S_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_success(true);
+	enterGamePkt.set_isallplayersready(false);
+	enterGamePkt.set_playerid(pkt.playerid());
+
+	srand((unsigned int)time(NULL));
+	// 술래 뽑기용 난수
+	int tagger = rand();
+
+	switch (pkt.playernum())
+	{
+	case 1:
+		if (pkt.playerid() == 0) {		// 1인용 게임일때
+			enterGamePkt.set_isallplayersready(true);
+			enterGamePkt.set_taggerplayerid(0);
+		}
+		break;
+	case 2:
+		if (pkt.playerid() == 1) {		// 2인용 게임일때
+			enterGamePkt.set_isallplayersready(true);
+			enterGamePkt.set_taggerplayerid(tagger % 2);
+		}
+		break;
+	case 3:
+		if (pkt.playerid() == 2) {		// 3인용 게임일때 (최종적으로는 이거만 남게 될듯)
+			enterGamePkt.set_isallplayersready(true);
+			enterGamePkt.set_taggerplayerid(tagger % 3);
+		}
+		break;
+	}
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);
-	session->Send(sendBuffer);
-
+	//session->Send(sendBuffer);
+	GInGame.Broadcast(sendBuffer);
 	return true;
 }
 

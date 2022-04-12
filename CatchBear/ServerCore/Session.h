@@ -112,11 +112,14 @@ public:
 
 	void SetPlayerID(uint64 _ID) { playerID = _ID; }
 	uint64 GetPlayerID() { return playerID; }
+	void SetAllPlayerEnter() { isAllPlayerEnter = true; }
+	bool GetIsAllPlayerEnter() { return isAllPlayerEnter; }
 
 protected:
 	virtual int32		OnRecv(BYTE* buffer, int32 len) sealed;
 	virtual void		OnRecvPacket(BYTE* buffer, int32 len) abstract;
 
 public:
-	uint64 playerID = 0;
+	uint64	playerID = 0;
+	bool	isAllPlayerEnter = false;
 };

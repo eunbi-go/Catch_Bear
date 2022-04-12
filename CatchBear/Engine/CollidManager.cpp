@@ -55,7 +55,7 @@ void CollidManager::CollisionPlayerToPlayer()
 	shared_ptr<GameObject>	_tagplayer = make_shared<GameObject>();
 
 	// 술래 찾기
-	for (int i = 0; i < 2; ++i)
+	for (int i = 0; i < 3; ++i)
 	{
 		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i)->GetIsTagger() == true)
 			_tagplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);

@@ -236,6 +236,9 @@ void ItemManager::Collision_ItemToPlayer()
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
+	if (mysession == NULL)
+		return;
+
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{

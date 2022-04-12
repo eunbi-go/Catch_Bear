@@ -52,6 +52,7 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 
 	Protocol::C_ENTER_GAME enterGamePkt;
 	enterGamePkt.set_playerid(mysession->GetPlayerID());
+	enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
 	session->Send(sendBuffer);
 
@@ -145,8 +146,21 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
 	if (pkt.success() != true)
 		return false;
+
+	if (pkt.isallplayersready()) {
+		mysession->SetAllPlayerEnter();
+		_player = scene->GetPlayer(pkt.taggerplayerid());
+		_player->SetIsTagger(true);	
+		cout << "모든 플레이어 접속 완료!\n";
+	}
+	else
+		cout << "플레이어 접속 대기중.. \n";
 	return true;
 }
 

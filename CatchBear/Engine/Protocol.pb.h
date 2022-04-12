@@ -802,6 +802,7 @@ class C_ENTER_GAME final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
+    kPlayernumFieldNumber = 3,
     kSuccessFieldNumber = 2,
   };
   // uint64 playerId = 1;
@@ -811,6 +812,15 @@ class C_ENTER_GAME final :
   private:
   ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // uint64 playernum = 3;
+  void clear_playernum();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playernum() const;
+  void set_playernum(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playernum() const;
+  void _internal_set_playernum(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
   // bool success = 2;
@@ -830,6 +840,7 @@ class C_ENTER_GAME final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playernum_;
   bool success_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -946,7 +957,9 @@ class S_ENTER_GAME final :
   enum : int {
     kPlayerIdFieldNumber = 1,
     kEnterPlayerFieldNumber = 3,
+    kTaggerplayeridFieldNumber = 5,
     kSuccessFieldNumber = 2,
+    kIsAllPlayersReadyFieldNumber = 4,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -966,6 +979,15 @@ class S_ENTER_GAME final :
   void _internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // uint64 taggerplayerid = 5;
+  void clear_taggerplayerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 taggerplayerid() const;
+  void set_taggerplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_taggerplayerid() const;
+  void _internal_set_taggerplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // bool success = 2;
   void clear_success();
   bool success() const;
@@ -973,6 +995,15 @@ class S_ENTER_GAME final :
   private:
   bool _internal_success() const;
   void _internal_set_success(bool value);
+  public:
+
+  // bool isAllPlayersReady = 4;
+  void clear_isallplayersready();
+  bool isallplayersready() const;
+  void set_isallplayersready(bool value);
+  private:
+  bool _internal_isallplayersready() const;
+  void _internal_set_isallplayersready(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.S_ENTER_GAME)
@@ -984,7 +1015,9 @@ class S_ENTER_GAME final :
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   ::PROTOBUF_NAMESPACE_ID::uint64 enterplayer_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 taggerplayerid_;
   bool success_;
+  bool isallplayersready_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2803,6 +2836,26 @@ inline void C_ENTER_GAME::set_success(bool value) {
   // @@protoc_insertion_point(field_set:Protocol.C_ENTER_GAME.success)
 }
 
+// uint64 playernum = 3;
+inline void C_ENTER_GAME::clear_playernum() {
+  playernum_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_ENTER_GAME::_internal_playernum() const {
+  return playernum_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_ENTER_GAME::playernum() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_ENTER_GAME.playernum)
+  return _internal_playernum();
+}
+inline void C_ENTER_GAME::_internal_set_playernum(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playernum_ = value;
+}
+inline void C_ENTER_GAME::set_playernum(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playernum(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_ENTER_GAME.playernum)
+}
+
 // -------------------------------------------------------------------
 
 // S_ENTER_GAME
@@ -2865,6 +2918,46 @@ inline void S_ENTER_GAME::_internal_set_enterplayer(::PROTOBUF_NAMESPACE_ID::uin
 inline void S_ENTER_GAME::set_enterplayer(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_enterplayer(value);
   // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.enterPlayer)
+}
+
+// bool isAllPlayersReady = 4;
+inline void S_ENTER_GAME::clear_isallplayersready() {
+  isallplayersready_ = false;
+}
+inline bool S_ENTER_GAME::_internal_isallplayersready() const {
+  return isallplayersready_;
+}
+inline bool S_ENTER_GAME::isallplayersready() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ENTER_GAME.isAllPlayersReady)
+  return _internal_isallplayersready();
+}
+inline void S_ENTER_GAME::_internal_set_isallplayersready(bool value) {
+  
+  isallplayersready_ = value;
+}
+inline void S_ENTER_GAME::set_isallplayersready(bool value) {
+  _internal_set_isallplayersready(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.isAllPlayersReady)
+}
+
+// uint64 taggerplayerid = 5;
+inline void S_ENTER_GAME::clear_taggerplayerid() {
+  taggerplayerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::_internal_taggerplayerid() const {
+  return taggerplayerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_GAME::taggerplayerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ENTER_GAME.taggerplayerid)
+  return _internal_taggerplayerid();
+}
+inline void S_ENTER_GAME::_internal_set_taggerplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  taggerplayerid_ = value;
+}
+inline void S_ENTER_GAME::set_taggerplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_taggerplayerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ENTER_GAME.taggerplayerid)
 }
 
 // -------------------------------------------------------------------

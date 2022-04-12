@@ -11,6 +11,7 @@
 #include "ItemManager.h"
 #include "ScoreManager.h"
 #include "CollidManager.h"
+#include "ServerSession.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -50,17 +51,21 @@ void Engine::Init(const WindowInfo& info)
 
 void Engine::Update()
 {
-	GET_SINGLE(Input)->Update();
-	GET_SINGLE(Timer)->Update();
-	GET_SINGLE(SceneManager)->Update();
-	GET_SINGLE(InstancingManager)->ClearBuffer();
-	GET_SINGLE(ItemManager)->Update();
-	GET_SINGLE(ScoreManager)->Update();
-	GET_SINGLE(CollidManager)->Update();
+	if (mysession == NULL)
+		return;
+	if (mysession->GetIsAllPlayerEnter()) {
+		GET_SINGLE(Input)->Update();
+		GET_SINGLE(Timer)->Update();
+		GET_SINGLE(SceneManager)->Update();
+		GET_SINGLE(InstancingManager)->ClearBuffer();
+		GET_SINGLE(ItemManager)->Update();
+		GET_SINGLE(ScoreManager)->Update();
+		GET_SINGLE(CollidManager)->Update();
 
-	Render();
+		Render();
 
-	ShowFps();
+		ShowFps();
+	}
 }
 
 void Engine::Render()

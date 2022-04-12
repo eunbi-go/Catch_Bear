@@ -31,6 +31,7 @@ message C_ENTER_GAME
 {
 	uint64 playerId = 1;
 	bool success = 2;
+	uint64 playernum = 3;
 }
 
 message S_ENTER_GAME
@@ -38,6 +39,8 @@ message S_ENTER_GAME
 	uint64 playerId = 1;
 	bool success = 2;
 	uint64 enterPlayer = 3;
+	bool isAllPlayersReady = 4;
+	uint64 taggerplayerid = 5;
 }
 
 message C_CHAT

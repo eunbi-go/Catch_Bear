@@ -203,7 +203,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
-			gameObject->SetIsTagger(true);		// 일단은 0번플레이어가 술래
+			//gameObject->SetIsTagger(true);		// 일단은 0번플레이어가 술래
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
@@ -228,7 +228,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddPlayers(1, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
-		/*vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects3)
 		{
 			gameObject->SetName(L"Player");
@@ -246,7 +246,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->_state = new IdleState();
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(2, gameObject);
-		}*/
+			scene->AddVecPlayers(gameObject);
+		}
 	}
 #pragma endregion
 

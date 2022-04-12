@@ -199,7 +199,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.1f, 1.f, 0.1f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -210,49 +210,49 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddVecPlayers(gameObject);
 		}
 
-		g_EnterPlayerCnt = 2;
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}
+		//g_EnterPlayerCnt = 2;
+		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//}
 
-		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
-		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects3)
-		{
-			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 10.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(2);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(2, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}
+		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
+		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		//for (auto& gameObject : gameObjects3)
+		//{
+		//	gameObject->SetName(L"Player");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 10.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(1.f, 1.f, 1.f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(2);
+		//	gameObject->_state = new IdleState();
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(2, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//}
 	}
 #pragma endregion
 
@@ -620,19 +620,19 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 		object->GetTransform()->SetLocalScale(scale);
 		object->GetTransform()->SetLocalRotation(rotate);
 		if (name == L"Tree_01") {
-			object->SetBoundingExtents(XMFLOAT3(1.3f, 2.7f, 1.2f));
+			object->SetBoundingExtents(XMFLOAT3(0.4f, 2.7f, 0.4f));
 			object->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 2.7f, 1.2f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
 		else if (name == L"Tree_02") {
-			object->SetBoundingExtents(XMFLOAT3(0.8f, 2.1f, 0.8f));
+			object->SetBoundingExtents(XMFLOAT3(0.7f, 2.1f, 0.7f));
 			object->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 2.0f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
 		else if (name == L"Tree_03") {
-			object->SetBoundingExtents(XMFLOAT3(1.8f, 2.4f, 1.5f));
+			object->SetBoundingExtents(XMFLOAT3(0.7f, 2.4f, 0.7f));
 			object->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.1f, 2.4f, -0.1f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+				XMFLOAT3(0.0f, 2.4f, -0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
 		else if (name == L"Rock_02") {
 			object->SetBoundingExtents(XMFLOAT3(0.08748f, 0.04690f, 0.08150f));
@@ -640,12 +640,17 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 				XMFLOAT3(0.0f, 0.0f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
 		else if (name == L"Rock_03") {
-			object->SetBoundingExtents(XMFLOAT3(0.15f, 0.075f, 0.15f));
+			object->SetBoundingExtents(XMFLOAT3(2.f, 0.075f, 2.f));
 			object->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.1f, 0.001f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
+		else if (name == L"Rock_04") {
+			object->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
+			object->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.5f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		}
 		else if (name == L"Fence_Type1_02") {
-			object->SetBoundingExtents(XMFLOAT3(1.f, 0.7f, 0.1f));
+			object->SetBoundingExtents(XMFLOAT3(1.5f, 0.7f, 1.5f));
 			object->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(-0.9f, 0.6f, -2.4f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}

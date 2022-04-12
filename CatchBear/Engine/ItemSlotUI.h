@@ -18,6 +18,7 @@ public:
 	void SetItem(ITEM_EFFECT item);
 	void UseItem();
 	void CheckItem();
+	void ResetItemSlot();
 
 	ITEM_EFFECT GetItem() { return _settingItem; }
 

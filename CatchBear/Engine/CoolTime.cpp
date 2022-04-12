@@ -7,6 +7,8 @@
 #include "Resources.h"
 #include "Timer.h"
 #include "Transform.h"
+#include "ItemSlotManager.h"
+#include "ItemSlotUI.h"
 
 CoolTime::CoolTime()
 {
@@ -20,7 +22,7 @@ void CoolTime::Update()
 {
 	if (GetGameObject()->_isRender)
 	{
-		if (_fCoolTime >= 0.6f)
+		if (_fCoolTime > 0.f)
 		{
 			_fCoolTime -= DELTA_TIME;
 
@@ -34,10 +36,14 @@ void CoolTime::Update()
 		}
 		else
 		{
-			_fCoolTime = 0;
+			GET_SINGLE(ItemSlotManager)->ResetItemSlot(_nSlot);
+
+			_fCoolTime = 5.f;
+			_nSlot = -1;
 			GetGameObject()->_isRender = false;
 			GetGameObject()->GetTransform()->SetLocalScale(_localScale);
 			GetGameObject()->GetTransform()->SetLocalPosition(_localPos);
+
 		}
 	}
 }
@@ -46,9 +52,10 @@ void CoolTime::LateUpdate()
 {
 }
 
-void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale)
+void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale, int nSlot)
 {
 	GetGameObject()->_isRender = true;
 	_localPos = pos;
 	_localScale = scale;
+	_nSlot = nSlot;
 }

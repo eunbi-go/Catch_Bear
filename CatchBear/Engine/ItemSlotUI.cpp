@@ -65,13 +65,13 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 void ItemSlotUI::UseItem()
 {
 	// 사용한 아이템 종류를 확인한 후, 제한시간 설정하고
-	CheckItem();
+	//CheckItem();
 	// 세팅된 아이템은 초기화
 	_settingItem = ITEM_EFFECT::END;
 
-	// before
-	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
-	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+	//// before
+	//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	//GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }
 
 void ItemSlotUI::CheckItem()
@@ -79,23 +79,29 @@ void ItemSlotUI::CheckItem()
 	switch (_settingItem)
 	{
 	case ITEM_EFFECT::SPEED_UP:
-		GetGameObject()->_isRender = false;
+		//GetGameObject()->_isRender = false;
 		break;
 	case ITEM_EFFECT::TELEPORT:
 		break;
 	case ITEM_EFFECT::SHIELD:
-		GetGameObject()->_isRender = false;
+		//GetGameObject()->_isRender = false;
 		break;
 	case ITEM_EFFECT::SPEED_DOWN:
-		GetGameObject()->_isRender = false;
+		//GetGameObject()->_isRender = false;
 		break;
 	case ITEM_EFFECT::BLIND:
-		GetGameObject()->_isRender = false;
+		//GetGameObject()->_isRender = false;
 		break;
 	case ITEM_EFFECT::DEBUFF_OFF:
 		break;
 	case ITEM_EFFECT::STUN:
-		GetGameObject()->_isRender = false;
+		//GetGameObject()->_isRender = false;
 		break;
 	}
+}
+
+void ItemSlotUI::ResetItemSlot()
+{
+	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

@@ -51,21 +51,40 @@ void ItemSlotManager::UseItem(int nSlot)
 
 		pos = _itemSlot1->GetTransform()->GetLocalPosition();
 		scale = _itemSlot1->GetTransform()->GetLocalScale();
-		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))->SetInitData(pos, scale);
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))
+			->SetInitData(pos, scale, 1);
 		break;
 	case 2:
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 
 		pos = _itemSlot2->GetTransform()->GetLocalPosition();
 		scale = _itemSlot2->GetTransform()->GetLocalScale();
-		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))->SetInitData(pos, scale);
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))
+			->SetInitData(pos, scale, 2);
 		break;
 	case 3:
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 
 		pos = _itemSlot3->GetTransform()->GetLocalPosition();
 		scale = _itemSlot3->GetTransform()->GetLocalScale();
-		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime3")->GetScript(0))->SetInitData(pos, scale);
+		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime3")->GetScript(0))
+			->SetInitData(pos, scale, 3);
+		break;
+	}
+}
+
+void ItemSlotManager::ResetItemSlot(int nSlot)
+{
+	switch (nSlot)
+	{
+	case 1:
+		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->ResetItemSlot();
+		break;
+	case 2:
+		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->ResetItemSlot();
+		break;
+	case 3:
+		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->ResetItemSlot();
 		break;
 	}
 }

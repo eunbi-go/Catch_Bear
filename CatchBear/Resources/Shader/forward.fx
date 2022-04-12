@@ -154,5 +154,14 @@ float4 PS_ItemSlot(VS_TEX_OUT input) : SV_Target
     return color;
 }
 
+float4 PS_ItemCoolTime(VS_TEX_OUT input) : SV_Target
+{
+    float4 color = float4(1.f, 1.f, 1.f, 1.f);
+    if (g_tex_on_0)
+        color = g_tex_0.Sample(g_sam_0, input.uv);
+    color.w = 0.5f;
+    return color;
+}
+
 
 #endif

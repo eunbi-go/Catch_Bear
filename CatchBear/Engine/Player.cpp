@@ -220,6 +220,8 @@ void Player::KeyCheck()
 	KeyCheck_Item();
 }
 
+static bool isFirstEnter = true;
+
 void Player::Move()
 {
 	if (_bStunned) return;
@@ -229,6 +231,11 @@ void Player::Move()
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
+
+	if (isFirstEnter) {
+		Item_Stun();
+		isFirstEnter = false;
+	}
 
 	for (auto& gameObject : gameObjects)
 	{
@@ -276,9 +283,6 @@ void Player::Move()
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
 	}
-
-	Vec3 look = GetTransform()->GetLook();
-	int a = 0;
 
 	// È¸Àü
 	float delta = 0.f;
@@ -562,9 +566,11 @@ void Player::Stunned()
 	{
 		_bStunned = true;
 
-		_state->End(*_player);
-		delete _state;
-		_state = new StunState;
-		_state->Enter(*_player);
+		if (!isFirstEnter) {
+			_state->End(*_player);
+			delete _state;
+			_state = new StunState;
+			_state->Enter(*_player);
+		}
 	}
 }

@@ -27,6 +27,8 @@
 
 #include "ServerSession.h"
 
+int g_EnterPlayerCnt = 0;
+
 shared_ptr<Scene> scene = make_shared<Scene>();
 
 void SceneManager::Update()
@@ -187,7 +189,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-
+		g_EnterPlayerCnt = 1;
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
@@ -203,11 +205,12 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
-			//gameObject->SetIsTagger(true);		// 일단은 0번플레이어가 술래
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
+
+		g_EnterPlayerCnt = 2;
 		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
@@ -228,6 +231,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddPlayers(1, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
+
+		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		for (auto& gameObject : gameObjects3)
 		{

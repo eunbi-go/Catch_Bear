@@ -22,7 +22,7 @@ void TagMark::Update()
 	GetTransform()->SetLocalRotation(rotation);
 
 	//_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
 		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i)->GetIsTagger() == true)
 			_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);

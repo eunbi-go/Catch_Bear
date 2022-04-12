@@ -237,23 +237,23 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			}
 			break;
 		case Protocol::ATTACK:
-			if (_player->_state->curState != STATE::ATTACK)
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::ATTACK)
 			{
 				state = new AttackState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::ATTACK;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::ATTACK;
 			}
 			break;
 		case Protocol::STUN:
-			if (_player->_state->curState != STATE::STUN)
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 			{
 				state = new StunState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::STUN;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 			}
 			break;
 		case Protocol::DASH:
@@ -322,13 +322,13 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 			continue;
 
 		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
-		if (_player->_state->curState != STATE::STUN)
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 		{
 			state = new StunState;
-			delete _player->_state;
-			_player->_state = state;
-			_player->_state->Enter(*_player);
-			_player->_state->curState = STATE::STUN;
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 		}
 		
 	}
@@ -348,13 +348,13 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 	_player = scene->GetPlayer(pkt.toplayerid());
 	_player->SetIsTagger(true);
 	// 새롭게 술래가 됐다면 스턴
-	if (_player->_state->curState != STATE::STUN)
+	if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 	{
 		state = new StunState;
-		delete _player->_state;
-		_player->_state = state;
-		_player->_state->Enter(*_player);
-		_player->_state->curState = STATE::STUN;
+		delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+		static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+		static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 	}
 	return true;
 }

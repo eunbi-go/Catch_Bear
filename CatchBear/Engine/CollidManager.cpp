@@ -69,7 +69,7 @@ void CollidManager::CollisionPlayerToPlayer()
 	{
 		if ((*pl)->GetIsTagger() == false)
 		{
-			if (_tagplayer->_state->curState != STATE::STUN)
+			if (static_pointer_cast<Player>(_tagplayer->GetScript(0))->_state->curState != STATE::STUN)
 			{
 				if ((*pl)->GetBoundingBox().Intersects(_tagplayer->GetBoundingBox()))
 				{

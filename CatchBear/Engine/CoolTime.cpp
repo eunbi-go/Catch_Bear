@@ -31,7 +31,7 @@ void CoolTime::Update()
 			float fPos = fScale / 2.f;
 			Vec3	localPos = GetGameObject()->GetTransform()->GetLocalPosition();
 
-			if (localScale.y - fScale >= -1.f) {
+			if (localScale.y - fScale >= -4.f) {
 				GetGameObject()->GetTransform()->SetLocalScale(Vec3(localScale.x, localScale.y - fScale, localScale.z));
 				GetGameObject()->GetTransform()->SetLocalPosition(Vec3(localPos.x, localPos.y - fPos, localPos.z));
 			}

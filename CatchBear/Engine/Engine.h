@@ -35,6 +35,9 @@ public:
 	void RenderEnd();
 
 	void ResizeWindow(int32 width, int32 height);
+	
+public:
+	WindowInfo	GetWindowInfo() { return _window; }
 
 private:
 	void ShowFps();

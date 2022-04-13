@@ -35,6 +35,7 @@ void Scene::Start()
 void Scene::Update()
 {
 	SetTimer();
+	CheckMouse();
 
 	int time = (int)_curTime;
 	float time2 = _curTime / 2.f;
@@ -239,6 +240,20 @@ void Scene::SetTimer()
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+}
+
+void Scene::CheckMouse()
+{
+	GetCursorPos(&_mousePos);
+	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
+
+	for (int i = 0; i < 3; ++i)
+	{
+		if (PtInRect(&_slotRt[i], _mousePos))
+		{
+			printf("%d번째 슬롯 충돌\n", i+1);
+		}
+	}
 }
 
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)

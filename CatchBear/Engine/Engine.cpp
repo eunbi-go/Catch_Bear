@@ -65,6 +65,8 @@ void Engine::Update()
 		Render();
 
 		ShowFps();
+
+		gPacketControl++;
 	}
 }
 

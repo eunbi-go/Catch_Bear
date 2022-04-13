@@ -47,6 +47,7 @@ void Player::Update()
 
 void Player::LateUpdate()
 {
+	//if (_bStunned) return;
 	// 서버에서 컨트롤하는 플레이어는 서버에서 위치값도 받아오니까 필요없을듯
 	KeyCheck();
 
@@ -74,32 +75,44 @@ void Player::LateUpdate()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::JUMP);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::ATTACK:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::ATTACK);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::STUN:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::STUN);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::DASH:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::DASH);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	}
@@ -142,17 +155,8 @@ void Player::KeyCheck()
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	//for (auto& gameObject : gameObjects)
-	//{
-	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-	//	{
-	//		_player = gameObject;
-	//		break;
-	//	}
-	//}
-
 	_player = scene->GetPlayer(mysession->GetPlayerID());
-
+	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
@@ -176,40 +180,58 @@ void Player::KeyCheck()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
+		pkt.set_zpos(pos.z);
+		if (gPacketControl % 80 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::JUMP:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::JUMP);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 10 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::ATTACK:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::ATTACK);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::STUN:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::STUN);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	case STATE::DASH:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::DASH);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	}
 	}
@@ -232,6 +254,7 @@ void Player::Move()
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
+	// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
 	if (isFirstEnter) {
 		Item_Stun();
 		isFirstEnter = false;
@@ -261,12 +284,13 @@ void Player::Move()
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(0);
 
-		if (_player->GetIsAllowPlayerMove()) {
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
+		if (gPacketControl % 3 == 1)
+		{
+			if (_player->GetIsAllowPlayerMove()) {
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+				mysession->Send(sendBuffer);
+			}
 		}
-		else
-			int a = 10;
 		
 	}
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
@@ -280,8 +304,11 @@ void Player::Move()
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(1);
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		if (gPacketControl % 3 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 	}
 
 	// 회전
@@ -301,9 +328,11 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
-
+		if (gPacketControl % 3 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		_player->GetTransform()->SetLocalRotation(rot);
 	}
 
@@ -321,8 +350,12 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+
+		if (gPacketControl % 3 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 
 		_player->GetTransform()->SetLocalRotation(rot);
 	}

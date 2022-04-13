@@ -4,6 +4,7 @@
 //#include "Player.h"
 
 PacketSessionRef mysession;
+int unsigned gPacketControl = 0;
 static bool isConnected = false;
 std::mutex m;
 

@@ -17,3 +17,4 @@ public:
 };
 
 extern PacketSessionRef mysession;
+extern unsigned int gPacketControl;

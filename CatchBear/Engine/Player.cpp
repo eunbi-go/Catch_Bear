@@ -149,6 +149,8 @@ void Player::KeyCheck()
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
 
+	
+
 	if (mysession == NULL)
 		return;
 
@@ -161,6 +163,9 @@ void Player::KeyCheck()
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
 	PlayerState* state = _state->KeyCheck(*_player, _curState);
+
+	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
+
 	_player->_curState = _curState;
 
 	if (state != NULL)

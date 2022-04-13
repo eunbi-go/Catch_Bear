@@ -33,6 +33,7 @@ PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
         static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
         _fTime = 0.f;
         ePlayer = STATE::IDLE;
+        
         return new IdleState;
     }
     else

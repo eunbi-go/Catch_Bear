@@ -329,6 +329,7 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+			static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
 		}
 		
 	}
@@ -348,6 +349,7 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 	_player = scene->GetPlayer(pkt.toplayerid());
 	_player->SetIsTagger(true);
 	// 새롭게 술래가 됐다면 스턴
+	//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
 	if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 	{
 		state = new StunState;
@@ -355,6 +357,7 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 		static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
 	}
 	return true;
 }

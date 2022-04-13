@@ -30,6 +30,8 @@ PlayerState* StunState::Update(GameObject& player, STATE& ePlayer)
         static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
 
         ePlayer = _ePreState;
+
+
         switch (_ePreState)
         {
         case IDLE:

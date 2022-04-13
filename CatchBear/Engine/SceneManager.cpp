@@ -27,6 +27,7 @@
 #include "CoolTime.h"
 
 #include "ServerSession.h"
+#include "ItemWindow.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -415,6 +416,34 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	itemCoolTime3->AddComponent(itemCoolTime3Renderer);
 
 	scene->AddGameObject(itemCoolTime3);
+#pragma endregion
+
+#pragma region ItemWnd
+	// ItemWindow
+	shared_ptr<GameObject> itemWnd = make_shared<GameObject>();
+	itemWnd->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	itemWnd->SetName(L"ItemWindow");
+	itemWnd->AddComponent(make_shared<Transform>());
+	itemWnd->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemWnd->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
+	itemWnd->AddComponent(make_shared<ItemWindow>());
+
+	shared_ptr<MeshRenderer> itemWndRenderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		itemWndRenderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		itemWndRenderer->SetMaterial(material);
+	}
+	itemWnd->AddComponent(itemWndRenderer);
+	itemWnd->_isRender = false;
+	scene->AddGameObject(itemWnd);
 #pragma endregion
 
 #pragma region Terrain

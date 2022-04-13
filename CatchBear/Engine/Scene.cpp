@@ -10,6 +10,9 @@
 #include "ServerSession.h"
 #include "Timer.h"
 #include "MeshRenderer.h"
+#include "ItemWindow.h"
+#include "ItemSlotUI.h"
+#include "Transform.h"
 
 void Scene::Awake()
 {
@@ -247,12 +250,34 @@ void Scene::CheckMouse()
 	GetCursorPos(&_mousePos);
 	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
 
+	shared_ptr<GameObject>	itemWnd = GetGameObject(L"ItemWindow");
+
 	for (int i = 0; i < 3; ++i)
 	{
 		if (PtInRect(&_slotRt[i], _mousePos))
 		{
-			printf("%d번째 슬롯 충돌\n", i+1);
+			wstring slotName = L"ItemSlot" + s2ws(to_string(i + 1));
+			shared_ptr<GameObject>	slot = GetGameObject(slotName);
+			wstring itemName = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetSettingItemName();
+
+			string name = ws2s(itemName);
+
+			if (!itemName.empty())
+			{
+				itemWnd->_isRender = true;
+
+				wstring n = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->_texName;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->_itemName = n;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->SetItemName(L"z");
+
+				Vec3 localPos = slot->GetTransform()->GetLocalPosition();
+				localPos.y += 100.f;
+				itemWnd->GetTransform()->SetLocalPosition(localPos);
+			}
+			//else 
+				//itemWnd->_isRender = false;
 		}
+		//else itemWnd->_isRender = false;
 	}
 }
 

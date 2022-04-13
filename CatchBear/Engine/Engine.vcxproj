@@ -214,6 +214,7 @@
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="ItemSlotManager.h" />
     <ClInclude Include="ItemSlotUI.h" />
+    <ClInclude Include="ItemWindow.h" />
     <ClInclude Include="JumpState.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
@@ -289,6 +290,7 @@
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="ItemSlotManager.cpp" />
     <ClCompile Include="ItemSlotUI.cpp" />
+    <ClCompile Include="ItemWindow.cpp" />
     <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />

@@ -27,41 +27,41 @@ void ItemSlotUI::LateUpdate()
 void ItemSlotUI::SetItem(ITEM_EFFECT item)
 {
 	_settingItem = item;
-	wstring texName, texPath;
+	wstring texPath;
 
 	switch (item)
 	{
 	case ITEM_EFFECT::SPEED_UP:
-		texName = L"speed_up";
+		_texName = L"speed_up";
 		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::TELEPORT:
-		texName = L"teleport";
+		_texName = L"teleport";
 		break;
 	case ITEM_EFFECT::SHIELD:
-		texName = L"shield";
+		_texName = L"shield";
 		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::SPEED_DOWN:
-		texName = L"speed_down";
+		_texName = L"speed_down";
 		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::BLIND:
-		texName = L"blind";
+		_texName = L"blind";
 		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::DEBUFF_OFF:
-		texName = L"debuff_off";
+		_texName = L"debuff_off";
 		break;
 	case ITEM_EFFECT::STUN:
-		texName = L"stun";
+		_texName = L"stun";
 		_fCoolTime = 3.f;
 		break;
 	}
 
-	texPath = L"..\\Resources\\Texture\\item\\" + texName + L".png";
+	texPath = L"..\\Resources\\Texture\\item\\" + _texName + L".png";
 
-	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(texName, texPath);
+	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(_texName, texPath);
 
 	// ÅØ½ºÃ³ ¹Ù²ãÁà¾ß ÇÔ
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texItem);
@@ -108,6 +108,7 @@ void ItemSlotUI::CheckItem()
 void ItemSlotUI::ResetItemSlot()
 {
 	_fCoolTime = 0.f;
+	_texName = L" ";
 	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

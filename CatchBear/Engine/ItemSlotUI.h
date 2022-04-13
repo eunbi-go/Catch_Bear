@@ -22,10 +22,15 @@ public:
 
 	ITEM_EFFECT GetItem() { return _settingItem; }
 	float GetCoolTime() { return _fCoolTime; }
+	const wstring& GetSettingItemName() { return _texName; }
+
 
 private:
 	shared_ptr<GameObject>		_itemSlot;
 	ITEM_EFFECT	_settingItem = ITEM_EFFECT::END;
 	float	_fCoolTime = 0.f;
 	bool	_isCoolTime = false;
+public:
+	wstring _texName;
+
 };

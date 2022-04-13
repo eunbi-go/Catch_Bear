@@ -28,6 +28,7 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 {
 	_settingItem = item;
 	wstring texPath;
+	_isSetting = true;
 
 	switch (item)
 	{
@@ -109,6 +110,7 @@ void ItemSlotUI::ResetItemSlot()
 {
 	_fCoolTime = 0.f;
 	_texName = L" ";
+	_isSetting = false;
 	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

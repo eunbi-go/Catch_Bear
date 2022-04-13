@@ -20,7 +20,7 @@ void ItemWindow::LateUpdate()
 {
 }
 
-void ItemWindow::SetItemName(const wstring& item)
+void ItemWindow::SetItemName()
 {
 	//_itemName = item;
 	wstring texPath = L"..\\Resources\\Texture\\item\\" + _itemName + L".png";
@@ -29,5 +29,6 @@ void ItemWindow::SetItemName(const wstring& item)
 
 	// ÅØ½ºÃ³ ¹Ù²ãÁà¾ß ÇÔ
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texItem);
-	printf("%s\n", ws2s(_itemName).c_str());
+	//printf("%s\n", ws2s(_itemName).c_str());
+	GetGameObject()->_isRender = true;
 }

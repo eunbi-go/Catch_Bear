@@ -252,32 +252,30 @@ void Scene::CheckMouse()
 
 	shared_ptr<GameObject>	itemWnd = GetGameObject(L"ItemWindow");
 
+
 	for (int i = 0; i < 3; ++i)
 	{
-		if (PtInRect(&_slotRt[i], _mousePos))
+		shared_ptr<GameObject>	slot = GetGameObject(L"ItemSlot" + s2ws(to_string(i + 1)));
+		wstring itemName = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetSettingItemName();
+
+		if (static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetIsSettingItem())
 		{
-			wstring slotName = L"ItemSlot" + s2ws(to_string(i + 1));
-			shared_ptr<GameObject>	slot = GetGameObject(slotName);
-			wstring itemName = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetSettingItemName();
-
-			string name = ws2s(itemName);
-
-			if (!itemName.empty())
+			if (PtInRect(&_slotRt[i], _mousePos))
 			{
 				itemWnd->_isRender = true;
 
-				wstring n = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->_texName;
-				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->_itemName = n;
-				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->SetItemName(L"z");
+				wstring name = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->_texName;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->_itemName = name;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->SetItemName();
 
 				Vec3 localPos = slot->GetTransform()->GetLocalPosition();
-				localPos.y += 100.f;
+				localPos.y += 110.f;
 				itemWnd->GetTransform()->SetLocalPosition(localPos);
+				return;
 			}
-			//else 
-				//itemWnd->_isRender = false;
+			else itemWnd->_isRender = false;
+
 		}
-		//else itemWnd->_isRender = false;
 	}
 }
 

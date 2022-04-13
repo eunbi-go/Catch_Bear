@@ -13,7 +13,7 @@ public:
 	virtual void LateUpdate() override;
 
 public:
-	void SetItemName(const wstring& item);
+	void SetItemName();
 
 private:
 	shared_ptr<GameObject>		_itemWnd;

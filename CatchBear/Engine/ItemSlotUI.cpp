@@ -33,24 +33,29 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 	{
 	case ITEM_EFFECT::SPEED_UP:
 		texName = L"speed_up";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::TELEPORT:
 		texName = L"teleport";
 		break;
 	case ITEM_EFFECT::SHIELD:
 		texName = L"shield";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::SPEED_DOWN:
 		texName = L"speed_down";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::BLIND:
 		texName = L"blind";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::DEBUFF_OFF:
 		texName = L"debuff_off";
 		break;
 	case ITEM_EFFECT::STUN:
 		texName = L"stun";
+		_fCoolTime = 3.f;
 		break;
 	}
 
@@ -102,6 +107,7 @@ void ItemSlotUI::CheckItem()
 
 void ItemSlotUI::ResetItemSlot()
 {
+	_fCoolTime = 0.f;
 	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

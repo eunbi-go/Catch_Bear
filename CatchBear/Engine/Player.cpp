@@ -151,6 +151,7 @@ void Player::KeyCheck()
 
 	if (state != NULL)
 	{
+		_state->End(*_player);
 		delete _state;
 		_state = state;
 		_state->Enter(*_player);

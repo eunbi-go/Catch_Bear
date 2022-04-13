@@ -12,7 +12,7 @@ public:
 	virtual void LateUpdate() override;
 
 public:
-	void SetInitData(const Vec3& pos, const Vec3& scale, int nSlot);
+	void SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nCoolTime);
 
 private:
 	shared_ptr<GameObject>		_coolTime;
@@ -22,4 +22,5 @@ private:
 	Vec3	_localPos;
 	Vec3	_localScale;
 	int		_nSlot = -1;
+	float	_fItemCoolTime = 0.f;
 };

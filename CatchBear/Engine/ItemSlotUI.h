@@ -21,6 +21,7 @@ public:
 	void ResetItemSlot();
 
 	ITEM_EFFECT GetItem() { return _settingItem; }
+	float GetCoolTime() { return _fCoolTime; }
 
 private:
 	shared_ptr<GameObject>		_itemSlot;

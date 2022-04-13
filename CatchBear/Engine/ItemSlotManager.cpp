@@ -44,31 +44,35 @@ void ItemSlotManager::AddItem(ITEM_EFFECT itemType)
 void ItemSlotManager::UseItem(int nSlot)
 {
 	Vec3 pos, scale;
+	float fCoolTime;
 	switch (nSlot)
 	{
 	case 1:
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 
+		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot1->GetTransform()->GetLocalPosition();
 		scale = _itemSlot1->GetTransform()->GetLocalScale();
 		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))
-			->SetInitData(pos, scale, 1);
+			->SetInitData(pos, scale, 1, (int)fCoolTime);
 		break;
 	case 2:
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 
+		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot2->GetTransform()->GetLocalPosition();
 		scale = _itemSlot2->GetTransform()->GetLocalScale();
 		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))
-			->SetInitData(pos, scale, 2);
+			->SetInitData(pos, scale, 2, (int)fCoolTime);
 		break;
 	case 3:
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 
+		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot3->GetTransform()->GetLocalPosition();
 		scale = _itemSlot3->GetTransform()->GetLocalScale();
 		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime3")->GetScript(0))
-			->SetInitData(pos, scale, 3);
+			->SetInitData(pos, scale, 3, (int)fCoolTime);
 		break;
 	}
 }

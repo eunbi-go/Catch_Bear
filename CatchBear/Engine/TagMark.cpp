@@ -21,10 +21,10 @@ void TagMark::Update()
 	rotation.y += DELTA_TIME * _fRotationSpeed;
 	GetTransform()->SetLocalRotation(rotation);
 
-	_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
-	Vec3 transform = _target->GetTransform()->GetLocalPosition();
-	transform.y += 2.f;
-	GetTransform()->SetLocalPosition(transform);
+	//_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
+	//Vec3 transform = _target->GetTransform()->GetLocalPosition();
+	//transform.y += 2.f;
+	//GetTransform()->SetLocalPosition(transform);
 }
 
 void TagMark::LateUpdate()
@@ -32,4 +32,10 @@ void TagMark::LateUpdate()
 	// 술래되면 색 변하게 해야 함
 	// -> 플-플 충돌 후, 서버에서 알려줘야 함
 	// -> 그 때 구현할게요
+}
+
+void TagMark::SetPosition(Vec3 pos)
+{
+	pos.y += 2.f;
+	GetGameObject()->GetTransform()->SetLocalPosition(pos);
 }

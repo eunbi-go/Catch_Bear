@@ -25,6 +25,7 @@
 #include "ItemSlotUI.h"
 #include "ItemSlotManager.h"
 #include "CoolTime.h"
+#include "ScoreManager.h"
 
 #include "ServerSession.h"
 #include "ItemWindow.h"

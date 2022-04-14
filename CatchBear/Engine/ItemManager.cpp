@@ -29,8 +29,8 @@ void ItemManager::Init()
 void ItemManager::Update()
 {
 	CreateCommonItem();
-	//CreateUniqueItem();
-	//CreateTreasure();
+	CreateUniqueItem();
+	CreateTreasure();
 
 
 	Collision_ItemToPlayer();
@@ -111,11 +111,6 @@ void ItemManager::CreateCommonItem()
 				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 				item->SetBoundingBox(BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				//item->_boundingBox = BoundingOrientedBox(
-				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -160,12 +155,6 @@ void ItemManager::CreateUniqueItem()
 				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 				item->SetBoundingBox(BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-
-				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				//item->_boundingBox = BoundingOrientedBox(
-				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -209,12 +198,6 @@ void ItemManager::CreateTreasure()
 			gameObject->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-
-			//gameObject->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-			//gameObject->_boundingBox = BoundingOrientedBox(
-			//	XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 			gameObject->AddComponent(make_shared<Item>());
 
 			// Item enum값 설정 - ItemType, ItemEffect
@@ -254,7 +237,6 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
 			scene->RemoveGameObject(*item);
 			item = _commonItemList.erase(item);
@@ -268,11 +250,26 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}
 
 		else item++;
+	}
+
+	// treasure & player
+	for (auto treasure = _treasureList.begin(); treasure != _treasureList.end();)
+	{
+		if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+		{
+			if (!_player->GetIsTagger())
+			{
+				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
+			}
+			scene->RemoveGameObject(*treasure);
+			treasure = _uniqueItemList.erase(treasure);
+		}
+
+		else treasure++;
 	}
 }

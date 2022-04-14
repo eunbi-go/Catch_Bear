@@ -31,10 +31,12 @@ public:
 	void SetCurItem(Player::ITEM curItem, bool value) { _curPlayerItem[curItem] = value; }	// 이 함수 사용해서 플레이어에게 아이템 효과 부여
 	void SetPlayerSpeed(float speed) { _speed = speed; }
 	void SetPlayerStunned(bool value) { _bStunned = value; }
+	void AddPlayerScore(int score) { _iScore += score; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerOriginalSpeed() { return _originalSpeed; }
 	const bool GetPlayerStunned() { return _bStunned; }
+	const int GetPlayerScore() { return _iScore; }
 	
 private:
 	void KeyCheck();
@@ -70,6 +72,9 @@ private:
 	float	_fShieldTime = 0.f;
 	float	_fBlindTime = 0.f;
 	float	_fStunTime = 0.f;
+	float	_fScoreTime = 0.f;
+
+	int		_iScore = 0;
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();

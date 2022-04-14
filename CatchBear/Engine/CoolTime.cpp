@@ -53,13 +53,13 @@ void CoolTime::Update()
 void CoolTime::LateUpdate()
 {
 }
-
+ 
 void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nCoolTime)
 {
 	GetGameObject()->_isRender = true;
 	_localPos = pos;
 	_localScale = scale;
 	_nSlot = nSlot;
-	_fItemCoolTime = float(nCoolTime);
-	_fCoolTime = float(nCoolTime);
+	_fItemCoolTime = float(nCoolTime) + 1.5f;
+	_fCoolTime = float(nCoolTime) + 1.5f;
 }

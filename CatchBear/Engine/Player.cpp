@@ -515,10 +515,6 @@ void Player::Item_Shield()
 
 void Player::Item_SpeedDown()
 {
-	// 다른 플레이어들 속도 감소시키기 위한 함수
-	// 서버에서 해야하나 ?
-	// 클라에서 함수가 따로 필요 없으면 삭제함
-
 	/////////////// prod by. wc ///////////////
 	Protocol::C_USE_DEBUFITEM pkt;
 	pkt.set_fromplayerid(mysession->GetPlayerID());

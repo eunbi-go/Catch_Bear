@@ -66,14 +66,14 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     ClientServiceRef service = MakeShared<ClientService>(
         //NetAddress(L"127.0.0.1", 7777),
-        NetAddress(L"221.165.49.152", 7777),
+        NetAddress(L"192.168.142.206", 7777),
         MakeShared<IocpCore>(),
         MakeShared<ServerSession>, // TODO : SessionManager 등
         10);
 
     ASSERT_CRASH(service->Start());
 
-    for (int32 i = 0; i < 2; i++)
+    for (int32 i = 0; i < 5; i++)
     {
         GThreadManager->Launch([=]()
             {

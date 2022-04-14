@@ -196,6 +196,7 @@
     <ClInclude Include="CommandQueue.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ConstantBuffer.h" />
+    <ClInclude Include="CoolTime.h" />
     <ClInclude Include="d3dx12.h" />
     <ClInclude Include="DashRestState.h" />
     <ClInclude Include="DashState.h" />
@@ -213,6 +214,7 @@
     <ClInclude Include="ItemManager.h" />
     <ClInclude Include="ItemSlotManager.h" />
     <ClInclude Include="ItemSlotUI.h" />
+    <ClInclude Include="ItemWindow.h" />
     <ClInclude Include="JumpState.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
@@ -266,6 +268,7 @@
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ConstantBuffer.cpp" />
+    <ClCompile Include="CoolTime.cpp" />
     <ClCompile Include="DashRestState.cpp" />
     <ClCompile Include="DashState.cpp" />
     <ClCompile Include="Device.cpp" />
@@ -287,6 +290,7 @@
     <ClCompile Include="ItemManager.cpp" />
     <ClCompile Include="ItemSlotManager.cpp" />
     <ClCompile Include="ItemSlotUI.cpp" />
+    <ClCompile Include="ItemWindow.cpp" />
     <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />

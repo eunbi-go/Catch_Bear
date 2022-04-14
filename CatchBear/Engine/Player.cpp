@@ -26,6 +26,7 @@
 #include "Item.h"
 #include "Light.h"
 #include "ItemSlotManager.h"
+#include "TagMark.h"
 
 Protocol::C_MOVE pkt;
 
@@ -170,6 +171,7 @@ void Player::KeyCheck()
 
 	if (state != NULL)
 	{
+		_state->End(*_player);
 		delete _state;
 		_state = state;
 		_state->Enter(*_player);
@@ -255,6 +257,7 @@ void Player::Move()
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag");
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
@@ -367,6 +370,7 @@ void Player::Move()
 
 	_player->GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
+	static_pointer_cast<TagMark>(tagObject->GetScript(0))->SetPosition(pos);
 }
 
 void Player::KeyCheck_Item()

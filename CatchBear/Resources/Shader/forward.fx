@@ -119,15 +119,15 @@ float4 PS_TimerTex(VS_TEX_OUT input) : SV_Target
     if (g_tex_on_0)
         color = g_tex_0.Sample(g_sam_0, input.uv);
     int time = (int)g_time;
-    if (time > 100)  // 나중에 30초 남았을 때로 변경해야 함, 지금은 빨리 확인하려구 해둠
-    {
-        if (time % 2 == 0)
-        {
-            color.x = 1.f;
-            return color;
-        }
-        
-    }
+    //if (time > 100)  // 나중에 30초 남았을 때로 변경해야 함, 지금은 빨리 확인하려구 해둠
+    //{
+    //    if (time % 2 == 0)
+    //    {
+    //        color.x = 1.f;
+    //        return color;
+    //    }
+    //    
+    //}
 
     //float time = g_time;
     //if (time > 10.f)
@@ -151,6 +151,15 @@ float4 PS_ItemSlot(VS_TEX_OUT input) : SV_Target
     float4 color = float4(1.f, 1.f, 1.f, 1.f);
     if (g_tex_on_0)
         color = g_tex_0.Sample(g_sam_0, input.uv);
+    return color;
+}
+
+float4 PS_ItemCoolTime(VS_TEX_OUT input) : SV_Target
+{
+    float4 color = float4(1.f, 1.f, 1.f, 1.f);
+    if (g_tex_on_0)
+        color = g_tex_0.Sample(g_sam_0, input.uv);
+    color.w = 0.5f;
     return color;
 }
 

@@ -10,6 +10,9 @@
 #include "ServerSession.h"
 #include "Timer.h"
 #include "MeshRenderer.h"
+#include "ItemWindow.h"
+#include "ItemSlotUI.h"
+#include "Transform.h"
 
 void Scene::Awake()
 {
@@ -35,11 +38,12 @@ void Scene::Start()
 void Scene::Update()
 {
 	SetTimer();
+	CheckMouse();
 
 	int time = (int)_curTime;
 	float time2 = _curTime / 2.f;
 	int time3 = time % 2;
-	CONST_BUFFER(CONSTANT_BUFFER_TYPE::TIME)->PushGraphicsData(&time, sizeof(int));
+	//CONST_BUFFER(CONSTANT_BUFFER_TYPE::TIME)->PushGraphicsData(&time, sizeof(int));
 
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
@@ -239,6 +243,40 @@ void Scene::SetTimer()
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+}
+
+void Scene::CheckMouse()
+{
+	GetCursorPos(&_mousePos);
+	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
+
+	shared_ptr<GameObject>	itemWnd = GetGameObject(L"ItemWindow");
+
+
+	for (int i = 0; i < 3; ++i)
+	{
+		shared_ptr<GameObject>	slot = GetGameObject(L"ItemSlot" + s2ws(to_string(i + 1)));
+		wstring itemName = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetSettingItemName();
+
+		if (static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->GetIsSettingItem())
+		{
+			if (PtInRect(&_slotRt[i], _mousePos))
+			{
+				itemWnd->_isRender = true;
+
+				wstring name = static_pointer_cast<ItemSlotUI>(slot->GetScript(0))->_texName;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->_itemName = name;
+				static_pointer_cast<ItemWindow>(itemWnd->GetScript(0))->SetItemName();
+
+				Vec3 localPos = slot->GetTransform()->GetLocalPosition();
+				localPos.y += 110.f;
+				itemWnd->GetTransform()->SetLocalPosition(localPos);
+				return;
+			}
+			else itemWnd->_isRender = false;
+
+		}
+	}
 }
 
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)

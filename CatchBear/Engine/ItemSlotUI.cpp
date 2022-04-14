@@ -5,6 +5,8 @@
 #include "Material.h"
 #include "Component.h"
 #include "Resources.h"
+#include "Timer.h"
+#include "Transform.h"
 
 ItemSlotUI::ItemSlotUI()
 {
@@ -25,36 +27,42 @@ void ItemSlotUI::LateUpdate()
 void ItemSlotUI::SetItem(ITEM_EFFECT item)
 {
 	_settingItem = item;
-	wstring texName, texPath;
+	wstring texPath;
+	_isSetting = true;
 
 	switch (item)
 	{
 	case ITEM_EFFECT::SPEED_UP:
-		texName = L"speed_up";
+		_texName = L"speed_up";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::TELEPORT:
-		texName = L"teleport";
+		_texName = L"teleport";
 		break;
 	case ITEM_EFFECT::SHIELD:
-		texName = L"shield";
+		_texName = L"shield";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::SPEED_DOWN:
-		texName = L"speed_down";
+		_texName = L"speed_down";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::BLIND:
-		texName = L"blind";
+		_texName = L"blind";
+		_fCoolTime = 5.f;
 		break;
 	case ITEM_EFFECT::DEBUFF_OFF:
-		texName = L"debuff_off";
+		_texName = L"debuff_off";
 		break;
 	case ITEM_EFFECT::STUN:
-		texName = L"stun";
+		_texName = L"stun";
+		_fCoolTime = 3.f;
 		break;
 	}
 
-	texPath = L"..\\Resources\\Texture\\item\\" + texName + L".png";
+	texPath = L"..\\Resources\\Texture\\item\\" + _texName + L".png";
 
-	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(texName, texPath);
+	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(_texName, texPath);
 
 	// 텍스처 바꿔줘야 함
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texItem);
@@ -62,8 +70,47 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 
 void ItemSlotUI::UseItem()
 {
+	// 사용한 아이템 종류를 확인한 후, 제한시간 설정하고
+	//CheckItem();
+	// 세팅된 아이템은 초기화
 	_settingItem = ITEM_EFFECT::END;
 
+	//// before
+	//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
+	//GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+}
+
+void ItemSlotUI::CheckItem()
+{
+	switch (_settingItem)
+	{
+	case ITEM_EFFECT::SPEED_UP:
+		//GetGameObject()->_isRender = false;
+		break;
+	case ITEM_EFFECT::TELEPORT:
+		break;
+	case ITEM_EFFECT::SHIELD:
+		//GetGameObject()->_isRender = false;
+		break;
+	case ITEM_EFFECT::SPEED_DOWN:
+		//GetGameObject()->_isRender = false;
+		break;
+	case ITEM_EFFECT::BLIND:
+		//GetGameObject()->_isRender = false;
+		break;
+	case ITEM_EFFECT::DEBUFF_OFF:
+		break;
+	case ITEM_EFFECT::STUN:
+		//GetGameObject()->_isRender = false;
+		break;
+	}
+}
+
+void ItemSlotUI::ResetItemSlot()
+{
+	_fCoolTime = 0.f;
+	_texName = L" ";
+	_isSetting = false;
 	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

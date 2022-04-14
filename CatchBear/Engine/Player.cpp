@@ -128,6 +128,9 @@ void Player::LateUpdate()
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
 	
+	Vec3 trans = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
+	
 }
 
 void Player::AddPlayerItem(shared_ptr<GameObject> item)

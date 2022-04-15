@@ -227,13 +227,13 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			}
 			break;
 		case Protocol::JUMP:
-			if (_player->_state->curState != STATE::JUMP)
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::JUMP)
 			{
 				state = new JumpState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::JUMP;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::JUMP;
 			}
 			break;
 		case Protocol::ATTACK:

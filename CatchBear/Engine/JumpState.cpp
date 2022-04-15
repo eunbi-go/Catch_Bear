@@ -16,6 +16,7 @@ PlayerState* JumpState::Update(GameObject& player, STATE& ePlayer)
     {
         player.GetAnimationController()->SetAnimationPosition(0, 0.f);
         ePlayer = STATE::IDLE;
+
         return new IdleState;
     }
     return NULL;

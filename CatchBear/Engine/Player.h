@@ -84,5 +84,7 @@ private:
 
 public:
 	class PlayerState* _state;
+
+	
 };
 

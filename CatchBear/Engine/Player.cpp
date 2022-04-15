@@ -68,6 +68,18 @@ void Player::LateUpdate()
 #pragma region 애니메이션동기화
 	switch (_player->_curState)
 	{
+	/*case STATE::IDLE:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::IDLE);
+
+		if (gPacketControl % 80 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}*/
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
@@ -76,7 +88,7 @@ void Player::LateUpdate()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::JUMP);
-		if (gPacketControl % 60 == 1)
+		if (gPacketControl % 10 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -178,19 +190,17 @@ void Player::KeyCheck()
 	}
 
 #pragma region 애니메이션동기화
-	if (_player->GetPlayerID() != mysession->GetPlayerID())	//디버깅용
-		int a = 10;
-
 	switch (_player->_curState)
 	{
 	case STATE::IDLE:
 	{
+		//isJumpEnd = true;
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
-		if (gPacketControl % 80 == 1)
+		if (gPacketControl % 50 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -292,7 +302,7 @@ void Player::Move()
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(0);
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -312,7 +322,7 @@ void Player::Move()
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_movedir(1);
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);

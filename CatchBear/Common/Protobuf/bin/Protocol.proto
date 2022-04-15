@@ -97,11 +97,13 @@ message S_USE_DEBUFITEM
 message C_USE_STUN
 {
 	uint64 fromplayerid = 1;
+	DEBUFITEMTYPE itemtype = 2;
 }
 
 message S_USE_STUN
 {
 	uint64 fromplayerid = 1;
+	DEBUFITEMTYPE itemtype = 2;
 }
 
 message C_COLLIDPLAYERTOPLAYER

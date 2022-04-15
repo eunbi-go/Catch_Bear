@@ -2165,6 +2165,7 @@ class C_USE_STUN final :
 
   enum : int {
     kFromplayeridFieldNumber = 1,
+    kItemtypeFieldNumber = 2,
   };
   // uint64 fromplayerid = 1;
   void clear_fromplayerid();
@@ -2175,6 +2176,15 @@ class C_USE_STUN final :
   void _internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  void clear_itemtype();
+  ::Protocol::DEBUFITEMTYPE itemtype() const;
+  void set_itemtype(::Protocol::DEBUFITEMTYPE value);
+  private:
+  ::Protocol::DEBUFITEMTYPE _internal_itemtype() const;
+  void _internal_set_itemtype(::Protocol::DEBUFITEMTYPE value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.C_USE_STUN)
  private:
   class _Internal;
@@ -2183,6 +2193,7 @@ class C_USE_STUN final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid_;
+  int itemtype_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -2297,6 +2308,7 @@ class S_USE_STUN final :
 
   enum : int {
     kFromplayeridFieldNumber = 1,
+    kItemtypeFieldNumber = 2,
   };
   // uint64 fromplayerid = 1;
   void clear_fromplayerid();
@@ -2307,6 +2319,15 @@ class S_USE_STUN final :
   void _internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  void clear_itemtype();
+  ::Protocol::DEBUFITEMTYPE itemtype() const;
+  void set_itemtype(::Protocol::DEBUFITEMTYPE value);
+  private:
+  ::Protocol::DEBUFITEMTYPE _internal_itemtype() const;
+  void _internal_set_itemtype(::Protocol::DEBUFITEMTYPE value);
+  public:
+
   // @@protoc_insertion_point(class_scope:Protocol.S_USE_STUN)
  private:
   class _Internal;
@@ -2315,6 +2336,7 @@ class S_USE_STUN final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid_;
+  int itemtype_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -3598,6 +3620,26 @@ inline void C_USE_STUN::set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) 
   // @@protoc_insertion_point(field_set:Protocol.C_USE_STUN.fromplayerid)
 }
 
+// .Protocol.DEBUFITEMTYPE itemtype = 2;
+inline void C_USE_STUN::clear_itemtype() {
+  itemtype_ = 0;
+}
+inline ::Protocol::DEBUFITEMTYPE C_USE_STUN::_internal_itemtype() const {
+  return static_cast< ::Protocol::DEBUFITEMTYPE >(itemtype_);
+}
+inline ::Protocol::DEBUFITEMTYPE C_USE_STUN::itemtype() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_USE_STUN.itemtype)
+  return _internal_itemtype();
+}
+inline void C_USE_STUN::_internal_set_itemtype(::Protocol::DEBUFITEMTYPE value) {
+  
+  itemtype_ = value;
+}
+inline void C_USE_STUN::set_itemtype(::Protocol::DEBUFITEMTYPE value) {
+  _internal_set_itemtype(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_USE_STUN.itemtype)
+}
+
 // -------------------------------------------------------------------
 
 // S_USE_STUN
@@ -3620,6 +3662,26 @@ inline void S_USE_STUN::_internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint
 inline void S_USE_STUN::set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   _internal_set_fromplayerid(value);
   // @@protoc_insertion_point(field_set:Protocol.S_USE_STUN.fromplayerid)
+}
+
+// .Protocol.DEBUFITEMTYPE itemtype = 2;
+inline void S_USE_STUN::clear_itemtype() {
+  itemtype_ = 0;
+}
+inline ::Protocol::DEBUFITEMTYPE S_USE_STUN::_internal_itemtype() const {
+  return static_cast< ::Protocol::DEBUFITEMTYPE >(itemtype_);
+}
+inline ::Protocol::DEBUFITEMTYPE S_USE_STUN::itemtype() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_USE_STUN.itemtype)
+  return _internal_itemtype();
+}
+inline void S_USE_STUN::_internal_set_itemtype(::Protocol::DEBUFITEMTYPE value) {
+  
+  itemtype_ = value;
+}
+inline void S_USE_STUN::set_itemtype(::Protocol::DEBUFITEMTYPE value) {
+  _internal_set_itemtype(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_USE_STUN.itemtype)
 }
 
 // -------------------------------------------------------------------

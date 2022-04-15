@@ -198,7 +198,9 @@ struct S_USE_DEBUFITEMDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT S_USE_DEBUFITEMDefaultTypeInternal _S_USE_DEBUFITEM_default_instance_;
 constexpr C_USE_STUN::C_USE_STUN(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : fromplayerid_(uint64_t{0u}){}
+  : fromplayerid_(uint64_t{0u})
+  , itemtype_(0)
+{}
 struct C_USE_STUNDefaultTypeInternal {
   constexpr C_USE_STUNDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -210,7 +212,9 @@ struct C_USE_STUNDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT C_USE_STUNDefaultTypeInternal _C_USE_STUN_default_instance_;
 constexpr S_USE_STUN::S_USE_STUN(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
-  : fromplayerid_(uint64_t{0u}){}
+  : fromplayerid_(uint64_t{0u})
+  , itemtype_(0)
+{}
 struct S_USE_STUNDefaultTypeInternal {
   constexpr S_USE_STUNDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -360,12 +364,14 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_USE_STUN, fromplayerid_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_USE_STUN, itemtype_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_USE_STUN, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_USE_STUN, fromplayerid_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_USE_STUN, itemtype_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_COLLIDPLAYERTOPLAYER, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -395,9 +401,9 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 88, -1, sizeof(::Protocol::C_USE_DEBUFITEM)},
   { 95, -1, sizeof(::Protocol::S_USE_DEBUFITEM)},
   { 102, -1, sizeof(::Protocol::C_USE_STUN)},
-  { 108, -1, sizeof(::Protocol::S_USE_STUN)},
-  { 114, -1, sizeof(::Protocol::C_COLLIDPLAYERTOPLAYER)},
-  { 121, -1, sizeof(::Protocol::S_COLLIDPLAYERTOPLAYER)},
+  { 109, -1, sizeof(::Protocol::S_USE_STUN)},
+  { 116, -1, sizeof(::Protocol::C_COLLIDPLAYERTOPLAYER)},
+  { 123, -1, sizeof(::Protocol::S_COLLIDPLAYERTOPLAYER)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -446,13 +452,15 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "TEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype\030\002 "
   "\001(\0162\027.Protocol.DEBUFITEMTYPE\"R\n\017S_USE_DE"
   "BUFITEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtyp"
-  "e\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"\"\n\nC_US"
-  "E_STUN\022\024\n\014fromplayerid\030\001 \001(\004\"\"\n\nS_USE_ST"
-  "UN\022\024\n\014fromplayerid\030\001 \001(\004\"B\n\026C_COLLIDPLAY"
-  "ERTOPLAYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022\n\ntopl"
-  "ayerid\030\002 \001(\004\"B\n\026S_COLLIDPLAYERTOPLAYER\022\024"
-  "\n\014fromplayerid\030\001 \001(\004\022\022\n\ntoplayerid\030\002 \001(\004"
-  "b\006proto3"
+  "e\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n\nC_US"
+  "E_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype"
+  "\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n\nS_USE"
+  "_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype\030"
+  "\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"B\n\026C_COLL"
+  "IDPLAYERTOPLAYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022"
+  "\n\ntoplayerid\030\002 \001(\004\"B\n\026S_COLLIDPLAYERTOPL"
+  "AYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022\n\ntoplayerid"
+  "\030\002 \001(\004b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -460,7 +468,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 1288, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 1374, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 16,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -3576,12 +3584,17 @@ C_USE_STUN::C_USE_STUN(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 C_USE_STUN::C_USE_STUN(const C_USE_STUN& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  fromplayerid_ = from.fromplayerid_;
+  ::memcpy(&fromplayerid_, &from.fromplayerid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&itemtype_) -
+    reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
   // @@protoc_insertion_point(copy_constructor:Protocol.C_USE_STUN)
 }
 
 void C_USE_STUN::SharedCtor() {
-fromplayerid_ = uint64_t{0u};
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&fromplayerid_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&itemtype_) -
+    reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
 }
 
 C_USE_STUN::~C_USE_STUN() {
@@ -3610,7 +3623,9 @@ void C_USE_STUN::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  fromplayerid_ = uint64_t{0u};
+  ::memset(&fromplayerid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&itemtype_) -
+      reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3625,6 +3640,14 @@ const char* C_USE_STUN::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           fromplayerid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .Protocol.DEBUFITEMTYPE itemtype = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_itemtype(static_cast<::Protocol::DEBUFITEMTYPE>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -3662,6 +3685,13 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_fromplayerid(), target);
   }
 
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  if (this->itemtype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_itemtype(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -3683,6 +3713,12 @@ size_t C_USE_STUN::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_fromplayerid());
+  }
+
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  if (this->itemtype() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_itemtype());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3719,6 +3755,9 @@ void C_USE_STUN::MergeFrom(const C_USE_STUN& from) {
   if (from.fromplayerid() != 0) {
     _internal_set_fromplayerid(from._internal_fromplayerid());
   }
+  if (from.itemtype() != 0) {
+    _internal_set_itemtype(from._internal_itemtype());
+  }
 }
 
 void C_USE_STUN::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -3742,7 +3781,12 @@ bool C_USE_STUN::IsInitialized() const {
 void C_USE_STUN::InternalSwap(C_USE_STUN* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(fromplayerid_, other->fromplayerid_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(C_USE_STUN, itemtype_)
+      + sizeof(C_USE_STUN::itemtype_)
+      - PROTOBUF_FIELD_OFFSET(C_USE_STUN, fromplayerid_)>(
+          reinterpret_cast<char*>(&fromplayerid_),
+          reinterpret_cast<char*>(&other->fromplayerid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata C_USE_STUN::GetMetadata() const {
@@ -3766,12 +3810,17 @@ S_USE_STUN::S_USE_STUN(::PROTOBUF_NAMESPACE_ID::Arena* arena)
 S_USE_STUN::S_USE_STUN(const S_USE_STUN& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  fromplayerid_ = from.fromplayerid_;
+  ::memcpy(&fromplayerid_, &from.fromplayerid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&itemtype_) -
+    reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
   // @@protoc_insertion_point(copy_constructor:Protocol.S_USE_STUN)
 }
 
 void S_USE_STUN::SharedCtor() {
-fromplayerid_ = uint64_t{0u};
+::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
+    reinterpret_cast<char*>(&fromplayerid_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&itemtype_) -
+    reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
 }
 
 S_USE_STUN::~S_USE_STUN() {
@@ -3800,7 +3849,9 @@ void S_USE_STUN::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  fromplayerid_ = uint64_t{0u};
+  ::memset(&fromplayerid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&itemtype_) -
+      reinterpret_cast<char*>(&fromplayerid_)) + sizeof(itemtype_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3815,6 +3866,14 @@ const char* S_USE_STUN::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           fromplayerid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // .Protocol.DEBUFITEMTYPE itemtype = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
+          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_itemtype(static_cast<::Protocol::DEBUFITEMTYPE>(val));
         } else goto handle_unusual;
         continue;
       default: {
@@ -3852,6 +3911,13 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_fromplayerid(), target);
   }
 
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  if (this->itemtype() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
+      2, this->_internal_itemtype(), target);
+  }
+
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -3873,6 +3939,12 @@ size_t S_USE_STUN::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
         this->_internal_fromplayerid());
+  }
+
+  // .Protocol.DEBUFITEMTYPE itemtype = 2;
+  if (this->itemtype() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_itemtype());
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3909,6 +3981,9 @@ void S_USE_STUN::MergeFrom(const S_USE_STUN& from) {
   if (from.fromplayerid() != 0) {
     _internal_set_fromplayerid(from._internal_fromplayerid());
   }
+  if (from.itemtype() != 0) {
+    _internal_set_itemtype(from._internal_itemtype());
+  }
 }
 
 void S_USE_STUN::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
@@ -3932,7 +4007,12 @@ bool S_USE_STUN::IsInitialized() const {
 void S_USE_STUN::InternalSwap(S_USE_STUN* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(fromplayerid_, other->fromplayerid_);
+  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
+      PROTOBUF_FIELD_OFFSET(S_USE_STUN, itemtype_)
+      + sizeof(S_USE_STUN::itemtype_)
+      - PROTOBUF_FIELD_OFFSET(S_USE_STUN, fromplayerid_)>(
+          reinterpret_cast<char*>(&fromplayerid_),
+          reinterpret_cast<char*>(&other->fromplayerid_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata S_USE_STUN::GetMetadata() const {

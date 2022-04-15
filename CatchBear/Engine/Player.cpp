@@ -68,7 +68,7 @@ void Player::LateUpdate()
 #pragma region 애니메이션동기화
 	switch (_player->_curState)
 	{
-	/*case STATE::IDLE:
+	case STATE::IDLE:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
@@ -79,10 +79,15 @@ void Player::LateUpdate()
 			mysession->Send(sendBuffer);
 		}
 		break;
-	}*/
+	}
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
+		if (gPacketControl % 50 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	case STATE::JUMP:
 	{
@@ -207,6 +212,15 @@ void Player::KeyCheck()
 		}
 		break;
 	}
+	case STATE::WALK:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);
+		if (gPacketControl % 50 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
 	case STATE::JUMP:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -244,6 +258,17 @@ void Player::KeyCheck()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::DASH);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::SLOW:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::SLOW);
 		if (gPacketControl % 60 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);

@@ -205,6 +205,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			{
 				if (_player->_state->curState != STATE::STUN)
 				{
+					//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+					_player->_state->End(*_player);
 					state = new IdleState;
 					delete _player->_state;
 					_player->_state = state;
@@ -218,11 +220,16 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			{
 				if (_player->_state->curState != STATE::DASH)
 				{
-					state = new MoveState;
-					delete _player->_state;
-					_player->_state = state;
-					_player->_state->Enter(*_player);
-					_player->_state->curState = STATE::WALK;
+					if (_player->_state->curState != STATE::SLOW)
+					{
+						//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+						_player->_state->End(*_player);
+						state = new MoveState;
+						delete _player->_state;
+						_player->_state = state;
+						_player->_state->Enter(*_player);
+						_player->_state->curState = STATE::WALK;
+					}
 				}
 			}
 			break;
@@ -276,6 +283,17 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::DASH_REST;
+			}
+			break;
+		case Protocol::SLOW:
+			if (_player->_state->curState != STATE::SLOW)
+			{
+				_player->_state->End(*_player);
+				delete _player->_state;
+				state = new SlowState;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::SLOW;
 			}
 			break;
 		default:

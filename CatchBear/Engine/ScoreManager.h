@@ -20,14 +20,17 @@ public:
 	//const int GetScore() { return _score; }
 	//void SetScore(int score) { _score += score; }
 	void SetMyPlayer(shared_ptr<GameObject> myPlayer) { _myPlayer = myPlayer; }
+	const vector<shared_ptr<GameObject>>& GetVecRankedPlayers();
 
 private:
 	void AddScore();
 
 private:
 	float	_scoreTime = 0.f;
+	bool	_bRanked = false;
 
 	shared_ptr<GameObject>	_myPlayer;
+	vector<shared_ptr<GameObject>>	_vecRankedPlayers;
 	array<int, 3> _playerScore;	// 0번 인덱스는 무조건 내 점수
 };
 

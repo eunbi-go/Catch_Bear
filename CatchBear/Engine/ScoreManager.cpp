@@ -9,6 +9,14 @@
 void ScoreManager::Update()
 {
 	AddScore();
+
+
+}
+
+const vector<shared_ptr<GameObject>>& ScoreManager::GetVecRankedPlayers()
+{
+	if (_bRanked)
+		return _vecRankedPlayers;
 }
 
 void ScoreManager::AddScore()
@@ -34,4 +42,15 @@ void ScoreManager::AddScore()
 
 void ScoreManager::Rank()
 {
+	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_vecRankedPlayers = scene->GetVecPlayers();
+
+	sort(_vecRankedPlayers.begin(), _vecRankedPlayers.end(),
+		[](shared_ptr<GameObject>& p1, shared_ptr<GameObject>& p2)
+		{
+			return static_pointer_cast<Player>(p1->GetScript(0))->GetPlayerScore()
+				< static_pointer_cast<Player>(p2->GetScript(0))->GetPlayerScore();
+		});
+
+	_bRanked = true;
 }

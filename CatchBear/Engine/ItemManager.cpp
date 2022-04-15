@@ -239,28 +239,33 @@ void ItemManager::Collision_ItemToPlayer()
 	if (mysession == NULL)
 		return;
 
-	// 씬 안의 플레이어 찾기
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
+	//// 씬 안의 플레이어 찾기
+	//for (auto& gameObject : gameObjects)
+	//{
+	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+	//	{
+	//		_player = gameObject;
+	//		break;
+	//	}
+	//}
 
-	// common item & player
-	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
+	const vector<shared_ptr<GameObject>>& vecPlayers = scene->GetVecPlayers();
+	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
-		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+		_player = vecPlayers[i];
+		// common item & player
+		for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
 		{
-			// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
-			scene->RemoveGameObject(*item);
-			item = _commonItemList.erase(item);
+			if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+			{
+				// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+				if (_player->GetPlayerID() == mysession->GetPlayerID())
+					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);
+				scene->RemoveGameObject(*item);
+				item = _commonItemList.erase(item);
+			}
+			else item++;
 		}
-
-		else item++;
 	}
 
 	// unique item & player

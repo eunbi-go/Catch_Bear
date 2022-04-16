@@ -691,6 +691,8 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				vector<shared_ptr<GameObject>> obj;
 				if (strcmp(pStrTocken, "Plane"))
 				{
+					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))
+						name = L"wooden_fence_04";
 					meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 					obj = meshData->Instantiate();
 				}
@@ -711,6 +713,11 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 					{
 						scale = Vec3(0.0098f, 0.02f, 0.02f);
 						//AddMapObject(scene, obj, name, trans, scale, rotate);
+					}
+					else if (name == L"wooden_fence_04")
+					{
+						rotate.y -= 10.f;
+						AddMapObject(scene, obj, name, trans, scale, rotate);
 					}
 					else AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));
 					break;

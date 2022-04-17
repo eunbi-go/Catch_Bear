@@ -196,7 +196,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		for (auto& gameObject : gameObjects)
 		{
 			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
@@ -479,8 +479,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(20.f, 500.f, 20.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(-60.f, -3.f, -60.f));
+		obj->GetTransform()->SetLocalScale(Vec3(8.f, 500.f, 8.f));
+		obj->GetTransform()->SetLocalPosition(Vec3(-60.f, 0.f, -60.f));
 		obj->SetStatic(true);
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -669,7 +669,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 	FILE* pFile;
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
-	wstring strpath = L"..\\Resources\\Binary\\NaturePackLite_Texture_01.bin";
+	wstring strpath = L"..\\Resources\\Binary\\Demo_Objects.bin";
 
 	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
 	if (pFile == NULL)		return;
@@ -688,12 +688,15 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
-
-				if (!strcmp(pStrTocken, "Fence_Type1_02_mesh"))
-					name = L"Fence_Type1_02";
-
-				shared_ptr<MeshData> meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
-				vector<shared_ptr<GameObject>> obj = meshData->Instantiate();
+				shared_ptr<MeshData> meshData = NULL;
+				vector<shared_ptr<GameObject>> obj;
+				if (strcmp(pStrTocken, "Plane"))
+				{
+					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))
+						name = L"wooden_fence_04";
+					meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
+					obj = meshData->Instantiate();
+				}
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				if (!strcmp(pStrTocken, "<Transform>:"))
@@ -707,9 +710,14 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				if (!strcmp(pStrTocken, "<Scale>:"))
 				{
 					nReads = (UINT)::fread(&scale, sizeof(Vec3), 1, pFile);
-					if (name == L"Fence_Type1_02")
+					if (name == L"Plane")
 					{
 						scale = Vec3(0.0098f, 0.02f, 0.02f);
+						//AddMapObject(scene, obj, name, trans, scale, rotate);
+					}
+					else if (name == L"wooden_fence_04")
+					{
+						rotate.y -= 10.f;
 						AddMapObject(scene, obj, name, trans, scale, rotate);
 					}
 					else AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));

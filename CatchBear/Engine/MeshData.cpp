@@ -287,6 +287,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"rpgpp_lt_tex_a";
 			else if (!strcmp(pStrTocken, "Brown_Wood"))
 				_staticMeshInfo.material.diffuseTexName = L"Colorsheet Wood Brown";
+			else if (!strcmp(pStrTocken, "wooden_fence_d"))
+				_staticMeshInfo.material.diffuseTexName = L"wooden_fence_d";
 			else
 				int k = 0;
 		}

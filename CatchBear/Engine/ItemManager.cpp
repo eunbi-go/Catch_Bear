@@ -42,7 +42,7 @@ void ItemManager::LateUpdate()
 
 void ItemManager::SetItemPosition()
 {
-	float y = -2.f;		// y값은 다 똑같
+	float y = 1.f;		// y값은 다 똑같
 
 #pragma region ItemPos
 	// 좌표 순서좀 섞어야한다. 하지만 귀찮다 나중에 ,, ~

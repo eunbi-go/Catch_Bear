@@ -13,6 +13,7 @@
 #include "ItemWindow.h"
 #include "ItemSlotUI.h"
 #include "Transform.h"
+#include "ScoreManager.h"
 
 void Scene::Awake()
 {
@@ -47,6 +48,7 @@ void Scene::Update()
 		{
 			SetTimer();
 			CheckMouse();
+			GET_SINGLE(ScoreManager)->Update();
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{

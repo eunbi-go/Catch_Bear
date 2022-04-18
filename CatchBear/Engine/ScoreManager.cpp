@@ -34,7 +34,7 @@ void ScoreManager::AddScore()
 	if (_scoreTime >= 1.f)
 	{
 		static_pointer_cast<Player>(_myPlayer->GetScript(0))->AddPlayerScore(1);
-		printf("Score: %d\n", static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
+		//printf("Score: %d\n", static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
 		_scoreTime = 0.f;
 	}
 }

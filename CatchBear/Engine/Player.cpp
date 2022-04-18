@@ -129,7 +129,7 @@ void Player::LateUpdate()
 	GetAnimationController()->SetWorldMatrix();
 	
 	Vec3 trans = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
+	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
 	
 }
 

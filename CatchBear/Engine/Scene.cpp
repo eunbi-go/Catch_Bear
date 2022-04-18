@@ -14,6 +14,9 @@
 #include "ItemSlotUI.h"
 #include "Transform.h"
 #include "ScoreManager.h"
+#include "ItemManager.h"
+#include "CollidManager.h"
+#include "Input.h"
 
 void Scene::Awake()
 {
@@ -48,7 +51,10 @@ void Scene::Update()
 		{
 			SetTimer();
 			CheckMouse();
+			GET_SINGLE(Input)->Update();
+			GET_SINGLE(ItemManager)->Update();
 			GET_SINGLE(ScoreManager)->Update();
+			GET_SINGLE(CollidManager)->Update();
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
@@ -367,4 +373,5 @@ shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 			return _gameObjects[i];
 		}
 	}
+	return NULL;
 }

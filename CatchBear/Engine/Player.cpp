@@ -136,7 +136,7 @@ void Player::LateUpdate()
 void Player::AddPlayerItem(shared_ptr<GameObject> item)
 {
 	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
-	// 아이템을 3개 지니고 있으면 맨처음 아이템 삭제
+	// 아이템을 3개 지니고 있으면 아이템 획득해도 무시
 	if (_playerItemVec.size() < 3)
 	{
 		_playerItemVec.push_back(item);

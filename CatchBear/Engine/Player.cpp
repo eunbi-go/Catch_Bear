@@ -381,25 +381,38 @@ void Player::KeyCheck_Item()
 	// 아이템 사용 키입력 - 1, 2, 3
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
-		if (_playerItemVec.empty()) return;
-		UseItem(0);
-		GET_SINGLE(ItemSlotManager)->UseItem(1);
+		if (_playerItemVec.size() < 1)
+		{
+			return;
+		}
+		else
+		{
+			UseItem(0);
+			GET_SINGLE(ItemSlotManager)->UseItem(1);
+		}
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
-		if (_playerItemVec.size() < 1) return;
-		UseItem(1);
-		GET_SINGLE(ItemSlotManager)->UseItem(2);
+		if (_playerItemVec.size() < 2) return;
+		else
+		{
+			UseItem(1);
+			GET_SINGLE(ItemSlotManager)->UseItem(2);
+		}
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
-		if (_playerItemVec.size() < 2) return;
-		UseItem(2);
-		GET_SINGLE(ItemSlotManager)->UseItem(3);
+		if (_playerItemVec.size() < 3) return;
+		
+		else
+		{
+			UseItem(2);
+			GET_SINGLE(ItemSlotManager)->UseItem(3);
+		}
 	}
 
-	if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
-		SlowDown();
+	//if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
+	//	SlowDown();
 }
 
 void Player::UseItem(int itemNum)
@@ -440,6 +453,7 @@ void Player::UseItem(int itemNum)
 	}
 
 	_playerItemVec.erase(_playerItemVec.begin() + itemNum);
+	int a = 0;
 }
 
 void Player::ApplyItemEffect()

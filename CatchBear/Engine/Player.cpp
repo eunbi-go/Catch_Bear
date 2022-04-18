@@ -260,7 +260,7 @@ void Player::Move()
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag");
+	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag1");
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();

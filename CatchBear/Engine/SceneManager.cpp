@@ -195,7 +195,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		g_EnterPlayerCnt = 1;
 		for (auto& gameObject : gameObjects)
 		{
-			gameObject->SetName(L"Player");
+			gameObject->SetName(L"Player1");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 0.f));
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->AddComponent(make_shared<Player>());
@@ -213,33 +213,33 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddVecPlayers(gameObject);
 		}
 
-		/*g_EnterPlayerCnt = 2;
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.1f, 1.f, 0.1f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}*/
+		//g_EnterPlayerCnt = 2;
+		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player2");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.1f, 1.f, 0.1f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//}
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
 		//for (auto& gameObject : gameObjects3)
 		//{
-		//	gameObject->SetName(L"Player");
+		//	gameObject->SetName(L"Player3");
 		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 10.f));
 		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 		//	gameObject->AddComponent(make_shared<Player>());
@@ -267,7 +267,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 	for (auto& gameObject : objectsHeart)
 	{
-		gameObject->SetName(L"PlayerTag");
+		gameObject->SetName(L"PlayerTag1");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
 		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));

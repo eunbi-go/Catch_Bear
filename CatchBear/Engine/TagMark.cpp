@@ -21,7 +21,7 @@ void TagMark::Update()
 	rotation.y += DELTA_TIME * _fRotationSpeed;
 	GetTransform()->SetLocalRotation(rotation);
 
-	//_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player");
+	//_target = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player1");
 
 	// 현재 술래인 플레이어 찾아서 타겟 바꿔주는 코드, 나중엔 다른데서 구현할 예정
 	for (int i = 0; i < g_EnterPlayerCnt; ++i)

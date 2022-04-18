@@ -225,7 +225,7 @@ void ItemManager::Collision_ItemToPlayer()
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;

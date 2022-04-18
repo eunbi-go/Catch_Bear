@@ -46,10 +46,29 @@ void ItemSlotManager::UseItem(int nSlot)
 {
 	Vec3 pos, scale;
 	float fCoolTime;
+	ITEM_EFFECT item;
 	switch (nSlot)
 	{
 	case 1:
+		item = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+
+		if (item == ITEM_EFFECT::BLIND)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::STUN) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot1->GetTransform()->GetLocalPosition();
@@ -57,8 +76,26 @@ void ItemSlotManager::UseItem(int nSlot)
 		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))
 			->SetInitData(pos, scale, 1, (int)fCoolTime);
 		break;
+
 	case 2:
+		item = static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+
+		if (item == ITEM_EFFECT::BLIND)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::STUN) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot2->GetTransform()->GetLocalPosition();
@@ -66,8 +103,26 @@ void ItemSlotManager::UseItem(int nSlot)
 		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))
 			->SetInitData(pos, scale, 2, (int)fCoolTime);
 		break;
+
 	case 3:
+		item = static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+
+		if (item == ITEM_EFFECT::BLIND) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == ITEM_EFFECT::STUN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot3->GetTransform()->GetLocalPosition();

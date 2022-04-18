@@ -33,21 +33,26 @@ void Scene::Start()
 	{
 		gameObject->Start();
 	}
+
 }
 
 void Scene::Update()
 {
-	SetTimer();
-	CheckMouse();
+	CheckTagger();
 
-	int time = (int)_curTime;
-	float time2 = _curTime / 2.f;
-	int time3 = time % 2;
-	//CONST_BUFFER(CONSTANT_BUFFER_TYPE::TIME)->PushGraphicsData(&time, sizeof(int));
-
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (_isStart)
 	{
-		gameObject->Update();
+		_toStartTime += DELTA_TIME;
+		if (_toStartTime >= 7.f)
+		{
+			SetTimer();
+			CheckMouse();
+
+			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+			{
+				gameObject->Update();
+			}
+		}
 	}
 }
 
@@ -276,6 +281,26 @@ void Scene::CheckMouse()
 			else itemWnd->_isRender = false;
 
 		}
+	}
+}
+
+void Scene::CheckTagger()
+{
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
+		if (gameObject->GetIsTagger())
+		{
+			_isStart = true;
+		}
+	}
+}
+
+void Scene::StartGame()
+{
+	_toStartTime += DELTA_TIME;
+	if (_toStartTime >= 3.f)
+	{
+		printf("start Game!");
 	}
 }
 

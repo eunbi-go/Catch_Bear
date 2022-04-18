@@ -8,9 +8,8 @@
 
 void ScoreManager::Update()
 {
-	AddScore();
-
-
+	if (GET_SINGLE(SceneManager)->GetActiveScene()->_isStart)
+		AddScore();
 }
 
 const vector<shared_ptr<GameObject>>& ScoreManager::GetVecRankedPlayers()
@@ -35,7 +34,7 @@ void ScoreManager::AddScore()
 	if (_scoreTime >= 1.f)
 	{
 		static_pointer_cast<Player>(_myPlayer->GetScript(0))->AddPlayerScore(1);
-		printf("%d\n", static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
+		printf("Score: %d\n", static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
 		_scoreTime = 0.f;
 	}
 }

@@ -13,6 +13,10 @@
 #include "ItemWindow.h"
 #include "ItemSlotUI.h"
 #include "Transform.h"
+#include "ScoreManager.h"
+#include "ItemManager.h"
+#include "CollidManager.h"
+#include "Input.h"
 
 void Scene::Awake()
 {
@@ -33,21 +37,30 @@ void Scene::Start()
 	{
 		gameObject->Start();
 	}
+
 }
 
 void Scene::Update()
 {
-	SetTimer();
-	CheckMouse();
+	CheckTagger();
 
-	int time = (int)_curTime;
-	float time2 = _curTime / 2.f;
-	int time3 = time % 2;
-	//CONST_BUFFER(CONSTANT_BUFFER_TYPE::TIME)->PushGraphicsData(&time, sizeof(int));
-
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (_isStart)
 	{
-		gameObject->Update();
+		_toStartTime += DELTA_TIME;
+		if (_toStartTime >= 7.f)
+		{
+			SetTimer();
+			CheckMouse();
+			GET_SINGLE(Input)->Update();
+			GET_SINGLE(ItemManager)->Update();
+			GET_SINGLE(ScoreManager)->Update();
+			GET_SINGLE(CollidManager)->Update();
+
+			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+			{
+				gameObject->Update();
+			}
+		}
 	}
 }
 
@@ -279,6 +292,26 @@ void Scene::CheckMouse()
 	}
 }
 
+void Scene::CheckTagger()
+{
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	{
+		if (gameObject->GetIsTagger())
+		{
+			_isStart = true;
+		}
+	}
+}
+
+void Scene::StartGame()
+{
+	_toStartTime += DELTA_TIME;
+	if (_toStartTime >= 3.f)
+	{
+		printf("start Game!");
+	}
+}
+
 void Scene::AddGameObject(shared_ptr<GameObject> gameObject)
 {
 	if (gameObject->GetCamera() != nullptr)
@@ -340,4 +373,5 @@ shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 			return _gameObjects[i];
 		}
 	}
+	return NULL;
 }

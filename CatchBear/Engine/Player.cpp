@@ -382,33 +382,29 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
 		if (_playerItemVec.size() < 1)
-		{
 			return;
-		}
-		else
-		{
-			UseItem(0);
-			GET_SINGLE(ItemSlotManager)->UseItem(1);
-		}
+
+		UseItem(0);
+		GET_SINGLE(ItemSlotManager)->UseItem(1);
+		DeletePlayerItem(0);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
-		if (_playerItemVec.size() < 2) return;
-		else
-		{
-			UseItem(1);
-			GET_SINGLE(ItemSlotManager)->UseItem(2);
-		}
+		if (_playerItemVec.size() < 2) 
+			return;
+
+		UseItem(1);
+		GET_SINGLE(ItemSlotManager)->UseItem(2);
+		DeletePlayerItem(1);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
-		if (_playerItemVec.size() < 3) return;
+		if (_playerItemVec.size() < 3) 
+			return;
 		
-		else
-		{
-			UseItem(2);
-			GET_SINGLE(ItemSlotManager)->UseItem(3);
-		}
+		UseItem(2);
+		GET_SINGLE(ItemSlotManager)->UseItem(3);
+		DeletePlayerItem(2);
 	}
 
 	//if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
@@ -452,8 +448,6 @@ void Player::UseItem(int itemNum)
 		break;
 	}
 
-	_playerItemVec.erase(_playerItemVec.begin() + itemNum);
-	int a = 0;
 }
 
 void Player::ApplyItemEffect()
@@ -480,6 +474,11 @@ void Player::ApplyItemEffect()
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
+}
+
+void Player::DeletePlayerItem(int itemIndex)
+{
+	_playerItemVec.erase(_playerItemVec.begin() + itemIndex);
 }
 
 void Player::Item_SpeedUp()

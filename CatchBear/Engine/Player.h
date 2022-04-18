@@ -44,6 +44,7 @@ private:
 	void KeyCheck_Item();
 	void UseItem(int itemNum);
 	void ApplyItemEffect();	
+	void DeletePlayerItem(int itemIndex);
 
 private:
 	// 아이템 사용하는(내가 상대방에게) 함수

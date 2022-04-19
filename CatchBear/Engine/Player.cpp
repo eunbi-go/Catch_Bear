@@ -43,6 +43,15 @@ Player::~Player()
 
 void Player::Update()
 {
+	//_testTime += DELTA_TIME;
+	//if (_testTime >= 5.0f)
+	//{
+	//	GetGameObject()->SetIsTagger(false);
+	//}
+	//if (_testTime >= 10.0f)
+	//{
+	//	GetGameObject()->SetIsTagger(true);
+	//}
 	ApplyItemEffect();
 }
 

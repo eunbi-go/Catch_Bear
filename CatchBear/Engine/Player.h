@@ -89,5 +89,6 @@ private:
 
 public:
 	class PlayerState* _state;
+	float	_testTime = 0.f;
 };
 

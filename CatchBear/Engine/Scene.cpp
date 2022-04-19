@@ -49,7 +49,6 @@ void Scene::Update()
 		_toStartTime += DELTA_TIME;
 		if (_toStartTime >= 7.f)
 		{
-			SetTimer();
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
 			GET_SINGLE(ItemManager)->Update();
@@ -60,6 +59,7 @@ void Scene::Update()
 			{
 				gameObject->Update();
 			}
+			SetTimer();
 		}
 	}
 }

@@ -54,12 +54,12 @@ void Scene::Update()
 			GET_SINGLE(ItemManager)->Update();
 			GET_SINGLE(ScoreManager)->Update();
 			GET_SINGLE(CollidManager)->Update();
+			SetTimer();
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
 				gameObject->Update();
 			}
-			SetTimer();
 		}
 	}
 }

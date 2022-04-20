@@ -29,6 +29,7 @@
 
 #include "ServerSession.h"
 #include "ItemWindow.h"
+#include "ScoreUI.h"
 
 int g_EnterPlayerCnt = 0;
 
@@ -213,27 +214,27 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddVecPlayers(gameObject);
 		}
 
-		//g_EnterPlayerCnt = 2;
-		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		//for (auto& gameObject : gameObjects2)
-		//{
-		//	gameObject->SetName(L"Player2");
-		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
-		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		//	gameObject->AddComponent(make_shared<Player>());
-		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		//	gameObject->SetStatic(false);
-		//	gameObject->SetBoundingExtents(XMFLOAT3(0.1f, 1.f, 0.1f));
-		//	gameObject->SetBoundingBox(BoundingOrientedBox(
-		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-		//	gameObject->SetCheckFrustum(false);
-		//	gameObject->SetPlayerID(1);
-		//	gameObject->_state = new IdleState();
-		//	scene->AddGameObject(gameObject);
-		//	scene->AddPlayers(1, gameObject);
-		//	scene->AddVecPlayers(gameObject);
-		//}
+		/*g_EnterPlayerCnt = 2;
+		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		for (auto& gameObject : gameObjects2)
+		{
+			gameObject->SetName(L"Player2");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 5.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->SetBoundingExtents(XMFLOAT3(0.1f, 1.f, 0.1f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(1);
+			gameObject->_state = new IdleState();
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(1, gameObject);
+			scene->AddVecPlayers(gameObject);
+		}*/
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
@@ -307,7 +308,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	scene->AddGameObject(itemSlot1);
 	GET_SINGLE(ItemSlotManager)->SetItemSlot(1, itemSlot1);
 
-	
+
 
 	// 2.
 	shared_ptr<GameObject> itemSlot2 = make_shared<GameObject>();
@@ -336,7 +337,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	scene->AddGameObject(itemSlot2);
 	GET_SINGLE(ItemSlotManager)->SetItemSlot(2, itemSlot2);
 
-	
+
 
 	// 3.
 	shared_ptr<GameObject> itemSlot3 = make_shared<GameObject>();
@@ -572,6 +573,91 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec2Timer->AddComponent(meshRenderer2);
 
 	scene->AddGameObject(sec2Timer);
+#pragma endregion
+
+#pragma region Player1 ScoreUI
+	// 
+	{
+	shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
+	player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+	player1Score1->SetName(L"player1Score1");
+	player1Score1->AddComponent(make_shared<Transform>());
+	player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+	player1Score1->GetTransform()->SetLocalPosition(Vec3(450.f, 200.f, 500.f));
+	player1Score1->AddComponent(make_shared<ScoreUI>());
+
+	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+	{
+		shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+		meshRenderer->SetMesh(mesh);
+	}
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		meshRenderer->SetMaterial(material);
+	}
+	player1Score1->AddComponent(meshRenderer);
+
+	scene->AddGameObject(player1Score1);
+	}
+
+	//
+	{
+		shared_ptr<GameObject> player1Score2 = make_shared<GameObject>();
+		player1Score2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score2->SetName(L"player1Score2");
+		player1Score2->AddComponent(make_shared<Transform>());
+		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score2->GetTransform()->SetLocalPosition(Vec3(500.f, 200.f, 500.f));
+		player1Score2->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer1->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer1->SetMaterial(material);
+		}
+		player1Score2->AddComponent(meshRenderer1);
+
+		scene->AddGameObject(player1Score2);
+	}
+	//
+	{
+		shared_ptr<GameObject> player1Score3 = make_shared<GameObject>();
+		player1Score3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score3->SetName(L"player1Score3");
+		player1Score3->AddComponent(make_shared<Transform>());
+		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score3->GetTransform()->SetLocalPosition(Vec3(550.f, 200.f, 500.f));
+		player1Score3->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer2->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer2->SetMaterial(material);
+		}
+		player1Score3->AddComponent(meshRenderer2);
+
+		scene->AddGameObject(player1Score3);
+	}
 #pragma endregion
 
 #pragma region UI_Test

@@ -49,12 +49,12 @@ void Scene::Update()
 		_toStartTime += DELTA_TIME;
 		if (_toStartTime >= 7.f)
 		{
-			SetTimer();
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
 			GET_SINGLE(ItemManager)->Update();
 			GET_SINGLE(ScoreManager)->Update();
 			GET_SINGLE(CollidManager)->Update();
+			SetTimer();
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
@@ -299,7 +299,7 @@ void Scene::CheckTagger()
 		wstring name = gameObject->GetName();
 		if (gameObject->GetIsTagger())
 		{
-			/*if (name == L"Player1")
+			if (name == L"Player1")
 			{
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
@@ -313,12 +313,12 @@ void Scene::CheckTagger()
 			{
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			}*/
+			}
 			_isStart = true;
 		}
 		else if (!gameObject->GetIsTagger())
 		{
-			/*if (name == L"Player1")
+			if (name == L"Player1")
 			{
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
@@ -332,7 +332,7 @@ void Scene::CheckTagger()
 			{
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}*/
+			}
 		}
 	}
 }

@@ -6,6 +6,7 @@
 #include "Component.h"
 #include "SceneManager.h"
 #include "Scene.h"
+#include "ServerSession.h"
 
 TagMark::TagMark()
 {

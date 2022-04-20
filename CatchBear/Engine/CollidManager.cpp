@@ -77,6 +77,9 @@ void CollidManager::CollisionPlayerToPlayer()
 					collidPkt.set_fromplayerid(_tagplayer->GetPlayerID());
 					collidPkt.set_toplayerid((*pl)->GetPlayerID());
 
+					cout << "술래가 " << _tagplayer->GetPlayerID() << " -> " <<
+						(*pl)->GetPlayerID() << " 로 바뀜\n";
+
 					auto sendBuffer = ServerPacketHandler::MakeSendBuffer(collidPkt);
 					mysession->Send(sendBuffer);
 					break;

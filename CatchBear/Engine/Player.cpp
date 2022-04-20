@@ -52,6 +52,7 @@ void Player::Update()
 	//{
 	//	GetGameObject()->SetIsTagger(true);
 	//}
+	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
 }
 
@@ -81,7 +82,7 @@ void Player::LateUpdate()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
-
+		pkt.set_score(_iScore);
 		if (gPacketControl % 80 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -146,8 +147,8 @@ void Player::LateUpdate()
 #pragma endregion 애니메이션동기화
 	////////////////////////////////////////////////////////////////////
 
-	Vec3 pos = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
+	//Vec3 pos = GetTransform()->GetLocalPosition();
+	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
@@ -302,8 +303,13 @@ void Player::Move()
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag1");
 
+	shared_ptr<GameObject> tagObject;
+	//if (mysession->GetPlayerID() == 0)
+	//	tagObject = scene->GetGameObject(L"PlayerTag1");
+	//if (mysession->GetPlayerID() == 1)
+	//	tagObject = scene->GetGameObject(L"PlayerTag2");
+	tagObject = scene->GetGameObject(L"PlayerTag1");
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
@@ -335,7 +341,7 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_movedir(0);
+		pkt.set_score(_iScore);
 
 		if (gPacketControl % 4 == 1)
 		{
@@ -355,7 +361,7 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_movedir(1);
+		pkt.set_score(_iScore);
 
 		if (gPacketControl % 4 == 1)
 		{
@@ -370,10 +376,6 @@ void Player::Move()
 	{
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
-
-		Vec3 pl = _player->GetTransform()->GetLook();
-		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
-			pl.x << ", " << pl.y << ", " << pl.z << endl;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -393,10 +395,6 @@ void Player::Move()
 	{
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
-
-		Vec3 pl = _player->GetTransform()->GetLook();
-		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
-			pl.x << ", " << pl.y << ", " << pl.z << endl;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);

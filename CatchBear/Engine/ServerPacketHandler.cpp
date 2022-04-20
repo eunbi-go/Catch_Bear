@@ -158,6 +158,8 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		_player = scene->GetPlayer(pkt.taggerplayerid());
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";
+
+		cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
 	else
 		cout << "플레이어 접속 대기중.. \n";
@@ -197,6 +199,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	{
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
 		
 		switch (pkt.state())
 		{

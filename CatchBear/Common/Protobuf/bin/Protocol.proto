@@ -58,28 +58,23 @@ message S_CHAT
 message C_MOVE
 {
 	uint64 playerId = 1;
-	ObjectType objType = 2;
-	float XPos = 3;
-	float YPos = 4;
-	float ZPos = 5;
-	float YRot = 6;
-	uint64 moveDir = 7;
-	bool success = 8;
-	STATE State = 9;
-	bool isKeyDown = 10;
+	float XPos = 2;
+	float YPos = 3;
+	float ZPos = 4;
+	float YRot = 5;
+	STATE State = 6;
+	uint64 Score = 7;
 }
 
 message S_MOVE
 {
 	uint64 playerId = 1;
-	bool success = 2;
-	float XPos = 3;
-	float YPos = 4;
-	float ZPos = 5;
-	float YRot = 6;
-	uint64 moveDir = 7;
-	STATE State = 8;
-	bool isKeyDown = 9;
+	float XPos = 2;
+	float YPos = 3;
+	float ZPos = 4;
+	float YRot = 5;
+	STATE State = 6;
+	uint64 Score = 7;
 }
 
 message C_USE_DEBUFITEM

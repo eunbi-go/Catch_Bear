@@ -17,6 +17,7 @@
 #include "ItemManager.h"
 #include "CollidManager.h"
 #include "Input.h"
+#include "Player.h"
 
 void Scene::Awake()
 {
@@ -59,6 +60,12 @@ void Scene::Update()
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
 				gameObject->Update();
+			}
+
+			for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
+			{
+				cout << "플레이어" << gameObject->GetPlayerID() << ": " <<
+					static_pointer_cast<Player>(gameObject->GetScript(0))->GetPlayerScore() << endl;
 			}
 		}
 	}
@@ -294,7 +301,7 @@ void Scene::CheckMouse()
 
 void Scene::CheckTagger()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 	{
 		wstring name = gameObject->GetName();
 		if (gameObject->GetIsTagger())

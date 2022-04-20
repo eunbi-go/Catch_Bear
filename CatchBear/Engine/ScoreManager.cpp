@@ -6,6 +6,7 @@
 #include "Scene.h"
 #include "GameObject.h"
 #include "ScoreUIManager.h"
+#include "ServerSession.h"
 
 void ScoreManager::Update()
 {
@@ -26,7 +27,10 @@ void ScoreManager::AddScore()
 	// 술래는 보물 찾아도 점수 얻지 않음
 
 	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	_myPlayer = scene->GetGameObject(L"Player1");
+
+	// 모든 플레이어가 점수가 올라가게 수정함
+	_myPlayer = scene->GetPlayer(mysession->GetPlayerID());
+	//_myPlayer = scene->GetGameObject(L"Player1");
 
 	//if (_myPlayer->GetIsTagger()) return;		// 내가 테스트할땐 플레이어 한명만 만들어서(걔가 술래됨) 꺼둠, 원래 켜야됨!
 

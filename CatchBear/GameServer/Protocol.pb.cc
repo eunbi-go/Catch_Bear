@@ -127,17 +127,13 @@ PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT S_CHATDefaultTypeInternal _S_CH
 constexpr C_MOVE::C_MOVE(
   ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized)
   : playerid_(uint64_t{0u})
-  , objtype_(0)
-
   , xpos_(0)
   , ypos_(0)
   , zpos_(0)
-  , movedir_(uint64_t{0u})
   , yrot_(0)
+  , score_(uint64_t{0u})
   , state_(0)
-
-  , success_(false)
-  , iskeydown_(false){}
+{}
 struct C_MOVEDefaultTypeInternal {
   constexpr C_MOVEDefaultTypeInternal()
     : _instance(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized{}) {}
@@ -153,10 +149,8 @@ constexpr S_MOVE::S_MOVE(
   , xpos_(0)
   , ypos_(0)
   , zpos_(0)
-  , success_(false)
-  , iskeydown_(false)
-  , movedir_(uint64_t{0u})
   , yrot_(0)
+  , score_(uint64_t{0u})
   , state_(0)
 {}
 struct S_MOVEDefaultTypeInternal {
@@ -321,29 +315,24 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Protocol_2eproto::offsets[] PR
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, playerid_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, objtype_),
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, xpos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, ypos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, zpos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, yrot_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, movedir_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, success_),
   PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, state_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, iskeydown_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::C_MOVE, score_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, playerid_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, success_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, xpos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, ypos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, zpos_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, yrot_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, movedir_),
   PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, state_),
-  PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, iskeydown_),
+  PROTOBUF_FIELD_OFFSET(::Protocol::S_MOVE, score_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Protocol::C_USE_DEBUFITEM, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -397,13 +386,13 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 45, -1, sizeof(::Protocol::C_CHAT)},
   { 52, -1, sizeof(::Protocol::S_CHAT)},
   { 59, -1, sizeof(::Protocol::C_MOVE)},
-  { 74, -1, sizeof(::Protocol::S_MOVE)},
-  { 88, -1, sizeof(::Protocol::C_USE_DEBUFITEM)},
-  { 95, -1, sizeof(::Protocol::S_USE_DEBUFITEM)},
-  { 102, -1, sizeof(::Protocol::C_USE_STUN)},
-  { 109, -1, sizeof(::Protocol::S_USE_STUN)},
-  { 116, -1, sizeof(::Protocol::C_COLLIDPLAYERTOPLAYER)},
-  { 123, -1, sizeof(::Protocol::S_COLLIDPLAYERTOPLAYER)},
+  { 71, -1, sizeof(::Protocol::S_MOVE)},
+  { 83, -1, sizeof(::Protocol::C_USE_DEBUFITEM)},
+  { 90, -1, sizeof(::Protocol::S_USE_DEBUFITEM)},
+  { 97, -1, sizeof(::Protocol::C_USE_STUN)},
+  { 104, -1, sizeof(::Protocol::S_USE_STUN)},
+  { 111, -1, sizeof(::Protocol::C_COLLIDPLAYERTOPLAYER)},
+  { 118, -1, sizeof(::Protocol::S_COLLIDPLAYERTOPLAYER)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -439,28 +428,25 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "lPlayersReady\030\004 \001(\010\022\026\n\016taggerplayerid\030\005 "
   "\001(\004\"\'\n\006C_CHAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003msg\030\002"
   " \001(\t\"\'\n\006S_CHAT\022\020\n\010playerId\030\001 \001(\004\022\013\n\003msg\030"
-  "\002 \001(\t\"\316\001\n\006C_MOVE\022\020\n\010playerId\030\001 \001(\004\022%\n\007ob"
-  "jType\030\002 \001(\0162\024.Protocol.ObjectType\022\014\n\004XPo"
-  "s\030\003 \001(\002\022\014\n\004YPos\030\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022\014\n\004Y"
-  "Rot\030\006 \001(\002\022\017\n\007moveDir\030\007 \001(\004\022\017\n\007success\030\010 "
-  "\001(\010\022\036\n\005State\030\t \001(\0162\017.Protocol.STATE\022\021\n\ti"
-  "sKeyDown\030\n \001(\010\"\247\001\n\006S_MOVE\022\020\n\010playerId\030\001 "
-  "\001(\004\022\017\n\007success\030\002 \001(\010\022\014\n\004XPos\030\003 \001(\002\022\014\n\004YP"
-  "os\030\004 \001(\002\022\014\n\004ZPos\030\005 \001(\002\022\014\n\004YRot\030\006 \001(\002\022\017\n\007"
-  "moveDir\030\007 \001(\004\022\036\n\005State\030\010 \001(\0162\017.Protocol."
-  "STATE\022\021\n\tisKeyDown\030\t \001(\010\"R\n\017C_USE_DEBUFI"
-  "TEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype\030\002 "
-  "\001(\0162\027.Protocol.DEBUFITEMTYPE\"R\n\017S_USE_DE"
-  "BUFITEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtyp"
-  "e\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n\nC_US"
-  "E_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype"
-  "\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n\nS_USE"
-  "_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemtype\030"
-  "\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"B\n\026C_COLL"
-  "IDPLAYERTOPLAYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022"
-  "\n\ntoplayerid\030\002 \001(\004\"B\n\026S_COLLIDPLAYERTOPL"
-  "AYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022\n\ntoplayerid"
-  "\030\002 \001(\004b\006proto3"
+  "\002 \001(\t\"\201\001\n\006C_MOVE\022\020\n\010playerId\030\001 \001(\004\022\014\n\004XP"
+  "os\030\002 \001(\002\022\014\n\004YPos\030\003 \001(\002\022\014\n\004ZPos\030\004 \001(\002\022\014\n\004"
+  "YRot\030\005 \001(\002\022\036\n\005State\030\006 \001(\0162\017.Protocol.STA"
+  "TE\022\r\n\005Score\030\007 \001(\004\"\201\001\n\006S_MOVE\022\020\n\010playerId"
+  "\030\001 \001(\004\022\014\n\004XPos\030\002 \001(\002\022\014\n\004YPos\030\003 \001(\002\022\014\n\004ZP"
+  "os\030\004 \001(\002\022\014\n\004YRot\030\005 \001(\002\022\036\n\005State\030\006 \001(\0162\017."
+  "Protocol.STATE\022\r\n\005Score\030\007 \001(\004\"R\n\017C_USE_D"
+  "EBUFITEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010itemty"
+  "pe\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"R\n\017S_U"
+  "SE_DEBUFITEM\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010it"
+  "emtype\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n"
+  "\nC_USE_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010ite"
+  "mtype\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"M\n\n"
+  "S_USE_STUN\022\024\n\014fromplayerid\030\001 \001(\004\022)\n\010item"
+  "type\030\002 \001(\0162\027.Protocol.DEBUFITEMTYPE\"B\n\026C"
+  "_COLLIDPLAYERTOPLAYER\022\024\n\014fromplayerid\030\001 "
+  "\001(\004\022\022\n\ntoplayerid\030\002 \001(\004\"B\n\026S_COLLIDPLAYE"
+  "RTOPLAYER\022\024\n\014fromplayerid\030\001 \001(\004\022\022\n\ntopla"
+  "yerid\030\002 \001(\004b\006proto3"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_Protocol_2eproto_deps[2] = {
   &::descriptor_table_Enum_2eproto,
@@ -468,7 +454,7 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Protocol_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Protocol_2eproto = {
-  false, false, 1374, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
+  false, false, 1259, descriptor_table_protodef_Protocol_2eproto, "Protocol.proto", 
   &descriptor_table_Protocol_2eproto_once, descriptor_table_Protocol_2eproto_deps, 2, 16,
   schemas, file_default_instances, TableStruct_Protocol_2eproto::offsets,
   file_level_metadata_Protocol_2eproto, file_level_enum_descriptors_Protocol_2eproto, file_level_service_descriptors_Protocol_2eproto,
@@ -2359,16 +2345,16 @@ C_MOVE::C_MOVE(const C_MOVE& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   ::memcpy(&playerid_, &from.playerid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&iskeydown_) -
-    reinterpret_cast<char*>(&playerid_)) + sizeof(iskeydown_));
+    static_cast<size_t>(reinterpret_cast<char*>(&state_) -
+    reinterpret_cast<char*>(&playerid_)) + sizeof(state_));
   // @@protoc_insertion_point(copy_constructor:Protocol.C_MOVE)
 }
 
 void C_MOVE::SharedCtor() {
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
     reinterpret_cast<char*>(&playerid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&iskeydown_) -
-    reinterpret_cast<char*>(&playerid_)) + sizeof(iskeydown_));
+    0, static_cast<size_t>(reinterpret_cast<char*>(&state_) -
+    reinterpret_cast<char*>(&playerid_)) + sizeof(state_));
 }
 
 C_MOVE::~C_MOVE() {
@@ -2398,8 +2384,8 @@ void C_MOVE::Clear() {
   (void) cached_has_bits;
 
   ::memset(&playerid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&iskeydown_) -
-      reinterpret_cast<char*>(&playerid_)) + sizeof(iskeydown_));
+      reinterpret_cast<char*>(&state_) -
+      reinterpret_cast<char*>(&playerid_)) + sizeof(state_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2416,68 +2402,46 @@ const char* C_MOVE::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // .Protocol.ObjectType objType = 2;
+      // float XPos = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-          _internal_set_objtype(static_cast<::Protocol::ObjectType>(val));
-        } else goto handle_unusual;
-        continue;
-      // float XPos = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
           xpos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float YPos = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+      // float YPos = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
           ypos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float ZPos = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+      // float ZPos = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
           zpos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float YRot = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+      // float YRot = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
           yrot_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // uint64 moveDir = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
-          movedir_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // bool success = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
-          success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .Protocol.STATE State = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
+      // .Protocol.STATE State = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_state(static_cast<::Protocol::STATE>(val));
         } else goto handle_unusual;
         continue;
-      // bool isKeyDown = 10;
-      case 10:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 80)) {
-          iskeydown_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // uint64 Score = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2516,60 +2480,41 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_playerid(), target);
   }
 
-  // .Protocol.ObjectType objType = 2;
-  if (this->objtype() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      2, this->_internal_objtype(), target);
-  }
-
-  // float XPos = 3;
+  // float XPos = 2;
   if (!(this->xpos() <= 0 && this->xpos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_xpos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_xpos(), target);
   }
 
-  // float YPos = 4;
+  // float YPos = 3;
   if (!(this->ypos() <= 0 && this->ypos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_ypos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_ypos(), target);
   }
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   if (!(this->zpos() <= 0 && this->zpos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_zpos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_zpos(), target);
   }
 
-  // float YRot = 6;
+  // float YRot = 5;
   if (!(this->yrot() <= 0 && this->yrot() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_yrot(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_yrot(), target);
   }
 
-  // uint64 moveDir = 7;
-  if (this->movedir() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(7, this->_internal_movedir(), target);
-  }
-
-  // bool success = 8;
-  if (this->success() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(8, this->_internal_success(), target);
-  }
-
-  // .Protocol.STATE State = 9;
+  // .Protocol.STATE State = 6;
   if (this->state() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      9, this->_internal_state(), target);
+      6, this->_internal_state(), target);
   }
 
-  // bool isKeyDown = 10;
-  if (this->iskeydown() != 0) {
+  // uint64 Score = 7;
+  if (this->score() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(10, this->_internal_iskeydown(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(7, this->_internal_score(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2595,53 +2540,37 @@ size_t C_MOVE::ByteSizeLong() const {
         this->_internal_playerid());
   }
 
-  // .Protocol.ObjectType objType = 2;
-  if (this->objtype() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_objtype());
-  }
-
-  // float XPos = 3;
+  // float XPos = 2;
   if (!(this->xpos() <= 0 && this->xpos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float YPos = 4;
+  // float YPos = 3;
   if (!(this->ypos() <= 0 && this->ypos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   if (!(this->zpos() <= 0 && this->zpos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // uint64 moveDir = 7;
-  if (this->movedir() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_movedir());
-  }
-
-  // float YRot = 6;
+  // float YRot = 5;
   if (!(this->yrot() <= 0 && this->yrot() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // .Protocol.STATE State = 9;
+  // uint64 Score = 7;
+  if (this->score() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_score());
+  }
+
+  // .Protocol.STATE State = 6;
   if (this->state() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_state());
-  }
-
-  // bool success = 8;
-  if (this->success() != 0) {
-    total_size += 1 + 1;
-  }
-
-  // bool isKeyDown = 10;
-  if (this->iskeydown() != 0) {
-    total_size += 1 + 1;
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2678,9 +2607,6 @@ void C_MOVE::MergeFrom(const C_MOVE& from) {
   if (from.playerid() != 0) {
     _internal_set_playerid(from._internal_playerid());
   }
-  if (from.objtype() != 0) {
-    _internal_set_objtype(from._internal_objtype());
-  }
   if (!(from.xpos() <= 0 && from.xpos() >= 0)) {
     _internal_set_xpos(from._internal_xpos());
   }
@@ -2690,20 +2616,14 @@ void C_MOVE::MergeFrom(const C_MOVE& from) {
   if (!(from.zpos() <= 0 && from.zpos() >= 0)) {
     _internal_set_zpos(from._internal_zpos());
   }
-  if (from.movedir() != 0) {
-    _internal_set_movedir(from._internal_movedir());
-  }
   if (!(from.yrot() <= 0 && from.yrot() >= 0)) {
     _internal_set_yrot(from._internal_yrot());
   }
+  if (from.score() != 0) {
+    _internal_set_score(from._internal_score());
+  }
   if (from.state() != 0) {
     _internal_set_state(from._internal_state());
-  }
-  if (from.success() != 0) {
-    _internal_set_success(from._internal_success());
-  }
-  if (from.iskeydown() != 0) {
-    _internal_set_iskeydown(from._internal_iskeydown());
   }
 }
 
@@ -2729,8 +2649,8 @@ void C_MOVE::InternalSwap(C_MOVE* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(C_MOVE, iskeydown_)
-      + sizeof(C_MOVE::iskeydown_)
+      PROTOBUF_FIELD_OFFSET(C_MOVE, state_)
+      + sizeof(C_MOVE::state_)
       - PROTOBUF_FIELD_OFFSET(C_MOVE, playerid_)>(
           reinterpret_cast<char*>(&playerid_),
           reinterpret_cast<char*>(&other->playerid_));
@@ -2815,60 +2735,46 @@ const char* S_MOVE::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // bool success = 2;
+      // float XPos = 2;
       case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 16)) {
-          success_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // float XPos = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 21)) {
           xpos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float YPos = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
+      // float YPos = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 29)) {
           ypos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float ZPos = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
+      // float ZPos = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 37)) {
           zpos_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // float YRot = 6;
-      case 6:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 53)) {
+      // float YRot = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 45)) {
           yrot_ = ::PROTOBUF_NAMESPACE_ID::internal::UnalignedLoad<float>(ptr);
           ptr += sizeof(float);
         } else goto handle_unusual;
         continue;
-      // uint64 moveDir = 7;
-      case 7:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
-          movedir_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else goto handle_unusual;
-        continue;
-      // .Protocol.STATE State = 8;
-      case 8:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 64)) {
+      // .Protocol.STATE State = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           _internal_set_state(static_cast<::Protocol::STATE>(val));
         } else goto handle_unusual;
         continue;
-      // bool isKeyDown = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 72)) {
-          iskeydown_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+      // uint64 Score = 7;
+      case 7:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 56)) {
+          score_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2907,53 +2813,41 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_playerid(), target);
   }
 
-  // bool success = 2;
-  if (this->success() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(2, this->_internal_success(), target);
-  }
-
-  // float XPos = 3;
+  // float XPos = 2;
   if (!(this->xpos() <= 0 && this->xpos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_xpos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(2, this->_internal_xpos(), target);
   }
 
-  // float YPos = 4;
+  // float YPos = 3;
   if (!(this->ypos() <= 0 && this->ypos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_ypos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(3, this->_internal_ypos(), target);
   }
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   if (!(this->zpos() <= 0 && this->zpos() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_zpos(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(4, this->_internal_zpos(), target);
   }
 
-  // float YRot = 6;
+  // float YRot = 5;
   if (!(this->yrot() <= 0 && this->yrot() >= 0)) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(6, this->_internal_yrot(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteFloatToArray(5, this->_internal_yrot(), target);
   }
 
-  // uint64 moveDir = 7;
-  if (this->movedir() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(7, this->_internal_movedir(), target);
-  }
-
-  // .Protocol.STATE State = 8;
+  // .Protocol.STATE State = 6;
   if (this->state() != 0) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      8, this->_internal_state(), target);
+      6, this->_internal_state(), target);
   }
 
-  // bool isKeyDown = 9;
-  if (this->iskeydown() != 0) {
+  // uint64 Score = 7;
+  if (this->score() != 0) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(9, this->_internal_iskeydown(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(7, this->_internal_score(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2979,44 +2873,34 @@ size_t S_MOVE::ByteSizeLong() const {
         this->_internal_playerid());
   }
 
-  // float XPos = 3;
+  // float XPos = 2;
   if (!(this->xpos() <= 0 && this->xpos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float YPos = 4;
+  // float YPos = 3;
   if (!(this->ypos() <= 0 && this->ypos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   if (!(this->zpos() <= 0 && this->zpos() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // bool success = 2;
-  if (this->success() != 0) {
-    total_size += 1 + 1;
-  }
-
-  // bool isKeyDown = 9;
-  if (this->iskeydown() != 0) {
-    total_size += 1 + 1;
-  }
-
-  // uint64 moveDir = 7;
-  if (this->movedir() != 0) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
-        this->_internal_movedir());
-  }
-
-  // float YRot = 6;
+  // float YRot = 5;
   if (!(this->yrot() <= 0 && this->yrot() >= 0)) {
     total_size += 1 + 4;
   }
 
-  // .Protocol.STATE State = 8;
+  // uint64 Score = 7;
+  if (this->score() != 0) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::UInt64Size(
+        this->_internal_score());
+  }
+
+  // .Protocol.STATE State = 6;
   if (this->state() != 0) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_state());
@@ -3065,17 +2949,11 @@ void S_MOVE::MergeFrom(const S_MOVE& from) {
   if (!(from.zpos() <= 0 && from.zpos() >= 0)) {
     _internal_set_zpos(from._internal_zpos());
   }
-  if (from.success() != 0) {
-    _internal_set_success(from._internal_success());
-  }
-  if (from.iskeydown() != 0) {
-    _internal_set_iskeydown(from._internal_iskeydown());
-  }
-  if (from.movedir() != 0) {
-    _internal_set_movedir(from._internal_movedir());
-  }
   if (!(from.yrot() <= 0 && from.yrot() >= 0)) {
     _internal_set_yrot(from._internal_yrot());
+  }
+  if (from.score() != 0) {
+    _internal_set_score(from._internal_score());
   }
   if (from.state() != 0) {
     _internal_set_state(from._internal_state());

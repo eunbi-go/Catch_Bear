@@ -1428,15 +1428,12 @@ class C_MOVE final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
-    kObjTypeFieldNumber = 2,
-    kXPosFieldNumber = 3,
-    kYPosFieldNumber = 4,
-    kZPosFieldNumber = 5,
-    kMoveDirFieldNumber = 7,
-    kYRotFieldNumber = 6,
-    kStateFieldNumber = 9,
-    kSuccessFieldNumber = 8,
-    kIsKeyDownFieldNumber = 10,
+    kXPosFieldNumber = 2,
+    kYPosFieldNumber = 3,
+    kZPosFieldNumber = 4,
+    kYRotFieldNumber = 5,
+    kScoreFieldNumber = 7,
+    kStateFieldNumber = 6,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -1447,16 +1444,7 @@ class C_MOVE final :
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // .Protocol.ObjectType objType = 2;
-  void clear_objtype();
-  ::Protocol::ObjectType objtype() const;
-  void set_objtype(::Protocol::ObjectType value);
-  private:
-  ::Protocol::ObjectType _internal_objtype() const;
-  void _internal_set_objtype(::Protocol::ObjectType value);
-  public:
-
-  // float XPos = 3;
+  // float XPos = 2;
   void clear_xpos();
   float xpos() const;
   void set_xpos(float value);
@@ -1465,7 +1453,7 @@ class C_MOVE final :
   void _internal_set_xpos(float value);
   public:
 
-  // float YPos = 4;
+  // float YPos = 3;
   void clear_ypos();
   float ypos() const;
   void set_ypos(float value);
@@ -1474,7 +1462,7 @@ class C_MOVE final :
   void _internal_set_ypos(float value);
   public:
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   void clear_zpos();
   float zpos() const;
   void set_zpos(float value);
@@ -1483,16 +1471,7 @@ class C_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // uint64 moveDir = 7;
-  void clear_movedir();
-  ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
-  void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_movedir() const;
-  void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  public:
-
-  // float YRot = 6;
+  // float YRot = 5;
   void clear_yrot();
   float yrot() const;
   void set_yrot(float value);
@@ -1501,31 +1480,22 @@ class C_MOVE final :
   void _internal_set_yrot(float value);
   public:
 
-  // .Protocol.STATE State = 9;
+  // uint64 Score = 7;
+  void clear_score();
+  ::PROTOBUF_NAMESPACE_ID::uint64 score() const;
+  void set_score(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_score() const;
+  void _internal_set_score(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // .Protocol.STATE State = 6;
   void clear_state();
   ::Protocol::STATE state() const;
   void set_state(::Protocol::STATE value);
   private:
   ::Protocol::STATE _internal_state() const;
   void _internal_set_state(::Protocol::STATE value);
-  public:
-
-  // bool success = 8;
-  void clear_success();
-  bool success() const;
-  void set_success(bool value);
-  private:
-  bool _internal_success() const;
-  void _internal_set_success(bool value);
-  public:
-
-  // bool isKeyDown = 10;
-  void clear_iskeydown();
-  bool iskeydown() const;
-  void set_iskeydown(bool value);
-  private:
-  bool _internal_iskeydown() const;
-  void _internal_set_iskeydown(bool value);
   public:
 
   // @@protoc_insertion_point(class_scope:Protocol.C_MOVE)
@@ -1536,15 +1506,12 @@ class C_MOVE final :
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
   ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
-  int objtype_;
   float xpos_;
   float ypos_;
   float zpos_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
   float yrot_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 score_;
   int state_;
-  bool success_;
-  bool iskeydown_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
@@ -1659,14 +1626,12 @@ class S_MOVE final :
 
   enum : int {
     kPlayerIdFieldNumber = 1,
-    kXPosFieldNumber = 3,
-    kYPosFieldNumber = 4,
-    kZPosFieldNumber = 5,
-    kSuccessFieldNumber = 2,
-    kIsKeyDownFieldNumber = 9,
-    kMoveDirFieldNumber = 7,
-    kYRotFieldNumber = 6,
-    kStateFieldNumber = 8,
+    kXPosFieldNumber = 2,
+    kYPosFieldNumber = 3,
+    kZPosFieldNumber = 4,
+    kYRotFieldNumber = 5,
+    kScoreFieldNumber = 7,
+    kStateFieldNumber = 6,
   };
   // uint64 playerId = 1;
   void clear_playerid();
@@ -1677,7 +1642,7 @@ class S_MOVE final :
   void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
   public:
 
-  // float XPos = 3;
+  // float XPos = 2;
   void clear_xpos();
   float xpos() const;
   void set_xpos(float value);
@@ -1686,7 +1651,7 @@ class S_MOVE final :
   void _internal_set_xpos(float value);
   public:
 
-  // float YPos = 4;
+  // float YPos = 3;
   void clear_ypos();
   float ypos() const;
   void set_ypos(float value);
@@ -1695,7 +1660,7 @@ class S_MOVE final :
   void _internal_set_ypos(float value);
   public:
 
-  // float ZPos = 5;
+  // float ZPos = 4;
   void clear_zpos();
   float zpos() const;
   void set_zpos(float value);
@@ -1704,34 +1669,7 @@ class S_MOVE final :
   void _internal_set_zpos(float value);
   public:
 
-  // bool success = 2;
-  void clear_success();
-  bool success() const;
-  void set_success(bool value);
-  private:
-  bool _internal_success() const;
-  void _internal_set_success(bool value);
-  public:
-
-  // bool isKeyDown = 9;
-  void clear_iskeydown();
-  bool iskeydown() const;
-  void set_iskeydown(bool value);
-  private:
-  bool _internal_iskeydown() const;
-  void _internal_set_iskeydown(bool value);
-  public:
-
-  // uint64 moveDir = 7;
-  void clear_movedir();
-  ::PROTOBUF_NAMESPACE_ID::uint64 movedir() const;
-  void set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  private:
-  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_movedir() const;
-  void _internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value);
-  public:
-
-  // float YRot = 6;
+  // float YRot = 5;
   void clear_yrot();
   float yrot() const;
   void set_yrot(float value);
@@ -1740,7 +1678,16 @@ class S_MOVE final :
   void _internal_set_yrot(float value);
   public:
 
-  // .Protocol.STATE State = 8;
+  // uint64 Score = 7;
+  void clear_score();
+  ::PROTOBUF_NAMESPACE_ID::uint64 score() const;
+  void set_score(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_score() const;
+  void _internal_set_score(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // .Protocol.STATE State = 6;
   void clear_state();
   ::Protocol::STATE state() const;
   void set_state(::Protocol::STATE value);
@@ -1760,10 +1707,8 @@ class S_MOVE final :
   float xpos_;
   float ypos_;
   float zpos_;
-  bool success_;
-  bool iskeydown_;
-  ::PROTOBUF_NAMESPACE_ID::uint64 movedir_;
   float yrot_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 score_;
   int state_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -3144,27 +3089,7 @@ inline void C_MOVE::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.playerId)
 }
 
-// .Protocol.ObjectType objType = 2;
-inline void C_MOVE::clear_objtype() {
-  objtype_ = 0;
-}
-inline ::Protocol::ObjectType C_MOVE::_internal_objtype() const {
-  return static_cast< ::Protocol::ObjectType >(objtype_);
-}
-inline ::Protocol::ObjectType C_MOVE::objtype() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.objType)
-  return _internal_objtype();
-}
-inline void C_MOVE::_internal_set_objtype(::Protocol::ObjectType value) {
-  
-  objtype_ = value;
-}
-inline void C_MOVE::set_objtype(::Protocol::ObjectType value) {
-  _internal_set_objtype(value);
-  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.objType)
-}
-
-// float XPos = 3;
+// float XPos = 2;
 inline void C_MOVE::clear_xpos() {
   xpos_ = 0;
 }
@@ -3184,7 +3109,7 @@ inline void C_MOVE::set_xpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.XPos)
 }
 
-// float YPos = 4;
+// float YPos = 3;
 inline void C_MOVE::clear_ypos() {
   ypos_ = 0;
 }
@@ -3204,7 +3129,7 @@ inline void C_MOVE::set_ypos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.YPos)
 }
 
-// float ZPos = 5;
+// float ZPos = 4;
 inline void C_MOVE::clear_zpos() {
   zpos_ = 0;
 }
@@ -3224,7 +3149,7 @@ inline void C_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.ZPos)
 }
 
-// float YRot = 6;
+// float YRot = 5;
 inline void C_MOVE::clear_yrot() {
   yrot_ = 0;
 }
@@ -3244,47 +3169,7 @@ inline void C_MOVE::set_yrot(float value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.YRot)
 }
 
-// uint64 moveDir = 7;
-inline void C_MOVE::clear_movedir() {
-  movedir_ = uint64_t{0u};
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::_internal_movedir() const {
-  return movedir_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::movedir() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.moveDir)
-  return _internal_movedir();
-}
-inline void C_MOVE::_internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  
-  movedir_ = value;
-}
-inline void C_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_movedir(value);
-  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.moveDir)
-}
-
-// bool success = 8;
-inline void C_MOVE::clear_success() {
-  success_ = false;
-}
-inline bool C_MOVE::_internal_success() const {
-  return success_;
-}
-inline bool C_MOVE::success() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.success)
-  return _internal_success();
-}
-inline void C_MOVE::_internal_set_success(bool value) {
-  
-  success_ = value;
-}
-inline void C_MOVE::set_success(bool value) {
-  _internal_set_success(value);
-  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.success)
-}
-
-// .Protocol.STATE State = 9;
+// .Protocol.STATE State = 6;
 inline void C_MOVE::clear_state() {
   state_ = 0;
 }
@@ -3304,24 +3189,24 @@ inline void C_MOVE::set_state(::Protocol::STATE value) {
   // @@protoc_insertion_point(field_set:Protocol.C_MOVE.State)
 }
 
-// bool isKeyDown = 10;
-inline void C_MOVE::clear_iskeydown() {
-  iskeydown_ = false;
+// uint64 Score = 7;
+inline void C_MOVE::clear_score() {
+  score_ = uint64_t{0u};
 }
-inline bool C_MOVE::_internal_iskeydown() const {
-  return iskeydown_;
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::_internal_score() const {
+  return score_;
 }
-inline bool C_MOVE::iskeydown() const {
-  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.isKeyDown)
-  return _internal_iskeydown();
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_MOVE::score() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_MOVE.Score)
+  return _internal_score();
 }
-inline void C_MOVE::_internal_set_iskeydown(bool value) {
+inline void C_MOVE::_internal_set_score(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
-  iskeydown_ = value;
+  score_ = value;
 }
-inline void C_MOVE::set_iskeydown(bool value) {
-  _internal_set_iskeydown(value);
-  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.isKeyDown)
+inline void C_MOVE::set_score(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_score(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_MOVE.Score)
 }
 
 // -------------------------------------------------------------------
@@ -3348,27 +3233,7 @@ inline void S_MOVE::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.playerId)
 }
 
-// bool success = 2;
-inline void S_MOVE::clear_success() {
-  success_ = false;
-}
-inline bool S_MOVE::_internal_success() const {
-  return success_;
-}
-inline bool S_MOVE::success() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.success)
-  return _internal_success();
-}
-inline void S_MOVE::_internal_set_success(bool value) {
-  
-  success_ = value;
-}
-inline void S_MOVE::set_success(bool value) {
-  _internal_set_success(value);
-  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.success)
-}
-
-// float XPos = 3;
+// float XPos = 2;
 inline void S_MOVE::clear_xpos() {
   xpos_ = 0;
 }
@@ -3388,7 +3253,7 @@ inline void S_MOVE::set_xpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.XPos)
 }
 
-// float YPos = 4;
+// float YPos = 3;
 inline void S_MOVE::clear_ypos() {
   ypos_ = 0;
 }
@@ -3408,7 +3273,7 @@ inline void S_MOVE::set_ypos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.YPos)
 }
 
-// float ZPos = 5;
+// float ZPos = 4;
 inline void S_MOVE::clear_zpos() {
   zpos_ = 0;
 }
@@ -3428,7 +3293,7 @@ inline void S_MOVE::set_zpos(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.ZPos)
 }
 
-// float YRot = 6;
+// float YRot = 5;
 inline void S_MOVE::clear_yrot() {
   yrot_ = 0;
 }
@@ -3448,27 +3313,7 @@ inline void S_MOVE::set_yrot(float value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.YRot)
 }
 
-// uint64 moveDir = 7;
-inline void S_MOVE::clear_movedir() {
-  movedir_ = uint64_t{0u};
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::_internal_movedir() const {
-  return movedir_;
-}
-inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::movedir() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.moveDir)
-  return _internal_movedir();
-}
-inline void S_MOVE::_internal_set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  
-  movedir_ = value;
-}
-inline void S_MOVE::set_movedir(::PROTOBUF_NAMESPACE_ID::uint64 value) {
-  _internal_set_movedir(value);
-  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.moveDir)
-}
-
-// .Protocol.STATE State = 8;
+// .Protocol.STATE State = 6;
 inline void S_MOVE::clear_state() {
   state_ = 0;
 }
@@ -3488,24 +3333,24 @@ inline void S_MOVE::set_state(::Protocol::STATE value) {
   // @@protoc_insertion_point(field_set:Protocol.S_MOVE.State)
 }
 
-// bool isKeyDown = 9;
-inline void S_MOVE::clear_iskeydown() {
-  iskeydown_ = false;
+// uint64 Score = 7;
+inline void S_MOVE::clear_score() {
+  score_ = uint64_t{0u};
 }
-inline bool S_MOVE::_internal_iskeydown() const {
-  return iskeydown_;
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::_internal_score() const {
+  return score_;
 }
-inline bool S_MOVE::iskeydown() const {
-  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.isKeyDown)
-  return _internal_iskeydown();
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_MOVE::score() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_MOVE.Score)
+  return _internal_score();
 }
-inline void S_MOVE::_internal_set_iskeydown(bool value) {
+inline void S_MOVE::_internal_set_score(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   
-  iskeydown_ = value;
+  score_ = value;
 }
-inline void S_MOVE::set_iskeydown(bool value) {
-  _internal_set_iskeydown(value);
-  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.isKeyDown)
+inline void S_MOVE::set_score(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_score(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_MOVE.Score)
 }
 
 // -------------------------------------------------------------------

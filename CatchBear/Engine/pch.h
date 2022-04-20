@@ -20,10 +20,10 @@
 #pragma comment(lib, "Protobuf\\Release\\libprotobuf.lib")
 #endif
 
-#ifdef UNICODE
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#ifdef unicode
+#pragma comment(linker, "/entry:wwinmaincrtstartup /subsystem:console")
 #else
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#pragma comment(linker, "/entry:winmaincrtstartup /subsystem:console")
 #endif
 
 #include "CorePch.h"

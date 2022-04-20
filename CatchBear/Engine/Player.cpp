@@ -129,8 +129,8 @@ void Player::LateUpdate()
 #pragma endregion 애니메이션동기화
 	////////////////////////////////////////////////////////////////////
 
-	/*Vec3 pos = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);*/
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);

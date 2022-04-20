@@ -43,6 +43,15 @@ Player::~Player()
 
 void Player::Update()
 {
+	//_testTime += DELTA_TIME;
+	//if (_testTime >= 5.0f)
+	//{
+	//	GetGameObject()->SetIsTagger(false);
+	//}
+	//if (_testTime >= 10.0f)
+	//{
+	//	GetGameObject()->SetIsTagger(true);
+	//}
 	ApplyItemEffect();
 }
 
@@ -137,20 +146,23 @@ void Player::LateUpdate()
 #pragma endregion 애니메이션동기화
 	////////////////////////////////////////////////////////////////////
 
-	/*Vec3 pos = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);*/
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
 	
+	Vec3 trans = GetTransform()->GetLocalPosition();
+	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
+	
 }
 
 void Player::AddPlayerItem(shared_ptr<GameObject> item)
 {
 	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
-	// 아이템을 3개 지니고 있으면 맨처음 아이템 삭제
+	// 아이템을 3개 지니고 있으면 아이템 획득해도 무시
 	if (_playerItemVec.size() < 3)
 	{
 		_playerItemVec.push_back(item);
@@ -290,7 +302,7 @@ void Player::Move()
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag");
+	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag1");
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
@@ -411,25 +423,34 @@ void Player::KeyCheck_Item()
 	// 아이템 사용 키입력 - 1, 2, 3
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
-		if (_playerItemVec.empty()) return;
+		if (_playerItemVec.size() < 1)
+			return;
+
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
+		DeletePlayerItem(0);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
-		if (_playerItemVec.size() < 1) return;
+		if (_playerItemVec.size() < 2) 
+			return;
+
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
+		DeletePlayerItem(1);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
-		if (_playerItemVec.size() < 2) return;
+		if (_playerItemVec.size() < 3) 
+			return;
+		
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
+		DeletePlayerItem(2);
 	}
 
-	if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
-		SlowDown();
+	//if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
+	//	SlowDown();
 }
 
 void Player::UseItem(int itemNum)
@@ -469,7 +490,6 @@ void Player::UseItem(int itemNum)
 		break;
 	}
 
-	_playerItemVec.erase(_playerItemVec.begin() + itemNum);
 }
 
 void Player::ApplyItemEffect()
@@ -496,6 +516,11 @@ void Player::ApplyItemEffect()
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
+}
+
+void Player::DeletePlayerItem(int itemIndex)
+{
+	_playerItemVec.erase(_playerItemVec.begin() + itemIndex);
 }
 
 void Player::Item_SpeedUp()

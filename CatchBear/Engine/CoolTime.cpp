@@ -31,9 +31,21 @@ void CoolTime::Update()
 			float fPos = fScale / 2.f;
 			Vec3	localPos = GetGameObject()->GetTransform()->GetLocalPosition();
 
-			if (localScale.y - fScale >= -4.f) {
+			if (localScale.y - fScale >= 0.f) {
 				GetGameObject()->GetTransform()->SetLocalScale(Vec3(localScale.x, localScale.y - fScale, localScale.z));
 				GetGameObject()->GetTransform()->SetLocalPosition(Vec3(localPos.x, localPos.y - fPos, localPos.z));
+
+
+			}
+			else
+			{
+				GET_SINGLE(ItemSlotManager)->ResetItemSlot(_nSlot);
+
+				_fCoolTime = 0.f; _fItemCoolTime = 0.f;
+				_nSlot = -1;
+				GetGameObject()->_isRender = false;
+				GetGameObject()->GetTransform()->SetLocalScale(_localScale);
+				GetGameObject()->GetTransform()->SetLocalPosition(_localPos);
 			}
 		}
 		else
@@ -60,6 +72,6 @@ void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nC
 	_localPos = pos;
 	_localScale = scale;
 	_nSlot = nSlot;
-	_fItemCoolTime = float(nCoolTime) + 1.5f;
-	_fCoolTime = float(nCoolTime) + 1.5f;
+	_fItemCoolTime = float(nCoolTime) /*+ 1.5f*/;
+	_fCoolTime = float(nCoolTime) /*+ 1.5f*/;
 }

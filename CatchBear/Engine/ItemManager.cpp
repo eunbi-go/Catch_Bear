@@ -29,9 +29,8 @@ void ItemManager::Init()
 void ItemManager::Update()
 {
 	CreateCommonItem();
-	//CreateUniqueItem();
-	//CreateTreasure();
-
+	CreateUniqueItem();
+	CreateTreasure();
 
 	Collision_ItemToPlayer();
 }
@@ -42,10 +41,9 @@ void ItemManager::LateUpdate()
 
 void ItemManager::SetItemPosition()
 {
-	float y = -2.f;		// y값은 다 똑같
+	float y = 1.f;		// y값은 다 똑같
 
 #pragma region ItemPos
-	// 좌표 순서좀 섞어야한다. 하지만 귀찮다 나중에 ,, ~
 	_itemPosArray[0] = Vec3(-20.f, y, -29.f);
 	_itemPosArray[1] = Vec3(-32.f, y, 12.f);
 	_itemPosArray[2] = Vec3(18.f, y, -24.f);
@@ -102,6 +100,7 @@ void ItemManager::CreateCommonItem()
 
 				// 좌표 어레이에서 좌표값 꺼내오기
 				if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+				Check_ItemPos();
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
@@ -111,11 +110,6 @@ void ItemManager::CreateCommonItem()
 				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 				item->SetBoundingBox(BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				//item->_boundingBox = BoundingOrientedBox(
-				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -151,6 +145,7 @@ void ItemManager::CreateUniqueItem()
 
 				// 아이템 어레이에서 좌표값 꺼내오기
 				if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+				Check_ItemPos();
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
@@ -160,12 +155,6 @@ void ItemManager::CreateUniqueItem()
 				item->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 				item->SetBoundingBox(BoundingOrientedBox(
 					XMFLOAT3(0.0f, 0.0f, 0.0f), item->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-
-				//item->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-				//item->_boundingBox = BoundingOrientedBox(
-				//	XMFLOAT3(0.0f, 0.0f, 0.0f), item->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
@@ -199,6 +188,7 @@ void ItemManager::CreateTreasure()
 
 			// 아이템 어레이에서 좌표값 꺼내오기
 			if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+			Check_ItemPos();
 			Vec3 pos = _itemPosArray[_itemIndex++];
 
 			gameObject->GetTransform()->SetLocalPosition(pos);
@@ -209,12 +199,6 @@ void ItemManager::CreateTreasure()
 			gameObject->SetBoundingExtents(XMFLOAT3(0.5f, 0.5f, 0.5f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-
-
-			//gameObject->_boundingExtents = XMFLOAT3(0.5f, 0.5f, 0.5f);
-			//gameObject->_boundingBox = BoundingOrientedBox(
-			//	XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->_boundingExtents, XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f));
-
 			gameObject->AddComponent(make_shared<Item>());
 
 			// Item enum값 설정 - ItemType, ItemEffect
@@ -252,6 +236,7 @@ void ItemManager::Collision_ItemToPlayer()
 	const vector<shared_ptr<GameObject>>& vecPlayers = scene->GetVecPlayers();
 	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
+//<<<<<<< HEAD
 		_player = vecPlayers[i];
 		// common item & player
 		for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
@@ -265,6 +250,23 @@ void ItemManager::Collision_ItemToPlayer()
 				item = _commonItemList.erase(item);
 			}
 			else item++;
+//=======
+//		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+//		{
+//			_player = gameObject;
+//			break;
+//		}
+//	}
+//
+//	// common item & player
+//	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
+//	{
+//		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+//		{
+//			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
+//			scene->RemoveGameObject(*item);
+//			item = _commonItemList.erase(item);
+//>>>>>>> 46337d79b339b012cfbfeb7ef9472db817adfae8
 		}
 	}
 
@@ -273,11 +275,81 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			// ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}
 
 		else item++;
+	}
+
+	
+	// treasure & player
+	for (auto treasure = _treasureList.begin(); treasure != _treasureList.end();)
+	{
+		if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+		{
+			if (!_player->GetIsTagger())
+			{
+				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
+			}
+			scene->RemoveGameObject(*treasure);
+			treasure = _treasureList.erase(treasure);
+		}
+
+		else treasure++;
+	}
+}
+
+void ItemManager::Check_ItemPos()
+{
+	// 생성될 좌표에 이미 아이템이 있는지 체크하는 함수
+
+	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	// CommonItemList
+	for (auto& cItem = _commonItemList.begin(); cItem != _commonItemList.end();/* ++cItem*/)
+	{
+		if ((*cItem)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			// 1. _itemIndex를 증가시켜서 빈 공간(아이템이 없는 장소)을 찾는다.
+			//_itemIndex++;
+
+			// 2. 좌표가 같으면 먼저 있던 아이템을 삭제한다.
+			scene->RemoveGameObject(*cItem);
+			cItem = _commonItemList.erase(cItem);
+			return;
+		}
+
+		else cItem++;
+	}
+
+	// UniqueItemList
+	for (auto& uItem = _uniqueItemList.begin(); uItem != _uniqueItemList.end();/* ++uItem*/)
+	{
+		if ((*uItem)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			_itemIndex++;
+
+			scene->RemoveGameObject(*uItem);
+			uItem = _uniqueItemList.erase(uItem);
+			return;
+		}
+
+		else uItem++;
+	}
+
+	// TeasuerList
+	for (auto& treasure = _treasureList.begin(); treasure != _treasureList.end();/* ++treasure*/)
+	{
+		if ((*treasure)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			_itemIndex++;
+
+			scene->RemoveGameObject(*treasure);
+			treasure = _treasureList.erase(treasure);
+			return;
+		}
+
+		else treasure++;
 	}
 }

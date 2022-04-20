@@ -30,6 +30,8 @@ private:
 private:
 	void SetTimer();
 	void CheckMouse();
+	void CheckTagger();
+	void StartGame();
 
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
@@ -65,8 +67,11 @@ private:
 	//////////////////////////////////////////////////////////
 
 private:
-	float	_curTime = 0.0f;
+	float	_curTime = -1.0f;
 
 	POINT	_mousePos = { 0, 0 };
 	RECT	_slotRt[3] = { {100, 620, 200, 710}, {220, 620, 320, 710}, {340, 620, 440, 710} };
+	float	_toStartTime = 0.0f;
+public:
+	bool	_isStart = false;
 };

@@ -32,7 +32,6 @@ void ItemManager::Update()
 	CreateUniqueItem();
 	CreateTreasure();
 
-
 	Collision_ItemToPlayer();
 }
 
@@ -45,7 +44,6 @@ void ItemManager::SetItemPosition()
 	float y = 1.f;		// y값은 다 똑같
 
 #pragma region ItemPos
-	// 좌표 순서좀 섞어야한다. 하지만 귀찮다 나중에 ,, ~
 	_itemPosArray[0] = Vec3(-20.f, y, -29.f);
 	_itemPosArray[1] = Vec3(-32.f, y, 12.f);
 	_itemPosArray[2] = Vec3(18.f, y, -24.f);
@@ -102,6 +100,7 @@ void ItemManager::CreateCommonItem()
 
 				// 좌표 어레이에서 좌표값 꺼내오기
 				if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+				Check_ItemPos();
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
@@ -146,6 +145,7 @@ void ItemManager::CreateUniqueItem()
 
 				// 아이템 어레이에서 좌표값 꺼내오기
 				if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+				Check_ItemPos();
 				Vec3 pos = _itemPosArray[_itemIndex++];
 
 				item->GetTransform()->SetLocalPosition(pos);
@@ -188,6 +188,7 @@ void ItemManager::CreateTreasure()
 
 			// 아이템 어레이에서 좌표값 꺼내오기
 			if (_itemIndex > _maxItemIndex) _itemIndex = 0;
+			Check_ItemPos();
 			Vec3 pos = _itemPosArray[_itemIndex++];
 
 			gameObject->GetTransform()->SetLocalPosition(pos);
@@ -257,6 +258,7 @@ void ItemManager::Collision_ItemToPlayer()
 		else item++;
 	}
 
+	
 	// treasure & player
 	for (auto treasure = _treasureList.begin(); treasure != _treasureList.end();)
 	{
@@ -267,7 +269,61 @@ void ItemManager::Collision_ItemToPlayer()
 				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
 			}
 			scene->RemoveGameObject(*treasure);
-			treasure = _uniqueItemList.erase(treasure);
+			treasure = _treasureList.erase(treasure);
+		}
+
+		else treasure++;
+	}
+}
+
+void ItemManager::Check_ItemPos()
+{
+	// 생성될 좌표에 이미 아이템이 있는지 체크하는 함수
+
+	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	// CommonItemList
+	for (auto& cItem = _commonItemList.begin(); cItem != _commonItemList.end();/* ++cItem*/)
+	{
+		if ((*cItem)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			// 1. _itemIndex를 증가시켜서 빈 공간(아이템이 없는 장소)을 찾는다.
+			//_itemIndex++;
+
+			// 2. 좌표가 같으면 먼저 있던 아이템을 삭제한다.
+			scene->RemoveGameObject(*cItem);
+			cItem = _commonItemList.erase(cItem);
+			return;
+		}
+
+		else cItem++;
+	}
+
+	// UniqueItemList
+	for (auto& uItem = _uniqueItemList.begin(); uItem != _uniqueItemList.end();/* ++uItem*/)
+	{
+		if ((*uItem)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			_itemIndex++;
+
+			scene->RemoveGameObject(*uItem);
+			uItem = _uniqueItemList.erase(uItem);
+			return;
+		}
+
+		else uItem++;
+	}
+
+	// TeasuerList
+	for (auto& treasure = _treasureList.begin(); treasure != _treasureList.end();/* ++treasure*/)
+	{
+		if ((*treasure)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		{
+			_itemIndex++;
+
+			scene->RemoveGameObject(*treasure);
+			treasure = _treasureList.erase(treasure);
+			return;
 		}
 
 		else treasure++;

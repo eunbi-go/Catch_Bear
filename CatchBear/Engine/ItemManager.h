@@ -23,6 +23,7 @@ public:
 
 private:
 	void Collision_ItemToPlayer();
+	void Check_ItemPos();
 
 public:
 	array<list<shared_ptr<GameObject>>, 3>& GetItemArray() { return _itemArray; }

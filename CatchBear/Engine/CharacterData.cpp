@@ -54,7 +54,12 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
 			{
-				CreateTextures();
+				if (_name == L"EvilbearL2.bin")
+					CreateTextures4();
+				if (_name == L"EvilbearL3.bin")
+					CreateTextures2();
+				if (_name == L"EvilbearL4.bin")
+					CreateTextures3();
 				CreateMaterials();
 			}
 
@@ -70,7 +75,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 
 				// Material 생성해서 Reosurces에 추가
-				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_name/*_staticMeshInfo.material.name*/);
+				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(/*_name*/_staticMeshInfo.material.name);
 				shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"PlayerAnimation");
 				
 				material->SetShader(shader);
@@ -263,7 +268,7 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 			nReads = (UINT)::fread(&aabbExtents, sizeof(Vec3), 1, pFile);
 		}
 
-		else if (!strcmp(pStrTocken, "<Positions>:"))
+		else if (!strcmp(pStrTocken, "<Positions>:") || !strcmp(pStrTocken, "<ControlPoints>:"))
 		{
 			nReads = (UINT)fread(&nVertices, sizeof(int), 1, pFile);
 
@@ -291,7 +296,7 @@ void CharacterData::LoadMeshInfoFromFile(FILE* pFile)
 			}
 		}
 
-		else if (!strcmp(pStrTocken, "<TextureCoords0>:"))
+		else if (!strcmp(pStrTocken, "<TextureCoords0>:") || !strcmp(pStrTocken, "<UVs>:"))
 		{
 			nReads = (UINT)fread(&nUVs, sizeof(int), 1, pFile);
 

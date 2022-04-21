@@ -43,15 +43,6 @@ Player::~Player()
 
 void Player::Update()
 {
-	//_testTime += DELTA_TIME;
-	//if (_testTime >= 5.0f)
-	//{
-	//	GetGameObject()->SetIsTagger(false);
-	//}
-	//if (_testTime >= 10.0f)
-	//{
-	//	GetGameObject()->SetIsTagger(true);
-	//}
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
 }

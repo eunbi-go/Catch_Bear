@@ -311,16 +311,16 @@ void Scene::CheckTagger()
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			}
+			//else if (name == L"Player2")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			//}
+			//else if (name == L"Player3")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			//}
 			_isStart = true;
 		}
 		else if (!gameObject->GetIsTagger())
@@ -330,16 +330,16 @@ void Scene::CheckTagger()
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
 			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
+			//else if (name == L"Player2")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+			//}
+			//else if (name == L"Player3")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+			//}
 		}
 	}
 }

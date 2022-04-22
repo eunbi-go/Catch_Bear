@@ -467,7 +467,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	itemWnd->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 	itemWnd->SetName(L"ItemWindow");
 	itemWnd->AddComponent(make_shared<Transform>());
-	itemWnd->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+	itemWnd->GetTransform()->SetLocalScale(Vec3(300.f, 150.f, 100.f));
 	itemWnd->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
 	itemWnd->AddComponent(make_shared<ItemWindow>());
 

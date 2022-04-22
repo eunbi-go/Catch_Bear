@@ -61,7 +61,6 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 	}
 
 	texPath = L"..\\Resources\\Texture\\item\\" + _texName + L".png";
-
 	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(_texName, texPath);
 
 	// ≈ÿΩ∫√≥ πŸ≤„¡‡æﬂ «‘

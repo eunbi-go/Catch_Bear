@@ -23,8 +23,8 @@ void ItemWindow::LateUpdate()
 void ItemWindow::SetItemName()
 {
 	//_itemName = item;
-	wstring texPath = L"..\\Resources\\Texture\\item\\" + _itemName + L".png";
-
+	wstring texPath = L"..\\Resources\\Texture\\itemWnd\\" + _itemName + L".png";
+	_itemName = _itemName + L"Wnd";
 	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(_itemName, texPath);
 
 	// ≈ÿΩ∫√≥ πŸ≤„¡‡æﬂ «‘

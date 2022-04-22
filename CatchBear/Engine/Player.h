@@ -27,6 +27,7 @@ public:
 
 public:
 	void AddPlayerItem(shared_ptr<GameObject> item);
+	void AddPlayerItem(Player::ITEM itemType);
 
 	void SetCurItem(Player::ITEM curItem, bool value) { _curPlayerItem[curItem] = value; }	// 이 함수 사용해서 플레이어에게 아이템 효과 부여
 	void SetPlayerSpeed(float speed) { _speed = speed; }
@@ -83,6 +84,8 @@ private:
 
 	array<bool, Player::ITEM::ITEM_END> _curPlayerItem;	// 플레이어가 사용중인or당하는중인 아이템 확인하기 위한 배열
 	vector<shared_ptr<GameObject>>	_playerItemVec;	// 플레이어가 가지고 있는 아이템 넣어두는 벡터(최대 3개)
+	array<bool, 3>	_playerItemArr;
+	
 
 private:
 	STATE	_curState = STATE::END;

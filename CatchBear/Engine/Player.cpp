@@ -35,6 +35,7 @@ Player::Player()
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
 	_state = new IdleState();
 	_curPlayerItem = { false, };
+	_playerItemArr = { false, };
 }
 
 Player::~Player()
@@ -145,6 +146,11 @@ void Player::AddPlayerItem(shared_ptr<GameObject> item)
 		ITEM_EFFECT itemType = static_pointer_cast<Item>(item->GetScript(0))->GetItemEffect();
 		GET_SINGLE(ItemSlotManager)->AddItem(itemType);
 	}
+}
+
+void Player::AddPlayerItem(Player::ITEM itemType)
+{
+	
 }
 
 void Player::KeyCheck()

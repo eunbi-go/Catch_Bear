@@ -25,9 +25,9 @@ void ScoreUIManager::SetPlayerScoreTexture(int nPlayer, int nScore)
 	int score3 = temp % 10;
 
 	shared_ptr<Texture> texScore1, texScore2, texScore3;
-	texScore1 = GET_SINGLE(Resources)->Load<Texture>(L"timer" + to_wstring(score1), L"..\\Resources\\Texture\\timer\\timer" + to_wstring(score1) + L".png");
-	texScore2 = GET_SINGLE(Resources)->Load<Texture>(L"timer" + to_wstring(score2), L"..\\Resources\\Texture\\timer\\timer" + to_wstring(score2) + L".png");
-	texScore3 = GET_SINGLE(Resources)->Load<Texture>(L"timer" + to_wstring(score3), L"..\\Resources\\Texture\\timer\\timer" + to_wstring(score3) + L".png");
+	texScore1 = GET_SINGLE(Resources)->Load<Texture>(L"score" + to_wstring(score1), L"..\\Resources\\Texture\\score\\score" + to_wstring(score1) + L".png");
+	texScore2 = GET_SINGLE(Resources)->Load<Texture>(L"score" + to_wstring(score2), L"..\\Resources\\Texture\\score\\score" + to_wstring(score2) + L".png");
+	texScore3 = GET_SINGLE(Resources)->Load<Texture>(L"score" + to_wstring(score3), L"..\\Resources\\Texture\\score\\score" + to_wstring(score3) + L".png");
 
 	mScore1->GetMeshRenderer()->GetMaterial()->SetTexture(0, texScore1);
 	mScore2->GetMeshRenderer()->GetMaterial()->SetTexture(0, texScore2);

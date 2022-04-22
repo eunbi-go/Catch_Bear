@@ -407,10 +407,11 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 
 shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 {
-	for (size_t i = 0; i < _gameObjects.size(); ++i)
+	for (int i = 0; i < _gameObjects.size(); ++i)
 	{
 		if (_gameObjects[i]->GetName() == name)
 		{
+			int k = 0;
 			return _gameObjects[i];
 		}
 	}

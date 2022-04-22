@@ -512,6 +512,32 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TimerUI
+	{
+		// :
+		shared_ptr<GameObject> minuteTimer = make_shared<TimerUI>();
+		minuteTimer->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		minuteTimer->SetName(L"TIMER");
+		minuteTimer->AddComponent(make_shared<Transform>());
+		minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
+		minuteTimer->GetTransform()->SetLocalPosition(Vec3(-40.f, 340.f, 500.f));
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timerr", L"..\\Resources\\Texture\\timer\\timerr.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		minuteTimer->AddComponent(meshRenderer);
+
+		scene->AddGameObject(minuteTimer);
+	}
 	// minute
 	shared_ptr<GameObject> minuteTimer = make_shared<TimerUI>();
 	minuteTimer->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
@@ -652,7 +678,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score2->SetName(L"player1Score2");
 		player1Score2->AddComponent(make_shared<Transform>());
 		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		player1Score2->GetTransform()->SetLocalPosition(Vec3(500.f, 200.f, 500.f));
+		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 200.f, 500.f));
 		player1Score2->AddComponent(make_shared<ScoreUI>());
 
 		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
@@ -679,7 +705,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score3->SetName(L"player1Score3");
 		player1Score3->AddComponent(make_shared<Transform>());
 		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-		player1Score3->GetTransform()->SetLocalPosition(Vec3(550.f, 200.f, 500.f));
+		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 200.f, 500.f));
 		player1Score3->AddComponent(make_shared<ScoreUI>());
 
 		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
@@ -765,7 +791,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score2->SetName(L"player2Score2");
 //		player1Score2->AddComponent(make_shared<Transform>());
 //		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score2->GetTransform()->SetLocalPosition(Vec3(500.f, 100.f, 500.f));
+//		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 100.f, 500.f));
 //		player1Score2->AddComponent(make_shared<ScoreUI>());
 //
 //		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
@@ -792,7 +818,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score3->SetName(L"player2Score3");
 //		player1Score3->AddComponent(make_shared<Transform>());
 //		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score3->GetTransform()->SetLocalPosition(Vec3(550.f, 100.f, 500.f));
+//		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 100.f, 500.f));
 //		player1Score3->AddComponent(make_shared<ScoreUI>());
 //
 //		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
@@ -878,7 +904,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score2->SetName(L"player3Score2");
 //		player1Score2->AddComponent(make_shared<Transform>());
 //		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score2->GetTransform()->SetLocalPosition(Vec3(500.f, 0.f, 500.f));
+//		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 0.f, 500.f));
 //		player1Score2->AddComponent(make_shared<ScoreUI>());
 //
 //		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
@@ -905,7 +931,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score3->SetName(L"player3Score3");
 //		player1Score3->AddComponent(make_shared<Transform>());
 //		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score3->GetTransform()->SetLocalPosition(Vec3(550.f, 0.f, 500.f));
+//		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 0.f, 500.f));
 //		player1Score3->AddComponent(make_shared<ScoreUI>());
 //
 //		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();

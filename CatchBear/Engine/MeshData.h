@@ -39,7 +39,9 @@ protected:
 	// Texture/Material 객체를 생성해서 Resources에 추가
 	void CreateTextures();
 	void CreateMaterials();
-
+	void CreateTextures2();
+	void CreateTextures3();
+	void CreateTextures4();
 
 
 public:

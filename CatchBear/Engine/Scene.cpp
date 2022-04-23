@@ -259,9 +259,13 @@ void Scene::SetTimer()
 	int second = (int)(time) % 60;
 	int ten = second / 10;
 	int one = second % 10;
+	if (second == 0)
+	{
+		ten = 5; one = 9;
+	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
-	
+
 	textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
@@ -314,16 +318,16 @@ void Scene::CheckTagger()
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			}
+			//else if (name == L"Player2")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			//}
+			//else if (name == L"Player3")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			//}
 			_isStart = true;
 		}
 		else if (!gameObject->GetIsTagger())
@@ -333,16 +337,16 @@ void Scene::CheckTagger()
 				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
 			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
+			//else if (name == L"Player2")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+			//}
+			//else if (name == L"Player3")
+			//{
+			//	shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
+			//	tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+			//}
 		}
 	}
 }
@@ -410,10 +414,11 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 
 shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 {
-	for (size_t i = 0; i < _gameObjects.size(); ++i)
+	for (int i = 0; i < _gameObjects.size(); ++i)
 	{
 		if (_gameObjects[i]->GetName() == name)
 		{
+			int k = 0;
 			return _gameObjects[i];
 		}
 	}

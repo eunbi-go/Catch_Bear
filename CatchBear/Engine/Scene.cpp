@@ -62,11 +62,14 @@ void Scene::Update()
 				gameObject->Update();
 			}
 
-			for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
+			/*for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 			{
-				cout << "플레이어" << gameObject->GetPlayerID() << ": " <<
-					static_pointer_cast<Player>(gameObject->GetScript(0))->GetPlayerScore() << endl;
-			}
+				cout << "플레이어" << gameObject->GetPlayerID() << ": ";
+				if (gameObject->GetIsTagger())
+					cout << "술래입니다\n";
+				else
+					cout << "시민입니다\n";
+			}*/
 		}
 	}
 }

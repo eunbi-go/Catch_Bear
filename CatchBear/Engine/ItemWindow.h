@@ -7,7 +7,7 @@ class ItemWindow : public MonoBehaviour
 public:
 	ItemWindow() { }
 	virtual ~ItemWindow();
-
+	
 public:
 	virtual void Update() override;
 	virtual void LateUpdate() override;

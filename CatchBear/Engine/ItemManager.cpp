@@ -113,8 +113,8 @@ void ItemManager::CreateCommonItem()
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::COMMON);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)i);
 				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::STUN);
 				_commonItemList.push_back(item);
 
@@ -158,8 +158,8 @@ void ItemManager::CreateUniqueItem()
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::UNIQUE);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)(i + 5));
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::UNIQUE);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
 				_uniqueItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -202,8 +202,8 @@ void ItemManager::CreateTreasure()
 			gameObject->AddComponent(make_shared<Item>());
 
 			// Item enum값 설정 - ItemType, ItemEffect
-			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemType(ITEM_TYPE::TRESURE);
-			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemEffect((ITEM_EFFECT)(7));
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemType(Item::ITEM_TYPE::TRESURE);
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::TREASURE);
 			_treasureList.push_back(gameObject);
 
 
@@ -238,7 +238,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
+			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
 			scene->RemoveGameObject(*item);
 			item = _commonItemList.erase(item);
 		}
@@ -251,6 +252,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
+			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}

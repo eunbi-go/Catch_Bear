@@ -24,7 +24,7 @@ void ItemSlotUI::LateUpdate()
 {
 }
 
-void ItemSlotUI::SetItem(ITEM_EFFECT item)
+void ItemSlotUI::SetItem(Item::ITEM_EFFECT item)
 {
 	_settingItem = item;
 	wstring texPath;
@@ -32,29 +32,29 @@ void ItemSlotUI::SetItem(ITEM_EFFECT item)
 
 	switch (item)
 	{
-	case ITEM_EFFECT::SPEED_UP:
+	case Item::ITEM_EFFECT::SPEED_UP:
 		_texName = L"speed_up";
 		_fCoolTime = 5.f;
 		break;
-	case ITEM_EFFECT::TELEPORT:
+	case Item::ITEM_EFFECT::TELEPORT:
 		_texName = L"teleport";
 		break;
-	case ITEM_EFFECT::SHIELD:
+	case Item::ITEM_EFFECT::SHIELD:
 		_texName = L"shield";
 		_fCoolTime = 5.f;
 		break;
-	case ITEM_EFFECT::SPEED_DOWN:
+	case Item::ITEM_EFFECT::SPEED_DOWN:
 		_texName = L"speed_down";
 		_fCoolTime = 5.f;
 		break;
-	case ITEM_EFFECT::BLIND:
+	case Item::ITEM_EFFECT::BLIND:
 		_texName = L"blind";
 		_fCoolTime = 5.f;
 		break;
-	case ITEM_EFFECT::DEBUFF_OFF:
+	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		_texName = L"debuff_off";
 		break;
-	case ITEM_EFFECT::STUN:
+	case Item::ITEM_EFFECT::STUN:
 		_texName = L"stun";
 		_fCoolTime = 3.f;
 		break;
@@ -73,7 +73,7 @@ void ItemSlotUI::UseItem()
 	// 사용한 아이템 종류를 확인한 후, 제한시간 설정하고
 	//CheckItem();
 	// 세팅된 아이템은 초기화
-	_settingItem = ITEM_EFFECT::END;
+	_settingItem = Item::ITEM_EFFECT::ITEM_EFFECT_END;
 
 	//// before
 	//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
@@ -84,23 +84,23 @@ void ItemSlotUI::CheckItem()
 {
 	switch (_settingItem)
 	{
-	case ITEM_EFFECT::SPEED_UP:
+	case Item::ITEM_EFFECT::SPEED_UP:
 		//GetGameObject()->_isRender = false;
 		break;
-	case ITEM_EFFECT::TELEPORT:
+	case Item::ITEM_EFFECT::TELEPORT:
 		break;
-	case ITEM_EFFECT::SHIELD:
+	case Item::ITEM_EFFECT::SHIELD:
 		//GetGameObject()->_isRender = false;
 		break;
-	case ITEM_EFFECT::SPEED_DOWN:
+	case Item::ITEM_EFFECT::SPEED_DOWN:
 		//GetGameObject()->_isRender = false;
 		break;
-	case ITEM_EFFECT::BLIND:
+	case Item::ITEM_EFFECT::BLIND:
 		//GetGameObject()->_isRender = false;
 		break;
-	case ITEM_EFFECT::DEBUFF_OFF:
+	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		break;
-	case ITEM_EFFECT::STUN:
+	case Item::ITEM_EFFECT::STUN:
 		//GetGameObject()->_isRender = false;
 		break;
 	}

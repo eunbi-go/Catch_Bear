@@ -27,7 +27,8 @@ void ScoreManager::AddScore()
 	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_myPlayer = scene->GetGameObject(L"Player");
 
-	//if (_myPlayer->GetIsTagger()) return;		// ³»°¡ Å×½ºÆ®ÇÒ¶© ÇÃ·¹ÀÌ¾î ÇÑ¸í¸¸ ¸¸µé¾î¼­(°Â°¡ ¼ú·¡µÊ) ²¨µÒ, ¿ø·¡ ÄÑ¾ßµÊ!
+	// ³»°¡ Å×½ºÆ®ÇÒ¶© ÇÃ·¹ÀÌ¾î ÇÑ¸í¸¸ ¸¸µé¾î¼­(°Â°¡ ¼ú·¡µÊ) ²¨µÒ, ¿ø·¡ ÄÑ¾ßµÊ!
+	//if (_myPlayer->GetIsTagger()) return;		
 
 	_scoreTime += DELTA_TIME;
 

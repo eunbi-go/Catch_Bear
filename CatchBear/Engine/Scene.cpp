@@ -256,9 +256,13 @@ void Scene::SetTimer()
 	int second = (int)(time) % 60;
 	int ten = second / 10;
 	int one = second % 10;
+	if (second == 0)
+	{
+		ten = 5; one = 9;
+	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
-	
+
 	textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);

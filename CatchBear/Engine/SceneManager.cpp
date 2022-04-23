@@ -726,7 +726,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(player1Score3);
 	}
 #pragma endregion
-//
+
 //#pragma region Player2 ScoreUI
 //	// icon
 //	{
@@ -734,7 +734,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 //		player1Score1->SetName(L"player2ScoreIcon");
 //		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+//		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
 //		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 100.f, 500.f));
 //		player1Score1->AddComponent(make_shared<ScoreUI>());
 //
@@ -847,7 +847,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 //		player1Score1->SetName(L"player3ScoreIcon");
 //		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+//		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
 //		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 0.f, 500.f));
 //		player1Score1->AddComponent(make_shared<ScoreUI>());
 //

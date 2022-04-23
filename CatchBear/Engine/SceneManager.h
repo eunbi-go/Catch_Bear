@@ -46,4 +46,3 @@ private:
 };
 
 
-extern int g_EnterPlayerCnt;

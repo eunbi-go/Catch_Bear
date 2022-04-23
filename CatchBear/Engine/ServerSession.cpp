@@ -8,6 +8,8 @@ int unsigned gPacketControl = 0;
 static bool isConnected = false;
 std::mutex m;
 
+int g_EnterPlayerCnt = 0;
+
 void ServerSession::OnConnected()
 {
 	Protocol::C_LOGIN pkt;

@@ -199,7 +199,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	{
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
-		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
 		
 		switch (pkt.state())
 		{
@@ -380,6 +379,37 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
 	}
+	return true;
+}
+
+bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	switch (pkt.playerid())
+	{
+	case 0:
+		_player = scene->GetPlayer(0);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		scene->SetCurTime(pkt.timer());
+		break;
+	case 1:
+		_player = scene->GetPlayer(1);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		//scene->SetCurTime(pkt.timer());
+		break;
+	case 2:
+		_player = scene->GetPlayer(2);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		//scene->SetCurTime(pkt.timer());
+		break;
+	}
+	
+
+	
+	
 	return true;
 }
 

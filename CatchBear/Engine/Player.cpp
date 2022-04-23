@@ -73,7 +73,6 @@ void Player::LateUpdate()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
-		pkt.set_score(_iScore);
 		if (gPacketControl % 80 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -332,7 +331,6 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_score(_iScore);
 
 		if (gPacketControl % 4 == 1)
 		{
@@ -352,7 +350,6 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_score(_iScore);
 
 		if (gPacketControl % 4 == 1)
 		{

@@ -15,11 +15,17 @@ void Timer::Update()
 	_deltaTime = (currentCount - _prevCount) / static_cast<float>(_frequency);
 	_prevCount = currentCount;
 
+	// 1초동안 몇 번 실행됐는지 체크
 	_frameCount++;
-	_frameTime += _deltaTime;
 
+	// 누적 시간 계산
+	_frameTime += _deltaTime;
+	_AllTime += _deltaTime;
+
+	// 1초가 넘어가면 0으로 세팅됨
 	if (_frameTime > 1.f)
 	{
+		// 평균적으로 1초동안 실행된 개수 = 평균 FPS
 		_fps = static_cast<uint32>(_frameCount / _frameTime);
 
 		_frameTime = 0.f;

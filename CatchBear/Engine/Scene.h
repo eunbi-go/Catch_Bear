@@ -52,6 +52,8 @@ public:
 
 	int GetEnterPlayerNum() { return _players.size(); }
 
+	void SetCurTime(float _time) { _curTime = _time; }
+
 private:
 	// 벡터를 레이어 단계로 구분한다
 	// [0]: 벽, [1]: 몬스터

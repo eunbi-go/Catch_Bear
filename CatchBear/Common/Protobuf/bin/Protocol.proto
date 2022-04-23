@@ -63,7 +63,6 @@ message C_MOVE
 	float ZPos = 4;
 	float YRot = 5;
 	STATE State = 6;
-	uint64 Score = 7;
 }
 
 message S_MOVE
@@ -74,7 +73,6 @@ message S_MOVE
 	float ZPos = 4;
 	float YRot = 5;
 	STATE State = 6;
-	uint64 Score = 7;
 }
 
 message C_USE_DEBUFITEM
@@ -111,4 +109,18 @@ message S_COLLIDPLAYERTOPLAYER
 {
 	uint64 fromplayerid = 1;
 	uint64 toplayerid = 2;
+}
+
+message C_PLAYERINFO
+{
+	uint64 Score = 1;
+	float Timer = 2;
+	uint64 playerid = 3;
+}
+
+message S_PLAYERINFO
+{
+	uint64 Score = 1;
+	float Timer = 2;
+	uint64 playerid = 3;
 }

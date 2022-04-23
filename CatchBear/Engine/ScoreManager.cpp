@@ -30,7 +30,6 @@ void ScoreManager::AddScore()
 
 	// 모든 플레이어가 점수가 올라가게 수정함
 	_myPlayer = scene->GetPlayer(mysession->GetPlayerID());
-	//_myPlayer = scene->GetGameObject(L"Player1");
 
 	//if (_myPlayer->GetIsTagger()) return;		// 내가 테스트할땐 플레이어 한명만 만들어서(걔가 술래됨) 꺼둠, 원래 켜야됨!
 
@@ -43,13 +42,13 @@ void ScoreManager::AddScore()
 		// player1
 		GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(0, static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
 
-		//// player2
-		//shared_ptr<GameObject>	player2 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player2");
-		//GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(1, static_pointer_cast<Player>(player2->GetScript(0))->GetPlayerScore());
+		// player2
+		shared_ptr<GameObject>	player2 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player2");
+		GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(1, static_pointer_cast<Player>(player2->GetScript(0))->GetPlayerScore());
 
-		//// player3
-		//shared_ptr<GameObject>	player3 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player3");
-		//GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(2, static_pointer_cast<Player>(player3->GetScript(0))->GetPlayerScore());
+		//player3
+		shared_ptr<GameObject>	player3 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player3");
+		GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(2, static_pointer_cast<Player>(player3->GetScript(0))->GetPlayerScore());
 
 		//printf("Score: %d\n", static_pointer_cast<Player>(_myPlayer->GetScript(0))->GetPlayerScore());
 		_scoreTime = 0.f;

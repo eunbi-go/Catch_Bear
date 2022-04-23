@@ -18,3 +18,5 @@ public:
 
 extern PacketSessionRef mysession;
 extern unsigned int gPacketControl;
+
+extern int g_EnterPlayerCnt;

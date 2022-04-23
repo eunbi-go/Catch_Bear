@@ -18,6 +18,7 @@
 #include "CollidManager.h"
 #include "Input.h"
 #include "Player.h"
+#include "ServerPacketHandler.h"
 
 void Scene::Awake()
 {
@@ -45,6 +46,8 @@ void Scene::Update()
 {
 	CheckTagger();
 
+	//if (mysession->GetPlayerID() == 0)
+
 	if (_isStart)
 	{
 		_toStartTime += DELTA_TIME;
@@ -61,17 +64,13 @@ void Scene::Update()
 			{
 				gameObject->Update();
 			}
+			
+			
 
-			/*for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
-			{
-				cout << "플레이어" << gameObject->GetPlayerID() << ": ";
-				if (gameObject->GetIsTagger())
-					cout << "술래입니다\n";
-				else
-					cout << "시민입니다\n";
-			}*/
+			
 		}
 	}
+
 }
 
 void Scene::LateUpdate()
@@ -236,11 +235,15 @@ void Scene::PushLightData()
 
 void Scene::SetTimer()
 {
+	Protocol::C_PLAYERINFO pkt;
+
 	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");
 	shared_ptr<GameObject> tTimer = GetGameObject(L"tenSecond");
 	shared_ptr<GameObject> oTimer = GetGameObject(L"oneSecond");
 	shared_ptr<Texture> textureMinute, textureTenSec, textureOneSec;
+
 	_curTime += DELTA_TIME;
+
 	float time = 180.0f - _curTime;
 	if (_curTime >= 180.0f)
 		int k = 0;
@@ -270,6 +273,16 @@ void Scene::SetTimer()
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+
+	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
+	pkt.set_score(myscore);
+	if (mysession->GetPlayerID() == 0)
+	{
+		pkt.set_timer(_curTime);
+	}
+	pkt.set_playerid(mysession->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
 }
 
 void Scene::CheckMouse()

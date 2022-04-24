@@ -35,6 +35,7 @@ Player::Player()
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
 	_state = new IdleState();
 	_curPlayerItem = { false, };
+	_playerItemArr = { Item::ITEM_EFFECT::NONE, };
 }
 
 Player::~Player()
@@ -49,7 +50,6 @@ void Player::Update()
 
 void Player::LateUpdate()
 {
-	//if (_bStunned) return;
 	// 서버에서 컨트롤하는 플레이어는 서버에서 위치값도 받아오니까 필요없을듯
 	KeyCheck();
 
@@ -151,17 +151,24 @@ void Player::LateUpdate()
 	
 }
 
-void Player::AddPlayerItem(shared_ptr<GameObject> item)
+void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 {
 	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
 	// 아이템을 3개 지니고 있으면 아이템 획득해도 무시
-	if (_playerItemVec.size() < 3)
+	if (_iItemCnt < 3)
 	{
-		_playerItemVec.push_back(item);
+		for (int i = 0; i < 3; ++i)
+		{
+			if (_playerItemArr[i] == Item::ITEM_EFFECT::NONE)
+			{
+				_playerItemArr[i] = itemEffect;
+			}
+		}
 
 		// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
-		ITEM_EFFECT itemType = static_pointer_cast<Item>(item->GetScript(0))->GetItemEffect();
-		GET_SINGLE(ItemSlotManager)->AddItem(itemType);
+		GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
+
+		_iItemCnt++;	// 아이템 얻으면 올라가고 사용하면 내려감
 	}
 }
 
@@ -412,8 +419,7 @@ void Player::KeyCheck_Item()
 	// 아이템 사용 키입력 - 1, 2, 3
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
-		if (_playerItemVec.size() < 1)
-			return;
+		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE) return;
 
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
@@ -421,8 +427,7 @@ void Player::KeyCheck_Item()
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
-		if (_playerItemVec.size() < 2) 
-			return;
+		if (_playerItemArr[1] == Item::ITEM_EFFECT::NONE) return;
 
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
@@ -430,8 +435,7 @@ void Player::KeyCheck_Item()
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
-		if (_playerItemVec.size() < 3) 
-			return;
+		if (_playerItemArr[2] == Item::ITEM_EFFECT::NONE) return;
 		
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
@@ -445,34 +449,34 @@ void Player::KeyCheck_Item()
 void Player::UseItem(int itemNum)
 {
 	// 키입력을 받은 후 _curPlayerItem의 bool값을 true로 만들어주는 함수
-	ITEM_EFFECT itemEffect = static_pointer_cast<Item>(_playerItemVec[itemNum]->GetScript(0))->GetItemEffect();
+	Item::ITEM_EFFECT itemEffect = _playerItemArr[itemNum];
 
 	switch (itemEffect)
 	{
-	case ITEM_EFFECT::SPEED_UP:
+	case Item::ITEM_EFFECT::SPEED_UP:
 		_curPlayerItem[Player::ITEM::SPEED_UP] = true;
 		break;
-	case ITEM_EFFECT::TELEPORT:
+	case Item::ITEM_EFFECT::TELEPORT:
 		_curPlayerItem[Player::ITEM::TELEPORT] = true;
 		break;
-	case ITEM_EFFECT::SHIELD:
+	case Item::ITEM_EFFECT::SHIELD:
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
 		break;
-	case ITEM_EFFECT::SPEED_DOWN:
+	case Item::ITEM_EFFECT::SPEED_DOWN:
 		// 다른 플레이어들의 속도 감소시켜야함
 		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
 		break;
-	case ITEM_EFFECT::BLIND:
+	case Item::ITEM_EFFECT::BLIND:
 		// 다른 플레이어들의 시야 흐리게
 		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
-	case ITEM_EFFECT::DEBUFF_OFF:
+	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;	// test
 		Item_DebuffOff();
 		break;
-	case ITEM_EFFECT::STUN:
+	case Item::ITEM_EFFECT::STUN:
 		// 다른 플레이어들 스턴걸기
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
 		Item_Stun();
@@ -509,7 +513,8 @@ void Player::ApplyItemEffect()
 
 void Player::DeletePlayerItem(int itemIndex)
 {
-	_playerItemVec.erase(_playerItemVec.begin() + itemIndex);
+	_playerItemArr[itemIndex] = Item::ITEM_EFFECT::NONE;
+	_iItemCnt--;
 }
 
 void Player::Item_SpeedUp()

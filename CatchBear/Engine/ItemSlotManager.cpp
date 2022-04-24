@@ -25,18 +25,18 @@ void ItemSlotManager::SetItemSlot(int nSlot, shared_ptr<GameObject> slot)
 	}
 }
 
-void ItemSlotManager::AddItem(ITEM_EFFECT itemType)
+void ItemSlotManager::AddItem(Item::ITEM_EFFECT itemType)
 {
 	int k = 0;
-	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == ITEM_EFFECT::END)
+	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == ITEM_EFFECT::END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == ITEM_EFFECT::END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->SetItem(itemType);
 	}
@@ -46,25 +46,27 @@ void ItemSlotManager::UseItem(int nSlot)
 {
 	Vec3 pos, scale;
 	float fCoolTime;
-	ITEM_EFFECT item;
+
+	Item::ITEM_EFFECT item;
 	shared_ptr<GameObject>	coolTime;
+
 	switch (nSlot)
 	{
 	case 1:
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 
-		if (item == ITEM_EFFECT::BLIND)
+		if (item == Item::ITEM_EFFECT::BLIND)
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF) 
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::STUN) 
+		else if (item == Item::ITEM_EFFECT::STUN)
 		{
 			ResetItemSlot(nSlot);
 			return;
@@ -82,17 +84,17 @@ void ItemSlotManager::UseItem(int nSlot)
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 
-		if (item == ITEM_EFFECT::BLIND)
+		if (item == Item::ITEM_EFFECT::BLIND)
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::STUN) 
+		else if (item == Item::ITEM_EFFECT::STUN)
 		{
 			ResetItemSlot(nSlot);
 			return;
@@ -109,17 +111,17 @@ void ItemSlotManager::UseItem(int nSlot)
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem();
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 
-		if (item == ITEM_EFFECT::BLIND) 
+		if (item == Item::ITEM_EFFECT::BLIND)
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::DEBUFF_OFF) 
+		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
 		{
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == ITEM_EFFECT::STUN)
+		else if (item == Item::ITEM_EFFECT::STUN)
 		{
 			ResetItemSlot(nSlot);
 			return;

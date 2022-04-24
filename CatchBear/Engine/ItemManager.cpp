@@ -44,41 +44,41 @@ void ItemManager::SetItemPosition()
 	float y = 1.f;		// y값은 다 똑같
 
 #pragma region ItemPos
-	_itemPosArray[0] = Vec3(-20.f, y, -29.f);
-	_itemPosArray[1] = Vec3(-32.f, y, 12.f);
-	_itemPosArray[2] = Vec3(18.f, y, -24.f);
-	_itemPosArray[3] = Vec3(-2.f, y, -34.f);
-	_itemPosArray[4] = Vec3(-8.f, y, -14.f);
+	_itemPosArray[0] = Vec3(-1.8f, y, 8.2f);
+	_itemPosArray[1] = Vec3(-23.f, y, -3.f);
+	_itemPosArray[2] = Vec3(-40.f, y, 15.f);
+	_itemPosArray[3] = Vec3(-25.f, y, 45.f);
+	_itemPosArray[4] = Vec3(-8.f, y, 43.f);
 
-	_itemPosArray[5] = Vec3(-19.f, y, -3.f);
-	_itemPosArray[6] = Vec3(-30.f, y, -38.f);
-	_itemPosArray[7] = Vec3(-18.f, y, -38.f);
-	_itemPosArray[8] = Vec3(25.f, y, 12.f);
-	_itemPosArray[9] = Vec3(18.f, y, -8.f);
+	_itemPosArray[5] = Vec3(22.f, y, 35.f);
+	_itemPosArray[6] = Vec3(34.f, y, 13.f);
+	_itemPosArray[7] = Vec3(22.f, y, -7.f);
+	_itemPosArray[8] = Vec3(21.f, y, -36.f);
+	_itemPosArray[9] = Vec3(0.f, y, -40.f);
 
-	_itemPosArray[10] = Vec3(4.f, y, -12.f);
-	_itemPosArray[11] = Vec3(1.5f, y, -21.f);
-	_itemPosArray[12] = Vec3(-19.f, y, -41.f);
-	_itemPosArray[13] = Vec3(-15.f, y, 16.f);
-	_itemPosArray[14] = Vec3(10.f, y, 17.f);
+	_itemPosArray[10] = Vec3(-28.f, y, -40.f);
+	_itemPosArray[11] = Vec3(-45.f, y, -20.f);
+	_itemPosArray[12] = Vec3(-18.f, y, 18.f);
+	_itemPosArray[13] = Vec3(10.f, y, 8.f);
+	_itemPosArray[14] = Vec3(20.f, y, -9.f);
 
-	_itemPosArray[15] = Vec3(-8.f, y, 7.f);
-	_itemPosArray[16] = Vec3(-30.f, y, -6.f);
-	_itemPosArray[17] = Vec3(-3.f, y, -24.f);
-	_itemPosArray[18] = Vec3(14.f, y, -35.f);
-	_itemPosArray[19] = Vec3(18.f, y, -24.f);
+	_itemPosArray[15] = Vec3(8.f, y, 16.f);
+	_itemPosArray[16] = Vec3(21.f, y, -12.f);
+	_itemPosArray[17] = Vec3(38.f, y, -36.f);
+	_itemPosArray[18] = Vec3(12.f, y, -43.f);
+	_itemPosArray[19] = Vec3(-15.f, y, 1.f);
 
-	_itemPosArray[20] = Vec3(-32.f, y, 20.f);
-	_itemPosArray[21] = Vec3(-34.f, y, 3.f);
-	_itemPosArray[22] = Vec3(20.f, y, -24.f);
-	_itemPosArray[23] = Vec3(26.f, y, 15.f);
-	_itemPosArray[24] = Vec3(13.f, y, 18.f);
+	_itemPosArray[20] = Vec3(27.f, y, 20.f);
+	_itemPosArray[21] = Vec3(18.f, y, 0.f);
+	_itemPosArray[22] = Vec3(-10.f, y, -11.f);
+	_itemPosArray[23] = Vec3(-23.f, y, 24.f);
+	_itemPosArray[24] = Vec3(0.f, y, 5.f);
 
-	_itemPosArray[25] = Vec3(5.f, y, 3.f);
-	_itemPosArray[26] = Vec3(5.f, y, -39.f);
-	_itemPosArray[27] = Vec3(-8.f, y, 1.f);
-	_itemPosArray[28] = Vec3(26.f, y, -24.f);
-	_itemPosArray[29] = Vec3(-14.f, y, -42.f);
+	_itemPosArray[25] = Vec3(-25.f, y, -5.f);
+	_itemPosArray[26] = Vec3(-8.f, y, 25.f);
+	_itemPosArray[27] = Vec3(35.f, y, 35.f);
+	_itemPosArray[28] = Vec3(18.f, y, 44.f);
+	_itemPosArray[29] = Vec3(5.f, y, 17.f);
 #pragma endregion
 }
 
@@ -113,9 +113,9 @@ void ItemManager::CreateCommonItem()
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::COMMON);
-				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)i);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::SPEED_UP);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::COMMON);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)i);
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(ITEM_EFFECT::STUN);
 				_commonItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -158,8 +158,8 @@ void ItemManager::CreateUniqueItem()
 				item->AddComponent(make_shared<Item>());
 
 				// Item enum값 설정 - ItemType, ItemEffect
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(ITEM_TYPE::UNIQUE);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((ITEM_EFFECT)(i + 5));
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::UNIQUE);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
 				_uniqueItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -202,8 +202,8 @@ void ItemManager::CreateTreasure()
 			gameObject->AddComponent(make_shared<Item>());
 
 			// Item enum값 설정 - ItemType, ItemEffect
-			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemType(ITEM_TYPE::TRESURE);
-			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemEffect((ITEM_EFFECT)(7));
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemType(Item::ITEM_TYPE::TRESURE);
+			static_pointer_cast<Item>(gameObject->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::TREASURE);
 			_treasureList.push_back(gameObject);
 
 
@@ -236,7 +236,6 @@ void ItemManager::Collision_ItemToPlayer()
 	const vector<shared_ptr<GameObject>>& vecPlayers = scene->GetVecPlayers();
 	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
-//<<<<<<< HEAD
 		_player = vecPlayers[i];
 		// common item & player
 		for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
@@ -245,28 +244,17 @@ void ItemManager::Collision_ItemToPlayer()
 			{
 				// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 				if (_player->GetPlayerID() == mysession->GetPlayerID())
-					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);
+				{
+					Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+				}
 				scene->RemoveGameObject(*item);
 				item = _commonItemList.erase(item);
 			}
 			else item++;
-//=======
-//		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-//		{
-//			_player = gameObject;
-//			break;
-//		}
-//	}
-//
-//	// common item & player
-//	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
-//	{
-//		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
-//		{
-//			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(*item);			
-//			scene->RemoveGameObject(*item);
-//			item = _commonItemList.erase(item);
-//>>>>>>> 46337d79b339b012cfbfeb7ef9472db817adfae8
+
+			_player = gameObject;
+			break;
 		}
 	}
 
@@ -275,6 +263,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
+			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}

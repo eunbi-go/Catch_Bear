@@ -15,12 +15,12 @@ public:
 	virtual void LateUpdate() override;
 
 public:
-	void SetItem(ITEM_EFFECT item);
+	void SetItem(Item::ITEM_EFFECT item);
 	void UseItem();
 	void CheckItem();
 	void ResetItemSlot();
 
-	ITEM_EFFECT GetItem() { return _settingItem; }
+	Item::ITEM_EFFECT GetItem() { return _settingItem; }
 	float GetCoolTime() { return _fCoolTime; }
 	const wstring& GetSettingItemName() { return _texName; }
 	bool	GetIsSettingItem() { return _isSetting; }
@@ -28,7 +28,7 @@ public:
 
 private:
 	shared_ptr<GameObject>		_itemSlot;
-	ITEM_EFFECT	_settingItem = ITEM_EFFECT::END;
+	Item::ITEM_EFFECT	_settingItem = Item::ITEM_EFFECT::ITEM_EFFECT_END;
 	float	_fCoolTime = 0.f;
 	bool	_isCoolTime = false;
 	bool	_isSetting = false;

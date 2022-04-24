@@ -1,5 +1,6 @@
 #pragma once
 #include "MonoBehaviour.h"
+#include "Item.h"
 
 class CameraScript;
 
@@ -15,7 +16,7 @@ public:
 	enum ITEM
 	{
 		SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-		DEBUFF_OFF, STUN, ITEM_END
+		DEBUFF_OFF, STUN, ITEM_END, NONE,
 	};
 
 public:
@@ -26,7 +27,7 @@ public:
 	virtual void LateUpdate() override;
 
 public:
-	void AddPlayerItem(shared_ptr<GameObject> item);
+	void AddPlayerItem(Item::ITEM_EFFECT itemEffect);
 
 	void SetCurItem(Player::ITEM curItem, bool value) { _curPlayerItem[curItem] = value; }	// 이 함수 사용해서 플레이어에게 아이템 효과 부여
 	void SetPlayerSpeed(float speed) { _speed = speed; }
@@ -38,6 +39,7 @@ public:
 	const float GetPlayerOriginalSpeed() { return _originalSpeed; }
 	const bool GetPlayerStunned() { return _bStunned; }
 	const int GetPlayerScore() { return _iScore; }
+	const int GetItemCount() { return _iItemCnt; }
 	
 private:
 	void KeyCheck();
@@ -77,13 +79,14 @@ private:
 	float	_fScoreTime = 0.f;
 
 	int		_iScore = 0;
+	int		_iItemCnt = 0;
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();
 	shared_ptr<CameraScript>	_cameraScript = make_shared<CameraScript>();
 
 	array<bool, Player::ITEM::ITEM_END> _curPlayerItem;	// 플레이어가 사용중인or당하는중인 아이템 확인하기 위한 배열
-	vector<shared_ptr<GameObject>>	_playerItemVec;	// 플레이어가 가지고 있는 아이템 넣어두는 벡터(최대 3개)
+	array<Item::ITEM_EFFECT, 3> _playerItemArr;	// 플레이어가 가지고 있는 아이템의 효과를 넣어두는 어레이(최대 3개)
 
 private:
 	STATE	_curState = STATE::END;

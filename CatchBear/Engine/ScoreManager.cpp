@@ -31,7 +31,8 @@ void ScoreManager::AddScore()
 	// 모든 플레이어가 점수가 올라가게 수정함
 	_myPlayer = scene->GetPlayer(mysession->GetPlayerID());
 
-	//if (_myPlayer->GetIsTagger()) return;		// 내가 테스트할땐 플레이어 한명만 만들어서(걔가 술래됨) 꺼둠, 원래 켜야됨!
+	// 내가 테스트할땐 플레이어 한명만 만들어서(걔가 술래됨) 꺼둠, 원래 켜야됨!
+	//if (_myPlayer->GetIsTagger()) return;		
 
 	_scoreTime += DELTA_TIME;
 

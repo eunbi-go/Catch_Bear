@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Transform.h"
 #include "Timer.h"
+#include "TagMark.h"
 #include "ServerSession.h"
 
 #include "PlayerState.h"
@@ -155,11 +156,12 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 	if (pkt.isallplayersready()) {
 		mysession->SetAllPlayerEnter();
-		_player = scene->GetPlayer(pkt.taggerplayerid());
+		_player = scene->GetPlayer(0);		// 버그 해결을 위해서 임시로 술래 0번으로 고정
+		//_player = scene->GetPlayer(pkt.taggerplayerid());
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";
 
-		cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
+		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
 	else
 		cout << "플레이어 접속 대기중.. \n";
@@ -199,6 +201,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	{
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
+		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
 		
 		switch (pkt.state())
 		{

@@ -36,6 +36,7 @@ private:
 public:
 	void AddGameObject(shared_ptr<GameObject> gameObject);
 	void AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject);
+	void AddTagMarks(uint64 _objid, shared_ptr<GameObject> gameObject);
 	void AddVecPlayers(shared_ptr<GameObject> gameObject);
 	void AddStaticObj(shared_ptr<GameObject> gameobject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
@@ -43,6 +44,7 @@ public:
 	const vector<shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
 
 	const shared_ptr<GameObject>& GetPlayer(uint64 playerid) { return _players[playerid]; }
+	const shared_ptr<GameObject>& GetTagMarks (uint64 objid) { return _TagMarks[objid]; }
 	const map<uint64, shared_ptr<GameObject>>& GetPlayer() { return _players; }
 	const vector<shared_ptr<GameObject>>& GetStaticObj() { return _vecStaticObject; }
 	const vector<shared_ptr<GameObject>>& GetVecPlayers() { return _vecPlayers; }
@@ -66,6 +68,7 @@ private:
 	map<uint64, shared_ptr<GameObject>>		_players;
 	vector<shared_ptr<GameObject>>			_vecStaticObject;
 	vector<shared_ptr<GameObject>>			_vecPlayers;
+	map<uint64, shared_ptr<GameObject>>		_TagMarks;
 	//////////////////////////////////////////////////////////
 
 private:

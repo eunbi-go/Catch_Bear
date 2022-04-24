@@ -274,6 +274,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
+		scene->AddTagMarks(0, gameObject);
 	}
 	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart2)
@@ -287,6 +288,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
+		scene->AddTagMarks(1, gameObject);
 	}
 	vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart3)
@@ -300,6 +302,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
+		scene->AddTagMarks(2, gameObject);
 	}
 #pragma endregion
 

@@ -223,16 +223,6 @@ void ItemManager::Collision_ItemToPlayer()
 	if (mysession == NULL)
 		return;
 
-	//// 씬 안의 플레이어 찾기
-	//for (auto& gameObject : gameObjects)
-	//{
-	//	if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
-	//	{
-	//		_player = gameObject;
-	//		break;
-	//	}
-	//}
-
 	const vector<shared_ptr<GameObject>>& vecPlayers = scene->GetVecPlayers();
 	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
@@ -253,7 +243,7 @@ void ItemManager::Collision_ItemToPlayer()
 			}
 			else item++;
 
-			_player = gameObject;
+			//_player = gameObject;
 			break;
 		}
 	}

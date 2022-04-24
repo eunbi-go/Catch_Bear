@@ -302,11 +302,13 @@ void Player::Move()
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	shared_ptr<GameObject> tagObject;
-	//if (mysession->GetPlayerID() == 0)
-	//	tagObject = scene->GetGameObject(L"PlayerTag1");
-	//if (mysession->GetPlayerID() == 1)
-	//	tagObject = scene->GetGameObject(L"PlayerTag2");
-	tagObject = scene->GetGameObject(L"PlayerTag1");
+	if (mysession->GetPlayerID() == 0)
+		tagObject = scene->GetGameObject(L"PlayerTag1");
+	if (mysession->GetPlayerID() == 1)
+		tagObject = scene->GetGameObject(L"PlayerTag2");
+	if (mysession->GetPlayerID() == 2)
+		tagObject = scene->GetGameObject(L"PlayerTag3");
+
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 

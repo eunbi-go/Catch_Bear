@@ -747,7 +747,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"player2ScoreIcon");
 		player1Score1->AddComponent(make_shared<Transform>());
-		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalScale(Vec3(80.f, 80.f, 50.f));
 		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 100.f, 500.f));
 		player1Score1->AddComponent(make_shared<ScoreUI>());
 
@@ -786,7 +786,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -814,7 +814,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -841,7 +841,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -860,7 +860,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"player3ScoreIcon");
 		player1Score1->AddComponent(make_shared<Transform>());
-		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalScale(Vec3(80.f, 80.f, 50.f));
 		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 0.f, 500.f));
 		player1Score1->AddComponent(make_shared<ScoreUI>());
 
@@ -899,7 +899,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -927,7 +927,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -954,7 +954,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

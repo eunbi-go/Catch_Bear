@@ -417,6 +417,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime1->AddComponent(itemCoolTimeRenderer);
 
+	scene->AddItemCoolTime(itemCoolTime1);
 	scene->AddGameObject(itemCoolTime1);
 
 	// 2-2.
@@ -444,6 +445,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime2->AddComponent(itemCoolTime2Renderer);
 
+	scene->AddItemCoolTime(itemCoolTime2);
 	scene->AddGameObject(itemCoolTime2);
 
 	// 3-2
@@ -471,6 +473,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime3->AddComponent(itemCoolTime3Renderer);
 
+	scene->AddItemCoolTime(itemCoolTime3);
 	scene->AddGameObject(itemCoolTime3);
 #pragma endregion
 

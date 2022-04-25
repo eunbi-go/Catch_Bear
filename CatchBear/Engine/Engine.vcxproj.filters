@@ -240,7 +240,11 @@
     <ClCompile Include="CoolTime.cpp">
       <Filter>01. Object\02. UI\01. Item</Filter>
     </ClCompile>
-    <ClCompile Include="ItemWindow.cpp" />
+    <ClCompile Include="ItemWindow.cpp">
+      <Filter>01. Object\02. UI\01. Item</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUIManager.cpp" />
+    <ClCompile Include="ScoreUI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -450,7 +454,11 @@
     <ClInclude Include="CoolTime.h">
       <Filter>01. Object\02. UI\01. Item</Filter>
     </ClInclude>
-    <ClInclude Include="ItemWindow.h" />
+    <ClInclude Include="ItemWindow.h">
+      <Filter>01. Object\02. UI\01. Item</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIManager.h" />
+    <ClInclude Include="ScoreUI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">
@@ -503,9 +511,6 @@
     <Filter Include="04. Shader">
       <UniqueIdentifier>{98aaf47e-5908-45aa-bcbe-53fa1a767629}</UniqueIdentifier>
     </Filter>
-    <Filter Include="05. Protocol">
-      <UniqueIdentifier>{60750ce2-75ef-44d8-900e-52bbea9084dc}</UniqueIdentifier>
-    </Filter>
     <Filter Include="06. Server">
       <UniqueIdentifier>{1c56558f-b0b1-42ea-a1a6-9807f835456c}</UniqueIdentifier>
     </Filter>
@@ -529,6 +534,9 @@
     </Filter>
     <Filter Include="01. Object\02. UI\01. Item">
       <UniqueIdentifier>{61d68dd4-dd8d-46cd-a50e-4e6ab4032a7f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="05. Protocol">
+      <UniqueIdentifier>{60750ce2-75ef-44d8-900e-52bbea9084dc}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

@@ -20,10 +20,10 @@
 #pragma comment(lib, "Protobuf\\Release\\libprotobuf.lib")
 #endif
 
-#ifdef UNICODE
-#pragma comment(linker, "/entry:wWinMainCRTStartup /subsystem:console")
+#ifdef unicode
+#pragma comment(linker, "/entry:wwinmaincrtstartup /subsystem:console")
 #else
-#pragma comment(linker, "/entry:WinMainCRTStartup /subsystem:console")
+#pragma comment(linker, "/entry:winmaincrtstartup /subsystem:console")
 #endif
 
 #include "CorePch.h"
@@ -34,7 +34,7 @@ using PlayerRef = shared_ptr<class Player>;
 
 enum STATE
 {
-	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW_REST, STUN, END
+	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW, SLOW_REST, STUN, END
 };
 
 #endif //PCH_H

@@ -223,28 +223,26 @@ void ItemManager::Collision_ItemToPlayer()
 	if (mysession == NULL)
 		return;
 
-	// 씬 안의 플레이어 찾기
-	for (auto& gameObject : gameObjects)
+	const vector<shared_ptr<GameObject>>& vecPlayers = scene->GetVecPlayers();
+	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+		_player = vecPlayers[i];
+		// common item & player
+		for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
 		{
-			_player = gameObject;
-			break;
+			if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+			{
+				// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
+				if (_player->GetPlayerID() == mysession->GetPlayerID())
+				{
+					Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+				}
+				scene->RemoveGameObject(*item);
+				item = _commonItemList.erase(item);
+			}
+			else item++;
 		}
-	}
-
-	// common item & player
-	for (auto item = _commonItemList.begin(); item != _commonItemList.end();)
-	{
-		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
-		{
-			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
-			scene->RemoveGameObject(*item);
-			item = _commonItemList.erase(item);
-		}
-
-		else item++;
 	}
 
 	// unique item & player
@@ -252,8 +250,11 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+			if (_player->GetPlayerID() == mysession->GetPlayerID())
+			{
+				Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+			}
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}
@@ -267,7 +268,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			if (!_player->GetIsTagger())
+			if (!_player->GetIsTagger() &&
+				_player->GetPlayerID() == mysession->GetPlayerID())
 			{
 				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
 			}

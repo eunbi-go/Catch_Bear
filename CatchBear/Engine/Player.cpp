@@ -27,6 +27,8 @@
 #include "Light.h"
 #include "ItemSlotManager.h"
 #include "TagMark.h"
+#include "MeshRenderer.h"
+#include "Resources.h"
 
 Protocol::C_MOVE pkt;
 
@@ -35,7 +37,7 @@ Player::Player()
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
 	_state = new IdleState();
 	_curPlayerItem = { false, };
-	_playerItemArr = { Item::ITEM_EFFECT::NONE, };
+	_playerItemArr = { Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE };
 }
 
 Player::~Player()
@@ -44,6 +46,7 @@ Player::~Player()
 
 void Player::Update()
 {
+	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
 }
 
@@ -68,138 +71,10 @@ void Player::LateUpdate()
 #pragma region 애니메이션동기화
 	switch (_player->_curState)
 	{
-	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
-		break;
-	case STATE::JUMP:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::JUMP);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::ATTACK:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::ATTACK);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::DASH:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	}
-#pragma endregion 애니메이션동기화
-	////////////////////////////////////////////////////////////////////
-
-	/*Vec3 pos = GetTransform()->GetLocalPosition();
-	printf("%f, %f, %f\n", pos.x, pos.y, pos.z);*/
-
-	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
-	GetAnimationController()->AdvanceTime(DELTA_TIME);
-	GetTransform()->UpdateTransform(NULL);
-	GetAnimationController()->SetWorldMatrix();
-	
-	Vec3 trans = GetTransform()->GetLocalPosition();
-	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
-	
-}
-
-void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
-{
-	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
-	// 아이템을 3개 지니고 있으면 아이템 획득해도 무시
-	if (_iItemCnt < 3)
-	{
-		for (int i = 0; i < 3; ++i)
-		{
-			if (_playerItemArr[i] == Item::ITEM_EFFECT::NONE)
-			{
-				_playerItemArr[i] = itemEffect;
-			}
-		}
-
-		// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
-		GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
-
-		_iItemCnt++;	// 아이템 얻으면 올라가고 사용하면 내려감
-	}
-}
-
-void Player::KeyCheck()
-{
-	// 게임종료
-	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
-		::PostQuitMessage(0);
-
-	
-
-	if (mysession == NULL)
-		return;
-
-	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-
-	_player = scene->GetPlayer(mysession->GetPlayerID());
-	Vec3 pos = _player->GetTransform()->GetLocalPosition();
-	//////////////////////////////////////////////////////////////////////////
-	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	// State Check
-	PlayerState* state = _state->KeyCheck(*_player, _curState);
-
-	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
-
-	_player->_curState = _curState;
-
-	if (state != NULL)
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = state;
-		_state->Enter(*_player);
-	}
-
-#pragma region 애니메이션동기화
-	if (_player->GetPlayerID() != mysession->GetPlayerID())	//디버깅용
-		int a = 10;
-
-	switch (_player->_curState)
-	{
 	case STATE::IDLE:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::IDLE);
-		pkt.set_xpos(pos.x);
-		pkt.set_ypos(pos.y);
-		pkt.set_zpos(pos.z);
 		if (gPacketControl % 80 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -207,6 +82,15 @@ void Player::KeyCheck()
 		}
 		break;
 	}
+	case STATE::WALK:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);
+		if (gPacketControl % 50 == 1)
+		{
+			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			//mysession->Send(sendBuffer);
+		}
+		break;
 	case STATE::JUMP:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -253,6 +137,165 @@ void Player::KeyCheck()
 	}
 	}
 #pragma endregion 애니메이션동기화
+	////////////////////////////////////////////////////////////////////
+
+	//Vec3 pos = GetTransform()->GetLocalPosition();
+	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
+
+	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
+	GetAnimationController()->AdvanceTime(DELTA_TIME);
+	GetTransform()->UpdateTransform(NULL);
+	GetAnimationController()->SetWorldMatrix();
+	
+	Vec3 trans = GetTransform()->GetLocalPosition();
+	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
+	
+}
+
+void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
+{
+	// 플레이어가 갖고있을 수 있는 최대 아이템 수는 3개
+	// 아이템을 3개 지니고 있으면 아이템 획득해도 무시
+	if (_iItemCnt < 3)
+	{
+		for (int i = 0; i < 3; ++i)
+		{
+			if (_playerItemArr[i] == Item::ITEM_EFFECT::NONE)
+			{
+				_playerItemArr[i] = itemEffect;
+				printf("%d 획득\n", itemEffect);
+
+				// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+				GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
+
+				_iItemCnt++;	// 아이템 얻으면 올라가고 사용하면 내려감
+
+				break;
+			}
+		}
+
+		//// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+		//GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
+
+
+	}
+}
+
+void Player::KeyCheck()
+{
+	// 게임종료
+	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
+		::PostQuitMessage(0);
+
+	if (mysession == NULL)
+		return;
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
+
+	_player = scene->GetPlayer(mysession->GetPlayerID());
+	Vec3 pos = _player->GetTransform()->GetLocalPosition();
+	//////////////////////////////////////////////////////////////////////////
+	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
+	// State Check
+	PlayerState* state = _state->KeyCheck(*_player, _curState);
+
+	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
+
+	_player->_curState = _curState;
+
+	if (state != NULL)
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = state;
+		_state->Enter(*_player);
+	}
+
+#pragma region 애니메이션동기화
+	switch (_player->_curState)
+	{
+	case STATE::IDLE:
+	{
+		//isJumpEnd = true;
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::IDLE);
+		pkt.set_xpos(pos.x);
+		pkt.set_ypos(pos.y);
+		pkt.set_zpos(pos.z);
+		if (gPacketControl % 50 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::WALK:
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::WALK);
+		if (gPacketControl % 50 == 1)
+		{
+			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			//mysession->Send(sendBuffer);
+		}
+		break;
+	case STATE::JUMP:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::JUMP);
+		if (gPacketControl % 10 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::ATTACK:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::ATTACK);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::STUN:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::STUN);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::DASH:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::DASH);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	case STATE::SLOW:
+	{
+		pkt.set_playerid(mysession->GetPlayerID());
+		pkt.set_state(Protocol::SLOW);
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
+		break;
+	}
+	}
+#pragma endregion 애니메이션동기화
 	//////////////////////////////////////////////////////////////////////////
 
 	Move();
@@ -267,7 +310,14 @@ void Player::Move()
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-	shared_ptr<GameObject> tagObject = scene->GetGameObject(L"PlayerTag");
+
+	shared_ptr<GameObject> tagObject;
+	if (mysession->GetPlayerID() == 0)
+		tagObject = scene->GetGameObject(L"PlayerTag1");
+	if (mysession->GetPlayerID() == 1)
+		tagObject = scene->GetGameObject(L"PlayerTag2");
+	if (mysession->GetPlayerID() == 2)
+		tagObject = scene->GetGameObject(L"PlayerTag3");
 
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
@@ -300,9 +350,8 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_movedir(0);
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -320,9 +369,8 @@ void Player::Move()
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_movedir(1);
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -336,17 +384,13 @@ void Player::Move()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
-		Vec3 pl = _player->GetTransform()->GetLook();
-		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
-			pl.x << ", " << pl.y << ", " << pl.z << endl;
-
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 5 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -359,17 +403,13 @@ void Player::Move()
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
-		Vec3 pl = _player->GetTransform()->GetLook();
-		cout << "플레이어 " << _player->GetPlayerID() << " look: " <<
-			pl.x << ", " << pl.y << ", " << pl.z << endl;
-
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 5 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);

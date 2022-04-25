@@ -23,6 +23,7 @@ PlayerState* IdleState::KeyCheck(GameObject& player, STATE& ePlayer)
 	else if (INPUT->GetButtonDown(KEY_TYPE::SPACE))
 	{
 		ePlayer = STATE::JUMP;
+
 		return new JumpState;
 	}
 	else if (INPUT->GetButtonDown(KEY_TYPE::CTRL))

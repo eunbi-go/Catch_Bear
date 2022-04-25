@@ -30,7 +30,10 @@ private:
 	bool	_bRanked = false;
 
 	shared_ptr<GameObject>	_myPlayer;
+
+	// 게임 끝나고 신에서 모아둔 플레이어를 가져와서 순위 매김
 	vector<shared_ptr<GameObject>>	_vecRankedPlayers;
+
 	array<int, 3> _playerScore;	// 0번 인덱스는 무조건 내 점수
 };
 

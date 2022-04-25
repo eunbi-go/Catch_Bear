@@ -17,6 +17,9 @@
 #include "ItemManager.h"
 #include "CollidManager.h"
 #include "Input.h"
+#include "Player.h"
+#include "ServerPacketHandler.h"
+#include "TagMark.h"
 
 void Scene::Awake()
 {
@@ -49,19 +52,20 @@ void Scene::Update()
 		_toStartTime += DELTA_TIME;
 		if (_toStartTime >= 7.f)
 		{
-			SetTimer();
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
 			GET_SINGLE(ItemManager)->Update();
 			GET_SINGLE(ScoreManager)->Update();
 			GET_SINGLE(CollidManager)->Update();
+			SetTimer();
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
 				gameObject->Update();
-			}
+			}	
 		}
 	}
+
 }
 
 void Scene::LateUpdate()
@@ -226,11 +230,15 @@ void Scene::PushLightData()
 
 void Scene::SetTimer()
 {
+	Protocol::C_PLAYERINFO pkt;
+
 	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");
 	shared_ptr<GameObject> tTimer = GetGameObject(L"tenSecond");
 	shared_ptr<GameObject> oTimer = GetGameObject(L"oneSecond");
 	shared_ptr<Texture> textureMinute, textureTenSec, textureOneSec;
+	
 	_curTime += DELTA_TIME;
+
 	float time = 180.0f - _curTime;
 	if (_curTime >= 180.0f)
 		int k = 0;
@@ -249,13 +257,25 @@ void Scene::SetTimer()
 	int second = (int)(time) % 60;
 	int ten = second / 10;
 	int one = second % 10;
+	if (second == 0)
+	{
+		ten = 5; one = 9;
+	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
-	
+
 	textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+
+	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
+	pkt.set_score(myscore);
+	if (mysession->GetPlayerID() == 0)
+		pkt.set_timer(_curTime);
+	pkt.set_playerid(mysession->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
 }
 
 void Scene::CheckMouse()
@@ -294,11 +314,31 @@ void Scene::CheckMouse()
 
 void Scene::CheckTagger()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	shared_ptr<GameObject> tagMark1 = _TagMarks[0];
+	shared_ptr<GameObject> tagMark2 = _TagMarks[1];
+	shared_ptr<GameObject> tagMark3 = _TagMarks[2];
+	for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 	{
-		if (gameObject->GetIsTagger())
+		switch (gameObject->GetPlayerID())
 		{
-			_isStart = true;
+		case 0:		// 1번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 0;
+			}
+			break;
+		case 1:		// 2번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 1;
+			}
+			break;
+		case 2:		// 3번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 2;
+			}
+			break;
 		}
 	}
 }
@@ -330,6 +370,11 @@ void Scene::AddPlayers(uint64 _playerid, shared_ptr<GameObject> gameObject)
 {
 	//_players[_playerid] = gameObject;
 	_players.emplace(_playerid, gameObject);
+}
+
+void Scene::AddTagMarks(uint64 _objid, shared_ptr<GameObject> gameObject)
+{
+	_TagMarks.emplace(_objid, gameObject);
 }
 
 void Scene::AddVecPlayers(shared_ptr<GameObject> gameObject)
@@ -366,10 +411,11 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 
 shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 {
-	for (size_t i = 0; i < _gameObjects.size(); ++i)
+	for (int i = 0; i < _gameObjects.size(); ++i)
 	{
 		if (_gameObjects[i]->GetName() == name)
 		{
+			int k = 0;
 			return _gameObjects[i];
 		}
 	}

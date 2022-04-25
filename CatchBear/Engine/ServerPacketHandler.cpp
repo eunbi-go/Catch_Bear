@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Transform.h"
 #include "Timer.h"
+#include "TagMark.h"
 #include "ServerSession.h"
 
 #include "PlayerState.h"
@@ -19,6 +20,9 @@
 #include "SlowState.h"
 #include "StunState.h"
 #include "JumpState.h"
+
+#include "Resources.h"
+#include "MeshRenderer.h"
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
@@ -155,9 +159,12 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 	if (pkt.isallplayersready()) {
 		mysession->SetAllPlayerEnter();
-		_player = scene->GetPlayer(pkt.taggerplayerid());
+		_player = scene->GetPlayer(0);		// 버그 해결을 위해서 임시로 술래 0번으로 고정
+		//_player = scene->GetPlayer(pkt.taggerplayerid());
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";
+
+		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
 	else
 		cout << "플레이어 접속 대기중.. \n";
@@ -197,6 +204,7 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	{
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
+		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
 		
 		switch (pkt.state())
 		{
@@ -205,6 +213,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			{
 				if (_player->_state->curState != STATE::STUN)
 				{
+					//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+					_player->_state->End(*_player);
 					state = new IdleState;
 					delete _player->_state;
 					_player->_state = state;
@@ -218,22 +228,27 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			{
 				if (_player->_state->curState != STATE::DASH)
 				{
-					state = new MoveState;
-					delete _player->_state;
-					_player->_state = state;
-					_player->_state->Enter(*_player);
-					_player->_state->curState = STATE::WALK;
+					if (_player->_state->curState != STATE::SLOW)
+					{
+						//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+						_player->_state->End(*_player);
+						state = new MoveState;
+						delete _player->_state;
+						_player->_state = state;
+						_player->_state->Enter(*_player);
+						_player->_state->curState = STATE::WALK;
+					}
 				}
 			}
 			break;
 		case Protocol::JUMP:
-			if (_player->_state->curState != STATE::JUMP)
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::JUMP)
 			{
 				state = new JumpState;
-				delete _player->_state;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::JUMP;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::JUMP;
 			}
 			break;
 		case Protocol::ATTACK:
@@ -276,6 +291,17 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::DASH_REST;
+			}
+			break;
+		case Protocol::SLOW:
+			if (_player->_state->curState != STATE::SLOW)
+			{
+				_player->_state->End(*_player);
+				delete _player->_state;
+				state = new SlowState;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::SLOW;
 			}
 			break;
 		default:
@@ -343,13 +369,12 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 	PlayerState* state;
 	// 원래 술래였다면 술래아니게
 	_player = scene->GetPlayer(pkt.fromplayerid());
-	_player->SetIsTagger(false);
+	_player->SetIsTagger(!_player->GetIsTagger());	// false
 
 	// 술래아닌데 부딪혔다면 술래로
 	_player = scene->GetPlayer(pkt.toplayerid());
-	_player->SetIsTagger(true);
+	_player->SetIsTagger(!_player->GetIsTagger());	// true
 	// 새롭게 술래가 됐다면 스턴
-	//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
 	if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 	{
 		state = new StunState;
@@ -359,6 +384,40 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
 	}
+	return true;
+}
+
+bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
+{
+	shared_ptr<GameObject>	_player1 = make_shared<GameObject>();
+	shared_ptr<GameObject>	_player2 = make_shared<GameObject>();
+	shared_ptr<GameObject>	_player3 = make_shared<GameObject>();
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player1 = scene->GetPlayer(0);
+	_player2 = scene->GetPlayer(1);
+	_player3 = scene->GetPlayer(2);
+
+	switch (pkt.playerid())
+	{
+	case 0:
+		static_pointer_cast<Player>(_player1->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		scene->SetCurTime(pkt.timer());
+		break;
+	case 1:
+		static_pointer_cast<Player>(_player2->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		//scene->SetCurTime(pkt.timer());
+		break;
+	case 2:
+		static_pointer_cast<Player>(_player3->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		//scene->SetCurTime(pkt.timer());
+		break;
+	}
+	
+
+	
+	
 	return true;
 }
 

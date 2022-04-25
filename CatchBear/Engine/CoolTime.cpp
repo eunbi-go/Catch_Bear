@@ -72,6 +72,6 @@ void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nC
 	_localPos = pos;
 	_localScale = scale;
 	_nSlot = nSlot;
-	_fItemCoolTime = float(nCoolTime) /*+ 1.5f*/;
-	_fCoolTime = float(nCoolTime) /*+ 1.5f*/;
+	_fItemCoolTime = float(nCoolTime) + 2.f;
+	_fCoolTime = float(nCoolTime) + 2.f;
 }

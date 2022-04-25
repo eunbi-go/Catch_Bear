@@ -33,6 +33,7 @@ public:
 	void SetPlayerSpeed(float speed) { _speed = speed; }
 	void SetPlayerStunned(bool value) { _bStunned = value; }
 	void AddPlayerScore(int score) { _iScore += score; }
+	void SetPlayerScore(int score) { _iScore = score; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerOriginalSpeed() { return _originalSpeed; }
@@ -93,5 +94,7 @@ private:
 
 public:
 	class PlayerState* _state;
+
+	float	_testTime = 0.f;
 };
 

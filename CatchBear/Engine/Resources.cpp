@@ -697,7 +697,7 @@ void Resources::CreateDefaultShader()
 		Add<Shader>(L"Treasure", shader);
 	}
 
-	// TagMark
+	// TagMark (Tag)
 	{
 		ShaderInfo info =
 		{
@@ -716,6 +716,27 @@ void Resources::CreateDefaultShader()
 		shared_ptr<Shader> shader = make_shared<Shader>();
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
 		Add<Shader>(L"TagMark", shader);
+	}
+
+	// TagMark (Normal Player)
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};
+
+		ShaderArg arg =
+		{
+			"VS_Main",
+			"",
+			"",
+			"",
+			"PS_TagMarkNormalPlayer"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"NormalTagMark", shader);
 	}
 }
 

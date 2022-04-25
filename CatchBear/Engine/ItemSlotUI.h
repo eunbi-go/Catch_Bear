@@ -28,7 +28,7 @@ public:
 
 private:
 	shared_ptr<GameObject>		_itemSlot;
-	Item::ITEM_EFFECT	_settingItem = Item::ITEM_EFFECT::ITEM_EFFECT_END;
+	Item::ITEM_EFFECT	_settingItem = Item::ITEM_EFFECT::NONE;
 	float	_fCoolTime = 0.f;
 	bool	_isCoolTime = false;
 	bool	_isSetting = false;

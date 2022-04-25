@@ -28,15 +28,15 @@ void ItemSlotManager::SetItemSlot(int nSlot, shared_ptr<GameObject> slot)
 void ItemSlotManager::AddItem(Item::ITEM_EFFECT itemType)
 {
 	int k = 0;
-	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->SetItem(itemType);
 	}
@@ -46,7 +46,10 @@ void ItemSlotManager::UseItem(int nSlot)
 {
 	Vec3 pos, scale;
 	float fCoolTime;
+
 	Item::ITEM_EFFECT item;
+	shared_ptr<GameObject>	coolTime;
+
 	switch (nSlot)
 	{
 	case 1:
@@ -68,13 +71,18 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot1->GetTransform()->GetLocalPosition();
 		scale = _itemSlot1->GetTransform()->GetLocalScale();
-		static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1")->GetScript(0))
-			->SetInitData(pos, scale, 1, (int)fCoolTime);
+		coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime1");
+		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->SetInitData(pos, scale, 1, (int)fCoolTime);
 		break;
 
 	case 2:
@@ -92,6 +100,11 @@ void ItemSlotManager::UseItem(int nSlot)
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
 			ResetItemSlot(nSlot);
 			return;
@@ -119,6 +132,11 @@ void ItemSlotManager::UseItem(int nSlot)
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
 			ResetItemSlot(nSlot);
 			return;

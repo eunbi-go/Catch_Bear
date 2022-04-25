@@ -22,7 +22,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;
@@ -61,26 +61,34 @@ void CollidManager::CollisionPlayerToPlayer()
 	// 술래 찾기
 	for (int i = 0; i < g_EnterPlayerCnt; ++i)
 	{
+		// GetIsTagger() == true: 술래!
 		if (GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i)->GetIsTagger() == true)
 			_tagplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);
 	}
 
 	for (auto pl = players.begin(); pl != players.end(); pl++)
 	{
+		// pl: 술래X 일반 플레이어O
 		if ((*pl)->GetIsTagger() == false)
 		{
 			if (static_pointer_cast<Player>(_tagplayer->GetScript(0))->_state->curState != STATE::STUN)
 			{
+
+				// p1 & tag 충돌!
 				if ((*pl)->GetBoundingBox().Intersects(_tagplayer->GetBoundingBox()))
 				{
 					Protocol::C_COLLIDPLAYERTOPLAYER collidPkt;
 					collidPkt.set_fromplayerid(_tagplayer->GetPlayerID());
 					collidPkt.set_toplayerid((*pl)->GetPlayerID());
 
+					cout << "술래가 " << _tagplayer->GetPlayerID() << " -> " <<
+						(*pl)->GetPlayerID() << " 로 바뀜\n";
+
 					auto sendBuffer = ServerPacketHandler::MakeSendBuffer(collidPkt);
 					mysession->Send(sendBuffer);
 					break;
 				}
+
 			}
 		}
 

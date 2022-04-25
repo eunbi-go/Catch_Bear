@@ -59,9 +59,8 @@ void ItemSlotUI::SetItem(Item::ITEM_EFFECT item)
 		_fCoolTime = 3.f;
 		break;
 	}
-
+	
 	texPath = L"..\\Resources\\Texture\\item\\" + _texName + L".png";
-
 	shared_ptr<Texture> texItem = GET_SINGLE(Resources)->Load<Texture>(_texName, texPath);
 
 	// 텍스처 바꿔줘야 함
@@ -73,7 +72,8 @@ void ItemSlotUI::UseItem()
 	// 사용한 아이템 종류를 확인한 후, 제한시간 설정하고
 	//CheckItem();
 	// 세팅된 아이템은 초기화
-	_settingItem = Item::ITEM_EFFECT::ITEM_EFFECT_END;
+	//_settingItem = Item::ITEM_EFFECT::ITEM_EFFECT_END;
+	_settingItem = Item::ITEM_EFFECT::NONE;
 
 	//// before
 	//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
@@ -111,6 +111,7 @@ void ItemSlotUI::ResetItemSlot()
 	_fCoolTime = 0.f;
 	_texName = L" ";
 	_isSetting = false;
+	_settingItem = Item::ITEM_EFFECT::NONE;
 	shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot", L"..\\Resources\\Texture\\item_slot.png");
 	GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 }

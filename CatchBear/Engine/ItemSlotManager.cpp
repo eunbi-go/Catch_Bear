@@ -54,30 +54,35 @@ void ItemSlotManager::UseItem(int nSlot)
 	{
 	case 1:
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem();
-		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+		
 
 		if (item == Item::ITEM_EFFECT::BLIND)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF) 
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::TELEPORT)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
@@ -93,30 +98,35 @@ void ItemSlotManager::UseItem(int nSlot)
 
 	case 2:
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem();
-		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+		
 
 		if (item == Item::ITEM_EFFECT::BLIND)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::TELEPORT)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
@@ -132,30 +142,35 @@ void ItemSlotManager::UseItem(int nSlot)
 
 	case 3:
 		item = static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem();
-		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+		
 
 		if (item == Item::ITEM_EFFECT::BLIND)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::TELEPORT)
 		{
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
 			return;
 		}

@@ -18,6 +18,7 @@ enum class KEY_TYPE
 	C = 'C',
 
 	TEST_KEY = 'T',
+	P = 'P',
 
 	NUM1 = '1',
 	NUM2 = '2',

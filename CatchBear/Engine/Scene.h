@@ -79,4 +79,5 @@ private:
 	float	_toStartTime = 0.0f;
 public:
 	bool	_isStart = false;
+	int		_tagNum = -1;
 };

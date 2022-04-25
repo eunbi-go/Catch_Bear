@@ -48,6 +48,20 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
+
+	// test
+	if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
+	{
+		printf("1번 아이템: %d\n", _playerItemArr[0]);
+		printf("2번 아이템: %d\n", _playerItemArr[1]);
+		printf("3번 아이템: %d\n", _playerItemArr[2]);
+	}
+
+	if (INPUT->GetButtonDown(KEY_TYPE::P))
+	{
+		cout << "Player Speed: " << _speed << endl;
+	}
+
 }
 
 void Player::LateUpdate()
@@ -173,11 +187,6 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 				break;
 			}
 		}
-
-		//// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
-		//GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
-
-
 	}
 }
 
@@ -460,6 +469,8 @@ void Player::UseItem(int itemNum)
 	// 키입력을 받은 후 _curPlayerItem의 bool값을 true로 만들어주는 함수
 	Item::ITEM_EFFECT itemEffect = _playerItemArr[itemNum];
 
+	printf("사용한 아이템: %d\n", itemEffect);
+
 	switch (itemEffect)
 	{
 	case Item::ITEM_EFFECT::SPEED_UP:
@@ -473,17 +484,17 @@ void Player::UseItem(int itemNum)
 		break;
 	case Item::ITEM_EFFECT::SPEED_DOWN:
 		// 다른 플레이어들의 속도 감소시켜야함
-		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
+		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
 		// 다른 플레이어들의 시야 흐리게
-		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
+		_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;	// test
-		Item_DebuffOff();
+		//Item_DebuffOff();
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		// 다른 플레이어들 스턴걸기
@@ -492,6 +503,9 @@ void Player::UseItem(int itemNum)
 		break;
 	}
 
+	//printf("1번 아이템: %d\n", _playerItemArr[0]);
+	//printf("2번 아이템: %d\n", _playerItemArr[1]);
+	//printf("3번 아이템: %d\n", _playerItemArr[2]);
 }
 
 void Player::ApplyItemEffect()
@@ -529,16 +543,18 @@ void Player::DeletePlayerItem(int itemIndex)
 void Player::Item_SpeedUp()
 {
 	// 스피드 변경 전 한번만 하도록
-	if (_speed == _originalSpeed)
+	if (_speed != _dashSpeed)
 	{
 		_state->End(*_player);
-		delete _state;_state = new DashState;
+		delete _state;
+		_state = new DashState;
 		_state->Enter(*_player);
 
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::DASH);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
+
 	}
 }
 
@@ -624,7 +640,7 @@ void Player::Item_Stun()
 void Player::SlowDown()
 {
 	// 자신 제외 모든 플레이어 5초동안 속도 감소
-	if (_speed == _originalSpeed)
+	if (_speed != _slowSpeed)
 	{
 		_state->End(*GetGameObject());
 		delete _state;
@@ -651,7 +667,11 @@ void Player::Blinded()
 	if (_fBlindTime > 5.f)
 	{
 		for (auto& light : lights)
+		{
 			static_pointer_cast<Light>(light)->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+			static_pointer_cast<Light>(light)->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
+			static_pointer_cast<Light>(light)->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+		}
 
 		_fBlindTime = 0.f;
 		_curPlayerItem[Player::ITEM::BLIND] = false;

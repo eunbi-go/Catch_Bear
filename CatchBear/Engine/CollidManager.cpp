@@ -11,7 +11,7 @@
 void CollidManager::Update()
 {
 	ColiisionPlayerToStaticObj();
-	//CollisionPlayerToPlayer();
+	CollisionPlayerToPlayer();
 }
 
 void CollidManager::ColiisionPlayerToStaticObj()

@@ -138,7 +138,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region TestObject
-	{
+	/*{
 		shared_ptr<GameObject> obj = make_shared<GameObject>();
 		obj->SetName(L"OBJ");
 		obj->AddComponent(make_shared<Transform>());
@@ -156,7 +156,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
-	}
+	}*/
 #pragma endregion
 
 #pragma region SkyBox

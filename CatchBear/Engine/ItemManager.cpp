@@ -243,41 +243,43 @@ void ItemManager::Collision_ItemToPlayer()
 			}
 			else item++;
 		}
-	}
 
-	// unique item & player
-	for (auto item = _uniqueItemList.begin(); item != _uniqueItemList.end();)
-	{
-		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+
+		// unique item & player
+		for (auto item = _uniqueItemList.begin(); item != _uniqueItemList.end();)
 		{
-			if (_player->GetPlayerID() == mysession->GetPlayerID())
+			if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
-				Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
-				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+				if (_player->GetPlayerID() == mysession->GetPlayerID())
+				{
+					Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+				}
+				scene->RemoveGameObject(*item);
+				item = _uniqueItemList.erase(item);
 			}
-			scene->RemoveGameObject(*item);
-			item = _uniqueItemList.erase(item);
+
+			else item++;
 		}
 
-		else item++;
-	}
 
-	
-	// treasure & player
-	for (auto treasure = _treasureList.begin(); treasure != _treasureList.end();)
-	{
-		if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
+		// treasure & player
+		for (auto treasure = _treasureList.begin(); treasure != _treasureList.end();)
 		{
-			if (!_player->GetIsTagger() &&
-				_player->GetPlayerID() == mysession->GetPlayerID())
+			if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
-				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
+				if (!_player->GetIsTagger() &&
+					_player->GetPlayerID() == mysession->GetPlayerID())
+				{
+					static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
+				}
+				scene->RemoveGameObject(*treasure);
+				treasure = _treasureList.erase(treasure);
 			}
-			scene->RemoveGameObject(*treasure);
-			treasure = _treasureList.erase(treasure);
+
+			else treasure++;
 		}
 
-		else treasure++;
 	}
 }
 

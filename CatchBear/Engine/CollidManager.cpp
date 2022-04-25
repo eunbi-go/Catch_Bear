@@ -22,7 +22,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+		if (gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;
@@ -35,7 +35,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	{
 		if ((*mapobj)->GetName() == L"Tree_01" || (*mapobj)->GetName() == L"Tree_02" ||
 			(*mapobj)->GetName() == L"Tree_03" || (*mapobj)->GetName() == L"Rock_02" ||
-			(*mapobj)->GetName() == L"Rock_03" || (*mapobj)->GetName() == L"Rock_04" ||
+			/*(*mapobj)->GetName() == L"Rock_03" ||*/ (*mapobj)->GetName() == L"Rock_04" ||
 			(*mapobj)->GetName() == L"Fence_Type1_02")
 		{
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))

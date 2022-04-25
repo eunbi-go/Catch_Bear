@@ -32,7 +32,7 @@ void ScoreManager::AddScore()
 	_myPlayer = scene->GetPlayer(mysession->GetPlayerID());
 
 	// ³»°¡ Å×½ºÆ®ÇÒ¶© ÇÃ·¹ÀÌ¾î ÇÑ¸í¸¸ ¸¸µé¾î¼­(°Â°¡ ¼ú·¡µÊ) ²¨µÒ, ¿ø·¡ ÄÑ¾ßµÊ!
-	//if (_myPlayer->GetIsTagger()) return;		
+	if (_myPlayer->GetIsTagger()) return;		
 
 	_scoreTime += DELTA_TIME;
 

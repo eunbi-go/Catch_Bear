@@ -46,13 +46,9 @@ void Scene::Start()
 void Scene::Update()
 {
 	CheckTagger();
-	if (mysession == NULL)
-		return;
-	// 모든 플레이어가 접속 시에만 이 코드가 돌아갈 수 있도록 설정함.
-	// 1인 플레이 테스트할땐 관계없음
-	if (mysession->GetIsAllPlayerEnter()) {
-	/*if (_isStart)
-	{*/
+
+	if (_isStart)
+	{
 		_toStartTime += DELTA_TIME;
 		if (_toStartTime >= 7.f)
 		{
@@ -320,7 +316,7 @@ void Scene::CheckMouse()
 
 void Scene::CheckTagger()
 {
-	/*for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
+	for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 	{
 		wstring name = gameObject->GetName();
 		if (gameObject->GetIsTagger())
@@ -360,11 +356,11 @@ void Scene::CheckTagger()
 				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
 			}
 		}
-	}*/
+	}
 
-	//shared_ptr<GameObject> tagMark1 = GetGameObject(L"PlayerTag1");
-	//shared_ptr<GameObject> tagMark2 = GetGameObject(L"PlayerTag2");
-	//shared_ptr<GameObject> tagMark3 = GetGameObject(L"PlayerTag3");
+	//shared_ptr<GameObject> tagMark1 = _TagMarks[0];
+	//shared_ptr<GameObject> tagMark2 = _TagMarks[1];
+	//shared_ptr<GameObject> tagMark3 = _TagMarks[2];
 	//for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 	//{
 	//	switch (gameObject->GetPlayerID())

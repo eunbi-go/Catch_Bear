@@ -37,7 +37,7 @@ Player::Player()
 	// 서버에서 컨트롤하는 플레이어는 _state 갖고있으면 안됨
 	_state = new IdleState();
 	_curPlayerItem = { false, };
-	_playerItemArr = { Item::ITEM_EFFECT::NONE, };
+	_playerItemArr = { Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE };
 }
 
 Player::~Player()
@@ -163,13 +163,21 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 			if (_playerItemArr[i] == Item::ITEM_EFFECT::NONE)
 			{
 				_playerItemArr[i] = itemEffect;
+				printf("%d 획득\n", itemEffect);
+
+				// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+				GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
+
+				_iItemCnt++;	// 아이템 얻으면 올라가고 사용하면 내려감
+
+				break;
 			}
 		}
 
-		// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
-		GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
+		//// 해당 아이템을 확인해서 slot에 맞는 텍스처를 설정해야 한다.
+		//GET_SINGLE(ItemSlotManager)->AddItem(itemEffect);
 
-		_iItemCnt++;	// 아이템 얻으면 올라가고 사용하면 내려감
+
 	}
 }
 

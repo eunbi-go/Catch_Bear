@@ -159,7 +159,7 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 	if (pkt.isallplayersready()) {
 		mysession->SetAllPlayerEnter();
-		_player = scene->GetPlayer(2);		// 버그 해결을 위해서 임시로 술래 0번으로 고정
+		_player = scene->GetPlayer(0);		// 버그 해결을 위해서 임시로 술래 0번으로 고정
 		//_player = scene->GetPlayer(pkt.taggerplayerid());
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";

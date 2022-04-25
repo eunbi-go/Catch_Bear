@@ -28,15 +28,15 @@ void ItemSlotManager::SetItemSlot(int nSlot, shared_ptr<GameObject> slot)
 void ItemSlotManager::AddItem(Item::ITEM_EFFECT itemType)
 {
 	int k = 0;
-	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->SetItem(itemType);
 	}
-	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT_END)
+	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->SetItem(itemType);
 	}
@@ -71,6 +71,11 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
@@ -99,6 +104,11 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot2->GetTransform()->GetLocalPosition();
@@ -122,6 +132,11 @@ void ItemSlotManager::UseItem(int nSlot)
 			return;
 		}
 		else if (item == Item::ITEM_EFFECT::STUN)
+		{
+			ResetItemSlot(nSlot);
+			return;
+		}
+		else if (item == Item::ITEM_EFFECT::SPEED_DOWN)
 		{
 			ResetItemSlot(nSlot);
 			return;

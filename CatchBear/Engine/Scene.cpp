@@ -272,9 +272,7 @@ void Scene::SetTimer()
 	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
 	pkt.set_score(myscore);
 	if (mysession->GetPlayerID() == 0)
-	{
 		pkt.set_timer(_curTime);
-	}
 	pkt.set_playerid(mysession->GetPlayerID());
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 	mysession->Send(sendBuffer);

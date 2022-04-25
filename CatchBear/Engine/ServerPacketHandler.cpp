@@ -199,33 +199,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 
 	PlayerState* state;
 
-	//shared_ptr<GameObject> tagMark1 = scene->GetGameObject(L"PlayerTag1");
-	//shared_ptr<GameObject> tagMark2 = scene->GetGameObject(L"PlayerTag2");
-	//shared_ptr<GameObject> tagMark3 = scene->GetGameObject(L"PlayerTag3");
-
-	//switch (pkt.playerid())
-	//{
-	//case 0:		// 1번 플레이어
-	//	if (_player->GetIsTagger()) 
-	//		tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//	else
-	//		tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//	break;
-	//case 1:		// 2번 플레이어
-	//	if (_player->GetIsTagger())
-	//		tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//	else
-	//		tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//	break;
-	//case 2:		// 3번 플레이어
-	//	if (_player->GetIsTagger())
-	//		tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//	else
-	//		tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//	break;
-	//}
-
-
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
@@ -396,13 +369,12 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 	PlayerState* state;
 	// 원래 술래였다면 술래아니게
 	_player = scene->GetPlayer(pkt.fromplayerid());
-	_player->SetIsTagger(false);
+	_player->SetIsTagger(!_player->GetIsTagger());	// false
 
 	// 술래아닌데 부딪혔다면 술래로
 	_player = scene->GetPlayer(pkt.toplayerid());
-	_player->SetIsTagger(true);
+	_player->SetIsTagger(!_player->GetIsTagger());	// true
 	// 새롭게 술래가 됐다면 스턴
-	//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
 	if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 	{
 		state = new StunState;
@@ -417,25 +389,28 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 
 bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
 {
-	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<GameObject>	_player1 = make_shared<GameObject>();
+	shared_ptr<GameObject>	_player2 = make_shared<GameObject>();
+	shared_ptr<GameObject>	_player3 = make_shared<GameObject>();
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player1 = scene->GetPlayer(0);
+	_player2 = scene->GetPlayer(1);
+	_player3 = scene->GetPlayer(2);
 
 	switch (pkt.playerid())
 	{
 	case 0:
-		_player = scene->GetPlayer(0);
-		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		static_pointer_cast<Player>(_player1->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
 		scene->SetCurTime(pkt.timer());
 		break;
 	case 1:
-		_player = scene->GetPlayer(1);
-		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		static_pointer_cast<Player>(_player2->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
 		//scene->SetCurTime(pkt.timer());
 		break;
 	case 2:
-		_player = scene->GetPlayer(2);
-		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
+		static_pointer_cast<Player>(_player3->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
 		//scene->SetCurTime(pkt.timer());
 		break;
 	}

@@ -389,6 +389,11 @@ void Scene::AddStaticObj(shared_ptr<GameObject> gameobject)
 	_vecStaticObject.push_back(gameobject);
 }
 
+void Scene::AddItemCoolTime(shared_ptr<GameObject> gameobject)
+{
+	_vecItemCoolTimes.push_back(gameobject);
+}
+
 void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 {
 	if (gameObject->GetCamera())

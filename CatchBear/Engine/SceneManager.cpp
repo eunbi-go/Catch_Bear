@@ -417,6 +417,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime1->AddComponent(itemCoolTimeRenderer);
 
+	scene->AddItemCoolTime(itemCoolTime1);
 	scene->AddGameObject(itemCoolTime1);
 
 	// 2-2.
@@ -444,6 +445,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime2->AddComponent(itemCoolTime2Renderer);
 
+	scene->AddItemCoolTime(itemCoolTime2);
 	scene->AddGameObject(itemCoolTime2);
 
 	// 3-2
@@ -471,6 +473,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 	itemCoolTime3->AddComponent(itemCoolTime3Renderer);
 
+	scene->AddItemCoolTime(itemCoolTime3);
 	scene->AddGameObject(itemCoolTime3);
 #pragma endregion
 
@@ -747,7 +750,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"player2ScoreIcon");
 		player1Score1->AddComponent(make_shared<Transform>());
-		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalScale(Vec3(80.f, 80.f, 50.f));
 		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 100.f, 500.f));
 		player1Score1->AddComponent(make_shared<ScoreUI>());
 
@@ -860,7 +863,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"player3ScoreIcon");
 		player1Score1->AddComponent(make_shared<Transform>());
-		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalScale(Vec3(80.f, 80.f, 50.f));
 		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 0.f, 500.f));
 		player1Score1->AddComponent(make_shared<ScoreUI>());
 

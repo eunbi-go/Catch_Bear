@@ -568,6 +568,9 @@ void Player::Item_Shield()
 			_curPlayerItem[Player::ITEM::STUN] = false;
 
 			_bUseShield = true;
+
+			// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
+			GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		}
 	}
 	else if (_bUseShield || _fShieldTime > 5.f)

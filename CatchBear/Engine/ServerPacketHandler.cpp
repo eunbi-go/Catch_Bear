@@ -21,6 +21,9 @@
 #include "StunState.h"
 #include "JumpState.h"
 
+#include "Resources.h"
+#include "MeshRenderer.h"
+
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 // 직접 컨텐츠 작업자
@@ -195,6 +198,33 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	rot.y = pkt.yrot();
 
 	PlayerState* state;
+
+	shared_ptr<GameObject> tagMark1 = scene->GetGameObject(L"PlayerTag1");
+	shared_ptr<GameObject> tagMark2 = scene->GetGameObject(L"PlayerTag2");
+	shared_ptr<GameObject> tagMark3 = scene->GetGameObject(L"PlayerTag3");
+
+	switch (pkt.playerid())
+	{
+	case 0:		// 1번 플레이어
+		if (_player->GetIsTagger()) 
+			tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		else
+			tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+		break;
+	case 1:		// 2번 플레이어
+		if (_player->GetIsTagger())
+			tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		else
+			tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+		break;
+	case 2:		// 3번 플레이어
+		if (_player->GetIsTagger())
+			tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		else
+			tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+		break;
+	}
+
 
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())

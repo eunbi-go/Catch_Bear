@@ -29,6 +29,8 @@ private:
 
 private:
 	void SetTimer();
+	void SetFinalRanking();
+
 	void CheckMouse();
 	void CheckTagger();
 	void StartGame();
@@ -74,4 +76,5 @@ private:
 	float	_toStartTime = 0.0f;
 public:
 	bool	_isStart = false;
+	bool	_isFinish = false;
 };

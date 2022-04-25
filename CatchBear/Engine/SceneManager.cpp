@@ -727,231 +727,231 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-//#pragma region Player2 ScoreUI
-//	// icon
-//	{
-//		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
-//		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score1->SetName(L"player2ScoreIcon");
-//		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
-//		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 100.f, 500.f));
-//		player1Score1->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Gicon", L"..\\Resources\\Texture\\Gicon.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer->SetMaterial(material);
-//		}
-//		player1Score1->AddComponent(meshRenderer);
-//
-//		scene->AddGameObject(player1Score1);
-//	}
-//
-//	// 
-//	{
-//		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
-//		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score1->SetName(L"player2Score1");
-//		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score1->GetTransform()->SetLocalPosition(Vec3(450.f, 100.f, 500.f));
-//		player1Score1->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer->SetMaterial(material);
-//		}
-//		player1Score1->AddComponent(meshRenderer);
-//
-//		scene->AddGameObject(player1Score1);
-//	}
-//
-//	//
-//	{
-//		shared_ptr<GameObject> player1Score2 = make_shared<GameObject>();
-//		player1Score2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score2->SetName(L"player2Score2");
-//		player1Score2->AddComponent(make_shared<Transform>());
-//		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 100.f, 500.f));
-//		player1Score2->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer1->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer1->SetMaterial(material);
-//		}
-//		player1Score2->AddComponent(meshRenderer1);
-//
-//		scene->AddGameObject(player1Score2);
-//	}
-//	//
-//	{
-//		shared_ptr<GameObject> player1Score3 = make_shared<GameObject>();
-//		player1Score3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score3->SetName(L"player2Score3");
-//		player1Score3->AddComponent(make_shared<Transform>());
-//		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 100.f, 500.f));
-//		player1Score3->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer2->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer2->SetMaterial(material);
-//		}
-//		player1Score3->AddComponent(meshRenderer2);
-//
-//		scene->AddGameObject(player1Score3);
-//	}
-//#pragma endregion
-//
-//#pragma region Player3 ScoreUI
-//	// icon
-//	{
-//		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
-//		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score1->SetName(L"player3ScoreIcon");
-//		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
-//		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 0.f, 500.f));
-//		player1Score1->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Licon", L"..\\Resources\\Texture\\Licon.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer->SetMaterial(material);
-//		}
-//		player1Score1->AddComponent(meshRenderer);
-//
-//		scene->AddGameObject(player1Score1);
-//	}
-//
-//	// 
-//	{
-//		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
-//		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score1->SetName(L"player3Score1");
-//		player1Score1->AddComponent(make_shared<Transform>());
-//		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score1->GetTransform()->SetLocalPosition(Vec3(450.f, 0.f, 500.f));
-//		player1Score1->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer->SetMaterial(material);
-//		}
-//		player1Score1->AddComponent(meshRenderer);
-//
-//		scene->AddGameObject(player1Score1);
-//	}
-//
-//	//
-//	{
-//		shared_ptr<GameObject> player1Score2 = make_shared<GameObject>();
-//		player1Score2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score2->SetName(L"player3Score2");
-//		player1Score2->AddComponent(make_shared<Transform>());
-//		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 0.f, 500.f));
-//		player1Score2->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer1->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer1->SetMaterial(material);
-//		}
-//		player1Score2->AddComponent(meshRenderer1);
-//
-//		scene->AddGameObject(player1Score2);
-//	}
-//	//
-//	{
-//		shared_ptr<GameObject> player1Score3 = make_shared<GameObject>();
-//		player1Score3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-//		player1Score3->SetName(L"player3Score3");
-//		player1Score3->AddComponent(make_shared<Transform>());
-//		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
-//		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 0.f, 500.f));
-//		player1Score3->AddComponent(make_shared<ScoreUI>());
-//
-//		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
-//		{
-//			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
-//			meshRenderer2->SetMesh(mesh);
-//		}
-//		{
-//			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
-//			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
-//			shared_ptr<Material> material = make_shared<Material>();
-//			material->SetShader(shader);
-//			material->SetTexture(0, texture);
-//			meshRenderer2->SetMaterial(material);
-//		}
-//		player1Score3->AddComponent(meshRenderer2);
-//
-//		scene->AddGameObject(player1Score3);
-//	}
-//#pragma endregion
+#pragma region Player2 ScoreUI
+	// icon
+	{
+		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
+		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score1->SetName(L"player2ScoreIcon");
+		player1Score1->AddComponent(make_shared<Transform>());
+		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 100.f, 500.f));
+		player1Score1->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Gicon", L"..\\Resources\\Texture\\Gicon.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		player1Score1->AddComponent(meshRenderer);
+
+		scene->AddGameObject(player1Score1);
+	}
+
+	// 
+	{
+		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
+		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score1->SetName(L"player2Score1");
+		player1Score1->AddComponent(make_shared<Transform>());
+		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score1->GetTransform()->SetLocalPosition(Vec3(450.f, 100.f, 500.f));
+		player1Score1->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		player1Score1->AddComponent(meshRenderer);
+
+		scene->AddGameObject(player1Score1);
+	}
+
+	//
+	{
+		shared_ptr<GameObject> player1Score2 = make_shared<GameObject>();
+		player1Score2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score2->SetName(L"player2Score2");
+		player1Score2->AddComponent(make_shared<Transform>());
+		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 100.f, 500.f));
+		player1Score2->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer1->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer1->SetMaterial(material);
+		}
+		player1Score2->AddComponent(meshRenderer1);
+
+		scene->AddGameObject(player1Score2);
+	}
+	//
+	{
+		shared_ptr<GameObject> player1Score3 = make_shared<GameObject>();
+		player1Score3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score3->SetName(L"player2Score3");
+		player1Score3->AddComponent(make_shared<Transform>());
+		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 100.f, 500.f));
+		player1Score3->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer2->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer2->SetMaterial(material);
+		}
+		player1Score3->AddComponent(meshRenderer2);
+
+		scene->AddGameObject(player1Score3);
+	}
+#pragma endregion
+
+#pragma region Player3 ScoreUI
+	// icon
+	{
+		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
+		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score1->SetName(L"player3ScoreIcon");
+		player1Score1->AddComponent(make_shared<Transform>());
+		player1Score1->GetTransform()->SetLocalScale(Vec3(70.f, 70.f, 50.f));
+		player1Score1->GetTransform()->SetLocalPosition(Vec3(400.f, 0.f, 500.f));
+		player1Score1->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Licon", L"..\\Resources\\Texture\\Licon.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		player1Score1->AddComponent(meshRenderer);
+
+		scene->AddGameObject(player1Score1);
+	}
+
+	// 
+	{
+		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
+		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score1->SetName(L"player3Score1");
+		player1Score1->AddComponent(make_shared<Transform>());
+		player1Score1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score1->GetTransform()->SetLocalPosition(Vec3(450.f, 0.f, 500.f));
+		player1Score1->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		player1Score1->AddComponent(meshRenderer);
+
+		scene->AddGameObject(player1Score1);
+	}
+
+	//
+	{
+		shared_ptr<GameObject> player1Score2 = make_shared<GameObject>();
+		player1Score2->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score2->SetName(L"player3Score2");
+		player1Score2->AddComponent(make_shared<Transform>());
+		player1Score2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score2->GetTransform()->SetLocalPosition(Vec3(480.f, 0.f, 500.f));
+		player1Score2->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer1->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer1->SetMaterial(material);
+		}
+		player1Score2->AddComponent(meshRenderer1);
+
+		scene->AddGameObject(player1Score2);
+	}
+	//
+	{
+		shared_ptr<GameObject> player1Score3 = make_shared<GameObject>();
+		player1Score3->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		player1Score3->SetName(L"player3Score3");
+		player1Score3->AddComponent(make_shared<Transform>());
+		player1Score3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+		player1Score3->GetTransform()->SetLocalPosition(Vec3(510.f, 0.f, 500.f));
+		player1Score3->AddComponent(make_shared<ScoreUI>());
+
+		shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer2->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"TimerTexture");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"score0", L"..\\Resources\\Texture\\score\\score0.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer2->SetMaterial(material);
+		}
+		player1Score3->AddComponent(meshRenderer2);
+
+		scene->AddGameObject(player1Score3);
+	}
+#pragma endregion
 
 #pragma region UI_Test
 	//for (int32 i = 0; i < 6; i++)

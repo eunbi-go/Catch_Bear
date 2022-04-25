@@ -43,29 +43,32 @@ void Scene::Start()
 
 void Scene::Update()
 {
-	CheckTagger();
-
-	if (_isStart)
+	if (!_isFinish)
 	{
-		_toStartTime += DELTA_TIME;
-		if (_toStartTime >= 7.f)
+		CheckTagger();
+
+		if (_isStart)
 		{
-			CheckMouse();
-			GET_SINGLE(Input)->Update();
-			GET_SINGLE(ItemManager)->Update();
-			GET_SINGLE(ScoreManager)->Update();
-			GET_SINGLE(CollidManager)->Update();
-			SetTimer();
-
-			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+			_toStartTime += DELTA_TIME;
+			if (_toStartTime >= 7.f)
 			{
-				gameObject->Update();
-			}
+				CheckMouse();
+				GET_SINGLE(Input)->Update();
+				GET_SINGLE(ItemManager)->Update();
+				GET_SINGLE(ScoreManager)->Update();
+				GET_SINGLE(CollidManager)->Update();
+				SetTimer();
 
-			for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
-			{
-				cout << "플레이어" << gameObject->GetPlayerID() << ": " <<
-					static_pointer_cast<Player>(gameObject->GetScript(0))->GetPlayerScore() << endl;
+				for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+				{
+					gameObject->Update();
+				}
+
+				for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
+				{
+					cout << "플레이어" << gameObject->GetPlayerID() << ": " <<
+						static_pointer_cast<Player>(gameObject->GetScript(0))->GetPlayerScore() << endl;
+				}
 			}
 		}
 	}
@@ -73,17 +76,23 @@ void Scene::Update()
 
 void Scene::LateUpdate()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (!_isFinish)
 	{
-		gameObject->LateUpdate();
+		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+		{
+			gameObject->LateUpdate();
+		}
 	}
 }
 
 void Scene::FinalUpdate()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (!_isFinish)
 	{
-		gameObject->FinalUpdate();
+		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+		{
+			gameObject->FinalUpdate();
+		}
 	}
 }
 
@@ -260,6 +269,12 @@ void Scene::SetTimer()
 	{
 		ten = 5; one = 9;
 	}
+	if (minute == 2 && second <= 1)
+	{
+		// 3분 다 지났으면 랭킹 정하기
+		SetFinalRanking();
+		_isFinish = true;
+	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
 
@@ -267,6 +282,19 @@ void Scene::SetTimer()
 	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
 	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+}
+
+void Scene::SetFinalRanking()
+{
+	GET_SINGLE(ScoreManager)->Rank();
+	vector<shared_ptr<GameObject>> players = GET_SINGLE(ScoreManager)->GetVecRankedPlayers();
+	int scores[3] = {};
+
+	for (size_t i = 0; i < players.size(); ++i)
+	{
+		scores[i] = static_pointer_cast<Player>(players[i]->GetScript(0))->GetPlayerScore();
+		printf("Score: %d\n", scores[i]);
+	}
 }
 
 void Scene::CheckMouse()

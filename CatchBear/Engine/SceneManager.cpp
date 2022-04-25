@@ -159,6 +159,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}*/
 #pragma endregion
 
+
 #pragma region SkyBox
 	{
 		shared_ptr<GameObject> skybox = make_shared<GameObject>();

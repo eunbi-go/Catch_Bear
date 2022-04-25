@@ -14,9 +14,8 @@ public:
 	virtual void End(GameObject& player);
 
 private:
-	float _fTime = 0.f;
+	float	_fTime = 0.f;
 
-	float	_fSlowSpeed = 5.f;
-	float	_fOriginalSpeed = 10.f;
+	float	_fSlowSpeed;
 };
 

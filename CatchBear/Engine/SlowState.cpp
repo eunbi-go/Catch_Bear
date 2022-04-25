@@ -27,19 +27,31 @@ PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
 {
     // 5초 동안만 유지됨
     _fTime += DELTA_TIME;
-    if (_fTime >= 5.f)
+
+    if (_fTime < 5.f)
     {
-        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fOriginalSpeed);
+        _fSlowSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSlowSpeed();
+        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fSlowSpeed);
+        ePlayer = STATE::SLOW;
+
+        //cout << "Slow 시작" << endl;
+        //float playerSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSpeed();
+        //cout << "Player Speed: " << playerSpeed << endl;
+    }
+
+    else if (_fTime >= 5.f)
+    {
+        float fOriginalSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerOriginalSpeed();
+        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(10.f);
         static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
         _fTime = 0.f;
         ePlayer = STATE::IDLE;
 
+        //cout << "Slow 끝" << endl;
+        //float playerSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSpeed();
+        //cout << "Player Speed: " << playerSpeed << endl;
+
         return new IdleState;
-    }
-    else
-    {
-        static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fSlowSpeed);
-        ePlayer = STATE::SLOW;
     }
 
     return NULL;

@@ -36,7 +36,10 @@ public:
 	void SetPlayerScore(int score) { _iScore = score; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
+	const float GetPlayerSpeed() { return _speed; }
 	const float GetPlayerOriginalSpeed() { return _originalSpeed; }
+	const float GetPlayerDashSpeed() { return _dashSpeed; }
+	const float GetPlayerSlowSpeed() { return _slowSpeed; }
 	const bool GetPlayerStunned() { return _bStunned; }
 	const int GetPlayerScore() { return _iScore; }
 	const int GetItemCount() { return _iItemCnt; }
@@ -67,6 +70,8 @@ private:
 private:
 	float	_speed = 10.f;
 	float	_originalSpeed = 10.f;
+	float	_dashSpeed = 20.f;
+	float	_slowSpeed = 5.f;
 	float	_rotSpeed = 2.f;
 
 	float	_fTeleportDis = 20.f;	// 순간이동 하는 거리

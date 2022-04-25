@@ -8,6 +8,10 @@
 #include "Material.h"
 #include "Timer.h"
 #include "AnimationController.h"
+#include "SceneManager.h"
+#include "Scene.h"
+#include "Resources.h"
+#include "Shader.h"
 
 // Render()를 호출하는 순간, 카메라에서 분류를 한 오브젝트를 루프를 돌면서 하나씩 그려주는게 아니라
 // InstancingManager에게 렌더링해달라고 모든 물체들을 다 떠넘겨주게 된다.
@@ -50,6 +54,20 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 
 			}
 			continue;
+		}
+		else if (vec[0]->GetName() == L"PlayerTag1" || vec[0]->GetName() == L"PlayerTag2" || vec[0]->GetName() == L"PlayerTag3")
+		{
+			int tagNum = GET_SINGLE(SceneManager)->GetActiveScene()->_tagNum;
+
+			for (int i = 0; i < vec.size(); ++i)
+			{
+				if (tagNum == i)
+					vec[i]->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+				else
+					vec[i]->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
+				vec[i]->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+				vec[i]->GetMeshRenderer()->Render();
+			}
 		}
 		// 2. 플레이어 외 객체
 		else if (vec.size() == 1)

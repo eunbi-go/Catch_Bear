@@ -316,81 +316,33 @@ void Scene::CheckMouse()
 
 void Scene::CheckTagger()
 {
+	shared_ptr<GameObject> tagMark1 = _TagMarks[0];
+	shared_ptr<GameObject> tagMark2 = _TagMarks[1];
+	shared_ptr<GameObject> tagMark3 = _TagMarks[2];
 	for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
 	{
-		wstring name = gameObject->GetName();
-		if (gameObject->GetIsTagger())
+		switch (gameObject->GetPlayerID())
 		{
-			if (name == L"Player1")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		case 0:		// 1번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 0;
 			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			break;
+		case 1:		// 2번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 1;
 			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			break;
+		case 2:		// 3번 플레이어
+			if (gameObject->GetIsTagger()) {
+				_isStart = true;
+				_tagNum = 2;
 			}
-			_isStart = true;
-		}
-		else if (!gameObject->GetIsTagger())
-		{
-			if (name == L"Player1")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag1");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
-			else if (name == L"Player2")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag2");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
-			else if (name == L"Player3")
-			{
-				shared_ptr<GameObject> tagMark = GetGameObject(L"PlayerTag3");
-				tagMark->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-			}
+			break;
 		}
 	}
-
-	//shared_ptr<GameObject> tagMark1 = _TagMarks[0];
-	//shared_ptr<GameObject> tagMark2 = _TagMarks[1];
-	//shared_ptr<GameObject> tagMark3 = _TagMarks[2];
-	//for (const shared_ptr<GameObject>& gameObject : _vecPlayers)
-	//{
-	//	switch (gameObject->GetPlayerID())
-	//	{
-	//	case 0:		// 1번 플레이어
-	//		if (gameObject->GetIsTagger()) {
-	//			tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//			_isStart = true;
-	//		}
-	//		else
-	//			tagMark1->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//		break;
-	//	case 1:		// 2번 플레이어
-	//		if (gameObject->GetIsTagger()) {
-	//			tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//			_isStart = true;
-	//		}
-	//		else
-	//			tagMark2->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//		break;
-	//	case 2:		// 3번 플레이어
-	//		if (gameObject->GetIsTagger()) {
-	//			tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//			_isStart = true;
-	//		}
-	//		else
-	//			tagMark3->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"NormalTagMark"));
-	//		break;
-	//	}
-	//}
 }
 
 void Scene::StartGame()

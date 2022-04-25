@@ -242,9 +242,6 @@ void ItemManager::Collision_ItemToPlayer()
 				item = _commonItemList.erase(item);
 			}
 			else item++;
-
-			//_player = gameObject;
-			break;
 		}
 	}
 
@@ -253,8 +250,11 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
-			static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+			if (_player->GetPlayerID() == mysession->GetPlayerID())
+			{
+				Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
+				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerItem(itemEffect);
+			}
 			scene->RemoveGameObject(*item);
 			item = _uniqueItemList.erase(item);
 		}
@@ -268,7 +268,8 @@ void ItemManager::Collision_ItemToPlayer()
 	{
 		if ((*treasure)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 		{
-			if (!_player->GetIsTagger())
+			if (!_player->GetIsTagger() &&
+				_player->GetPlayerID() == mysession->GetPlayerID())
 			{
 				static_pointer_cast<Player>(_player->GetScript(0))->AddPlayerScore(30);
 			}

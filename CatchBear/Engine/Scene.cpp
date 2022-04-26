@@ -259,6 +259,8 @@ void Scene::SetTimer()
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer1", L"..\\Resources\\Texture\\timer\\timer1.png");
 	else if (minute == 2)
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+	else
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
 
 	// secondTimer
@@ -269,7 +271,7 @@ void Scene::SetTimer()
 	{
 		ten = 5; one = 9;
 	}
-	if (minute == 2 && second <= 1)
+	if (minute == 2 && second < 1)
 	{
 		// 3분 다 지났으면 랭킹 정하기
 		SetFinalRanking();

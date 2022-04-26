@@ -51,6 +51,10 @@ private:
 	void UseItem(int itemNum);
 	void ApplyItemEffect();	
 	void DeletePlayerItem(int itemIndex);
+	void ClearDebuff();
+	bool CheckShield();
+	bool CheckDebuff(Item::ITEM_EFFECT itemEffect);
+	void KeyCheck_Cheat();
 
 private:
 	// 아이템 사용하는(내가 상대방에게) 함수
@@ -75,7 +79,6 @@ private:
 	float	_rotSpeed = 2.f;
 
 	float	_fTeleportDis = 20.f;	// 순간이동 하는 거리
-	bool	_bUseShield = false;
 	bool	_bStunned = false;
 
 	float	_fShieldTime = 0.f;

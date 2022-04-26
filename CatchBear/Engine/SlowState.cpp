@@ -65,6 +65,8 @@ void SlowState::Enter(GameObject& player)
 
 void SlowState::End(GameObject& player)
 {
+    _fTime = 0.f;
+
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
     player.GetAnimationController()->SetTrackSpeed(0, 1.f);
 }

@@ -42,6 +42,11 @@ void ItemSlotManager::AddItem(Item::ITEM_EFFECT itemType)
 	}
 }
 
+void ItemSlotManager::AddItem_Cheat(Item::ITEM_EFFECT itemType)
+{
+	static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->SetItem(itemType);
+}
+
 void ItemSlotManager::UseItem(int nSlot)
 {
 	Vec3 pos, scale;

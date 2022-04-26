@@ -117,7 +117,7 @@ void ItemManager::CreateCommonItem()
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)i);
 				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::SPEED_DOWN);
 				_commonItemList.push_back(item);
-
+				
 				shared_ptr<Scene> scene = make_shared<Scene>();
 				scene = GET_SINGLE(SceneManager)->GetActiveScene();
 				scene->AddGameObject(item);

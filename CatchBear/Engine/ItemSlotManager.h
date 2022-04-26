@@ -9,6 +9,7 @@ class ItemSlotManager
 public:
 	void SetItemSlot(int nSlot, shared_ptr<GameObject> slot);
 	void AddItem(Item::ITEM_EFFECT itemType);
+	void AddItem_Cheat(Item::ITEM_EFFECT itemType);
 	void UseItem(int nSlot);
 	void ResetItemSlot(int nSlot);
 

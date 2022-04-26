@@ -190,6 +190,14 @@ void Player::KeyCheck()
 	// State Check
 	PlayerState* state = _state->KeyCheck(*_player, _curState);
 
+
+	// Item KeyCheck /////////////////////////////////////////////////////////
+	// stunned면 키입력을 안받아서 스턴일때 알약이 안됨, 코드 위로 옮김
+	KeyCheck_Item();
+	KeyCheck_Cheat();
+	//////////////////////////////////////////////////////////////////////////
+
+
 	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
 
 	_player->_curState = _curState;
@@ -284,8 +292,6 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 
 	Move();
-	KeyCheck_Item();
-	KeyCheck_Cheat();
 }
 
 static bool isFirstEnter = true;
@@ -474,7 +480,6 @@ void Player::UseItem(int itemNum)
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;	// test
-		//Item_DebuffOff();
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		// 다른 플레이어들 스턴걸기
@@ -629,6 +634,13 @@ void Player::KeyCheck_Cheat()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
 	{
 		ClearDebuff();
+	}
+
+	if (INPUT->GetButtonDown(KEY_TYPE::F))	// 플레이어 속도 원래대로 돌리기(10.f)
+	{
+		_speed = 10.f;
+		_curPlayerItem[ITEM::SPEED_UP] = false;
+		_curPlayerItem[ITEM::SPEED_DOWN] = false;
 	}
 
 	// 아이템 생성 치트키

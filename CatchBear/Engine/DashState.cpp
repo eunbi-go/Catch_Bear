@@ -62,4 +62,7 @@ void DashState::Enter(GameObject& player)
 
 void DashState::End(GameObject& player)
 {
+    static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(10.f);
+    static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_UP, false);
+    _fDashTime = 0.f;
 }

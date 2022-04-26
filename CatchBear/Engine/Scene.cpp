@@ -45,51 +45,43 @@ void Scene::Start()
 
 void Scene::Update()
 {
-	if (!_isFinish)
-	{
-		CheckTagger();
+	CheckTagger();
 
-		if (_isStart)
+	if (_isStart)
+	{
+		_toStartTime += DELTA_TIME;
+		if (_toStartTime >= 7.f)
 		{
-			_toStartTime += DELTA_TIME;
-			if (_toStartTime >= 7.f)
-			{
-				CheckMouse();
-				GET_SINGLE(Input)->Update();
-				GET_SINGLE(ItemManager)->Update();
-				GET_SINGLE(ScoreManager)->Update();
-				GET_SINGLE(CollidManager)->Update();
+			CheckMouse();
+			GET_SINGLE(Input)->Update();
+			GET_SINGLE(ItemManager)->Update();
+			GET_SINGLE(ScoreManager)->Update();
+			GET_SINGLE(CollidManager)->Update();
+			if (!_isFinish)
 				SetTimer();
 
-				for (const shared_ptr<GameObject>& gameObject : _gameObjects)
-				{
-					gameObject->Update();
-				}
-
+			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+			{
+				gameObject->Update();
 			}
+
 		}
 	}
 }
 
 void Scene::LateUpdate()
 {
-	if (!_isFinish)
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
-		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
-		{
-			gameObject->LateUpdate();
-		}
+		gameObject->LateUpdate();
 	}
 }
 
 void Scene::FinalUpdate()
 {
-	if (!_isFinish)
+	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
-		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
-		{
-			gameObject->FinalUpdate();
-		}
+		gameObject->FinalUpdate();
 	}
 }
 
@@ -268,7 +260,7 @@ void Scene::SetTimer()
 	int second = (int)(time) % 60;
 	int ten = second / 10;
 	int one = second % 10;
-	if (second == 0)
+	if (minute == 0 && second == 0)
 	{
 		ten = 5; one = 9;
 	}

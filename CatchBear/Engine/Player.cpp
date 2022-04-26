@@ -85,11 +85,6 @@ void Player::LateUpdate()
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
-		if (gPacketControl % 50 == 1)
-		{
-			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			//mysession->Send(sendBuffer);
-		}
 		break;
 	case STATE::JUMP:
 	{
@@ -228,11 +223,6 @@ void Player::KeyCheck()
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
-		if (gPacketControl % 50 == 1)
-		{
-			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			//mysession->Send(sendBuffer);
-		}
 		break;
 	case STATE::JUMP:
 	{
@@ -347,7 +337,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
+		if (gPacketControl % 3 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -366,7 +356,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
+		if (gPacketControl % 3 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -726,10 +716,11 @@ void Player::Item_Shield()
 	// 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
 	// 밑에서 위로 뭔가 올라오는 파티클 효과 추가 - 쉴드 상태인걸 알 수 있도록
 	_fShieldTime += DELTA_TIME;
-	
+
 	if (_fShieldTime <= 5.f)
 	{
-
+		// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 
 	else if (_fShieldTime > 5.f)

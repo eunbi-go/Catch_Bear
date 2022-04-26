@@ -29,6 +29,8 @@ private:
 
 private:
 	void SetTimer();
+	void SetFinalRanking();
+
 	void CheckMouse();
 	void CheckTagger();
 	void StartGame();
@@ -39,6 +41,7 @@ public:
 	void AddTagMarks(uint64 _objid, shared_ptr<GameObject> gameObject);
 	void AddVecPlayers(shared_ptr<GameObject> gameObject);
 	void AddStaticObj(shared_ptr<GameObject> gameobject);
+	void AddItemCoolTime(shared_ptr<GameObject> gameobject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
 
 	const vector<shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
@@ -48,6 +51,7 @@ public:
 	const map<uint64, shared_ptr<GameObject>>& GetPlayer() { return _players; }
 	const vector<shared_ptr<GameObject>>& GetStaticObj() { return _vecStaticObject; }
 	const vector<shared_ptr<GameObject>>& GetVecPlayers() { return _vecPlayers; }
+	const vector<shared_ptr<GameObject>>& GetItemCoolTimes() { return _vecItemCoolTimes; }
 	shared_ptr<GameObject> GetGameObject(wstring name);
 
 	vector<shared_ptr<class Light>>	GetLights() { return _lights; }
@@ -71,6 +75,8 @@ private:
 	map<uint64, shared_ptr<GameObject>>		_TagMarks;
 	//////////////////////////////////////////////////////////
 
+	vector<shared_ptr<GameObject>>			_vecItemCoolTimes;
+
 private:
 	float	_curTime = -1.0f;
 
@@ -80,4 +86,5 @@ private:
 public:
 	bool	_isStart = false;
 	int		_tagNum = -1;
+	bool	_isFinish = false;
 };

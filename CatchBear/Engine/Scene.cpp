@@ -45,42 +45,51 @@ void Scene::Start()
 
 void Scene::Update()
 {
-	CheckTagger();
-
-	if (_isStart)
+	if (!_isFinish)
 	{
-		_toStartTime += DELTA_TIME;
-		if (_toStartTime >= 7.f)
-		{
-			CheckMouse();
-			GET_SINGLE(Input)->Update();
-			GET_SINGLE(ItemManager)->Update();
-			GET_SINGLE(ScoreManager)->Update();
-			GET_SINGLE(CollidManager)->Update();
-			SetTimer();
+		CheckTagger();
 
-			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+		if (_isStart)
+		{
+			_toStartTime += DELTA_TIME;
+			if (_toStartTime >= 7.f)
 			{
-				gameObject->Update();
-			}	
+				CheckMouse();
+				GET_SINGLE(Input)->Update();
+				GET_SINGLE(ItemManager)->Update();
+				GET_SINGLE(ScoreManager)->Update();
+				GET_SINGLE(CollidManager)->Update();
+				SetTimer();
+
+				for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+				{
+					gameObject->Update();
+				}
+
+			}
 		}
 	}
-
 }
 
 void Scene::LateUpdate()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (!_isFinish)
 	{
-		gameObject->LateUpdate();
+		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+		{
+			gameObject->LateUpdate();
+		}
 	}
 }
 
 void Scene::FinalUpdate()
 {
-	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+	if (!_isFinish)
 	{
-		gameObject->FinalUpdate();
+		for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+		{
+			gameObject->FinalUpdate();
+		}
 	}
 }
 
@@ -251,6 +260,8 @@ void Scene::SetTimer()
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer1", L"..\\Resources\\Texture\\timer\\timer1.png");
 	else if (minute == 2)
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+	else
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
 
 	// secondTimer
@@ -260,6 +271,12 @@ void Scene::SetTimer()
 	if (second == 0)
 	{
 		ten = 5; one = 9;
+	}
+	if (minute == 2 && second < 1)
+	{
+		// 3분 다 지났으면 랭킹 정하기
+		SetFinalRanking();
+		_isFinish = true;
 	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
@@ -271,11 +288,27 @@ void Scene::SetTimer()
 
 	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
 	pkt.set_score(myscore);
-	if (mysession->GetPlayerID() == 0)
+	if (mysession->GetPlayerID() == (g_EnterPlayerCnt-1))
 		pkt.set_timer(_curTime);
 	pkt.set_playerid(mysession->GetPlayerID());
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-	mysession->Send(sendBuffer);
+	if (gPacketControl % 60 == 1)
+	{
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+	}
+}
+
+void Scene::SetFinalRanking()
+{
+	GET_SINGLE(ScoreManager)->Rank();
+	vector<shared_ptr<GameObject>> players = GET_SINGLE(ScoreManager)->GetVecRankedPlayers();
+	int scores[3] = {};
+
+	for (size_t i = 0; i < players.size(); ++i)
+	{
+		scores[i] = static_pointer_cast<Player>(players[i]->GetScript(0))->GetPlayerScore();
+		printf("Score: %d\n", scores[i]);
+	}
 }
 
 void Scene::CheckMouse()
@@ -385,6 +418,11 @@ void Scene::AddVecPlayers(shared_ptr<GameObject> gameObject)
 void Scene::AddStaticObj(shared_ptr<GameObject> gameobject)
 {
 	_vecStaticObject.push_back(gameobject);
+}
+
+void Scene::AddItemCoolTime(shared_ptr<GameObject> gameobject)
+{
+	_vecItemCoolTimes.push_back(gameobject);
 }
 
 void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)

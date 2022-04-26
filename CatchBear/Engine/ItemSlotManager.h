@@ -13,6 +13,8 @@ public:
 	void UseItem(int nSlot);
 	void ResetItemSlot(int nSlot);
 
+	void UseShieldItem();
+
 private:
 	shared_ptr<GameObject> _itemSlot1;
 	shared_ptr<GameObject> _itemSlot2;

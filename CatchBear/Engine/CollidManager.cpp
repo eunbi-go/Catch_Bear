@@ -16,13 +16,13 @@ void CollidManager::Update()
 
 void CollidManager::ColiisionPlayerToStaticObj()
 {
-	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetVecPlayers();
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 씬 안의 플레이어 찾기
 	for (auto& gameObject : gameObjects)
 	{
-		if (gameObject->GetName() == L"Player1" && gameObject->GetPlayerID() == mysession->GetPlayerID())
+		if (gameObject->GetPlayerID() == mysession->GetPlayerID())
 		{
 			_player = gameObject;
 			break;
@@ -35,7 +35,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	{
 		if ((*mapobj)->GetName() == L"Tree_01" || (*mapobj)->GetName() == L"Tree_02" ||
 			(*mapobj)->GetName() == L"Tree_03" || (*mapobj)->GetName() == L"Rock_02" ||
-			(*mapobj)->GetName() == L"Rock_03" || (*mapobj)->GetName() == L"Rock_04" ||
+			/*(*mapobj)->GetName() == L"Rock_03" ||*/ (*mapobj)->GetName() == L"Rock_04" ||
 			(*mapobj)->GetName() == L"Fence_Type1_02")
 		{
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))

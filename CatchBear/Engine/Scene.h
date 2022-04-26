@@ -29,6 +29,8 @@ private:
 
 private:
 	void SetTimer();
+	void SetFinalRanking();
+
 	void CheckMouse();
 	void CheckTagger();
 	void StartGame();
@@ -84,4 +86,5 @@ private:
 public:
 	bool	_isStart = false;
 	int		_tagNum = -1;
+	bool	_isFinish = false;
 };

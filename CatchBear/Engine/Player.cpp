@@ -99,11 +99,6 @@ void Player::LateUpdate()
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
-		if (gPacketControl % 50 == 1)
-		{
-			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			//mysession->Send(sendBuffer);
-		}
 		break;
 	case STATE::JUMP:
 	{
@@ -242,11 +237,6 @@ void Player::KeyCheck()
 	case STATE::WALK:
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::WALK);
-		if (gPacketControl % 50 == 1)
-		{
-			//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			//mysession->Send(sendBuffer);
-		}
 		break;
 	case STATE::JUMP:
 	{
@@ -360,7 +350,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
+		if (gPacketControl % 3 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -379,7 +369,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
+		if (gPacketControl % 3 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);

@@ -202,10 +202,11 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
+
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
 		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
-		
+
 		switch (pkt.state())
 		{
 		case Protocol::IDLE:
@@ -403,15 +404,18 @@ bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
 	{
 	case 0:
 		static_pointer_cast<Player>(_player1->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
-		scene->SetCurTime(pkt.timer());
+		if (g_EnterPlayerCnt == 1)
+			scene->SetCurTime(pkt.timer());
 		break;
 	case 1:
 		static_pointer_cast<Player>(_player2->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
-		//scene->SetCurTime(pkt.timer());
+		if (g_EnterPlayerCnt == 2)
+			scene->SetCurTime(pkt.timer());
 		break;
 	case 2:
 		static_pointer_cast<Player>(_player3->GetScript(0))->SetPlayerScore(static_cast<int>(pkt.score()));
-		//scene->SetCurTime(pkt.timer());
+		if (g_EnterPlayerCnt == 3)
+			scene->SetCurTime(pkt.timer());
 		break;
 	}
 	

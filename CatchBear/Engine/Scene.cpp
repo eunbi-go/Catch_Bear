@@ -271,11 +271,14 @@ void Scene::SetTimer()
 
 	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
 	pkt.set_score(myscore);
-	if (mysession->GetPlayerID() == 0)
+	if (mysession->GetPlayerID() == (g_EnterPlayerCnt-1))
 		pkt.set_timer(_curTime);
 	pkt.set_playerid(mysession->GetPlayerID());
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-	mysession->Send(sendBuffer);
+	if (gPacketControl % 60 == 1)
+	{
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
+	}
 }
 
 void Scene::CheckMouse()

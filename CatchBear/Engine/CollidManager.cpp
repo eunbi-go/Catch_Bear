@@ -16,7 +16,7 @@ void CollidManager::Update()
 
 void CollidManager::ColiisionPlayerToStaticObj()
 {
-	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObjects();
+	auto& gameObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetVecPlayers();
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 씬 안의 플레이어 찾기

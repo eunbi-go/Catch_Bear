@@ -54,11 +54,14 @@ void Scene::Update()
 		{
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
-			GET_SINGLE(ItemManager)->Update();
-			GET_SINGLE(ScoreManager)->Update();
-			GET_SINGLE(CollidManager)->Update();
+
 			if (!_isFinish)
+			{
 				SetTimer();
+				GET_SINGLE(ItemManager)->Update();
+				GET_SINGLE(ScoreManager)->Update();
+				GET_SINGLE(CollidManager)->Update();
+			}
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 			{
@@ -292,14 +295,42 @@ void Scene::SetTimer()
 
 void Scene::SetFinalRanking()
 {
+	shared_ptr<GameObject>	ranking = GetGameObject(L"finalRanking");
+	ranking->_isRender = true;
+
 	GET_SINGLE(ScoreManager)->Rank();
 	vector<shared_ptr<GameObject>> players = GET_SINGLE(ScoreManager)->GetVecRankedPlayers();
 	int scores[3] = {};
+	wstring playerName[3] = {};
 
 	for (size_t i = 0; i < players.size(); ++i)
 	{
 		scores[i] = static_pointer_cast<Player>(players[i]->GetScript(0))->GetPlayerScore();
-		printf("Score: %d\n", scores[i]);
+		playerName[i] = players[i]->GetName();
+
+		wstring scoreUIName1 = playerName[i] + L"Score1";
+		wstring scoreUIName2 = playerName[i] + L"Score2";
+		wstring scoreUIName3 = playerName[i] + L"Score3";
+		wstring scoreIconName = playerName[i] + L"ScoreIcon";
+
+		shared_ptr<GameObject> mScore1 = GetGameObject(scoreUIName1);
+		shared_ptr<GameObject> mScore2 = GetGameObject(scoreUIName2);
+		shared_ptr<GameObject> mScore3 = GetGameObject(scoreUIName3);
+		shared_ptr<GameObject> mIcon = GetGameObject(scoreIconName);
+
+		// 위치, 크기 재설정해야 함
+	
+		mIcon->GetTransform()->SetLocalPosition(Vec3(-180.f, 110.f - (i * 180.f), 500.f));
+		mIcon->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 50.f));
+
+		mScore1->GetTransform()->SetLocalPosition(Vec3(-100.f, 110.f - (i * 180.f), 500.f));
+		mScore1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 50.f));
+
+		mScore2->GetTransform()->SetLocalPosition(Vec3(0.f, 110.f - (i * 180.f), 500.f));
+		mScore2->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 50.f));
+
+		mScore3->GetTransform()->SetLocalPosition(Vec3(100.f, 110.f - (i * 180.f), 500.f));
+		mScore3->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 50.f));
 	}
 }
 

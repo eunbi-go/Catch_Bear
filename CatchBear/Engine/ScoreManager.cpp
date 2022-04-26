@@ -66,7 +66,7 @@ void ScoreManager::Rank()
 		[](shared_ptr<GameObject>& p1, shared_ptr<GameObject>& p2)
 		{
 			return static_pointer_cast<Player>(p1->GetScript(0))->GetPlayerScore()
-				< static_pointer_cast<Player>(p2->GetScript(0))->GetPlayerScore();
+				> static_pointer_cast<Player>(p2->GetScript(0))->GetPlayerScore();
 		});
 
 	_bRanked = true;

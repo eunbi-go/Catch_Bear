@@ -35,6 +35,8 @@ enum class KEY_TYPE
 	N = 'N',	// DebuffOff
 	M = 'M',	// Stun
 
+	F = 'F',	// 스피드 원래대로
+
 	LBUTTON = VK_LBUTTON,
 	RBUTTON = VK_RBUTTON,
 

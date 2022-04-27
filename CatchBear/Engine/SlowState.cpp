@@ -65,6 +65,8 @@ void SlowState::Enter(GameObject& player)
 
 void SlowState::End(GameObject& player)
 {
+    static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(10.f);
+    static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
     _fTime = 0.f;
 
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);

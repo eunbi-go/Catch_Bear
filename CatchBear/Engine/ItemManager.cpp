@@ -44,41 +44,41 @@ void ItemManager::SetItemPosition()
 	float y = 1.f;		// y값은 다 똑같
 
 #pragma region ItemPos
-	_itemPosArray[0] = Vec3(-1.8f, y, 8.2f);
-	_itemPosArray[1] = Vec3(-23.f, y, -3.f);
-	_itemPosArray[2] = Vec3(-40.f, y, 15.f);
-	_itemPosArray[3] = Vec3(-25.f, y, 45.f);
-	_itemPosArray[4] = Vec3(-8.f, y, 43.f);
+	_itemPosArray[0] = Vec3(-23.f, y, -3.f);
+	_itemPosArray[1] = Vec3(21.f, y, -12.f);
+	_itemPosArray[2] = Vec3(-8.f, y, 43.f);
+	_itemPosArray[3] = Vec3(18.f, y, 44.f);
+	_itemPosArray[4] = Vec3(18.f, y, 0.f);
 
-	_itemPosArray[5] = Vec3(22.f, y, 35.f);
-	_itemPosArray[6] = Vec3(34.f, y, 13.f);
-	_itemPosArray[7] = Vec3(22.f, y, -7.f);
-	_itemPosArray[8] = Vec3(21.f, y, -36.f);
-	_itemPosArray[9] = Vec3(0.f, y, -40.f);
+	_itemPosArray[5] = Vec3(38.f, y, -36.f);
+	_itemPosArray[6] = Vec3(-23.f, y, 24.f);
+	_itemPosArray[7] = Vec3(0.f, y, -40.f);
+	_itemPosArray[8] = Vec3(-8.f, y, 25.f);
+	_itemPosArray[9] = Vec3(20.f, y, -9.f);
 
-	_itemPosArray[10] = Vec3(-28.f, y, -40.f);
+	_itemPosArray[10] = Vec3(35.f, y, 35.f);
 	_itemPosArray[11] = Vec3(-45.f, y, -20.f);
-	_itemPosArray[12] = Vec3(-18.f, y, 18.f);
-	_itemPosArray[13] = Vec3(10.f, y, 8.f);
-	_itemPosArray[14] = Vec3(20.f, y, -9.f);
+	_itemPosArray[12] = Vec3(21.f, y, -36.f);
+	_itemPosArray[13] = Vec3(-15.f, y, 1.f);
+	_itemPosArray[14] = Vec3(34.f, y, 13.f);
 
 	_itemPosArray[15] = Vec3(8.f, y, 16.f);
-	_itemPosArray[16] = Vec3(21.f, y, -12.f);
-	_itemPosArray[17] = Vec3(38.f, y, -36.f);
-	_itemPosArray[18] = Vec3(12.f, y, -43.f);
-	_itemPosArray[19] = Vec3(-15.f, y, 1.f);
+	_itemPosArray[16] = Vec3(-28.f, y, -40.f);
+	_itemPosArray[17] = Vec3(-40.f, y, 15.f);
+	_itemPosArray[18] = Vec3(10.f, y, 8.f);
+	_itemPosArray[19] = Vec3(-25.f, y, -5.f);
 
 	_itemPosArray[20] = Vec3(27.f, y, 20.f);
-	_itemPosArray[21] = Vec3(18.f, y, 0.f);
-	_itemPosArray[22] = Vec3(-10.f, y, -11.f);
-	_itemPosArray[23] = Vec3(-23.f, y, 24.f);
-	_itemPosArray[24] = Vec3(0.f, y, 5.f);
+	_itemPosArray[21] = Vec3(22.f, y, -7.f);
+	_itemPosArray[22] = Vec3(-1.8f, y, 8.2f);
+	_itemPosArray[23] = Vec3(5.f, y, 17.f);
+	_itemPosArray[24] = Vec3(-10.f, y, -11.f);
 
-	_itemPosArray[25] = Vec3(-25.f, y, -5.f);
-	_itemPosArray[26] = Vec3(-8.f, y, 25.f);
-	_itemPosArray[27] = Vec3(35.f, y, 35.f);
-	_itemPosArray[28] = Vec3(18.f, y, 44.f);
-	_itemPosArray[29] = Vec3(5.f, y, 17.f);
+	_itemPosArray[25] = Vec3(12.f, y, -43.f);
+	_itemPosArray[26] = Vec3(0.f, y, 5.f);
+	_itemPosArray[27] = Vec3(22.f, y, 35.f);
+	_itemPosArray[28] = Vec3(-25.f, y, 45.f);
+	_itemPosArray[29] = Vec3(-18.f, y, 18.f);
 #pragma endregion
 }
 

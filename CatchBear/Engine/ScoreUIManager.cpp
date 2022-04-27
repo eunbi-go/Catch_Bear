@@ -9,9 +9,9 @@
 
 void ScoreUIManager::SetPlayerScoreTexture(int nPlayer, int nScore)
 {
-	wstring scoreUIName1 = L"player" + to_wstring(nPlayer + 1) + L"Score1";
-	wstring scoreUIName2 = L"player" + to_wstring(nPlayer + 1) + L"Score2";
-	wstring scoreUIName3 = L"player" + to_wstring(nPlayer + 1) + L"Score3";
+	wstring scoreUIName1 = L"Player" + to_wstring(nPlayer + 1) + L"Score1";
+	wstring scoreUIName2 = L"Player" + to_wstring(nPlayer + 1) + L"Score2";
+	wstring scoreUIName3 = L"Player" + to_wstring(nPlayer + 1) + L"Score3";
 	
 	shared_ptr<GameObject> mScore1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(scoreUIName1);
 	shared_ptr<GameObject> mScore2 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(scoreUIName2);

@@ -263,6 +263,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			}
 			break;
 		case Protocol::STUN:
+			if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+				break;
 			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 			{
 				state = new StunState;
@@ -346,6 +348,9 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 		_player = scene->GetPlayer(i);
 
 		if (_player->GetPlayerID() == pkt.fromplayerid())
+			continue;
+
+		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
 			continue;
 
 		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);

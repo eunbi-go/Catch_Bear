@@ -22,10 +22,10 @@ void CoolTime::Update()
 {
 	if (GetGameObject()->_isRender)
 	{
-		//if (_fCoolTime > 0.f)
-		//{
+		if (_fCoolTime > 0.f)
+		{
 			_fCoolTime -= DELTA_TIME;
-			float fScale = _fItemCoolTime / _fCoolTime / 3.f;
+			float fScale = _fItemCoolTime / _fCoolTime / 7.f;
 			//float fScale = _fItemCoolTime - _fCoolTime;
 			//printf("%f, %f\n", fScale, _fItemCoolTime);
 			Vec3	localScale = GetGameObject()->GetTransform()->GetLocalScale();
@@ -48,18 +48,18 @@ void CoolTime::Update()
 				GetGameObject()->GetTransform()->SetLocalScale(_localScale);
 				GetGameObject()->GetTransform()->SetLocalPosition(_localPos);
 			}
-		//}
-		//else
-		//{
-		//	GET_SINGLE(ItemSlotManager)->ResetItemSlot(_nSlot);
+		}
+		else
+		{
+			GET_SINGLE(ItemSlotManager)->ResetItemSlot(_nSlot);
 
-		//	_fCoolTime = 0.f; _fItemCoolTime = 0.f;
-		//	_nSlot = -1;
-		//	GetGameObject()->_isRender = false;
-		//	GetGameObject()->GetTransform()->SetLocalScale(_localScale);
-		//	GetGameObject()->GetTransform()->SetLocalPosition(_localPos);
+			_fCoolTime = 0.f; _fItemCoolTime = 0.f;
+			_nSlot = -1;
+			GetGameObject()->_isRender = false;
+			GetGameObject()->GetTransform()->SetLocalScale(_localScale);
+			GetGameObject()->GetTransform()->SetLocalPosition(_localPos);
 
-		//}
+		}
 	}
 }
 

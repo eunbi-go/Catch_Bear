@@ -640,7 +640,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		finalRanking->GetTransform()->SetLocalScale(Vec3(800.f, 800.f, 50.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 500.f));
 		finalRanking->AddComponent(make_shared<ScoreUI>());
-		finalRanking->_isRender = false;
+		finalRanking->_isRender = true;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{

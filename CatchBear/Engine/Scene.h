@@ -90,4 +90,5 @@ public:
 	bool	_isStart = false;
 	int		_tagNum = -1;
 	bool	_isFinish = false;
+	bool	_isEnd = false;
 };

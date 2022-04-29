@@ -81,6 +81,11 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 }
 
 
+bool SceneManager::IsEnd()
+{
+	return _activeScene->_isEnd;
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask
@@ -640,7 +645,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		finalRanking->GetTransform()->SetLocalScale(Vec3(800.f, 800.f, 50.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 500.f));
 		finalRanking->AddComponent(make_shared<ScoreUI>());
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{

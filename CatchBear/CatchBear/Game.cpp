@@ -14,4 +14,5 @@ void Game::Init(const WindowInfo& info)
 void Game::Update()
 {
 	GEngine->Update();
+	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 }

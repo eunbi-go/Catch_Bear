@@ -81,6 +81,11 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 }
 
 
+bool SceneManager::IsEnd()
+{
+	return _activeScene->_isEnd;
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask

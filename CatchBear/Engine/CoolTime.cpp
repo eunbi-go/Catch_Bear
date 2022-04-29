@@ -24,10 +24,10 @@ void CoolTime::Update()
 	{
 		if (_fCoolTime > 0.f)
 		{
-			_fCoolTime -= DELTA_TIME;
-			float fScale = _fItemCoolTime / _fCoolTime / 7.f;
-			//float fScale = _fItemCoolTime - _fCoolTime;
-			//printf("%f, %f\n", fScale, _fItemCoolTime);
+
+			_fCoolTime -= DELTA_TIME * 0.3f;
+			float fScale = 1.f - (_fCoolTime / 5.f);
+
 			Vec3	localScale = GetGameObject()->GetTransform()->GetLocalScale();
 			float fPos = fScale / 2.f;
 			Vec3	localPos = GetGameObject()->GetTransform()->GetLocalPosition();
@@ -73,6 +73,6 @@ void CoolTime::SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nC
 	_localPos = pos;
 	_localScale = scale;
 	_nSlot = nSlot;
-	_fItemCoolTime = float(nCoolTime) + 5.f;
+	_fItemCoolTime = float(nCoolTime);
 	_fCoolTime = float(nCoolTime);
 }

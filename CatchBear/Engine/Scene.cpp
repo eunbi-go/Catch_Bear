@@ -339,8 +339,8 @@ void Scene::CheckMouse()
 	GetCursorPos(&_mousePos);
 	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
 
+	// 1. ItemWnd
 	shared_ptr<GameObject>	itemWnd = GetGameObject(L"ItemWindow");
-
 
 	for (int i = 0; i < 3; ++i)
 	{
@@ -364,6 +364,32 @@ void Scene::CheckMouse()
 			}
 			else itemWnd->_isRender = false;
 
+		}
+	}
+
+	// End & Restart
+	shared_ptr<GameObject>	finalWnd = GetGameObject(L"finalRanking");
+
+	if (finalWnd->_isRender)
+	{
+		if (PtInRect(&_endRt, _mousePos))
+		{
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"end", L"..\\Resources\\Texture\\end.png");
+			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+			if (INPUT->GetButton(KEY_TYPE::LBUTTON))
+			{
+				_isEnd = true;
+			}
+		}
+		else if (PtInRect(&_restartRt, _mousePos))
+		{
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"restart", L"..\\Resources\\Texture\\restart.png");
+			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+		}
+		else
+		{
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\ranking.png");
+			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 		}
 	}
 }

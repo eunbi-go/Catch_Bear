@@ -68,72 +68,6 @@ void Player::LateUpdate()
 		_state->Enter(*_player);
 	}
 
-#pragma region 애니메이션동기화
-	switch (_player->_curState)
-	{
-	case STATE::IDLE:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
-		if (gPacketControl % 80 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
-		break;
-	case STATE::JUMP:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::JUMP);
-		if (gPacketControl % 10 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::ATTACK:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::ATTACK);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::DASH:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	}
-#pragma endregion 애니메이션동기화
-	////////////////////////////////////////////////////////////////////
-
 	//Vec3 pos = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
@@ -247,17 +181,6 @@ void Player::KeyCheck()
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
 		pkt.set_state(Protocol::ATTACK);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
 		if (gPacketControl % 60 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);

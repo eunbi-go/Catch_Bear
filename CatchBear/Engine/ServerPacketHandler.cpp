@@ -202,7 +202,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
-
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
 		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
@@ -429,6 +428,7 @@ bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
 	
 	return true;
 }
+
 
 
 

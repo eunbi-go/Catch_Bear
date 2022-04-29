@@ -37,6 +37,7 @@ enum STATE
 	DASHREST = 6;
 	SLOW = 7;
 	SLOWREST = 8;
+	SHIELD = 9;
 }
 
 enum DEBUFITEMTYPE

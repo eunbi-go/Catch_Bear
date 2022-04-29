@@ -421,7 +421,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE) return;
-		if (CheckDebuff(_playerItemArr[0])) return;
+		//if (CheckDebuff(_playerItemArr[0])) return;
 
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
@@ -430,7 +430,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
 		if (_playerItemArr[1] == Item::ITEM_EFFECT::NONE) return;
-		if (CheckDebuff(_playerItemArr[1])) return;
+		//if (CheckDebuff(_playerItemArr[1])) return;
 
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
@@ -439,7 +439,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
 		if (_playerItemArr[2] == Item::ITEM_EFFECT::NONE) return;
-		if (CheckDebuff(_playerItemArr[2])) return;
+		//if (CheckDebuff(_playerItemArr[2])) return;
 
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
@@ -469,28 +469,21 @@ void Player::UseItem(int itemNum)
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
 		break;
 	case Item::ITEM_EFFECT::SPEED_DOWN:
-		// 다른 플레이어들의 속도 감소시켜야함
 		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
-		// 다른 플레이어들의 시야 흐리게
 		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;	// test
+		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		// 다른 플레이어들 스턴걸기
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
 		Item_Stun();
 		break;
 	}
-
-	//printf("1번 아이템: %d\n", _playerItemArr[0]);
-	//printf("2번 아이템: %d\n", _playerItemArr[1]);
-	//printf("3번 아이템: %d\n", _playerItemArr[2]);
 }
 
 void Player::ApplyItemEffect()
@@ -539,6 +532,7 @@ void Player::ClearDebuff()
 
 		_speed = _originalSpeed;
 		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
+		cout << "SpeedDown 해제" << endl;
 	}
 
 	// BLIND 해제
@@ -556,6 +550,7 @@ void Player::ClearDebuff()
 
 		_fBlindTime = 0.f;
 		_curPlayerItem[Player::ITEM::BLIND] = false;
+		cout << "Blind 해제" << endl;
 	}
 
 	// STUN 해제
@@ -566,8 +561,8 @@ void Player::ClearDebuff()
 		_state = new IdleState;
 		_state->Enter(*_player);
 
-		_bStunned = false;
 		_curPlayerItem[Player::ITEM::STUN] = false;
+		cout << "Stun 해제" << endl;
 	}
 }
 
@@ -575,8 +570,8 @@ bool Player::CheckShield()
 {
 	if (_curPlayerItem[Player::ITEM::SHIELD])
 	{
-		_curPlayerItem[Player::ITEM::SHIELD] = false;
-		_fShieldTime = 0.f;
+		//_curPlayerItem[Player::ITEM::SHIELD] = false;
+		//_fShieldTime = 0.f;
 		return true;
 	}
 
@@ -737,8 +732,9 @@ void Player::Item_Shield()
 
 	else if (_fShieldTime > 5.f)
 	{
-		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
+		_fShieldTime = 0.f;
+		cout << "쉴드 끝" << endl;
 	}
 }
 
@@ -848,15 +844,15 @@ void Player::Stunned()
 	}
 
 	// 유니크 아이템 - 3초간 스턴
-	if (!_bStunned)
+	if (!_bStunned && !_curPlayerItem[ITEM::SHIELD])
 	{
-		_bStunned = true;
-
 		if (!isFirstEnter) {
 			_state->End(*_player);
 			delete _state;
 			_state = new StunState;
 			_state->Enter(*_player);
 		}
+
+		_bStunned = true;
 	}
 }

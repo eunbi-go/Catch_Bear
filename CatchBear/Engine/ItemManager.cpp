@@ -159,7 +159,8 @@ void ItemManager::CreateUniqueItem()
 
 				// Item enum°ª ¼³Á¤ - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::UNIQUE);
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::STUN);
 				_uniqueItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();

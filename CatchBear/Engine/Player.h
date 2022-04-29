@@ -83,8 +83,6 @@ private:
 
 	float	_fShieldTime = 0.f;
 	float	_fBlindTime = 0.f;
-	float	_fStunTime = 0.f;
-	float	_fScoreTime = 0.f;
 
 	int		_iScore = 0;
 	int		_iItemCnt = 0;

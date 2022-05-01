@@ -8,5 +8,6 @@ public:
 
 public:
 	bool	_isEnd = false;
+	bool	_isLogin = false;
 };
 

@@ -15,4 +15,8 @@ void Game::Update()
 {
 	GEngine->Update();
 	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
+	if (_isLogin) {
+		GET_SINGLE(SceneManager)->SetIsLogin();
+		_isLogin = false;
+	}
 }

@@ -91,4 +91,6 @@ public:
 	int		_tagNum = -1;
 	bool	_isFinish = false;
 	bool	_isEnd = false;
+
+	bool	_isLogin = false;
 };

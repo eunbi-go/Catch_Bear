@@ -320,6 +320,9 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
+	if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+		return true;
+
 	switch (pkt.itemtype())
 	{
 	case Protocol::DEBUF_BLIND:

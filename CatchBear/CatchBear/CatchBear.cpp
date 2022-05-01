@@ -81,7 +81,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ASSERT_CRASH(service->Start());
 
     for (int32 i = 0; i < 5; i++)
-    {
+    {  
         GThreadManager->Launch([=]()
             {
                 while (true)
@@ -112,7 +112,6 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         game->Update();
         if (game->_isEnd)
             SendMessage(msg.hwnd, WM_CLOSE, 0, 0);
-        //GThreadManager->Join();
     }
     GThreadManager->Join();
     return (int) msg.wParam;

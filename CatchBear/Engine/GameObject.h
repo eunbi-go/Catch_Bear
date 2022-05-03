@@ -73,6 +73,8 @@ public:
 
 	const bool GetIsTagger() { return _isTagger; }
 	void SetIsTagger(bool _istag) { _isTagger = _istag; }
+	const bool GetIsCollidObj() { return _isCollidObj; }
+	void SetIsCollidObj(bool _isCollid) { _isCollidObj = _isCollid; }
 
 private:
 	// 일반적인 컴포넌트(고정)
@@ -86,6 +88,7 @@ private:
 	uint64  _playerID = 0;
 	bool	_isAllowPlayerMove = true;
 	bool	_isTagger = false;			// 술래인가?
+	bool	_isCollidObj = false;		// 오브젝트와 충돌상태인가?
 
 	BoundingOrientedBox		_boundingBox;
 	XMFLOAT3				_boundingExtents;
@@ -98,4 +101,6 @@ public:
 	STATE _curState;
 	
 	bool _isRender = true;
+
+	
 };

@@ -21,14 +21,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 씬 안의 플레이어 찾기
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetPlayerID() == mysession->GetPlayerID())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
+	_player = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(mysession->GetPlayerID());
 
 	auto& staticObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetStaticObj();
 
@@ -42,10 +35,13 @@ void CollidManager::ColiisionPlayerToStaticObj()
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
 				_player->SetIsAllowPlayerMove(false);
+				_player->SetIsCollidObj(true);
 				break;
 			}
-			else
+			else {
 				_player->SetIsAllowPlayerMove(true);
+				_player->SetIsCollidObj(false);
+			}
 		}
 		else
 			wstring namee = (*mapobj)->GetName();
@@ -102,19 +98,22 @@ void CollidManager::CollisionPlayerToPlayer()
 	// 본인의 플레이어 찾아서
 	_myplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(mysession->GetPlayerID());
 
-	// 다른 플레이어와 충돌검사
-	for (auto& pl = players.begin(); pl != players.end(); pl++)
+	if (!_myplayer->GetIsCollidObj())
 	{
-		if ((*pl)->GetPlayerID() == _myplayer->GetPlayerID())
-			continue;
-
-		if (_myplayer->GetBoundingBox().Intersects((*pl)->GetBoundingBox()))
+		// 다른 플레이어와 충돌검사
+		for (auto& pl = players.begin(); pl != players.end(); pl++)
 		{
-			_myplayer->SetIsAllowPlayerMove(false);
-			break;
+			if ((*pl)->GetPlayerID() == _myplayer->GetPlayerID())
+				continue;
+
+			if (_myplayer->GetBoundingBox().Intersects((*pl)->GetBoundingBox()))
+			{
+				_myplayer->SetIsAllowPlayerMove(false);
+				break;
+			}
+			else
+				_myplayer->SetIsAllowPlayerMove(true);
 		}
-		else
-			_myplayer->SetIsAllowPlayerMove(true);
 	}
 }
 

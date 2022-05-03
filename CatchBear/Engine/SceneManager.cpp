@@ -212,7 +212,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -233,7 +233,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -255,7 +255,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);

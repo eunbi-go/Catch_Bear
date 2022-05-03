@@ -92,5 +92,5 @@ public:
 	bool	_isFinish = false;
 	bool	_isEnd = false;
 
-	bool	_isLogin = false;
+	bool	_FinalPlayerEnter = false;
 };

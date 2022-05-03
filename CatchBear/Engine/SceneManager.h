@@ -27,7 +27,6 @@ public:
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 	bool IsEnd();
-	void SetIsLogin();
 
 private:
 	shared_ptr<Scene> LoadTestScene();

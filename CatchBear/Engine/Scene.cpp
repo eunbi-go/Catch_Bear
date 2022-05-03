@@ -236,10 +236,10 @@ void Scene::SetTimer()
 {
 	Protocol::C_PLAYERINFO pkt;
 
-	if (_isLogin)
+	if (_FinalPlayerEnter)
 	{
 		_curTime = 0;
-		_isLogin = false;
+		_FinalPlayerEnter = false;
 	}
 
 	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");

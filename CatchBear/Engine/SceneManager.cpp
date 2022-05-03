@@ -86,11 +86,6 @@ bool SceneManager::IsEnd()
 	return _activeScene->_isEnd;
 }
 
-void SceneManager::SetIsLogin()
-{
-	_activeScene->_isLogin = true;
-}
-
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask

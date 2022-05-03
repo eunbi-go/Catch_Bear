@@ -101,6 +101,4 @@ public:
 	STATE _curState;
 	
 	bool _isRender = true;
-
-	
 };

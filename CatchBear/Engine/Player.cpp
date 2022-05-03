@@ -241,6 +241,9 @@ void Player::Move()
 	if (isFirstEnter) {
 		Item_Stun();
 		isFirstEnter = false;
+
+		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+			scene->_FinalPlayerEnter = true;
 	}
 
 	for (auto& gameObject : gameObjects)

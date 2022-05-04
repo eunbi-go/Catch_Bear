@@ -77,7 +77,5 @@ void StunState::Enter(GameObject& player)
 
 void StunState::End(GameObject& player)
 {
-    static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::STUN, false);
-    static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
     _fTime = 0.f;
 }

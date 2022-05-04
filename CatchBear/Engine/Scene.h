@@ -43,6 +43,7 @@ public:
 	void AddStaticObj(shared_ptr<GameObject> gameobject);
 	void AddItemCoolTime(shared_ptr<GameObject> gameobject);
 	void RemoveGameObject(shared_ptr<GameObject> gameObject);
+	void RemoveItems();
 
 	const vector<shared_ptr<GameObject>>& GetGameObjects() { return _gameObjects; }
 
@@ -59,6 +60,7 @@ public:
 	int GetEnterPlayerNum() { return _players.size(); }
 
 	void SetCurTime(float _time) { _curTime = _time; }
+	void AddCurTime(float _time);
 
 private:
 	// 벡터를 레이어 단계로 구분한다
@@ -91,4 +93,6 @@ public:
 	int		_tagNum = -1;
 	bool	_isFinish = false;
 	bool	_isEnd = false;
+
+	bool	_FinalPlayerEnter = false;
 };

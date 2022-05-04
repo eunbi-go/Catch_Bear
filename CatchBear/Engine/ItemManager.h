@@ -20,20 +20,19 @@ public:
 	void CreateCommonItem();
 	void CreateUniqueItem();
 	void CreateTreasure();
+	void Reset();
 
 private:
 	void Collision_ItemToPlayer();
 	void Check_ItemPos();
 
 public:
-	array<list<shared_ptr<GameObject>>, 3>& GetItemArray() { return _itemArray; }
 	list<shared_ptr<GameObject>>& GetCommonItemList() { return _commonItemList; }
 	list<shared_ptr<GameObject>>& GetUniqueItemList() { return _uniqueItemList; }
 	list<shared_ptr<GameObject>>& TreasureList() { return _treasureList; }
 
 
 private:
-	array<list<shared_ptr<GameObject>>, 3>	_itemArray;			// 아이템 리스트 담고있는 어레이
 	list<shared_ptr<GameObject>>		_commonItemList;	
 	list<shared_ptr<GameObject>>		_uniqueItemList;
 	list<shared_ptr<GameObject>>		_treasureList;

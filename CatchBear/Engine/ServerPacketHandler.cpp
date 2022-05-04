@@ -202,7 +202,6 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
-
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
 		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
@@ -263,6 +262,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 			}
 			break;
 		case Protocol::STUN:
+			if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+				break;
 			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 			{
 				state = new StunState;
@@ -319,6 +320,9 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
+	if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+		return true;
+
 	switch (pkt.itemtype())
 	{
 	case Protocol::DEBUF_BLIND:
@@ -346,6 +350,9 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 		_player = scene->GetPlayer(i);
 
 		if (_player->GetPlayerID() == pkt.fromplayerid())
+			continue;
+
+		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
 			continue;
 
 		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
@@ -424,6 +431,7 @@ bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
 	
 	return true;
 }
+
 
 
 

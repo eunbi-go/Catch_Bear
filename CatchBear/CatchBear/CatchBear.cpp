@@ -14,6 +14,7 @@
 #include "ServerSession.h"
 
 #define MAX_LOADSTRING 100
+wstring MyIPAddr;
 
 // 전역 변수:
 WindowInfo GWindowInfo;
@@ -66,17 +67,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ServerPacketHandler::Init();
     //this_thread::sleep_for(1s);
 
+    cout << "ip주소 입력: ";
+    wcin >> MyIPAddr;
+
+
     ClientServiceRef service = MakeShared<ClientService>(
-        NetAddress(L"127.0.0.1", 7777),
-        //NetAddress(L"221.165.49.57", 7777),
+        //NetAddress(L"127.0.0.1", 7777),
+        NetAddress(MyIPAddr, 7777),
         MakeShared<IocpCore>(),
         MakeShared<ServerSession>, // TODO : SessionManager 등
-        10);
+        100);
 
     ASSERT_CRASH(service->Start());
 
     for (int32 i = 0; i < 5; i++)
-    {
+    {  
         GThreadManager->Launch([=]()
             {
                 while (true)
@@ -91,6 +96,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
+            
             if (msg.message == WM_QUIT)
                 break;
 
@@ -98,6 +104,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
+                
             }
         }
 
@@ -105,9 +112,8 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
         game->Update();
         if (game->_isEnd)
             SendMessage(msg.hwnd, WM_CLOSE, 0, 0);
-        //GThreadManager->Join();
     }
-
+    GThreadManager->Join();
     return (int) msg.wParam;
 }
 

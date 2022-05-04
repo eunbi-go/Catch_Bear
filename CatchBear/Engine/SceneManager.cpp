@@ -30,6 +30,7 @@
 #include "ServerSession.h"
 #include "ItemWindow.h"
 #include "ScoreUI.h"
+#include "ItemManager.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -78,6 +79,22 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 		return 0;
 
 	return findIt->second;
+}
+
+void SceneManager::ReStart()
+{
+	// 일단 제한시간 30초 늘리는게 더 빠를듯
+	_activeScene->AddCurTime(-30.f);
+
+	//// 플레이어
+	//static_pointer_cast<Player>(_activeScene->GetGameObject(L"Player1")->GetScript(0))->Reset();
+
+	//// 타이머
+	//_activeScene->SetCurTime(-1.0f);
+
+	//// 아이템
+	//GET_SINGLE(ItemManager)->Reset();
+	//_activeScene->RemoveItems();
 }
 
 
@@ -207,7 +224,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -228,7 +245,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
@@ -250,7 +267,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.3f, 1.f, 0.3f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);

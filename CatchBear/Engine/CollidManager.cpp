@@ -11,6 +11,7 @@
 void CollidManager::Update()
 {
 	ColiisionPlayerToStaticObj();
+	CollisionTaggerToPlayer();
 	CollisionPlayerToPlayer();
 }
 
@@ -20,14 +21,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 씬 안의 플레이어 찾기
-	for (auto& gameObject : gameObjects)
-	{
-		if (gameObject->GetPlayerID() == mysession->GetPlayerID())
-		{
-			_player = gameObject;
-			break;
-		}
-	}
+	_player = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(mysession->GetPlayerID());
 
 	auto& staticObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetStaticObj();
 
@@ -41,10 +35,13 @@ void CollidManager::ColiisionPlayerToStaticObj()
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
 				_player->SetIsAllowPlayerMove(false);
+				_player->SetIsCollidObj(true);
 				break;
 			}
-			else
+			else {
 				_player->SetIsAllowPlayerMove(true);
+				_player->SetIsCollidObj(false);
+			}
 		}
 		else
 			wstring namee = (*mapobj)->GetName();
@@ -53,7 +50,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	
 }
 
-void CollidManager::CollisionPlayerToPlayer()
+void CollidManager::CollisionTaggerToPlayer()
 {
 	auto& players = GET_SINGLE(SceneManager)->GetActiveScene()->GetVecPlayers();
 	shared_ptr<GameObject>	_tagplayer = make_shared<GameObject>();
@@ -66,14 +63,13 @@ void CollidManager::CollisionPlayerToPlayer()
 			_tagplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(i);
 	}
 
-	for (auto pl = players.begin(); pl != players.end(); pl++)
+	for (auto& pl = players.begin(); pl != players.end(); pl++)
 	{
 		// pl: 술래X 일반 플레이어O
 		if ((*pl)->GetIsTagger() == false)
 		{
 			if (static_pointer_cast<Player>(_tagplayer->GetScript(0))->_state->curState != STATE::STUN)
 			{
-
 				// p1 & tag 충돌!
 				if ((*pl)->GetBoundingBox().Intersects(_tagplayer->GetBoundingBox()))
 				{
@@ -92,6 +88,32 @@ void CollidManager::CollisionPlayerToPlayer()
 			}
 		}
 
+	}
+}
+
+void CollidManager::CollisionPlayerToPlayer()
+{
+	auto& players = GET_SINGLE(SceneManager)->GetActiveScene()->GetVecPlayers();
+	shared_ptr<GameObject>	_myplayer = make_shared<GameObject>();
+	// 본인의 플레이어 찾아서
+	_myplayer = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(mysession->GetPlayerID());
+
+	if (!_myplayer->GetIsCollidObj())
+	{
+		// 다른 플레이어와 충돌검사
+		for (auto& pl = players.begin(); pl != players.end(); pl++)
+		{
+			if ((*pl)->GetPlayerID() == _myplayer->GetPlayerID())
+				continue;
+
+			if (_myplayer->GetBoundingBox().Intersects((*pl)->GetBoundingBox()))
+			{
+				_myplayer->SetIsAllowPlayerMove(false);
+				break;
+			}
+			else
+				_myplayer->SetIsAllowPlayerMove(true);
+		}
 	}
 }
 

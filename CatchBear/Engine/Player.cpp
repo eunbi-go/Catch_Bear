@@ -48,6 +48,8 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
+
+
 }
 
 void Player::LateUpdate()
@@ -67,72 +69,6 @@ void Player::LateUpdate()
 		_state = state;
 		_state->Enter(*_player);
 	}
-
-#pragma region 애니메이션동기화
-	switch (_player->_curState)
-	{
-	case STATE::IDLE:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
-		if (gPacketControl % 80 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
-		break;
-	case STATE::JUMP:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::JUMP);
-		if (gPacketControl % 10 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::ATTACK:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::ATTACK);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::DASH:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	}
-#pragma endregion 애니메이션동기화
-	////////////////////////////////////////////////////////////////////
 
 	//Vec3 pos = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
@@ -169,6 +105,33 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 			}
 		}
 	}
+}
+
+void Player::Reset()
+{
+	// 플레이어 위치 - 서버에서 ?
+	// 근데 플레이어 위치 다시하기 한다고 굳이 초기화 안해도 될듯 ?
+
+
+	// 플레이어 보유 아이템
+	_playerItemArr[0] = Item::ITEM_EFFECT::NONE;
+	_playerItemArr[1] = Item::ITEM_EFFECT::NONE;
+	_playerItemArr[2] = Item::ITEM_EFFECT::NONE;
+
+	// 플레이어 적용중인 버프,디버프 아이템 초기화
+	_curPlayerItem = { false, };
+
+	// 플레이어 점수 초기화, 술래 꼴등이 하는거면 그거 먼저 정하고 해줘야할듯
+	_iScore = 0;
+
+	// 플레이어 아이템 개수 초기화
+	_iItemCnt = 0;
+
+	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
+	_speed = 10.f;
+	_bStunned = false;
+	_fShieldTime = 0.f;
+	_fBlindTime = 0.f;
 }
 
 void Player::KeyCheck()
@@ -254,17 +217,6 @@ void Player::KeyCheck()
 		}
 		break;
 	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
 	case STATE::DASH:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -318,6 +270,9 @@ void Player::Move()
 	if (isFirstEnter) {
 		Item_Stun();
 		isFirstEnter = false;
+
+		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+			scene->_FinalPlayerEnter = true;
 	}
 
 	for (auto& gameObject : gameObjects)
@@ -343,7 +298,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -362,7 +317,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -469,28 +424,22 @@ void Player::UseItem(int itemNum)
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
 		break;
 	case Item::ITEM_EFFECT::SPEED_DOWN:
-		// 다른 플레이어들의 속도 감소시켜야함
 		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
-		// 다른 플레이어들의 시야 흐리게
 		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;	// test
+		ClearDebuff();
+		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		// 다른 플레이어들 스턴걸기
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
 		Item_Stun();
 		break;
 	}
-
-	//printf("1번 아이템: %d\n", _playerItemArr[0]);
-	//printf("2번 아이템: %d\n", _playerItemArr[1]);
-	//printf("3번 아이템: %d\n", _playerItemArr[2]);
 }
 
 void Player::ApplyItemEffect()
@@ -512,8 +461,8 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
-		Item_DebuffOff();
+	//if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
+	//	Item_DebuffOff();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
@@ -529,17 +478,18 @@ void Player::ClearDebuff()
 {
 	// 디버프 해제와 쉴드에 사용됨
 
-	// SPEED_DOWN 해제
-	if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = new IdleState;
-		_state->Enter(*_player);
+	//// SPEED_DOWN 해제
+	//if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
+	//{
+	//	_state->End(*_player);
+	//	delete _state;
+	//	_state = new IdleState;
+	//	_state->Enter(*_player);
 
-		_speed = _originalSpeed;
-		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
-	}
+	//	_speed = 10.f;
+	//	_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
+	//	cout << "SpeedDown 해제" << endl;
+	//}
 
 	// BLIND 해제
 	if (_curPlayerItem[Player::ITEM::BLIND])
@@ -556,19 +506,21 @@ void Player::ClearDebuff()
 
 		_fBlindTime = 0.f;
 		_curPlayerItem[Player::ITEM::BLIND] = false;
+		cout << "Blind 해제" << endl;
 	}
 
-	// STUN 해제
-	if (_curPlayerItem[Player::ITEM::STUN])
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = new IdleState;
-		_state->Enter(*_player);
+	//// STUN 해제
+	//if (_curPlayerItem[Player::ITEM::STUN])
+	//{
+	//	_state->End(*_player);
+	//	delete _state;
+	//	_state = new IdleState;
+	//	_state->Enter(*_player);
 
-		_bStunned = false;
-		_curPlayerItem[Player::ITEM::STUN] = false;
-	}
+	//	_curPlayerItem[Player::ITEM::STUN] = false;
+	//	_bStunned = false;
+	//	cout << "Stun 해제" << endl;
+	//}
 }
 
 bool Player::CheckShield()
@@ -693,6 +645,23 @@ void Player::KeyCheck_Cheat()
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
 			_iItemCnt++;
 	}
+
+	// 디버프 확인 치트키
+	if (INPUT->GetButtonDown(KEY_TYPE::I))
+	{
+		cout << "SpeedUp: " << _curPlayerItem[ITEM::SPEED_UP] << endl;
+		cout << "Teleport: " << _curPlayerItem[ITEM::TELEPORT] << endl;
+		cout << "Shield: " << _curPlayerItem[ITEM::SHIELD] << endl;
+		cout << "SpeedDown: " << _curPlayerItem[ITEM::SPEED_DOWN] << endl;
+		cout << "Blind: " << _curPlayerItem[ITEM::BLIND] << endl;
+		cout << "DebuffOff: " << _curPlayerItem[ITEM::DEBUFF_OFF] << endl;
+		cout << "Stun: " << _curPlayerItem[ITEM::STUN] << endl;
+		cout << endl;
+	}
+
+	// 시간 늘리기 치트키
+	if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
+		GET_SINGLE(SceneManager)->ReStart();
 }
 
 void Player::Item_SpeedUp()
@@ -737,10 +706,13 @@ void Player::Item_Shield()
 
 	else if (_fShieldTime > 5.f)
 	{
-		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		printf("쉴드 끝\n");
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+//=======
+//		_fShieldTime = 0.f;
+//		cout << "쉴드 끝" << endl;
+//>>>>>>> ItemBug
 	}
 }
 
@@ -771,7 +743,6 @@ void Player::Item_DebuffOff()
 	// 유니크 아이템 - 자신에게 걸려있는 모든 디버프 해제
 	// 디버프: SPEED_DOWN, BLIND, STUN
 	ClearDebuff();
-
 	_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
 }
 
@@ -853,15 +824,15 @@ void Player::Stunned()
 	}
 
 	// 유니크 아이템 - 3초간 스턴
-	if (!_bStunned)
+	if (!_bStunned && !_curPlayerItem[ITEM::SHIELD])
 	{
-		_bStunned = true;
-
 		if (!isFirstEnter) {
 			_state->End(*_player);
 			delete _state;
 			_state = new StunState;
 			_state->Enter(*_player);
 		}
+
+		_bStunned = true;
 	}
 }

@@ -237,6 +237,12 @@ void Scene::SetTimer()
 {
 	Protocol::C_PLAYERINFO pkt;
 
+	if (_FinalPlayerEnter)
+	{
+		_curTime = 0;
+		_FinalPlayerEnter = false;
+	}
+
 	shared_ptr<GameObject> mTimer = GetGameObject(L"minuteTimer");
 	shared_ptr<GameObject> tTimer = GetGameObject(L"tenSecond");
 	shared_ptr<GameObject> oTimer = GetGameObject(L"oneSecond");
@@ -497,6 +503,20 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 	}
 }
 
+void Scene::RemoveItems()
+{
+	for (auto item = _gameObjects.begin(); item != _gameObjects.end(); )
+	{
+		if ((*item)->GetName() == L"CommonItem" || (*item)->GetName() == L"UniqueItem" || (*item)->GetName() == L"Treasure")
+		{
+			item = _gameObjects.erase(item);
+			int a = 0;
+		}
+
+		else item++;
+	}
+}
+
 shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 {
 	for (int i = 0; i < _gameObjects.size(); ++i)
@@ -508,4 +528,10 @@ shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 		}
 	}
 	return NULL;
+}
+
+void Scene::AddCurTime(float _time)
+{
+	if (_curTime + _time <= 0) _curTime = 0.f;
+	else _curTime += _time;
 }

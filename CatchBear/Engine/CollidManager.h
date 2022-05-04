@@ -7,6 +7,7 @@ class CollidManager
 public:
 	void Update();
 	void ColiisionPlayerToStaticObj();
+	void CollisionTaggerToPlayer();
 	void CollisionPlayerToPlayer();
 };
 

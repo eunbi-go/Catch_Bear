@@ -24,6 +24,8 @@ enum : uint16
 	PKT_S_COLLIDPLAYERTOPLAYER = 1015,
 	PKT_C_PLAYERINFO = 1016,
 	PKT_S_PLAYERINFO = 1017,
+	PKT_C_STATE = 1018,
+	PKT_S_STATE = 1019,
 };
 
 // Custom Handlers
@@ -37,6 +39,7 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt);
 bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLIDPLAYERTOPLAYER& pkt);
 bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt);
+bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt);
 
 class ServerPacketHandler
 {
@@ -54,6 +57,7 @@ public:
 		GPacketHandler[PKT_S_USE_STUN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_STUN>(Handle_S_USE_STUN, session, buffer, len); };
 		GPacketHandler[PKT_S_COLLIDPLAYERTOPLAYER] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_COLLIDPLAYERTOPLAYER>(Handle_S_COLLIDPLAYERTOPLAYER, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAYERINFO] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAYERINFO>(Handle_S_PLAYERINFO, session, buffer, len); };
+		GPacketHandler[PKT_S_STATE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STATE>(Handle_S_STATE, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -70,6 +74,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_USE_STUN& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_STUN); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_COLLIDPLAYERTOPLAYER& pkt) { return MakeSendBuffer(pkt, PKT_C_COLLIDPLAYERTOPLAYER); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLAYERINFO& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAYERINFO); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_STATE& pkt) { return MakeSendBuffer(pkt, PKT_C_STATE); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

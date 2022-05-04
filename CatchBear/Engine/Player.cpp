@@ -31,6 +31,7 @@
 #include "Resources.h"
 
 Protocol::C_MOVE pkt;
+Protocol::C_STATE StatePkt;
 
 Player::Player()
 {
@@ -149,63 +150,64 @@ void Player::KeyCheck()
 	{
 	case STATE::IDLE:
 	{
-		//isJumpEnd = true;
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
-		pkt.set_xpos(pos.x);
-		pkt.set_ypos(pos.y);
-		pkt.set_zpos(pos.z);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::IDLE);
 		if (gPacketControl % 50 == 1)
 		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
 		}
 		break;
 	}
 	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::WALK);
+		if (gPacketControl % 10 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
+			mysession->Send(sendBuffer);
+		}
 		break;
 	case STATE::JUMP:
 	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::JUMP);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::JUMP);
 		if (gPacketControl % 10 == 1)
 		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
 		}
 		break;
 	}
 	case STATE::ATTACK:
 	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::ATTACK);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::ATTACK);
 		if (gPacketControl % 60 == 1)
 		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
 		}
 		break;
 	}
 	case STATE::DASH:
 	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::DASH);
 		if (gPacketControl % 60 == 1)
 		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
 		}
 		break;
 	}
 	case STATE::SLOW:
 	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::SLOW);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::SLOW);
 		if (gPacketControl % 60 == 1)
 		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
 		}
 		break;
@@ -631,9 +633,9 @@ void Player::Item_SpeedUp()
 		_state = new DashState;
 		_state->Enter(*_player);
 
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		StatePkt.set_playerid(mysession->GetPlayerID());
+		StatePkt.set_state(Protocol::DASH);
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 		mysession->Send(sendBuffer);
 	}
 }

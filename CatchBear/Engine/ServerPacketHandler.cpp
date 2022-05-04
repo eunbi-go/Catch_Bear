@@ -197,118 +197,12 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	Vec3 rot;
 	rot.y = pkt.yrot();
 
-	PlayerState* state;
-
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
 		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
 		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
-
-		switch (pkt.state())
-		{
-		case Protocol::IDLE:
-			if (_player->_state->curState != STATE::IDLE)
-			{
-				if (_player->_state->curState != STATE::STUN)
-				{
-					//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
-					_player->_state->End(*_player);
-					state = new IdleState;
-					delete _player->_state;
-					_player->_state = state;
-					_player->_state->Enter(*_player);
-					_player->_state->curState = STATE::IDLE;
-				}
-			}
-			break;
-		case Protocol::WALK:
-			if (_player->_state->curState != STATE::WALK)
-			{
-				if (_player->_state->curState != STATE::DASH)
-				{
-					if (_player->_state->curState != STATE::SLOW)
-					{
-						//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
-						_player->_state->End(*_player);
-						state = new MoveState;
-						delete _player->_state;
-						_player->_state = state;
-						_player->_state->Enter(*_player);
-						_player->_state->curState = STATE::WALK;
-					}
-				}
-			}
-			break;
-		case Protocol::JUMP:
-			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::JUMP)
-			{
-				state = new JumpState;
-				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::JUMP;
-			}
-			break;
-		case Protocol::ATTACK:
-			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::ATTACK)
-			{
-				state = new AttackState;
-				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::ATTACK;
-			}
-			break;
-		case Protocol::STUN:
-			if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
-				break;
-			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
-			{
-				state = new StunState;
-				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
-				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
-			}
-			break;
-		case Protocol::DASH:
-			if (_player->_state->curState != STATE::DASH)
-			{
-				_player->_state->End(*_player);
-				delete _player->_state;
-				state = new DashState;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::DASH;
-			}
-			break;
-		case Protocol::DASHREST:
-			if (_player->_state->curState != STATE::DASH_REST)
-			{
-				_player->_state->End(*_player);
-				delete _player->_state;
-				state = new DashRestState;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::DASH_REST;
-			}
-			break;
-		case Protocol::SLOW:
-			if (_player->_state->curState != STATE::SLOW)
-			{
-				_player->_state->End(*_player);
-				delete _player->_state;
-				state = new SlowState;
-				_player->_state = state;
-				_player->_state->Enter(*_player);
-				_player->_state->curState = STATE::SLOW;
-			}
-			break;
-		default:
-			break;
-		}
 	}
 
 	return true;
@@ -429,6 +323,122 @@ bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt)
 
 	
 	
+	return true;
+}
+
+bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player = scene->GetPlayer(pkt.playerid());
+
+	PlayerState* state;
+
+	switch (pkt.state())
+	{
+	case Protocol::IDLE:
+		if (_player->_state->curState != STATE::IDLE)
+		{
+			if (_player->_state->curState != STATE::STUN)
+			{
+				//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+				_player->_state->End(*_player);
+				state = new IdleState;
+				delete _player->_state;
+				_player->_state = state;
+				_player->_state->Enter(*_player);
+				_player->_state->curState = STATE::IDLE;
+			}
+		}
+		break;
+	case Protocol::WALK:
+		if (_player->_state->curState != STATE::WALK)
+		{
+			if (_player->_state->curState != STATE::DASH)
+			{
+				if (_player->_state->curState != STATE::SLOW)
+				{
+					//static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+					_player->_state->End(*_player);
+					state = new MoveState;
+					delete _player->_state;
+					_player->_state = state;
+					_player->_state->Enter(*_player);
+					_player->_state->curState = STATE::WALK;
+				}
+			}
+		}
+		break;
+	case Protocol::JUMP:
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::JUMP)
+		{
+			state = new JumpState;
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::JUMP;
+		}
+		break;
+	case Protocol::ATTACK:
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::ATTACK)
+		{
+			state = new AttackState;
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::ATTACK;
+		}
+		break;
+	case Protocol::STUN:
+		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+			break;
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
+		{
+			state = new StunState;
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+		}
+		break;
+	case Protocol::DASH:
+		if (_player->_state->curState != STATE::DASH)
+		{
+			_player->_state->End(*_player);
+			delete _player->_state;
+			state = new DashState;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::DASH;
+		}
+		break;
+	case Protocol::DASHREST:
+		if (_player->_state->curState != STATE::DASH_REST)
+		{
+			_player->_state->End(*_player);
+			delete _player->_state;
+			state = new DashRestState;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::DASH_REST;
+		}
+		break;
+	case Protocol::SLOW:
+		if (_player->_state->curState != STATE::SLOW)
+		{
+			_player->_state->End(*_player);
+			delete _player->_state;
+			state = new SlowState;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::SLOW;
+		}
+		break;
+	default:
+		break;
+	}
 	return true;
 }
 

@@ -1206,10 +1206,10 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 			object->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.5f, 0.0f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
-		else if (name == L"Fence_Type1_02") {
-			object->SetBoundingExtents(XMFLOAT3(1.5f, 0.7f, 1.5f));
+		else if (name == L"wooden_fence_04") {
+			object->SetBoundingExtents(XMFLOAT3(2.4f, 1.3f, 2.3f));
 			object->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(-0.9f, 0.6f, -2.4f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+				XMFLOAT3(0.f, 1.3f, 0.f), object->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 		}
 		else {
 			object->SetBoundingExtents(XMFLOAT3(0.f, 0.0f, 0.0f));

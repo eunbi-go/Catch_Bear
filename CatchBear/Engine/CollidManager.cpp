@@ -30,7 +30,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 		if ((*mapobj)->GetName() == L"Tree_01" || (*mapobj)->GetName() == L"Tree_02" ||
 			(*mapobj)->GetName() == L"Tree_03" || (*mapobj)->GetName() == L"Rock_02" ||
 			/*(*mapobj)->GetName() == L"Rock_03" ||*/ (*mapobj)->GetName() == L"Rock_04" ||
-			(*mapobj)->GetName() == L"Fence_Type1_02")
+			(*mapobj)->GetName() == L"wooden_fence_04")
 		{
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{

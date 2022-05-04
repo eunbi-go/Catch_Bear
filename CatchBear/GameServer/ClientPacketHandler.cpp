@@ -184,7 +184,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	movePkt.set_ypos(pkt.ypos());
 	movePkt.set_zpos(pkt.zpos());
 	movePkt.set_yrot(pkt.yrot());
-	movePkt.set_state(pkt.state());
+	
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 
 	GInGame.Broadcast(sendBuffer);
@@ -233,6 +233,18 @@ bool Handle_C_PLAYERINFO(PacketSessionRef& session, Protocol::C_PLAYERINFO& pkt)
 	Playerinfopkt.set_playerid(pkt.playerid());
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(Playerinfopkt);
+	GInGame.Broadcast(sendBuffer);
+	return true;
+}
+
+bool Handle_C_STATE(PacketSessionRef& session, Protocol::C_STATE& pkt)
+{
+	Protocol::S_STATE StatePkt;
+	StatePkt.set_playerid(pkt.playerid());
+	StatePkt.set_state(pkt.state());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(StatePkt);
+
 	GInGame.Broadcast(sendBuffer);
 	return true;
 }

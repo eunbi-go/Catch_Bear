@@ -48,6 +48,8 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
+
+
 }
 
 void Player::LateUpdate()
@@ -169,6 +171,33 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 			}
 		}
 	}
+}
+
+void Player::Reset()
+{
+	// 플레이어 위치 - 서버에서 ?
+	// 근데 플레이어 위치 다시하기 한다고 굳이 초기화 안해도 될듯 ?
+
+
+	// 플레이어 보유 아이템
+	_playerItemArr[0] = Item::ITEM_EFFECT::NONE;
+	_playerItemArr[1] = Item::ITEM_EFFECT::NONE;
+	_playerItemArr[2] = Item::ITEM_EFFECT::NONE;
+
+	// 플레이어 적용중인 버프,디버프 아이템 초기화
+	_curPlayerItem = { false, };
+
+	// 플레이어 점수 초기화, 술래 꼴등이 하는거면 그거 먼저 정하고 해줘야할듯
+	_iScore = 0;
+
+	// 플레이어 아이템 개수 초기화
+	_iItemCnt = 0;
+
+	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
+	_speed = 10.f;
+	_bStunned = false;
+	_fShieldTime = 0.f;
+	_fBlindTime = 0.f;
 }
 
 void Player::KeyCheck()
@@ -421,7 +450,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE) return;
-		//if (CheckDebuff(_playerItemArr[0])) return;
+		if (CheckDebuff(_playerItemArr[0])) return;
 
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
@@ -430,7 +459,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
 	{
 		if (_playerItemArr[1] == Item::ITEM_EFFECT::NONE) return;
-		//if (CheckDebuff(_playerItemArr[1])) return;
+		if (CheckDebuff(_playerItemArr[1])) return;
 
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
@@ -439,7 +468,7 @@ void Player::KeyCheck_Item()
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
 	{
 		if (_playerItemArr[2] == Item::ITEM_EFFECT::NONE) return;
-		//if (CheckDebuff(_playerItemArr[2])) return;
+		if (CheckDebuff(_playerItemArr[2])) return;
 
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
@@ -477,7 +506,8 @@ void Player::UseItem(int itemNum)
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
+		ClearDebuff();
+		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
@@ -505,8 +535,8 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
-		Item_DebuffOff();
+	//if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
+	//	Item_DebuffOff();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
@@ -522,18 +552,18 @@ void Player::ClearDebuff()
 {
 	// 디버프 해제와 쉴드에 사용됨
 
-	// SPEED_DOWN 해제
-	if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = new IdleState;
-		_state->Enter(*_player);
+	//// SPEED_DOWN 해제
+	//if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
+	//{
+	//	_state->End(*_player);
+	//	delete _state;
+	//	_state = new IdleState;
+	//	_state->Enter(*_player);
 
-		_speed = _originalSpeed;
-		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
-		cout << "SpeedDown 해제" << endl;
-	}
+	//	_speed = 10.f;
+	//	_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
+	//	cout << "SpeedDown 해제" << endl;
+	//}
 
 	// BLIND 해제
 	if (_curPlayerItem[Player::ITEM::BLIND])
@@ -553,25 +583,26 @@ void Player::ClearDebuff()
 		cout << "Blind 해제" << endl;
 	}
 
-	// STUN 해제
-	if (_curPlayerItem[Player::ITEM::STUN])
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = new IdleState;
-		_state->Enter(*_player);
+	//// STUN 해제
+	//if (_curPlayerItem[Player::ITEM::STUN])
+	//{
+	//	_state->End(*_player);
+	//	delete _state;
+	//	_state = new IdleState;
+	//	_state->Enter(*_player);
 
-		_curPlayerItem[Player::ITEM::STUN] = false;
-		cout << "Stun 해제" << endl;
-	}
+	//	_curPlayerItem[Player::ITEM::STUN] = false;
+	//	_bStunned = false;
+	//	cout << "Stun 해제" << endl;
+	//}
 }
 
 bool Player::CheckShield()
 {
 	if (_curPlayerItem[Player::ITEM::SHIELD])
 	{
-		//_curPlayerItem[Player::ITEM::SHIELD] = false;
-		//_fShieldTime = 0.f;
+		_curPlayerItem[Player::ITEM::SHIELD] = false;
+		_fShieldTime = 0.f;
 		return true;
 	}
 
@@ -688,6 +719,23 @@ void Player::KeyCheck_Cheat()
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
 			_iItemCnt++;
 	}
+
+	// 디버프 확인 치트키
+	if (INPUT->GetButtonDown(KEY_TYPE::I))
+	{
+		cout << "SpeedUp: " << _curPlayerItem[ITEM::SPEED_UP] << endl;
+		cout << "Teleport: " << _curPlayerItem[ITEM::TELEPORT] << endl;
+		cout << "Shield: " << _curPlayerItem[ITEM::SHIELD] << endl;
+		cout << "SpeedDown: " << _curPlayerItem[ITEM::SPEED_DOWN] << endl;
+		cout << "Blind: " << _curPlayerItem[ITEM::BLIND] << endl;
+		cout << "DebuffOff: " << _curPlayerItem[ITEM::DEBUFF_OFF] << endl;
+		cout << "Stun: " << _curPlayerItem[ITEM::STUN] << endl;
+		cout << endl;
+	}
+
+	// 시간 늘리기 치트키
+	if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
+		GET_SINGLE(SceneManager)->ReStart();
 }
 
 void Player::Item_SpeedUp()
@@ -765,7 +813,6 @@ void Player::Item_DebuffOff()
 	// 유니크 아이템 - 자신에게 걸려있는 모든 디버프 해제
 	// 디버프: SPEED_DOWN, BLIND, STUN
 	ClearDebuff();
-
 	_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
 }
 

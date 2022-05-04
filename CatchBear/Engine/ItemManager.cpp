@@ -17,8 +17,6 @@
 
 void ItemManager::Init()
 {
-	_itemArray = { _commonItemList, _uniqueItemList, _treasureList };
-
 	_commonItemMesh = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");	// common
 	_uniqueItemMesh = GET_SINGLE(Resources)->LoadFBX(L"present4.bin");	// unique
 	_treasureMesh = GET_SINGLE(Resources)->LoadFBX(L"Diamond.bin");		// treasure
@@ -159,8 +157,8 @@ void ItemManager::CreateUniqueItem()
 
 				// Item enum값 설정 - ItemType, ItemEffect
 				static_pointer_cast<Item>(item->GetScript(0))->SetItemType(Item::ITEM_TYPE::UNIQUE);
-				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
-				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::STUN);
+				static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect((Item::ITEM_EFFECT)(i + 5));
+				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::STUN);
 				_uniqueItemList.push_back(item);
 
 				shared_ptr<Scene> scene = make_shared<Scene>();
@@ -216,10 +214,50 @@ void ItemManager::CreateTreasure()
 	}
 }
 
+void ItemManager::Reset()
+{
+	// 아이템 생성 타이머
+	_commonItemTimer = 0.f;
+	_uniqueItemTimer = 0.f;
+	_treasureTimer = 0.f;
+
+	// 아이템 좌표 인덱스 변수
+	_itemIndex = 0;
+
+	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	// 씬에 있는 아이템 삭제
+	for (auto& cItem = _commonItemList.begin(); cItem != _commonItemList.end(); ++cItem)
+	{
+		scene->RemoveGameObject(*cItem);
+		cout << "common Item 삭제" << endl;
+		//cItem = _commonItemList.erase(cItem);
+	}
+
+	for (auto& uItem = _uniqueItemList.begin(); uItem != _uniqueItemList.end(); ++uItem)
+	{
+		scene->RemoveGameObject(*uItem);
+		cout << "unique Item 삭제" << endl;
+		//uItem = _uniqueItemList.erase(uItem);
+	}
+	for (auto& t = _treasureList.begin(); t != _treasureList.end(); ++t)
+	{
+		scene->RemoveGameObject(*t);
+		cout << "treasure 삭제" << endl;
+		//t = _treasureList.erase(t);
+	}
+
+	// 아이템 컨테이너 비우기
+	_commonItemList.clear();
+	_uniqueItemList.clear();
+	_treasureList.clear();
+
+	int ab = 0;
+}
+
 void ItemManager::Collision_ItemToPlayer()
 {
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
-	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
 	if (mysession == NULL)
 		return;
@@ -233,7 +271,6 @@ void ItemManager::Collision_ItemToPlayer()
 		{
 			if ((*item)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
-				// 플레이어에게 아이템 추가 후 ItemManager의 ItemList에서도 삭제, 씬 안의 gameObject 벡터에서도 삭제
 				if (_player->GetPlayerID() == mysession->GetPlayerID())
 				{
 					Item::ITEM_EFFECT itemEffect = static_pointer_cast<Item>((*item)->GetScript(0))->GetItemEffect();
@@ -323,17 +360,17 @@ void ItemManager::Check_ItemPos()
 	}
 
 	// TeasuerList
-	for (auto& treasure = _treasureList.begin(); treasure != _treasureList.end();/* ++treasure*/)
+	for (auto& t = _treasureList.begin(); t != _treasureList.end();/* ++treasure*/)
 	{
-		if ((*treasure)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
+		if ((*t)->GetTransform()->GetLocalPosition() == _itemPosArray[_itemIndex])
 		{
 			_itemIndex++;
 
-			scene->RemoveGameObject(*treasure);
-			treasure = _treasureList.erase(treasure);
+			scene->RemoveGameObject(*t);
+			t = _treasureList.erase(t);
 			return;
 		}
 
-		else treasure++;
+		else t++;
 	}
 }

@@ -28,6 +28,7 @@ public:
 
 public:
 	void AddPlayerItem(Item::ITEM_EFFECT itemEffect);
+	void Reset();	// 다시하기 기능, 플레이어 정보 초기화
 
 	void SetCurItem(Player::ITEM curItem, bool value) { _curPlayerItem[curItem] = value; }	// 이 함수 사용해서 플레이어에게 아이템 효과 부여
 	void SetPlayerSpeed(float speed) { _speed = speed; }
@@ -74,7 +75,7 @@ private:
 private:
 	float	_speed = 10.f;
 	float	_originalSpeed = 10.f;
-	float	_dashSpeed = 20.f;
+	float	_dashSpeed = 15.f;
 	float	_slowSpeed = 5.f;
 	float	_rotSpeed = 2.f;
 

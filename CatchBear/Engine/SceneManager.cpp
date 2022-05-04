@@ -30,6 +30,7 @@
 #include "ServerSession.h"
 #include "ItemWindow.h"
 #include "ScoreUI.h"
+#include "ItemManager.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -78,6 +79,22 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 		return 0;
 
 	return findIt->second;
+}
+
+void SceneManager::ReStart()
+{
+	// 일단 제한시간 30초 늘리는게 더 빠를듯
+	_activeScene->AddCurTime(-30.f);
+
+	//// 플레이어
+	//static_pointer_cast<Player>(_activeScene->GetGameObject(L"Player1")->GetScript(0))->Reset();
+
+	//// 타이머
+	//_activeScene->SetCurTime(-1.0f);
+
+	//// 아이템
+	//GET_SINGLE(ItemManager)->Reset();
+	//_activeScene->RemoveItems();
 }
 
 
@@ -236,7 +253,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects3)
+		for (auto& gameObject : gameObjects3)\
 		{
 			gameObject->SetName(L"Player3");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));

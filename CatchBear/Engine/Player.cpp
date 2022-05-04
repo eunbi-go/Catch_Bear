@@ -658,13 +658,14 @@ void Player::Item_Shield()
 	if (_fShieldTime <= 5.f)
 	{
 		// ¾ÆÀÌÅÛ ½½·Ô¿¡¼­µµ Á¦°Å, ÄðÅ¸ÀÓ ·»´õ¸µµµ ³¡³»±â
-		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		//GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 
 	else if (_fShieldTime > 5.f)
 	{
 		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 }
 
@@ -715,6 +716,7 @@ void Player::SlowDown()
 	{
 		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
 		cout << "½¯µå ¹æ¾î: SPEED_DOWN" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 
@@ -734,6 +736,7 @@ void Player::Blinded()
 	{
 		_curPlayerItem[Player::ITEM::BLIND] = false;
 		cout << "½¯µå ¹æ¾î: BLIND" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 
@@ -770,6 +773,7 @@ void Player::Stunned()
 	{
 		_curPlayerItem[Player::ITEM::STUN] = false;
 		cout << "½¯µå ¹æ¾î: STUN" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 

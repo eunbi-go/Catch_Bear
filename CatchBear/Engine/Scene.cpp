@@ -54,13 +54,14 @@ void Scene::Update()
 		{
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
+			GET_SINGLE(CollidManager)->Update();
 
 			if (!_isFinish)
 			{
 				SetTimer();
 				GET_SINGLE(ItemManager)->Update();
 				GET_SINGLE(ScoreManager)->Update();
-				GET_SINGLE(CollidManager)->Update();
+				//GET_SINGLE(CollidManager)->Update();
 			}
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)

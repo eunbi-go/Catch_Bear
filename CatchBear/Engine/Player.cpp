@@ -739,6 +739,7 @@ void Player::Item_Shield()
 	{
 		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
+		printf("½¯µå ³¡\n");
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 }

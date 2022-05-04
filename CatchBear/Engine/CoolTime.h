@@ -13,6 +13,7 @@ public:
 
 public:
 	void SetInitData(const Vec3& pos, const Vec3& scale, int nSlot, int nCoolTime);
+	void Reset();
 
 private:
 	shared_ptr<GameObject>		_coolTime;

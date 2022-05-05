@@ -258,7 +258,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects3)\
+		for (auto& gameObject : gameObjects3)
 		{
 			gameObject->SetName(L"Player3");
 			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));

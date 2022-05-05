@@ -708,10 +708,8 @@ void Player::Item_Shield()
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
-//=======
-//		_fShieldTime = 0.f;
-//		cout << "½¯µå ³¡" << endl;
-//>>>>>>> ItemBug
+		_fShieldTime = 0.f;
+		cout << "½¯µå ³¡" << endl;
 	}
 }
 

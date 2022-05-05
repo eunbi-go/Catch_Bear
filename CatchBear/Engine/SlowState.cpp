@@ -60,7 +60,7 @@ PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
 void SlowState::Enter(GameObject& player)
 {
     player.GetAnimationController()->SetTrackAnimationSet(0, 1);
-    player.GetAnimationController()->SetTrackSpeed(0, 0.2f);
+    player.GetAnimationController()->SetTrackSpeed(0, 0.7f);
 }
 
 void SlowState::End(GameObject& player)

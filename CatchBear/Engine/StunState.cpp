@@ -59,6 +59,7 @@ PlayerState* StunState::Update(GameObject& player, STATE& ePlayer)
             break;
         default:
             return new IdleState;
+            ePlayer = STATE::IDLE;
             break;
         }
 

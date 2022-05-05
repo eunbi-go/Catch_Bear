@@ -148,12 +148,13 @@ enum STATE : int {
   DASHREST = 6,
   SLOW = 7,
   SLOWREST = 8,
+  SHIELD = 9,
   STATE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   STATE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
 };
 bool STATE_IsValid(int value);
 constexpr STATE STATE_MIN = IDLE;
-constexpr STATE STATE_MAX = SLOWREST;
+constexpr STATE STATE_MAX = SHIELD;
 constexpr int STATE_ARRAYSIZE = STATE_MAX + 1;
 
 const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* STATE_descriptor();

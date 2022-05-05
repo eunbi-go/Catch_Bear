@@ -84,9 +84,15 @@ private:
 
 	POINT	_mousePos = { 0, 0 };
 	RECT	_slotRt[3] = { {100, 620, 200, 710}, {220, 620, 320, 710}, {340, 620, 440, 710} };
+	RECT	_endRt = { 470, 80, 680, 130 };
+	RECT	_restartRt = { 770, 650, 950, 700 };
+
 	float	_toStartTime = 0.0f;
 public:
 	bool	_isStart = false;
 	int		_tagNum = -1;
 	bool	_isFinish = false;
+	bool	_isEnd = false;
+
+	bool	_FinalPlayerEnter = false;
 };

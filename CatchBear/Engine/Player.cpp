@@ -70,72 +70,6 @@ void Player::LateUpdate()
 		_state->Enter(*_player);
 	}
 
-#pragma region 애니메이션동기화
-	switch (_player->_curState)
-	{
-	case STATE::IDLE:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::IDLE);
-		if (gPacketControl % 80 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::WALK:
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::WALK);
-		break;
-	case STATE::JUMP:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::JUMP);
-		if (gPacketControl % 10 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::ATTACK:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::ATTACK);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	case STATE::DASH:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::DASH);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
-	}
-#pragma endregion 애니메이션동기화
-	////////////////////////////////////////////////////////////////////
-
 	//Vec3 pos = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
 
@@ -283,17 +217,6 @@ void Player::KeyCheck()
 		}
 		break;
 	}
-	case STATE::STUN:
-	{
-		pkt.set_playerid(mysession->GetPlayerID());
-		pkt.set_state(Protocol::STUN);
-		if (gPacketControl % 60 == 1)
-		{
-			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-			mysession->Send(sendBuffer);
-		}
-		break;
-	}
 	case STATE::DASH:
 	{
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -347,6 +270,9 @@ void Player::Move()
 	if (isFirstEnter) {
 		Item_Stun();
 		isFirstEnter = false;
+
+		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+			scene->_FinalPlayerEnter = true;
 	}
 
 	for (auto& gameObject : gameObjects)
@@ -372,7 +298,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
@@ -391,7 +317,7 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 3 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
@@ -775,12 +701,14 @@ void Player::Item_Shield()
 	if (_fShieldTime <= 5.f)
 	{
 		// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
-		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		//GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 
 	else if (_fShieldTime > 5.f)
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
+		printf("쉴드 끝\n");
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		_fShieldTime = 0.f;
 		cout << "쉴드 끝" << endl;
 	}
@@ -832,6 +760,7 @@ void Player::SlowDown()
 	{
 		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
 		cout << "쉴드 방어: SPEED_DOWN" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 
@@ -851,6 +780,7 @@ void Player::Blinded()
 	{
 		_curPlayerItem[Player::ITEM::BLIND] = false;
 		cout << "쉴드 방어: BLIND" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 
@@ -887,6 +817,7 @@ void Player::Stunned()
 	{
 		_curPlayerItem[Player::ITEM::STUN] = false;
 		cout << "쉴드 방어: STUN" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
 	}
 

@@ -14,12 +14,15 @@
 #include "ServerSession.h"
 
 #define MAX_LOADSTRING 100
+wstring MyIPAddr;
 
 // 전역 변수:
 WindowInfo GWindowInfo;
 HINSTANCE hInst;                                // 현재 인스턴스입니다.
 WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입니다.
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
+
+unique_ptr<Game> game;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -56,7 +59,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     GWindowInfo.height = 800;
     GWindowInfo.windowed = true;
 
-    unique_ptr<Game> game = make_unique<Game>();    // 아래서 delete할 필요x 알아서 삭제해줌
+    game = make_unique<Game>();    // 아래서 delete할 필요x 알아서 삭제해줌
     game->Init(GWindowInfo);
 
     // 쓰레드 만들기
@@ -64,17 +67,21 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ServerPacketHandler::Init();
     //this_thread::sleep_for(1s);
 
+    cout << "ip주소 입력: ";
+    wcin >> MyIPAddr;
+
+
     ClientServiceRef service = MakeShared<ClientService>(
-        NetAddress(L"127.0.0.1", 7777),
-        //NetAddress(L"221.165.49.57", 7777),
+        //NetAddress(L"127.0.0.1", 7777),
+        NetAddress(MyIPAddr, 7777),
         MakeShared<IocpCore>(),
         MakeShared<ServerSession>, // TODO : SessionManager 등
-        10);
+        100);
 
     ASSERT_CRASH(service->Start());
 
     for (int32 i = 0; i < 5; i++)
-    {
+    {  
         GThreadManager->Launch([=]()
             {
                 while (true)
@@ -89,6 +96,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     {
         if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
         {
+            
             if (msg.message == WM_QUIT)
                 break;
 
@@ -96,14 +104,16 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
             {
                 TranslateMessage(&msg);
                 DispatchMessage(&msg);
+                
             }
         }
 
         // TODO
         game->Update();
-        //GThreadManager->Join();
+        if (game->_isEnd)
+            SendMessage(msg.hwnd, WM_CLOSE, 0, 0);
     }
-
+    GThreadManager->Join();
     return (int) msg.wParam;
 }
 

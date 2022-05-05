@@ -31,16 +31,16 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "BEAR3\020\003*O\n\nObjectType\022\n\n\006PLAYER\020\000\022\010\n\004WAL"
   "L\020\001\022\016\n\nCOMMONITEM\020\002\022\r\n\tUNIQEITEM\020\003\022\014\n\010TR"
   "EASURE\020\004*3\n\007MoveDir\022\t\n\005FRONT\020\000\022\010\n\004BACK\020\001"
-  "\022\010\n\004LEFT\020\002\022\t\n\005RIGHT\020\003*k\n\005STATE\022\010\n\004IDLE\020\000"
+  "\022\010\n\004LEFT\020\002\022\t\n\005RIGHT\020\003*w\n\005STATE\022\010\n\004IDLE\020\000"
   "\022\010\n\004WALK\020\001\022\010\n\004DASH\020\002\022\010\n\004JUMP\020\003\022\n\n\006ATTACK"
   "\020\004\022\010\n\004STUN\020\005\022\014\n\010DASHREST\020\006\022\010\n\004SLOW\020\007\022\014\n\010"
-  "SLOWREST\020\010*E\n\rDEBUFITEMTYPE\022\023\n\017DEBUF_SPE"
-  "EDDOWN\020\000\022\017\n\013DEBUF_BLIND\020\001\022\016\n\nDEBUF_STUN\020"
-  "\002b\006proto3"
+  "SLOWREST\020\010\022\n\n\006SHIELD\020\t*E\n\rDEBUFITEMTYPE\022"
+  "\023\n\017DEBUF_SPEEDDOWN\020\000\022\017\n\013DEBUF_BLIND\020\001\022\016\n"
+  "\nDEBUF_STUN\020\002b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Enum_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Enum_2eproto = {
-  false, false, 449, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
+  false, false, 461, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
   &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
   nullptr, file_level_enum_descriptors_Enum_2eproto, file_level_service_descriptors_Enum_2eproto,
@@ -116,6 +116,7 @@ bool STATE_IsValid(int value) {
     case 6:
     case 7:
     case 8:
+    case 9:
       return true;
     default:
       return false;

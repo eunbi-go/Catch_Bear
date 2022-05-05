@@ -215,19 +215,22 @@ void ItemSlotManager::UseShieldItem()
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 		ResetItemSlot(1);
-		GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[0]->_isRender = false;
+		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[0];
+		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();
 	}
 	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT::SHIELD)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 		ResetItemSlot(2);
-		GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[1]->_isRender = false;
+		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[1];
+		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();
 	}
 	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT::SHIELD)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 		ResetItemSlot(3);
-		GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[2]->_isRender = false;
+		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[2];
+		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();
 	}
 }
 

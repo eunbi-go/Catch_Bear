@@ -26,6 +26,8 @@ enum : uint16
 	PKT_S_PLAYERINFO = 1017,
 	PKT_C_STATE = 1018,
 	PKT_S_STATE = 1019,
+	PKT_C_PLUSTIME = 1020,
+	PKT_S_PLUSTIME = 1021,
 };
 
 // Custom Handlers
@@ -40,6 +42,7 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt);
 bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLIDPLAYERTOPLAYER& pkt);
 bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt);
 bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt);
+bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt);
 
 class ServerPacketHandler
 {
@@ -58,6 +61,7 @@ public:
 		GPacketHandler[PKT_S_COLLIDPLAYERTOPLAYER] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_COLLIDPLAYERTOPLAYER>(Handle_S_COLLIDPLAYERTOPLAYER, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAYERINFO] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAYERINFO>(Handle_S_PLAYERINFO, session, buffer, len); };
 		GPacketHandler[PKT_S_STATE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STATE>(Handle_S_STATE, session, buffer, len); };
+		GPacketHandler[PKT_S_PLUSTIME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLUSTIME>(Handle_S_PLUSTIME, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -75,6 +79,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_COLLIDPLAYERTOPLAYER& pkt) { return MakeSendBuffer(pkt, PKT_C_COLLIDPLAYERTOPLAYER); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLAYERINFO& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAYERINFO); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_STATE& pkt) { return MakeSendBuffer(pkt, PKT_C_STATE); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_PLUSTIME& pkt) { return MakeSendBuffer(pkt, PKT_C_PLUSTIME); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

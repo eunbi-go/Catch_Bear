@@ -31,6 +31,7 @@
 #include "ItemWindow.h"
 #include "ScoreUI.h"
 #include "ItemManager.h"
+#include "ServerPacketHandler.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -84,7 +85,14 @@ uint8 SceneManager::LayerNameToIndex(const wstring& name)
 void SceneManager::ReStart()
 {
 	// 일단 제한시간 30초 늘리는게 더 빠를듯
-	_activeScene->AddCurTime(-30.f);
+	//_activeScene->AddCurTime(-30.f);
+
+	////////////// 서버로 늘어난 시간 동기화시킴 //////////////
+	Protocol::C_PLUSTIME pkt;
+	pkt.set_playerid(g_EnterPlayerCnt-1);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
+	///////////////////////////////////////////////////////////
 
 	//// 플레이어
 	//static_pointer_cast<Player>(_activeScene->GetGameObject(L"Player1")->GetScript(0))->Reset();

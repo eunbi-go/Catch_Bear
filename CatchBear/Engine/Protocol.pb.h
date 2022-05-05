@@ -48,7 +48,7 @@ struct TableStruct_Protocol_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[20]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[22]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -77,6 +77,9 @@ extern C_MOVEDefaultTypeInternal _C_MOVE_default_instance_;
 class C_PLAYERINFO;
 struct C_PLAYERINFODefaultTypeInternal;
 extern C_PLAYERINFODefaultTypeInternal _C_PLAYERINFO_default_instance_;
+class C_PLUSTIME;
+struct C_PLUSTIMEDefaultTypeInternal;
+extern C_PLUSTIMEDefaultTypeInternal _C_PLUSTIME_default_instance_;
 class C_STATE;
 struct C_STATEDefaultTypeInternal;
 extern C_STATEDefaultTypeInternal _C_STATE_default_instance_;
@@ -107,6 +110,9 @@ extern S_MOVEDefaultTypeInternal _S_MOVE_default_instance_;
 class S_PLAYERINFO;
 struct S_PLAYERINFODefaultTypeInternal;
 extern S_PLAYERINFODefaultTypeInternal _S_PLAYERINFO_default_instance_;
+class S_PLUSTIME;
+struct S_PLUSTIMEDefaultTypeInternal;
+extern S_PLUSTIMEDefaultTypeInternal _S_PLUSTIME_default_instance_;
 class S_STATE;
 struct S_STATEDefaultTypeInternal;
 extern S_STATEDefaultTypeInternal _S_STATE_default_instance_;
@@ -125,6 +131,7 @@ template<> ::Protocol::C_ENTER_LOBBY* Arena::CreateMaybeMessage<::Protocol::C_EN
 template<> ::Protocol::C_LOGIN* Arena::CreateMaybeMessage<::Protocol::C_LOGIN>(Arena*);
 template<> ::Protocol::C_MOVE* Arena::CreateMaybeMessage<::Protocol::C_MOVE>(Arena*);
 template<> ::Protocol::C_PLAYERINFO* Arena::CreateMaybeMessage<::Protocol::C_PLAYERINFO>(Arena*);
+template<> ::Protocol::C_PLUSTIME* Arena::CreateMaybeMessage<::Protocol::C_PLUSTIME>(Arena*);
 template<> ::Protocol::C_STATE* Arena::CreateMaybeMessage<::Protocol::C_STATE>(Arena*);
 template<> ::Protocol::C_USE_DEBUFITEM* Arena::CreateMaybeMessage<::Protocol::C_USE_DEBUFITEM>(Arena*);
 template<> ::Protocol::C_USE_STUN* Arena::CreateMaybeMessage<::Protocol::C_USE_STUN>(Arena*);
@@ -135,6 +142,7 @@ template<> ::Protocol::S_ENTER_LOBBY* Arena::CreateMaybeMessage<::Protocol::S_EN
 template<> ::Protocol::S_LOGIN* Arena::CreateMaybeMessage<::Protocol::S_LOGIN>(Arena*);
 template<> ::Protocol::S_MOVE* Arena::CreateMaybeMessage<::Protocol::S_MOVE>(Arena*);
 template<> ::Protocol::S_PLAYERINFO* Arena::CreateMaybeMessage<::Protocol::S_PLAYERINFO>(Arena*);
+template<> ::Protocol::S_PLUSTIME* Arena::CreateMaybeMessage<::Protocol::S_PLUSTIME>(Arena*);
 template<> ::Protocol::S_STATE* Arena::CreateMaybeMessage<::Protocol::S_STATE>(Arena*);
 template<> ::Protocol::S_USE_DEBUFITEM* Arena::CreateMaybeMessage<::Protocol::S_USE_DEBUFITEM>(Arena*);
 template<> ::Protocol::S_USE_STUN* Arena::CreateMaybeMessage<::Protocol::S_USE_STUN>(Arena*);
@@ -3137,6 +3145,270 @@ class S_STATE final :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
 };
+// -------------------------------------------------------------------
+
+class C_PLUSTIME final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_PLUSTIME) */ {
+ public:
+  inline C_PLUSTIME() : C_PLUSTIME(nullptr) {}
+  ~C_PLUSTIME() override;
+  explicit constexpr C_PLUSTIME(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  C_PLUSTIME(const C_PLUSTIME& from);
+  C_PLUSTIME(C_PLUSTIME&& from) noexcept
+    : C_PLUSTIME() {
+    *this = ::std::move(from);
+  }
+
+  inline C_PLUSTIME& operator=(const C_PLUSTIME& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline C_PLUSTIME& operator=(C_PLUSTIME&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const C_PLUSTIME& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const C_PLUSTIME* internal_default_instance() {
+    return reinterpret_cast<const C_PLUSTIME*>(
+               &_C_PLUSTIME_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    20;
+
+  friend void swap(C_PLUSTIME& a, C_PLUSTIME& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(C_PLUSTIME* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(C_PLUSTIME* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline C_PLUSTIME* New() const final {
+    return new C_PLUSTIME();
+  }
+
+  C_PLUSTIME* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<C_PLUSTIME>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const C_PLUSTIME& from);
+  void MergeFrom(const C_PLUSTIME& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(C_PLUSTIME* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.C_PLUSTIME";
+  }
+  protected:
+  explicit C_PLUSTIME(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlayeridFieldNumber = 1,
+  };
+  // uint64 playerid = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.C_PLUSTIME)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
+class S_PLUSTIME final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_PLUSTIME) */ {
+ public:
+  inline S_PLUSTIME() : S_PLUSTIME(nullptr) {}
+  ~S_PLUSTIME() override;
+  explicit constexpr S_PLUSTIME(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  S_PLUSTIME(const S_PLUSTIME& from);
+  S_PLUSTIME(S_PLUSTIME&& from) noexcept
+    : S_PLUSTIME() {
+    *this = ::std::move(from);
+  }
+
+  inline S_PLUSTIME& operator=(const S_PLUSTIME& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline S_PLUSTIME& operator=(S_PLUSTIME&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const S_PLUSTIME& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const S_PLUSTIME* internal_default_instance() {
+    return reinterpret_cast<const S_PLUSTIME*>(
+               &_S_PLUSTIME_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    21;
+
+  friend void swap(S_PLUSTIME& a, S_PLUSTIME& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(S_PLUSTIME* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(S_PLUSTIME* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline S_PLUSTIME* New() const final {
+    return new S_PLUSTIME();
+  }
+
+  S_PLUSTIME* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<S_PLUSTIME>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const S_PLUSTIME& from);
+  void MergeFrom(const S_PLUSTIME& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(S_PLUSTIME* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.S_PLUSTIME";
+  }
+  protected:
+  explicit S_PLUSTIME(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kPlayeridFieldNumber = 1,
+  };
+  // uint64 playerid = 1;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.S_PLUSTIME)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
 // ===================================================================
 
 
@@ -4319,9 +4591,61 @@ inline void S_STATE::set_state(::Protocol::STATE value) {
   // @@protoc_insertion_point(field_set:Protocol.S_STATE.state)
 }
 
+// -------------------------------------------------------------------
+
+// C_PLUSTIME
+
+// uint64 playerid = 1;
+inline void C_PLUSTIME::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_PLUSTIME::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_PLUSTIME::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_PLUSTIME.playerid)
+  return _internal_playerid();
+}
+inline void C_PLUSTIME::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void C_PLUSTIME::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_PLUSTIME.playerid)
+}
+
+// -------------------------------------------------------------------
+
+// S_PLUSTIME
+
+// uint64 playerid = 1;
+inline void S_PLUSTIME::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_PLUSTIME::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_PLUSTIME::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_PLUSTIME.playerid)
+  return _internal_playerid();
+}
+inline void S_PLUSTIME::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void S_PLUSTIME::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_PLUSTIME.playerid)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

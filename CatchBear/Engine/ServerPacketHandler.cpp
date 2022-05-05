@@ -442,6 +442,13 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 	return true;
 }
 
+bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt)
+{
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	scene->AddCurTime(-30.f);
+	return true;
+}
+
 
 
 

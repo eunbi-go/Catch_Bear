@@ -134,3 +134,13 @@ message S_STATE
 	uint64 playerid = 1;
 	STATE state = 2;
 }
+
+message C_PLUSTIME
+{
+	uint64 playerid = 1;
+}
+
+message S_PLUSTIME
+{
+	uint64 playerid = 1;
+}

@@ -6,7 +6,8 @@ public:
 	void Leave(PlayerRef player);
 	void Broadcast(SendBufferRef sendBuffer);
 	void ExceptBroadcast(uint64 exceptPlayerID, SendBufferRef sendBuffer);
-	
+	void OnlySendPlayer(uint64 sendPlayerID, SendBufferRef sendBuffer);
+
 public:
 	bool IsAlreadyEnterPlayer(uint64 player);
 	uint64 GetEnterPlayerNum();

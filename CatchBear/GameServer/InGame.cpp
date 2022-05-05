@@ -39,6 +39,12 @@ void InGame::ExceptBroadcast(uint64 exceptPlayerID, SendBufferRef sendBuffer)
 	}
 }
 
+void InGame::OnlySendPlayer(uint64 sendPlayerID, SendBufferRef sendBuffer)
+{
+	WRITE_LOCK;
+	_players[sendPlayerID]->ownerSession->Send(sendBuffer);
+}
+
 bool InGame::IsAlreadyEnterPlayer(uint64 playerId)
 {
 	for (auto& p : _players)

@@ -67,13 +67,13 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
     ServerPacketHandler::Init();
     //this_thread::sleep_for(1s);
 
-    cout << "ip주소 입력: ";
-    wcin >> MyIPAddr;
+    //cout << "ip주소 입력: ";
+    //wcin >> MyIPAddr;
 
 
     ClientServiceRef service = MakeShared<ClientService>(
-        //NetAddress(L"127.0.0.1", 7777),
-        NetAddress(MyIPAddr, 7777),
+        NetAddress(L"127.0.0.1", 7777),
+        //NetAddress(MyIPAddr, 7777),
         MakeShared<IocpCore>(),
         MakeShared<ServerSession>, // TODO : SessionManager 등
         100);

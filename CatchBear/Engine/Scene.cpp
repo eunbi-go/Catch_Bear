@@ -54,13 +54,14 @@ void Scene::Update()
 		{
 			CheckMouse();
 			GET_SINGLE(Input)->Update();
+			GET_SINGLE(CollidManager)->Update();
 
 			if (!_isFinish)
 			{
 				SetTimer();
 				GET_SINGLE(ItemManager)->Update();
 				GET_SINGLE(ScoreManager)->Update();
-				GET_SINGLE(CollidManager)->Update();
+				//GET_SINGLE(CollidManager)->Update();
 			}
 
 			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
@@ -502,6 +503,20 @@ void Scene::RemoveGameObject(shared_ptr<GameObject> gameObject)
 	}
 }
 
+void Scene::RemoveItems()
+{
+	for (auto item = _gameObjects.begin(); item != _gameObjects.end(); )
+	{
+		if ((*item)->GetName() == L"CommonItem" || (*item)->GetName() == L"UniqueItem" || (*item)->GetName() == L"Treasure")
+		{
+			item = _gameObjects.erase(item);
+			int a = 0;
+		}
+
+		else item++;
+	}
+}
+
 shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 {
 	for (int i = 0; i < _gameObjects.size(); ++i)
@@ -513,4 +528,10 @@ shared_ptr<GameObject> Scene::GetGameObject(wstring name)
 		}
 	}
 	return NULL;
+}
+
+void Scene::AddCurTime(float _time)
+{
+	if (_curTime + _time <= 0) _curTime = 0.f;
+	else _curTime += _time;
 }

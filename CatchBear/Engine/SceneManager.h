@@ -24,6 +24,8 @@ public:
 	const wstring& IndexToLayerName(uint8 index) { return _layerNames[index]; }
 	uint8 LayerNameToIndex(const wstring& name);
 
+	void ReStart();	// 게임 끝나고 다시하기 버튼 누르면 실행되는 함수
+
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 	bool IsEnd();

@@ -14,7 +14,7 @@ wstring MyIpAddr;
 int main()
 {
 	ClientPacketHandler::Init();
-	
+
 	//cout << "서버 ip주소 입력: ";
 	//wcin >> MyIpAddr;
 

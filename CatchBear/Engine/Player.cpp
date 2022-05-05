@@ -621,29 +621,29 @@ void Player::KeyCheck_Cheat()
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::V))
 	{
-		_playerItemArr[0] = Item::ITEM_EFFECT::SPEED_DOWN;
-		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::SPEED_DOWN);
-		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
-			_iItemCnt++;
-	}
-	if (INPUT->GetButtonDown(KEY_TYPE::B))
-	{
-		_playerItemArr[0] = Item::ITEM_EFFECT::BLIND;
-		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::BLIND);
-		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
-			_iItemCnt++;
-	}
-	if (INPUT->GetButtonDown(KEY_TYPE::N))
-	{
 		_playerItemArr[0] = Item::ITEM_EFFECT::DEBUFF_OFF;
 		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::DEBUFF_OFF);
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
 			_iItemCnt++;
 	}
-	if (INPUT->GetButtonDown(KEY_TYPE::M))
+	if (INPUT->GetButtonDown(KEY_TYPE::B))
 	{
 		_playerItemArr[0] = Item::ITEM_EFFECT::STUN;
 		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::STUN);
+		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
+			_iItemCnt++;
+	}
+	if (INPUT->GetButtonDown(KEY_TYPE::N))
+	{
+		_playerItemArr[0] = Item::ITEM_EFFECT::SPEED_DOWN;
+		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::SPEED_DOWN);
+		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
+			_iItemCnt++;
+	}
+	if (INPUT->GetButtonDown(KEY_TYPE::M))
+	{
+		_playerItemArr[0] = Item::ITEM_EFFECT::BLIND;
+		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::BLIND);
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
 			_iItemCnt++;
 	}
@@ -709,12 +709,9 @@ void Player::Item_Shield()
 	else if (_fShieldTime > 5.f)
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
-		printf("½¯µå ³¡\n");
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
-//=======
-//		_fShieldTime = 0.f;
-//		cout << "½¯µå ³¡" << endl;
-//>>>>>>> ItemBug
+		_fShieldTime = 0.f;
+		cout << "½¯µå ³¡" << endl;
 	}
 }
 

@@ -706,6 +706,7 @@ void Player::Item_Shield()
 
 	else if (_fShieldTime > 5.f)
 	{
+		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		printf("½¯µå ³¡\n");
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();

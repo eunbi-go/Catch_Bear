@@ -210,24 +210,24 @@ void ItemSlotManager::ResetItemSlot(int nSlot)
 void ItemSlotManager::UseShieldItem()
 {
 	// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
-
+	int k = 0;
 	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT::SHIELD)
 	{
-		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->ResetItemSlot();
 		ResetItemSlot(1);
 		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[0];
 		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();
 	}
 	else if (static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetItem() == Item::ITEM_EFFECT::SHIELD)
 	{
-		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+		static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->ResetItemSlot();
 		ResetItemSlot(2);
 		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[1];
 		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();
 	}
 	else if (static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetItem() == Item::ITEM_EFFECT::SHIELD)
 	{
-		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+		static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->ResetItemSlot();
 		ResetItemSlot(3);
 		shared_ptr<GameObject> coolTime = GET_SINGLE(SceneManager)->GetActiveScene()->GetItemCoolTimes()[2];
 		static_pointer_cast<CoolTime>(coolTime->GetScript(0))->Reset();

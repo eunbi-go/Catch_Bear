@@ -313,7 +313,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->SetName(L"PlayerTag2");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -2.f, 5.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
@@ -327,7 +327,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->SetName(L"PlayerTag3");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(5.f, -2.f, 10.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));

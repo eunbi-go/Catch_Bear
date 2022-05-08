@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
 #include "SceneManager.h"
+#include "ItemSlotManager.h"
 #include "Input.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -215,8 +216,12 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
 	if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+	{
+		//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		//static_pointer_cast<Player>(_player->GetScript(0))->SetSheildTime(0.f);
 		return true;
-
+	}
 	switch (pkt.itemtype())
 	{
 	case Protocol::DEBUF_BLIND:
@@ -247,7 +252,12 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 			continue;
 
 		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+		{
+			//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
+			GET_SINGLE(ItemSlotManager)->UseShieldItem();
+			//static_pointer_cast<Player>(_player->GetScript(0))->SetSheildTime(0.f);
 			continue;
+		}
 
 		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
 		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)

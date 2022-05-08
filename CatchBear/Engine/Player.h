@@ -35,6 +35,7 @@ public:
 	void SetPlayerStunned(bool value) { _bStunned = value; }
 	void AddPlayerScore(int score) { _iScore += score; }
 	void SetPlayerScore(int score) { _iScore = score; }
+	void SetSheildTime(float time) { _fShieldTime = time; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerSpeed() { return _speed; }

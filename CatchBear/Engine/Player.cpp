@@ -426,20 +426,20 @@ void Player::UseItem(int itemNum)
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
 		break;
 	case Item::ITEM_EFFECT::SPEED_DOWN:
-		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
-		Item_SpeedDown();
+		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
+		//Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
-		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
-		Item_Blind();
+		_curPlayerItem[Player::ITEM::BLIND] = true;	// test
+		//Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		ClearDebuff();
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		Item_Stun();
+		_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		//Item_Stun();
 		break;
 	}
 }

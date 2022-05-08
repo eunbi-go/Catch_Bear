@@ -67,7 +67,7 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF) 
+		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
 		{
 			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
@@ -91,7 +91,12 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
-
+		else if (item == Item::ITEM_EFFECT::NONE) {
+			int k = 0;
+			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
+			ResetItemSlot(nSlot);
+			return;
+		}
 
 		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
 		pos = _itemSlot1->GetTransform()->GetLocalPosition();
@@ -135,8 +140,14 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
+		else if (item == Item::ITEM_EFFECT::NONE) {
+			int k = 0;
+			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
+			ResetItemSlot(nSlot);
+			return;
+		}
 
-		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
+		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->GetCoolTime();
 		pos = _itemSlot2->GetTransform()->GetLocalPosition();
 		scale = _itemSlot2->GetTransform()->GetLocalScale();
 		//static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime2")->GetScript(0))
@@ -179,8 +190,14 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
+		else if (item == Item::ITEM_EFFECT::NONE) {
+			int k = 0;
+			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
+			ResetItemSlot(nSlot);
+			return;
+		}
 
-		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetCoolTime();
+		fCoolTime = static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->GetCoolTime();
 		pos = _itemSlot3->GetTransform()->GetLocalPosition();
 		scale = _itemSlot3->GetTransform()->GetLocalScale();
 		//static_pointer_cast<CoolTime>(GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemCoolTime3")->GetScript(0))

@@ -531,6 +531,7 @@ bool Player::CheckShield()
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		_fShieldTime = 0.f;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return true;
 	}
 
@@ -702,17 +703,14 @@ void Player::Item_Shield()
 
 	if (_fShieldTime <= 5.f)
 	{
-		// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
-		//GET_SINGLE(ItemSlotManager)->UseShieldItem();
 	}
 
 	else if (_fShieldTime > 5.f)
 	{
-		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		_fShieldTime = 0.f;
-		cout << "쉴드 끝" << endl;
+		cout << "5초 지나고 쉴드 끝" << endl;
 	}
 }
 

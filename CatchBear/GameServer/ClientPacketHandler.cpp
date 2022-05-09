@@ -209,7 +209,6 @@ bool Handle_C_USE_STUN(PacketSessionRef& session, Protocol::C_USE_STUN& pkt)
 	s_pkt.set_fromplayerid(pkt.fromplayerid());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
 	GInGame.Broadcast(sendBuffer);
-
 	return true;
 }
 

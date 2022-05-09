@@ -244,33 +244,43 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 	//_player = scene->GetPlayer(mysession->GetPlayerID());
 
 	PlayerState* state;
+	
 	for (int i = 0; i < scene->GetEnterPlayerNum(); ++i)
 	{
 		_player = scene->GetPlayer(i);
 
 		if (_player->GetPlayerID() == pkt.fromplayerid())
 			continue;
-
 		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
 		{
 			//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
 			GET_SINGLE(ItemSlotManager)->UseShieldItem();
 			//static_pointer_cast<Player>(_player->GetScript(0))->SetSheildTime(0.f);
-			continue;
-		}
 
-		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
-		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
-		{
-			state = new StunState;
-			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
-			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
-			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
-			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
-			static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+			_player->_state->End(*_player);
+			state = new IdleState;
+			delete _player->_state;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::IDLE;
+
+			return true;
 		}
-		
+		else
+		{
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
+			{			
+				state = new StunState;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+				static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+			}
+		}
 	}
+
 	return true;
 }
 

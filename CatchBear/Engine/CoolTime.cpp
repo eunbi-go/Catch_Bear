@@ -24,7 +24,7 @@ void CoolTime::Update()
 	{
 		if (_fCoolTime >= 0.f)
 		{
-			_fCoolTime -= DELTA_TIME * 0.8f;
+			_fCoolTime -= DELTA_TIME /** 0.8f*/;
 			float fScale = 1.f - (_fCoolTime / 5.f);
 
 			Vec3	localScale = GetGameObject()->GetTransform()->GetLocalScale();

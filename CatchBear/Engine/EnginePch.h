@@ -22,6 +22,8 @@ namespace fs = std::filesystem;
 
 #include "d3dx12.h"
 #include "SimpleMath.h"
+#include <d3d11.h>
+#include <d2d1_1.h>
 #include <d3d12.h>
 #include <wrl.h>
 #include <d3dcompiler.h>

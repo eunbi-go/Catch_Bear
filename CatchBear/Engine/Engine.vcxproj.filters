@@ -245,6 +245,7 @@
     </ClCompile>
     <ClCompile Include="ScoreUIManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
+    <ClCompile Include="FontDevice.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -459,6 +460,7 @@
     </ClInclude>
     <ClInclude Include="ScoreUIManager.h" />
     <ClInclude Include="ScoreUI.h" />
+    <ClInclude Include="FontDevice.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

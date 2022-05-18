@@ -97,7 +97,7 @@ private:
 	array<Item::ITEM_EFFECT, 3> _playerItemArr;	// 플레이어가 가지고 있는 아이템의 효과를 넣어두는 어레이(최대 3개)
 
 private:
-	STATE	_curState = STATE::END;
+	STATE	_curStatePlayer = STATE::END;
 	STATE	_preState = STATE::END;
 
 public:

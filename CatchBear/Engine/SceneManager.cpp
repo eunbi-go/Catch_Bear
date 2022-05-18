@@ -32,6 +32,8 @@
 #include "ScoreUI.h"
 #include "ItemManager.h"
 #include "ServerPacketHandler.h"
+#include "FontDevice.h"
+#include "Engine.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -556,6 +558,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		obj->AddComponent(meshRenderer);
 		scene->AddGameObject(obj);
 	}
+#pragma endregion
+
+#pragma region font
+	shared_ptr<GameObject> font = make_shared<FontDevice>(2);
+	static_pointer_cast<FontDevice>(font)->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
 #pragma endregion
 
 #pragma region TimerUI

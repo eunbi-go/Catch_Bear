@@ -25,6 +25,10 @@ namespace fs = std::filesystem;
 #include <d3d11.h>
 #include <d2d1_1.h>
 #include <d3d12.h>
+#include <dcommon.h>
+#include <dwrite.h>
+#include <d3d11on12.h>
+#include <d2d1_3.h>
 #include <wrl.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
@@ -40,8 +44,11 @@ using namespace Microsoft::WRL;
 
 // °¢Á¾ lib
 #pragma comment(lib, "d3d12")
-#pragma comment(lib, "dxgi")
-#pragma comment(lib, "dxguid")
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "d3dcompiler")
 
 #ifdef _DEBUG
@@ -115,6 +122,11 @@ enum
 
 	UAV_REGISTER_COUNT = static_cast<uint8>(UAV_REGISTER::END) - CBV_SRV_REGISTER_COUNT,
 	TOTAL_REGISTER_COUNT = CBV_SRV_REGISTER_COUNT + UAV_REGISTER_COUNT
+};
+
+enum STATE
+{
+	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW, SLOW_REST, STUN, END
 };
 
 struct WindowInfo

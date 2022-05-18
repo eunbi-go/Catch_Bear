@@ -60,8 +60,8 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	PlayerState* state = _state->Update(*_player, _curState);
-	_player->_curState = _curState;
+	PlayerState* state = _state->Update(*_player, _curStatePlayer);
+	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
 	{
@@ -152,7 +152,7 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
-	PlayerState* state = _state->KeyCheck(*_player, _curState);
+	PlayerState* state = _state->KeyCheck(*_player, _curStatePlayer);
 
 
 	// Item KeyCheck /////////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ void Player::KeyCheck()
 
 	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
 
-	_player->_curState = _curState;
+	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
 	{

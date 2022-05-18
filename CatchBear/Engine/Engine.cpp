@@ -84,6 +84,8 @@ void Engine::Render()
 	RenderBegin();
 
 	GET_SINGLE(SceneManager)->Render();
+	uint8 index = _swapChain->GetBackBufferIndex();
+	_fontDevice->Render(index);
 
 	RenderEnd();
 }

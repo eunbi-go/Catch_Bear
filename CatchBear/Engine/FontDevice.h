@@ -16,6 +16,9 @@ public:
 	void Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12CommandQueue> pd3dCommandQueue);
 	void Resize(UINT nWidth, UINT nHeight);
 
+public:
+	void Render(UINT nFrame);
+
 private:
 	UINT GetRenderTargetsCount() { return static_cast<UINT>(_vWrappedRenderTargets.size()); }
 		

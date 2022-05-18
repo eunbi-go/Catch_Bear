@@ -27,6 +27,7 @@ public:
 	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; }
 	shared_ptr<GraphicsDescriptorHeap> GetGraphicsDescHeap() { return _graphicsDescHeap; }
 	shared_ptr<ComputeDescriptorHeap> GetComputeDescHeap() { return _computeDescHeap; }
+	shared_ptr<FontDevice>	GetFontDevice() { return _fontDevice; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
 	shared_ptr<RenderTargetGroup> GetRTGroup(RENDER_TARGET_GROUP_TYPE type) { return _rtGroups[static_cast<uint8>(type)]; }
@@ -58,7 +59,7 @@ private:
 	shared_ptr<RootSignature> _rootSignature = make_shared<RootSignature>();
 	shared_ptr<GraphicsDescriptorHeap> _graphicsDescHeap = make_shared<GraphicsDescriptorHeap>();
 	shared_ptr<ComputeDescriptorHeap> _computeDescHeap = make_shared<ComputeDescriptorHeap>();
-	shared_ptr<FontDevice>	_fontDevice = NULL;
+	shared_ptr<FontDevice>	_fontDevice = make_shared<FontDevice>(2);
 
 	vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	array<shared_ptr<RenderTargetGroup>, RENDER_TARGET_GROUP_COUNT> _rtGroups;

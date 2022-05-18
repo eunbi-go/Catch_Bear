@@ -31,6 +31,8 @@ void Engine::Init(const WindowInfo& info)
 
 	_computeDescHeap->Init();
 
+
+
 	// 특정 레지스터와 Constant Buffer 설정
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
@@ -47,6 +49,9 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
+
+	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
+	_fontDevice->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);
 }
 
 void Engine::Update()

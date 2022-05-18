@@ -31,10 +31,6 @@ void Engine::Init(const WindowInfo& info)
 
 	_computeDescHeap->Init();
 
-	//_fontDevice = make_shared<FontDevice>(2);
-	//_fontDevice->Initialize(_device->GetDevice(),
-	//	_graphicsCmdQueue->GetCmdQueue());
-
 	// 특정 레지스터와 Constant Buffer 설정
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);

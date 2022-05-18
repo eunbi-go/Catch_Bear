@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "FontDevice.h"
+#include "Engine.h"
 
 FontDevice::FontDevice(UINT nFrame)
 {
@@ -28,7 +29,7 @@ void FontDevice::Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12Comman
         reinterpret_cast<IUnknown**>(pd3dCommandQueue.GetAddressOf()), _countof(cmdListArr), 0,
         (ID3D11Device**)&pd3d11Device, (ID3D11DeviceContext**)&_pd3d11DeviceContext, nullptr);
 
-    pd3d11Device->QueryInterface(__uuidof(ID3D11On12Device), (void**)&_pd3d11On12Device);
+    HRESULT hres = pd3d11Device->QueryInterface(__uuidof(ID3D11On12Device), (void**)&_pd3d11On12Device);
     pd3d11Device->Release();
 
 #if defined(_DEBUG) || defined(DBG)
@@ -68,4 +69,21 @@ void FontDevice::Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12Comman
 
     DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), (IUnknown**)&_pd2dWriteFactory);
     pdxgiDevice->Release();
+}
+
+void FontDevice::Resize(UINT nWidth, UINT nHeight)
+{
+    _fWidth = static_cast<float>(nWidth);
+    _fHeight = static_cast<float>(nHeight);
+
+    D2D1_BITMAP_PROPERTIES1 d2dBitmapProperties = D2D1::BitmapProperties1(D2D1_BITMAP_OPTIONS_TARGET | D2D1_BITMAP_OPTIONS_CANNOT_DRAW, D2D1::PixelFormat(DXGI_FORMAT_UNKNOWN, D2D1_ALPHA_MODE_PREMULTIPLIED));
+
+    for (UINT i = 0; i < GetRenderTargetsCount(); ++i) {
+        D3D11_RESOURCE_FLAGS    d3d11Flags = { D3D11_BIND_RENDER_TARGET };
+        ComPtr<ID3D12Resource> resource = GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::SWAP_CHAIN)->GetRTTexture(i)->GetTex2D().Get();
+
+        _pd3d11On12Device->CreateWrappedResource(resource.Get(), &d3d11Flags,
+            D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT,
+            IID_PPV_ARGS(&_vWrappedRenderTargets[i]));
+    }
 }

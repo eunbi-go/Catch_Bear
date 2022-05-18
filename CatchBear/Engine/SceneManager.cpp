@@ -563,6 +563,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region font
 	shared_ptr<GameObject> font = make_shared<FontDevice>(2);
 	static_pointer_cast<FontDevice>(font)->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
+	static_pointer_cast<FontDevice>(font)->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);
 #pragma endregion
 
 #pragma region TimerUI

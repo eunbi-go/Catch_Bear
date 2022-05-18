@@ -2,6 +2,8 @@
 
 #include <dcommon.h>
 #include <dwrite.h>
+#include <d3d11on12.h>
+#include <d2d1_3.h>
 
 struct TextBlock
 {
@@ -13,7 +15,10 @@ struct TextBlock
 class FontDevice
 {
 public:
-	FontDevice(UINT nFrame, shared_ptr<ID3D12Device> pd3dDevice, shared_ptr<ID3D12CommandQueue> pd3dCommandQueue);
+	FontDevice(UINT nFrame, ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12CommandQueue> pd3dCommandQueue);
+
+private:
+	void Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12CommandQueue> pd3dCommandQueue);
 
 private:
 	float	_fWidth;

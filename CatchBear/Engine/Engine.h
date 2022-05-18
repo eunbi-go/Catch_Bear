@@ -10,6 +10,7 @@
 #include "TableDescriptorHeap.h"
 #include "Texture.h"
 #include "RenderTargetGroup.h"
+#include "FontDevice.h"
 
 class Engine
 {
@@ -57,6 +58,7 @@ private:
 	shared_ptr<RootSignature> _rootSignature = make_shared<RootSignature>();
 	shared_ptr<GraphicsDescriptorHeap> _graphicsDescHeap = make_shared<GraphicsDescriptorHeap>();
 	shared_ptr<ComputeDescriptorHeap> _computeDescHeap = make_shared<ComputeDescriptorHeap>();
+	shared_ptr<FontDevice>	_fontDevice = NULL;
 
 	vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	array<shared_ptr<RenderTargetGroup>, RENDER_TARGET_GROUP_COUNT> _rtGroups;

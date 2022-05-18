@@ -85,5 +85,24 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
         _pd3d11On12Device->CreateWrappedResource(resource.Get(), &d3d11Flags,
             D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT,
             IID_PPV_ARGS(&_vWrappedRenderTargets[i]));
+
+        IDXGISurface* pdxgiSurface = NULL;
+        _vWrappedRenderTargets[i]->QueryInterface(__uuidof(IDXGISurface), (void**)&pdxgiSurface);
+        _pd2dDeviceContext->CreateBitmapFromDxgiSurface(pdxgiSurface, &d2dBitmapProperties, &_vd2dRenderTargets[i]);
+        pdxgiSurface->Release();
     }
+
+    if (_pd2dDeviceContext) _pd2dDeviceContext->Release();
+    _pd2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, &_pd2dDeviceContext);
+    _pd2dDeviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
+    if (_pd2dTextBrush) _pd2dTextBrush->Release();
+    _pd2dDeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), &_pd2dTextBrush);
+
+    const float fFontSize = _fHeight / 25.0f;
+    const float fSmallFontSize = _fHeight / 40.0f;
+
+    _pd2dWriteFactory->CreateTextFormat(L"±Ã¼­Ã¼", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"en-us", &_pdwTextFormat);
+
+    _pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
+    _pdwTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 }

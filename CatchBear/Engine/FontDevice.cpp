@@ -65,7 +65,7 @@ void FontDevice::Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12Comman
     _pd2dDevice->CreateDeviceContext(D2D1_DEVICE_CONTEXT_OPTIONS_NONE, (ID2D1DeviceContext2**)&_pd2dDeviceContext);
 
     _pd2dDeviceContext->SetTextAntialiasMode(D2D1_TEXT_ANTIALIAS_MODE_GRAYSCALE);
-    _pd2dDeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::White), (ID2D1SolidColorBrush**)&_pd2dTextBrush);
+    _pd2dDeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), (ID2D1SolidColorBrush**)&_pd2dTextBrush);
 
     DWriteCreateFactory(DWRITE_FACTORY_TYPE_SHARED, __uuidof(IDWriteFactory), (IUnknown**)&_pd2dWriteFactory);
     pdxgiDevice->Release();
@@ -98,7 +98,7 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
     if (_pd2dTextBrush) _pd2dTextBrush->Release();
     _pd2dDeviceContext->CreateSolidColorBrush(D2D1::ColorF(D2D1::ColorF::Black), &_pd2dTextBrush);
 
-    const float fFontSize = 50.f/*_fHeight / 100.0f*/;
+    const float fFontSize = _fHeight / 25.0f;
     const float fSmallFontSize = _fHeight / 40.0f;
 
     _pd2dWriteFactory->CreateTextFormat(L"궁서체", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"en-us", &_pdwTextFormat);
@@ -109,18 +109,19 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
 
 void FontDevice::Render(UINT nFrame)
 {
-    _vTextBlocks[0] = { L"한글", D2D1::RectF(0.0f, 0.0f, 100.f, 100.f/*_fWidth, _fHeight*/), _pdwTextFormat };
+    _vTextBlocks[0] = { L"한글 테스트 궁서체", D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
 
     ID3D11Resource* ppResources[] = { _vWrappedRenderTargets[nFrame] };
 
     _pd2dDeviceContext->SetTarget(_vd2dRenderTargets[nFrame]);
-
     _pd3d11On12Device->AcquireWrappedResources(ppResources, _countof(ppResources));
 
     _pd2dDeviceContext->BeginDraw();
     for (auto textBlock : _vTextBlocks)
     {
-        _pd2dDeviceContext->DrawText(textBlock.wstrText.c_str(), static_cast<UINT>(textBlock.wstrText.length()), textBlock.pdwFormat, textBlock.d2dLayoutRect, _pd2dTextBrush);
+        _pd2dDeviceContext->DrawText(textBlock.wstrText.c_str(), static_cast<UINT>(textBlock.wstrText.length()),
+            
+            textBlock.pdwFormat, textBlock.d2dLayoutRect, _pd2dTextBrush);
     }
     _pd2dDeviceContext->EndDraw();
 

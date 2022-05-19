@@ -102,9 +102,15 @@ void GraphicsCommandQueue::RenderEnd()
 	ID3D12CommandList* cmdListArr[] = { _cmdList.Get() };
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
 
+	// font ·»´õ¸µ
+	uint8 index = _swapChain->GetBackBufferIndex();
+	GEngine->GetFontDevice()->Render(index);
+
 	_swapChain->Present();
 
 	WaitSync();
+
+
 
 	_swapChain->SwapIndex();
 }

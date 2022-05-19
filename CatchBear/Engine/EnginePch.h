@@ -29,6 +29,7 @@ namespace fs = std::filesystem;
 #include <dwrite.h>
 #include <d3d11on12.h>
 #include <d2d1_3.h>
+#include <d3d9types.h>
 #include <wrl.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>

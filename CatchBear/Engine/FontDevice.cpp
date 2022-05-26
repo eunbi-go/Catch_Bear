@@ -105,11 +105,19 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
 
     _pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     _pdwTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
+
+    _vTextBlocks[0] = { L"한글 테스트 궁서체", D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
+
+}
+
+void FontDevice::UpdateFont(const wstring& wstrText)
+{
+    _vTextBlocks[0] = { wstrText, D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
 }
 
 void FontDevice::Render(UINT nFrame)
 {
-    _vTextBlocks[0] = { L"한글 테스트 궁서체", D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
+    //_vTextBlocks[0] = { L"한글 테스트 궁서체", D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
 
     ID3D11Resource* ppResources[] = { _vWrappedRenderTargets[nFrame] };
 

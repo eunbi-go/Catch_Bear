@@ -104,5 +104,7 @@ public:
 	class PlayerState* _state;
 
 	float	_testTime = 0.f;
+	bool	_isFont = false;
+	wstring _wstrText = L"";
 };
 

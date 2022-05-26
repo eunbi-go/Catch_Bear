@@ -17,6 +17,7 @@ public:
 	void Resize(UINT nWidth, UINT nHeight);
 
 public:
+	void UpdateFont(const wstring& wstrText);
 	void Render(UINT nFrame);
 
 private:

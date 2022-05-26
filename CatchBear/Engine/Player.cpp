@@ -29,6 +29,7 @@
 #include "TagMark.h"
 #include "MeshRenderer.h"
 #include "Resources.h"
+#include "Engine.h"
 
 Protocol::C_MOVE pkt;
 Protocol::C_STATE StatePkt;
@@ -154,6 +155,16 @@ void Player::KeyCheck()
 	// State Check
 	PlayerState* state = _state->KeyCheck(*_player, _curStatePlayer);
 
+
+	if (INPUT->GetButtonDown(KEY_TYPE::NUM0))
+	{
+		_isFont = !_isFont;
+		if (_isFont)
+		{
+			//wcin >> _wstrText;
+			//GEngine->GetFontDevice()->UpdateFont(_wstrText);
+		}
+	}
 
 	// Item KeyCheck /////////////////////////////////////////////////////////
 	// stunned면 키입력을 안받아서 스턴일때 알약이 안됨, 코드 위로 옮김

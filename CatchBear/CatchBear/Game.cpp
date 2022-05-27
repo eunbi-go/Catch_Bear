@@ -16,3 +16,9 @@ void Game::Update()
 	GEngine->Update();
 	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 }
+
+void Game::setString(const char* strText)
+{
+	wstring wstrText = s2ws(strText);
+	GEngine->GetFontDevice()->UpdateFont(wstrText);
+}

@@ -13,6 +13,7 @@
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
 
+
 #define MAX_LOADSTRING 100
 wstring MyIPAddr;
 
@@ -23,6 +24,9 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 unique_ptr<Game> game;
+char strText[255];     // 텍스트 저장
+char str[10];       // 조합중인 문자
+int len = 0;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -110,6 +114,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
         // TODO
         game->Update();
+        
         if (game->_isEnd)
             SendMessage(msg.hwnd, WM_CLOSE, 0, 0);
     }
@@ -185,10 +190,63 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+    HIMC    _hIMC = NULL;
+
     switch (message)
     {
+    case WM_IME_COMPOSITION:    // 글씨 조합중
+        _hIMC = ImmGetContext(hWnd);    // IME 핸들을 얻는다
+
+        // 1. 조합이 완성되면
+        if (lParam & GCS_RESULTSTR) 
+        {
+            // 현재 IME의 문자열 길이를 얻는다
+            if ((len = ImmGetCompositionString(_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+            {
+                // str에 조합중인 문자열을 받아낸다
+                ImmGetCompositionString(_hIMC, GCS_RESULTSTR, str, len);
+
+                // 제일 끝에 0을 붙여 깨끗하게 해준다
+                str[len] = 0;
+
+                // 전체 내용(실제 보일 텍스트) 뒤에 붙여준다
+                strcpy(strText + strlen(strText), str);
+
+                // 초기화
+                memset(str, 0, 10);
+            }
+        }
+
+        // 2. 조합중이면
+        else if (lParam & GCS_COMPSTR)  
+        {
+            // 조합중인 길이를 얻는다
+            len = ImmGetCompositionString(_hIMC, GCS_COMPSTR, NULL, 0);
+            
+            // str에 조합중인 문자를 얻는다
+            ImmGetCompositionString(_hIMC, GCS_COMPSTR, str, len);
+
+            str[len] = 0;
+        }
+
+        // 핸들 반환
+        ImmReleaseContext(hWnd, _hIMC);
+        break;
+
+    case WM_CHAR:   // 문자 넘어오기
+        len = strlen(strText);
+        strText[len] = wParam & 0xff;
+        strText[len+1] = 0;
+        game->setString(strText);
+        break;
+
+    case WM_KEYDOWN:    // 키다운
+        break;
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -222,6 +280,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
+
 
 // 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)

@@ -51,6 +51,7 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "dxguid.lib")
 #pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "d3dcompiler")
+#pragma comment(lib, "imm32.lib")
 
 #ifdef _DEBUG
 #pragma comment(lib, "DirectXTex\\DirectXTex_debug.lib")

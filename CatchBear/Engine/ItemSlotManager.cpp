@@ -27,7 +27,6 @@ void ItemSlotManager::SetItemSlot(int nSlot, shared_ptr<GameObject> slot)
 
 void ItemSlotManager::AddItem(Item::ITEM_EFFECT itemType)
 {
-	int k = 0;
 	if (static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->GetItem() == Item::ITEM_EFFECT::NONE)
 	{
 		static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->SetItem(itemType);

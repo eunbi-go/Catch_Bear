@@ -188,16 +188,14 @@ struct AnimationFrameInfo
 
 struct AnimationClipInfo
 {
-	wstring								name;
-	float								startTime;
-	float								endTime;
-	float								length;
-	int32								framePerSec;
-	// 해당 애니메이션의 키 프레임 개수
-	int nkeyFrames;
-	//FbxTime::EMode	mode;
+	wstring						name;
+	float						startTime;
+	float						endTime;
+	float						length;
+	int32						framePerSec;
+	int							nkeyFrames;
 	vector<AnimationFrameInfo>	keyFrames;
-	float position = 0.0f;	// 현재 동작 위치
+	float						position = 0.0f;	// 현재 동작 위치
 };
 
 // 일단 여기에 스키닝 정보 다 넣어두고 나중에 연결시키기

@@ -1,6 +1,8 @@
 #pragma once
 #include "Player.h"
+
 class GameObject;
+
 class PlayerState
 {
 public:

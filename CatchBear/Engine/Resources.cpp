@@ -344,16 +344,16 @@ shared_ptr<class CharacterData> Resources::LoadCharacter(const wstring& path)
 {
 	wstring		key = path;
 
-	shared_ptr<CharacterData>	meshData = Get<CharacterData>(key);
-	if (meshData)	return meshData;
+	shared_ptr<CharacterData>	characterData = Get<CharacterData>(key);
+	if (characterData)	return characterData;
 
-	meshData = make_shared<CharacterData>();
+	characterData = make_shared<CharacterData>();
 
-	meshData->LoadCharacterFromFile(path);
-	meshData->SetName(key);
-	Add(key, meshData);
+	characterData->LoadCharacterFromFile(path);
+	characterData->SetName(key);
+	Add(key, characterData);
 
-	return meshData;
+	return characterData;
 }
 
 void Resources::CreateDefaultShader()

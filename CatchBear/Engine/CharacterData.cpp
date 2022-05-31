@@ -21,7 +21,7 @@ CharacterData::~CharacterData()
 void CharacterData::LoadCharacterFromFile(const wstring& path)
 {
 	FILE* pFile;
-	_name = path;
+	wstring _name = path;
 
 	// wchar_t -> char*
 	char* pStr;
@@ -48,7 +48,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 		{
 			if (!strcmp(pStrTocken, "<Hierarchy>:"))
 			{
-				_modelInfo->_rootObject = LoadFrameHierarchyFromFile(NULL, pFile, true);
+				_modelInfo->_rootObject = LoadFrameHierarchyFromFile(NULL, pFile);
 				int l = 0;
 			}
 
@@ -93,18 +93,12 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	}
 }
 
-shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile, bool bFirst)
+shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile)
 {
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
 
 	shared_ptr<Transform>	pTrans = make_shared<Transform>();
-
-	if (!bFirst)
-	{
-		//cInfo->parentName = parent->boneName;
-		//cInfo->parentIdx = parent->nFrame;
-	}
 
 	for (; ;)
 	{
@@ -144,7 +138,7 @@ shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Trans
 				for (int i = 0; i < nChild; ++i)
 				{
 					shared_ptr<Transform>	childTrans = make_shared<Transform>();
-					childTrans = LoadFrameHierarchyFromFile(pTrans, pFile, false);
+					childTrans = LoadFrameHierarchyFromFile(pTrans, pFile);
 					pTrans->SetChild(childTrans);
 				}
 			}
@@ -560,7 +554,7 @@ void CharacterData::CreateMaterials()
 
 vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 {
-	vector<shared_ptr<GameObject>>	v;
+	vector<shared_ptr<GameObject>>	vCharacter;
 
 	for (MeshRendererInfo& info : _meshRenders)
 	{
@@ -571,13 +565,12 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
 		gameObject->GetTransform()->SetChild(_modelInfo->_rootObject);
 
-		// Animation
 		gameObject->AddComponent(make_shared<AnimationController>());
 		gameObject->GetAnimationController()->SetAnimClips(_animationClipInfo);
 		gameObject->GetAnimationController()->SetModelInfo(_modelInfo, _skinningInfo);
 
-		v.push_back(gameObject);
+		vCharacter.push_back(gameObject);
 	}
 
-	return v;
+	return vCharacter;
 }

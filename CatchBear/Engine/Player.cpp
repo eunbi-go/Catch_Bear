@@ -79,10 +79,10 @@ void Player::LateUpdate()
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
-	
+
 	Vec3 trans = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
-	
+
 }
 
 void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
@@ -154,17 +154,6 @@ void Player::KeyCheck()
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
 	PlayerState* state = _state->KeyCheck(*_player, _curStatePlayer);
-
-
-	if (INPUT->GetButtonDown(KEY_TYPE::NUM0))
-	{
-		_isFont = !_isFont;
-		if (_isFont)
-		{
-			//wcin >> _wstrText;
-			//GEngine->GetFontDevice()->UpdateFont(_wstrText);
-		}
-	}
 
 	// Item KeyCheck /////////////////////////////////////////////////////////
 	// stunned면 키입력을 안받아서 스턴일때 알약이 안됨, 코드 위로 옮김

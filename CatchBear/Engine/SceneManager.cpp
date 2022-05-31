@@ -569,7 +569,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		minuteTimer->AddComponent(make_shared<Transform>());
 		minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 		minuteTimer->GetTransform()->SetLocalPosition(Vec3(-40.f, 340.f, 500.f));
-		minuteTimer->_isRender = false;
+		minuteTimer->_isRender = true;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -595,7 +595,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	minuteTimer->AddComponent(make_shared<Transform>());
 	minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	minuteTimer->GetTransform()->SetLocalPosition(Vec3(-100.f, 340.f, 500.f));
-	minuteTimer->_isRender = false;
+	minuteTimer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	{
@@ -621,7 +621,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec1Timer->AddComponent(make_shared<Transform>());
 	sec1Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec1Timer->GetTransform()->SetLocalPosition(Vec3(20.f, 340.f, 500.f));
-	sec1Timer->_isRender = false;
+	sec1Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
 	{
@@ -647,7 +647,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec2Timer->AddComponent(make_shared<Transform>());
 	sec2Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec2Timer->GetTransform()->SetLocalPosition(Vec3(100.f, 340.f, 500.f));
-	sec2Timer->_isRender = false;
+	sec2Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
 	{

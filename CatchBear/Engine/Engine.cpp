@@ -61,6 +61,11 @@ void Engine::Update()
 	// 모든 플레이어가 접속 시에만 이 코드가 돌아갈 수 있도록 설정함.
 	// 1인 플레이 테스트할땐 관계없음
 	if (mysession->GetIsAllPlayerEnter()) {
+		
+		// 신전환 test
+		if (INPUT->GetButtonDown(KEY_TYPE::ENTER))
+			GET_SINGLE(SceneManager)->LoadScene(L"LoginScene");
+
 		_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 
 		//GET_SINGLE(Input)->Update();

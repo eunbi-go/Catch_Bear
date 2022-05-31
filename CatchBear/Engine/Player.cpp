@@ -142,6 +142,8 @@ void Player::KeyCheck()
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
 
+
+
 	if (mysession == NULL)
 		return;
 

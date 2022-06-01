@@ -62,14 +62,15 @@ void Engine::Update()
 	// 1인 플레이 테스트할땐 관계없음
 	if (mysession->GetIsAllPlayerEnter()) {
 		
+		GET_SINGLE(Input)->Update();
+		GET_SINGLE(Timer)->Update();
+
 		// 신전환 test
 		if (INPUT->GetButtonDown(KEY_TYPE::ENTER))
 			GET_SINGLE(SceneManager)->LoadScene(L"LoginScene");
 
 		_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 
-		//GET_SINGLE(Input)->Update();
-		GET_SINGLE(Timer)->Update();
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(InstancingManager)->ClearBuffer();
 		//GET_SINGLE(ItemManager)->Update();

@@ -101,19 +101,19 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
     const float fFontSize = _fHeight / 25.0f;
     const float fSmallFontSize = _fHeight / 40.0f;
 
-    _pd2dWriteFactory->CreateTextFormat(L"궁서체", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"en-us", &_pdwTextFormat);
+    _pd2dWriteFactory->CreateTextFormat(L"HS산토끼체", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"en-us", &_pdwTextFormat);
 
     //_pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     _pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
     _pdwTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
-    _vTextBlocks[0] = { L"한글 테스트 궁서체", D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
+    _vTextBlocks[0] = { L"로그인신", D2D1::RectF(_fWidth / 2, _fHeight / 2, _fWidth / 2 + 500.f, _fHeight / 2 + 200.f), _pdwTextFormat };
 
 }
 
 void FontDevice::UpdateFont(const wstring& wstrText)
 {
-    _vTextBlocks[0] = { wstrText, D2D1::RectF(0.0f, 0.0f, _fWidth, _fHeight), _pdwTextFormat };
+    _vTextBlocks[0] = { wstrText, D2D1::RectF(_fWidth / 2, _fHeight / 2, _fWidth / 2 + 500.f, _fHeight / 2 + 200.f), _pdwTextFormat };
 }
 
 void FontDevice::Render(UINT nFrame)

@@ -66,8 +66,11 @@ void Engine::Update()
 		GET_SINGLE(Timer)->Update();
 
 		// ½ÅÀüÈ¯ test
-		if (INPUT->GetButtonDown(KEY_TYPE::ENTER))
-			GET_SINGLE(SceneManager)->LoadScene(L"LoginScene");
+		if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+		{
+			if (INPUT->GetButtonDown(KEY_TYPE::ENTER))
+				GET_SINGLE(SceneManager)->LoadScene(L"StageScene");
+		}
 
 		_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 

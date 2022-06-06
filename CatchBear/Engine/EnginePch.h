@@ -255,6 +255,9 @@ struct AnimClipInfo
 	float			position;
 };
 
+enum SCENE_ID { LOGIN, STAGE, SCENE_CNT };
+
+
 #define DECLARE_SINGLE(type)		\
 private:							\
 	type() {}						\

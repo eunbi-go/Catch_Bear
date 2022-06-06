@@ -13,7 +13,6 @@ enum
 
 class SceneManager
 {
-	enum SCENE_ID {LOGIN, STAGE, SCENE_CNT};
 
 	DECLARE_SINGLE(SceneManager);
 
@@ -35,7 +34,7 @@ public:
 
 public:
 	void changeScene(SCENE_ID eScene);
-
+	SCENE_ID getSceneID() { return _curScene; }
 
 private:
 	shared_ptr<Scene> LoadTestScene();

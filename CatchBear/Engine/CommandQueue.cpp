@@ -2,6 +2,8 @@
 #include "CommandQueue.h"
 #include "SwapChain.h"
 #include "Engine.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 // ************************
 // GraphicsCommandQueue
@@ -103,9 +105,11 @@ void GraphicsCommandQueue::RenderEnd()
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
 
 	//// font ·»´õ¸µ
-	uint8 index = _swapChain->GetBackBufferIndex();
-	GEngine->GetFontDevice()->Render(index);
-
+	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	{
+		uint8 index = _swapChain->GetBackBufferIndex();
+		GEngine->GetFontDevice()->Render(index);
+	}
 	_swapChain->Present();
 
 	WaitSync();

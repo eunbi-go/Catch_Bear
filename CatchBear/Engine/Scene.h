@@ -28,6 +28,9 @@ private:
 	void PushLightData();
 
 private:
+	void UpdateLoginScene();
+	void UpdateStageScene();
+
 	void SetTimer();
 	void SetFinalRanking();
 

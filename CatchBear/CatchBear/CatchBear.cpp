@@ -238,11 +238,21 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         break;
 
     case WM_CHAR:   // 문자 넘어오기
-        len = strlen(strText);
-        strText[len] = wParam & 0xff;
-        strText[len+1] = 0;
-        game->setString(strText);
+        if (wParam == VK_BACK)
+        {
+            len = strlen(strText);
+            strText[len-1] = 0;
+            game->setString(strText);
+        }
+        else
+        {
+            len = strlen(strText);
+            strText[len] = wParam & 0xff;
+            strText[len + 1] = 0;
+            game->setString(strText);
+        }
         break;
+
 
     case WM_KEYDOWN:    // 키다운
         break;

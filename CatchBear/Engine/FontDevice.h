@@ -20,7 +20,6 @@ public:
 	void UpdateFont(const wstring& wstrText);
 	const wstring& GetFontString() { return _vTextBlocks[0].wstrText; }
 
-private:
 	void Render(UINT nFrame);
 
 private:

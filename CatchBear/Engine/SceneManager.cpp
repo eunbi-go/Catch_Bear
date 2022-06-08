@@ -1152,26 +1152,6 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 	SetLayerName(1, L"UI");
 #pragma endregion
 
-#pragma region ComputeShader
-	{
-		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ComputeShader");
-
-		// UAV 용 Texture 생성
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->CreateTexture(L"UAVTexture",
-			DXGI_FORMAT_R8G8B8A8_UNORM, 1024, 1024,
-			CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT), D3D12_HEAP_FLAG_NONE,
-			D3D12_RESOURCE_FLAG_ALLOW_UNORDERED_ACCESS);
-
-		shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"ComputeShader");
-		material->SetShader(shader);
-		material->SetInt(0, 1);
-		GEngine->GetComputeDescHeap()->SetUAV(texture->GetUAVHandle(), UAV_REGISTER::u0);
-
-		// 쓰레드 그룹 (1 * 1024 * 1)
-		material->Dispatch(1, 1024, 1);
-	}
-#pragma endregion
-
 #pragma region Camera
 	{
 		shared_ptr<GameObject> camera = make_shared<GameObject>();
@@ -1257,27 +1237,29 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
+
+		// Heart
+		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
+
+		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+		for (auto& gameObject : objectsHeart)
+		{
+			gameObject->SetName(L"PlayerTag1");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			gameObject->AddComponent(make_shared<TagMark>());
+			scene->AddGameObject(gameObject);
+			scene->AddTagMarks(0, gameObject);
+		}
 	}
 #pragma endregion
 
-	// Heart
-	shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
 
-	vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
-
-	for (auto& gameObject : objectsHeart)
-	{
-		gameObject->SetName(L"PlayerTag1");
-		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
-		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-		gameObject->AddComponent(make_shared<TagMark>());
-		scene->AddGameObject(gameObject);
-		scene->AddTagMarks(0, gameObject);
-	}
 
 #pragma region Directional Light
 	{
@@ -1293,44 +1275,6 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 		scene->AddGameObject(light);
 	}
 #pragma endregion
-
-	//
-//#pragma region Point Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(0.f, 100.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		//light->GetLight()->SetLightDirection(Vec3(-1.f, -1.f, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::POINT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.5f, 0.0f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetLightRange(200.f);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
-//#pragma region Spot Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(75.f, 0.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		light->GetLight()->SetLightDirection(Vec3(-1.f, 0, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::SPOT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.f, 0.5f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetLightRange(200.f);
-//		light->GetLight()->SetLightAngle(3.14f / 2);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
-
 
 	return scene;
 }

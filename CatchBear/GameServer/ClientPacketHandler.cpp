@@ -133,24 +133,24 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 
 	switch (pkt.playernum())
 	{
-	//case 1:
-	//	if (pkt.playerid() == 0) {		// 1인용 게임일때
-	//		enterGamePkt.set_isallplayersready(true);
-	//		enterGamePkt.set_taggerplayerid(0);
-	//	}
-	//	break;
+	case 1:
+		if (pkt.playerid() == 0) {		// 1인용 게임일때
+			enterGamePkt.set_isallplayersready(true);
+			enterGamePkt.set_taggerplayerid(0);
+		}
+		break;
 	//case 2:
 	//	if (pkt.playerid() == 1) {		// 2인용 게임일때
 	//		enterGamePkt.set_isallplayersready(true);
 	//		enterGamePkt.set_taggerplayerid(tagger % 2);
 	//	}
 	//	break;
-	case 3:
-		if (pkt.playerid() == 2) {		// 3인용 게임일때 (최종적으로는 이거만 남게 될듯)
-			enterGamePkt.set_isallplayersready(true);
-			enterGamePkt.set_taggerplayerid(tagger % 3);
-		}
-		break;
+	//case 3:
+	//	if (pkt.playerid() == 2) {		// 3인용 게임일때 (최종적으로는 이거만 남게 될듯)
+	//		enterGamePkt.set_isallplayersready(true);
+	//		enterGamePkt.set_taggerplayerid(tagger % 3);
+	//	}
+	//	break;
 	}
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterGamePkt);

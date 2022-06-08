@@ -293,7 +293,9 @@ void Player::Move()
 	{
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		
+		else
+			pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
+
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -366,6 +368,7 @@ void Player::Move()
 
 		_player->GetTransform()->SetLocalRotation(rot);
 	}
+
 
 	_player->GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());

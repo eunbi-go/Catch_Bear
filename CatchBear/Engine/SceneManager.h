@@ -25,7 +25,7 @@ public:
 	uint8 LayerNameToIndex(const wstring& name);
 
 	void ReStart();	// 게임 끝나고 다시하기 버튼 누르면 실행되는 함수
-
+	void CreatePlayer(int PlayerID);
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 	bool IsEnd();
@@ -38,7 +38,7 @@ private:
 	void LoadMapFile(shared_ptr<Scene> scene);
 	void AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<class GameObject>> gameObj, wstring name, Vec3 trans, Vec3 scale, Vec3 rotate);
 
-
+	
 
 private:
 	shared_ptr<Scene> _activeScene;

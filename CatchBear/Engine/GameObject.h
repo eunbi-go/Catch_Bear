@@ -98,7 +98,7 @@ public:
 
 	class PlayerState* _state;
 
-	STATE _curState;
+	STATE _curState = STATE::END;
 	
 	bool _isRender = true;
 };

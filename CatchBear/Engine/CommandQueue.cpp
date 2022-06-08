@@ -2,6 +2,8 @@
 #include "CommandQueue.h"
 #include "SwapChain.h"
 #include "Engine.h"
+#include "SceneManager.h"
+#include "Scene.h"
 
 // ************************
 // GraphicsCommandQueue
@@ -102,9 +104,17 @@ void GraphicsCommandQueue::RenderEnd()
 	ID3D12CommandList* cmdListArr[] = { _cmdList.Get() };
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
 
+	//// font ·»´õ¸µ
+	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	{
+		uint8 index = _swapChain->GetBackBufferIndex();
+		GEngine->GetFontDevice()->Render(index);
+	}
 	_swapChain->Present();
 
 	WaitSync();
+
+
 
 	_swapChain->SwapIndex();
 }

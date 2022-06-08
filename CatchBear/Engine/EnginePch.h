@@ -22,7 +22,14 @@ namespace fs = std::filesystem;
 
 #include "d3dx12.h"
 #include "SimpleMath.h"
+#include <d3d11.h>
+#include <d2d1_1.h>
 #include <d3d12.h>
+#include <dcommon.h>
+#include <dwrite.h>
+#include <d3d11on12.h>
+#include <d2d1_3.h>
+#include <d3d9types.h>
 #include <wrl.h>
 #include <d3dcompiler.h>
 #include <dxgi.h>
@@ -38,9 +45,13 @@ using namespace Microsoft::WRL;
 
 // 각종 lib
 #pragma comment(lib, "d3d12")
-#pragma comment(lib, "dxgi")
-#pragma comment(lib, "dxguid")
+#pragma comment(lib, "d3d11.lib")
+#pragma comment(lib, "d2d1.lib")
+#pragma comment(lib, "dxgi.lib")
+#pragma comment(lib, "dxguid.lib")
+#pragma comment(lib, "dwrite.lib")
 #pragma comment(lib, "d3dcompiler")
+#pragma comment(lib, "imm32.lib")
 
 #ifdef _DEBUG
 #pragma comment(lib, "DirectXTex\\DirectXTex_debug.lib")
@@ -115,6 +126,11 @@ enum
 	TOTAL_REGISTER_COUNT = CBV_SRV_REGISTER_COUNT + UAV_REGISTER_COUNT
 };
 
+enum STATE
+{
+	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW, SLOW_REST, STUN, END
+};
+
 struct WindowInfo
 {
 	HWND	hwnd;		// 출력 윈도우
@@ -172,16 +188,14 @@ struct AnimationFrameInfo
 
 struct AnimationClipInfo
 {
-	wstring								name;
-	float								startTime;
-	float								endTime;
-	float								length;
-	int32								framePerSec;
-	// 해당 애니메이션의 키 프레임 개수
-	int nkeyFrames;
-	//FbxTime::EMode	mode;
+	wstring						name;
+	float						startTime;
+	float						endTime;
+	float						length;
+	int32						framePerSec;
+	int							nkeyFrames;
 	vector<AnimationFrameInfo>	keyFrames;
-	float position = 0.0f;	// 현재 동작 위치
+	float						position = 0.0f;	// 현재 동작 위치
 };
 
 // 일단 여기에 스키닝 정보 다 넣어두고 나중에 연결시키기
@@ -240,6 +254,9 @@ struct AnimClipInfo
 	// 현재 위치
 	float			position;
 };
+
+enum SCENE_ID { LOGIN, STAGE, SCENE_CNT };
+
 
 #define DECLARE_SINGLE(type)		\
 private:							\

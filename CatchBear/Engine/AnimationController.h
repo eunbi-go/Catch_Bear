@@ -37,6 +37,7 @@ public:
 
 	void AdvanceTime(float fElapsedTime);
 
+public:
 	shared_ptr<AnimationModelInfo> GetRootModel() { return _modelInfo; }
 
 public:

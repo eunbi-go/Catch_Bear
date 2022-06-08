@@ -20,6 +20,7 @@
 #include "Player.h"
 #include "ServerPacketHandler.h"
 #include "TagMark.h"
+#include "SceneManager.h"
 
 void Scene::Awake()
 {
@@ -45,31 +46,13 @@ void Scene::Start()
 
 void Scene::Update()
 {
-	CheckTagger();
-
-	if (_isStart)
+	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
 	{
-		_toStartTime += DELTA_TIME;
-		if (_toStartTime >= 7.f)
-		{
-			CheckMouse();
-			GET_SINGLE(Input)->Update();
-			GET_SINGLE(CollidManager)->Update();
-
-			if (!_isFinish)
-			{
-				SetTimer();
-				GET_SINGLE(ItemManager)->Update();
-				GET_SINGLE(ScoreManager)->Update();
-				//GET_SINGLE(CollidManager)->Update();
-			}
-
-			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
-			{
-				gameObject->Update();
-			}
-
-		}
+		UpdateLoginScene();
+	}
+	else if (GET_SINGLE(SceneManager)->getSceneID() == STAGE)
+	{
+		UpdateStageScene();
 	}
 }
 
@@ -231,6 +214,40 @@ void Scene::PushLightData()
 	}
 
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));
+}
+
+void Scene::UpdateLoginScene()
+{
+}
+
+void Scene::UpdateStageScene()
+{
+	CheckTagger();
+
+	if (_isStart)
+	{
+		_toStartTime += DELTA_TIME;
+		if (_toStartTime >= 7.f)
+		{
+			CheckMouse();
+			GET_SINGLE(Input)->Update();
+			GET_SINGLE(CollidManager)->Update();
+
+			if (!_isFinish)
+			{
+				SetTimer();
+				GET_SINGLE(ItemManager)->Update();
+				GET_SINGLE(ScoreManager)->Update();
+				GET_SINGLE(CollidManager)->Update();
+			}
+
+			for (const shared_ptr<GameObject>& gameObject : _gameObjects)
+			{
+				gameObject->Update();
+			}
+
+		}
+	}
 }
 
 void Scene::SetTimer()

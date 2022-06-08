@@ -26,7 +26,7 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 	// 물체들은 딱 하나만 그려야 하는 경우도 있을 것이고,
 	// 인스턴스 아이디가 겹쳐서 물체가 인스턴싱을 거쳐서 그려줘야 하는 경우로 분류된다.
 	map<uint64, vector<shared_ptr<GameObject>>> cache;
-	
+
 	for (shared_ptr<GameObject>& gameObject : gameObjects)
 	{
 		if (gameObject->_isRender)

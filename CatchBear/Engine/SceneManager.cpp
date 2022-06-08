@@ -32,6 +32,8 @@
 #include "ScoreUI.h"
 #include "ItemManager.h"
 #include "ServerPacketHandler.h"
+#include "FontDevice.h"
+#include "Engine.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -57,7 +59,30 @@ void SceneManager::LoadScene(wstring sceneName)
 	// TODO : 기존 Scene 정리
 	// TODO : 파일에서 Scene 정보 로드
 
-	_activeScene = LoadTestScene();
+	if (sceneName == L"StageScene")
+	{
+		if (_activeScene)
+		{
+			_activeScene.reset();
+			scene.reset();
+			scene = make_shared<Scene>();
+			_activeScene = make_shared<Scene>();
+		}
+		_activeScene = LoadTestScene();
+		_curScene = STAGE;
+	}
+	else if (sceneName == L"LoginScene")
+	{
+		if (_activeScene)
+		{
+			_activeScene.reset();
+			scene.reset();
+			scene = make_shared<Scene>();
+			_activeScene = make_shared<Scene>();
+		}
+		_activeScene = LoadLoginScene();
+		_curScene = LOGIN;
+	}
 
 	_activeScene->Awake();
 	_activeScene->Start();
@@ -109,6 +134,23 @@ void SceneManager::ReStart()
 bool SceneManager::IsEnd()
 {
 	return _activeScene->_isEnd;
+}
+
+void SceneManager::changeScene(SCENE_ID eScene)
+{
+	switch (eScene)
+	{
+	case LOGIN:
+		_activeScene = LoadLoginScene();
+		break;
+	case STAGE:
+		_activeScene = LoadTestScene();
+		break;
+	case SCENE_CNT:
+		break;
+	default:
+		break;
+	}
 }
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
@@ -167,29 +209,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region TestObject
-	/*{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"OBJ");
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 300.f));
-		obj->SetStatic(false);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-	}*/
-#pragma endregion
-
-
 #pragma region SkyBox
 	{
 		shared_ptr<GameObject> skybox = make_shared<GameObject>();
@@ -218,7 +237,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL4.bin");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 		g_EnterPlayerCnt = 1;
@@ -241,49 +260,49 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
-		g_EnterPlayerCnt = 2;
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL3.bin")->Instantiate();
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player2");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}
+		//g_EnterPlayerCnt = 2;
+		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL3.bin")->Instantiate();
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player2");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//}
 
-		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
-		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects3)
-		{
-			gameObject->SetName(L"Player3");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(2);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(2, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}
+		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
+		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
+		//for (auto& gameObject : gameObjects3)
+		//{
+		//	gameObject->SetName(L"Player3");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(2);
+		//	gameObject->_state = new IdleState();
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(2, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//}
 	}
 #pragma endregion
 
@@ -306,7 +325,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(0, gameObject);
 	}
-	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
+	/*vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart2)
 	{
 		gameObject->SetName(L"PlayerTag2");
@@ -333,7 +352,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(2, gameObject);
-	}
+	}*/
 #pragma endregion
 
 #pragma region ItemSlotUI
@@ -566,6 +585,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		minuteTimer->AddComponent(make_shared<Transform>());
 		minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 		minuteTimer->GetTransform()->SetLocalPosition(Vec3(-40.f, 340.f, 500.f));
+		minuteTimer->_isRender = true;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -591,6 +611,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	minuteTimer->AddComponent(make_shared<Transform>());
 	minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	minuteTimer->GetTransform()->SetLocalPosition(Vec3(-100.f, 340.f, 500.f));
+	minuteTimer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	{
@@ -616,6 +637,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec1Timer->AddComponent(make_shared<Transform>());
 	sec1Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec1Timer->GetTransform()->SetLocalPosition(Vec3(20.f, 340.f, 500.f));
+	sec1Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
 	{
@@ -641,6 +663,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec2Timer->AddComponent(make_shared<Transform>());
 	sec2Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec2Timer->GetTransform()->SetLocalPosition(Vec3(100.f, 340.f, 500.f));
+	sec2Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
 	{
@@ -1117,6 +1140,140 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 //#pragma endregion
 //
 
+
+	return scene;
+}
+
+shared_ptr<Scene> SceneManager::LoadLoginScene()
+{
+#pragma region LayerMask
+	SetLayerName(0, L"Default");
+	SetLayerName(1, L"UI");
+#pragma endregion
+
+#pragma region Camera
+	{
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Main_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
+		camera->AddComponent(make_shared<CameraScript>());
+		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
+		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI는 안 찍음
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region UI_Camera
+	{
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Orthographic_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, 800*600
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::ORTHOGRAPHIC);
+		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskAll(); // 다 끄고
+		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, false); // UI만 찍음
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region loginScene
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"loginScene");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 800.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 500.f));
+		finalRanking->AddComponent(make_shared<ScoreUI>());
+		finalRanking->_isRender = true;
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\Login.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+
+#pragma region TestPlayer
+	{
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+
+		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
+		g_EnterPlayerCnt = 1;
+		for (auto& gameObject : gameObjects)
+		{
+			gameObject->SetName(L"Player1");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(0);
+			gameObject->_state = new IdleState();
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(0, gameObject);
+			scene->AddVecPlayers(gameObject);
+		}
+
+		// Heart
+		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
+
+		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+		for (auto& gameObject : objectsHeart)
+		{
+			gameObject->SetName(L"PlayerTag1");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+			gameObject->AddComponent(make_shared<TagMark>());
+			scene->AddGameObject(gameObject);
+			scene->AddTagMarks(0, gameObject);
+		}
+	}
+#pragma endregion
+
+
+
+#pragma region Directional Light
+	{
+		shared_ptr<GameObject> light = make_shared<GameObject>();
+		light->AddComponent(make_shared<Transform>());
+		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
+		light->AddComponent(make_shared<Light>());
+		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
+		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
+		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+		light->GetLight()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
+		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+		scene->AddGameObject(light);
+	}
+#pragma endregion
 
 	return scene;
 }

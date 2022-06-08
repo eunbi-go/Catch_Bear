@@ -13,6 +13,7 @@ enum
 
 class SceneManager
 {
+
 	DECLARE_SINGLE(SceneManager);
 
 public:
@@ -30,8 +31,14 @@ public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 	bool IsEnd();
 
+
+public:
+	void changeScene(SCENE_ID eScene);
+	SCENE_ID getSceneID() { return _curScene; }
+
 private:
 	shared_ptr<Scene> LoadTestScene();
+	shared_ptr<Scene> LoadLoginScene();
 
 
 private:
@@ -45,6 +52,8 @@ private:
 
 	array<wstring, MAX_LAYER>	_layerNames;		// 레이어 이름, ex) 1번에 해당하는 레이어는 UI다
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
+
+	SCENE_ID	_curScene;
 };
 
 

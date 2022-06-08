@@ -7,6 +7,7 @@ public:
 	void Update();
 
 	void setString(const char* strText);
+	const wstring& GetFontString();
 
 public:
 	bool	_isEnd = false;

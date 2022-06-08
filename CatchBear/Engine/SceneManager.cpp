@@ -86,6 +86,7 @@ void SceneManager::LoadScene(wstring sceneName)
 
 	_activeScene->Awake();
 	_activeScene->Start();
+	_activeScene->Render();
 }
 
 void SceneManager::SetLayerName(uint8 index, const wstring& name)
@@ -237,7 +238,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL3.bin");
 
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 		g_EnterPlayerCnt = 1;

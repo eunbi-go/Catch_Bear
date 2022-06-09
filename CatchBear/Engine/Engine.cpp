@@ -12,6 +12,7 @@
 #include "ScoreManager.h"
 #include "CollidManager.h"
 #include "ServerSession.h"
+#include "ServerPacketHandler.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -92,6 +93,8 @@ void Engine::Update()
 
 void Engine::LoginSceneUpdate()
 {
+	
+
 	GET_SINGLE(Input)->Update();
 
 	// ½ÅÀüÈ¯ test

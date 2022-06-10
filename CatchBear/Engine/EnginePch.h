@@ -59,6 +59,11 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "DirectXTex\\DirectXTex.lib")
 #endif
 
+// 사운드
+#include <io.h>
+#include "fmod.h"
+#pragma comment (lib, "fmodex_vc.lib")
+
 // 각종 typedef
 using int8 = __int8;
 using int16 = __int16;

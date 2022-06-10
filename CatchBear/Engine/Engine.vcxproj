@@ -244,6 +244,7 @@
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SlowRestState.h" />
     <ClInclude Include="SlowState.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="StructuredBuffer.h" />
@@ -333,6 +334,7 @@
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="SlowRestState.cpp" />
     <ClCompile Include="SlowState.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Struct.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>

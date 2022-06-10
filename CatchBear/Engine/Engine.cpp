@@ -12,6 +12,7 @@
 #include "ScoreManager.h"
 #include "CollidManager.h"
 #include "ServerSession.h"
+#include "SoundManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -49,6 +50,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
+	GET_SINGLE(SoundManager)->Init();
 
 	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
 	_fontDevice->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);
@@ -61,6 +63,7 @@ void Engine::Update()
 
 	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
 	{
+		GET_SINGLE(SoundManager)->PlayBGM(L"logo.mp3");
 		GET_SINGLE(Input)->Update();
 
 		if (INPUT->GetButtonDown(KEY_TYPE::ENTER))

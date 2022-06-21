@@ -73,38 +73,34 @@ void SoundManager::StopAll()
 
 void SoundManager::LoadSoundFile()
 {
-	_finddata_t fd;
+	ifstream fin;
+	fin.open("..\\Sound\\lists.txt");
 
-	long handle = _findfirst("../Sound/*.*", &fd);
+	string line;
+	string path = "..\\Sound\\";
 
-	if (handle == 0)
-		return;
-
-	int iResult = 0;
-
-	char szCurPath[128] = "../Sound/";
-	char szFullPath[128] = "";
-
-	while (iResult != -1)
+	while (!fin.eof())
 	{
-		strcpy_s(szFullPath, szCurPath);
-		strcat_s(szFullPath, fd.name);
+		getline(fin, line);
+		string result = path + line;
+
 		FMOD_SOUND* pSound = nullptr;
 
-		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, szFullPath, FMOD_HARDWARE, 0, &pSound);
+		FMOD_RESULT eRes = FMOD_System_CreateSound(m_pSystem, result.c_str(), FMOD_HARDWARE, 0, &pSound);
 
 		if (eRes == FMOD_OK)
 		{
-			int iLength = strlen(fd.name) + 1;
+			int iLength = strlen(line.c_str()) + 1;
 
 			TCHAR* pSoundKey = new TCHAR[iLength];
 			ZeroMemory(pSoundKey, sizeof(TCHAR) * iLength);
-			MultiByteToWideChar(CP_ACP, 0, fd.name, iLength, pSoundKey, iLength);
+			MultiByteToWideChar(CP_ACP, 0, line.c_str(), iLength, pSoundKey, iLength);
 
 			m_mapSound.emplace(pSoundKey, pSound);
 		}
-		iResult = _findnext(handle, &fd);
 	}
+
+	fin.close();
+
 	FMOD_System_Update(m_pSystem);
-	_findclose(handle);
 }

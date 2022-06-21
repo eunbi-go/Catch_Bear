@@ -21,6 +21,7 @@
 #include "ServerPacketHandler.h"
 #include "TagMark.h"
 #include "SceneManager.h"
+#include "SoundManager.h"
 
 void Scene::Awake()
 {
@@ -33,6 +34,14 @@ void Scene::Awake()
 	{
 		gameObject->Awake();
 	}
+
+	//if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"logo");
+
+	//if (GET_SINGLE(SceneManager)->getSceneID() == STAGE) {
+	//	GET_SINGLE(SoundManager)->StopAll();
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"Stage");
+	//}
 }
 
 void Scene::Start()

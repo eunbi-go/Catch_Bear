@@ -15,6 +15,9 @@
 #include <list>
 #include <map>
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 #include <filesystem>
@@ -62,7 +65,7 @@ using namespace Microsoft::WRL;
 // 사운드
 #include <io.h>
 #include "fmod.h"
-#pragma comment (lib, "fmodex_vc.lib")
+#pragma comment (lib, "fmodex64_vc.lib")
 
 // 각종 typedef
 using int8 = __int8;

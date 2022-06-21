@@ -63,7 +63,6 @@ void Engine::Update()
 
 	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
 	{
-		GET_SINGLE(SoundManager)->PlayBGM(L"logo.mp3");
 		GET_SINGLE(Input)->Update();
 
 		if (INPUT->GetButtonDown(KEY_TYPE::ENTER))
@@ -91,6 +90,7 @@ void Engine::Update()
 
 			GET_SINGLE(SceneManager)->Update();
 			GET_SINGLE(InstancingManager)->ClearBuffer();
+
 			//GET_SINGLE(ItemManager)->Update();
 			//GET_SINGLE(ScoreManager)->Update();
 			//GET_SINGLE(CollidManager)->Update();

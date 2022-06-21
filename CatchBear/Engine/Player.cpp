@@ -372,6 +372,7 @@ void Player::Move()
 	_player->GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 	static_pointer_cast<TagMark>(tagObject->GetScript(0))->SetPosition(pos);
+	static_pointer_cast<TagMark>(tagObject->GetScript(0))->SetRotation();
 }
 
 void Player::KeyCheck_Item()

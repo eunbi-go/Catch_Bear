@@ -30,6 +30,7 @@
 #include "MeshRenderer.h"
 #include "Resources.h"
 #include "Engine.h"
+#include "SoundManager.h"
 
 Protocol::C_MOVE pkt;
 Protocol::C_STATE StatePkt;
@@ -82,6 +83,9 @@ void Player::LateUpdate()
 
 	Vec3 trans = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
+
+	if (_player->_curState == WALK && GetAnimationController()->GetCurrentFrame() >= 3)
+		GET_SINGLE(SoundManager)->PlaySound(L"click.mp3", SoundManager::MOVE);
 
 }
 

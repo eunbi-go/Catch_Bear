@@ -11,16 +11,15 @@
 
 wstring MyIpAddr;
 
-int main()
-{
+int main(){
 	ClientPacketHandler::Init();
 
 	//cout << "서버 ip주소 입력: ";
 	//wcin >> MyIpAddr;
 
 	ServerServiceRef service = MakeShared<ServerService>(
-		//NetAddress(L"127.0.0.1", 7777),
-		NetAddress(L"222.117.32.117", 7777),
+		NetAddress(L"127.0.0.1", 7777),
+		//NetAddress(L"222.99.104.237", 7777),
 		//NetAddress(MyIpAddr, 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>, // TODO : SessionManager 등

@@ -93,8 +93,6 @@ void Engine::Update()
 
 void Engine::LoginSceneUpdate()
 {
-	
-
 	GET_SINGLE(Input)->Update();
 
 	// ½ÅÀüÈ¯ test

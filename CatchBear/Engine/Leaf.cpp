@@ -20,8 +20,8 @@ void Leaf::Start()
 
 void Leaf::LateUpdate()
 {
-	// pos
-	Vec3 pos = GetTransform()->GetLocalPosition();
-	pos.y -= _fallSpeed * DELTA_TIME;
-	GetTransform()->SetLocalPosition(pos);
+	//// pos
+	//Vec3 pos = GetTransform()->GetLocalPosition();
+	//pos.y -= _fallSpeed * DELTA_TIME;
+	//GetTransform()->SetLocalPosition(pos);
 }

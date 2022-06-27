@@ -35,13 +35,13 @@ void Scene::Awake()
 		gameObject->Awake();
 	}
 
-	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
-		GET_SINGLE(SoundManager)->PlayBGM(L"logo");
+	//if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"logo.mp3");
 
-	if (GET_SINGLE(SceneManager)->getSceneID() == STAGE) {
-		GET_SINGLE(SoundManager)->StopAll();
-		GET_SINGLE(SoundManager)->PlayBGM(L"Stage");
-	}
+	//if (GET_SINGLE(SceneManager)->getSceneID() == STAGE) {
+	//	GET_SINGLE(SoundManager)->StopAll();
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"Stage.mp3");
+	//}
 }
 
 void Scene::Start()

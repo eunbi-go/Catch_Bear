@@ -217,6 +217,7 @@
     <ClInclude Include="ItemSlotUI.h" />
     <ClInclude Include="ItemWindow.h" />
     <ClInclude Include="JumpState.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -297,6 +298,7 @@
     <ClCompile Include="ItemSlotUI.cpp" />
     <ClCompile Include="ItemWindow.cpp" />
     <ClCompile Include="JumpState.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />

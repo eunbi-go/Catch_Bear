@@ -67,6 +67,35 @@ VS_OUT VS_Main(VS_IN input)
     return output;
 }
 
+VS_OUT VS_LeafParticle(VS_IN input)
+{
+    VS_OUT output = (VS_OUT)0;
+
+    if (g_int_0 == 1)   // g_int_0을 1로 설정하면 인스턴싱이 적용된다고 받아들임
+    {
+        // global이 아니라 input을 통해서 input에 내가 몇번째로 받아주고 있는지 설정
+        output.pos = mul(float4(input.pos, 1.f), input.matWVP);
+        output.uv = input.uv;
+
+        output.viewPos = mul(float4(input.pos, 1.f), input.matWV).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), input.matWV).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), input.matWV).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
+    }
+    else    // 그게 아니면 기존 방식으로 렌더링
+    {
+        output.pos = mul(float4(input.pos, 1.f), g_matWVP);
+        output.uv = input.uv;
+
+        output.viewPos = mul(float4(input.pos, 1.f), g_matWV).xyz;
+        output.viewNormal = normalize(mul(float4(input.normal, 0.f), g_matWV).xyz);
+        output.viewTangent = normalize(mul(float4(input.tangent, 0.f), g_matWV).xyz);
+        output.viewBinormal = normalize(cross(output.viewTangent, output.viewNormal));
+    }
+
+    return output;
+}
+
 VS_OUT VS_Player(VS_IN input)
 {
     VS_OUT output = (VS_OUT)0;
@@ -153,6 +182,19 @@ PS_OUT PS_TagMarkNormalPlayer(VS_OUT input) // 술래
     PS_OUT output = (PS_OUT)0;
 
     float4 color = float4(0.f, 0.f, 1.f, 1.f);
+
+    output.position = float4(input.pos.xyz, 0.f);
+    output.normal = float4(input.viewNormal.xyz, 0.f);
+    output.color = color;
+
+    return output;
+}
+
+PS_OUT PS_LeafParticle(VS_OUT input)
+{
+    PS_OUT output = (PS_OUT)0;
+
+    float4 color = float4(0.4f, 0.8f, 0.4f, 1.f);
 
     output.position = float4(input.pos.xyz, 0.f);
     output.normal = float4(input.viewNormal.xyz, 0.f);

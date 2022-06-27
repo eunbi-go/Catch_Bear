@@ -738,6 +738,27 @@ void Resources::CreateDefaultShader()
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
 		Add<Shader>(L"NormalTagMark", shader);
 	}
+
+	// Leaf Particle
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};
+
+		ShaderArg arg =
+		{
+			"VS_LeafParticle",
+			"",
+			"",
+			"",
+			"PS_LeafParticle"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"LeafParticle", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()

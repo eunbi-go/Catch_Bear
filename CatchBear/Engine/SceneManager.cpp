@@ -34,6 +34,7 @@
 #include "ServerPacketHandler.h"
 #include "FontDevice.h"
 #include "Engine.h"
+#include "Leaf.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -307,7 +308,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_LiliPad.bin");
+#pragma region leaf
+	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
 
 	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
 
@@ -315,13 +317,16 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		gameObject->SetName(L"leaf");
 		gameObject->SetCheckFrustum(false);
-		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, 3.f, 0.f));
+		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, 2.f, 0.f));
 		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
-		gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		//gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		gameObject->AddComponent(make_shared<Leaf>());
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+		static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(15.f, 2.f, 0.f));
 		scene->AddGameObject(gameObject);
 	}
+#pragma endregion
 
 
 #pragma region TagMark
@@ -1277,6 +1282,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				{
 					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))
 						name = L"wooden_fence_04";
+
 					meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 					obj = meshData->Instantiate();
 				}

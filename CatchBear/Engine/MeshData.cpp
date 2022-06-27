@@ -289,6 +289,8 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"Colorsheet Wood Brown";
 			else if (!strcmp(pStrTocken, "wooden_fence_d"))
 				_staticMeshInfo.material.diffuseTexName = L"wooden_fence_d";
+			else if (!strcmp(pStrTocken, "lambert1"))
+				_staticMeshInfo.material.diffuseTexName = L"Simplistic_Nature_Texture";
 			else
 				int k = 0;
 		}

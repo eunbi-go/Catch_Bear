@@ -34,6 +34,7 @@
 #include "ServerPacketHandler.h"
 #include "FontDevice.h"
 #include "Engine.h"
+#include "Leaf.h"
 
 shared_ptr<Scene> scene = make_shared<Scene>();
 
@@ -306,6 +307,28 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//}
 	}
 #pragma endregion
+
+#pragma region leaf
+	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
+
+	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
+
+	for (auto& gameObject : objectsHeart2)
+	{
+		gameObject->SetName(L"leaf");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, 2.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+		gameObject->AddComponent(make_shared<Leaf>());
+
+		static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(15.f, 2.f, 0.f));
+		scene->AddGameObject(gameObject);
+	}
+#pragma endregion
+
 
 #pragma region TagMark
 	// Heart
@@ -1154,15 +1177,15 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 
 #pragma region Camera
 	{
-		shared_ptr<GameObject> camera = make_shared<GameObject>();
-		camera->SetName(L"Main_Camera");
-		camera->AddComponent(make_shared<Transform>());
-		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45µµ
-		camera->AddComponent(make_shared<CameraScript>());
-		camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
-		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
-		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI´Â ¾È ÂïÀ½
-		scene->AddGameObject(camera);
+		//shared_ptr<GameObject> camera = make_shared<GameObject>();
+		//camera->SetName(L"Main_Camera");
+		//camera->AddComponent(make_shared<Transform>());
+		//camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45µµ
+		//camera->AddComponent(make_shared<CameraScript>());
+		//camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
+		//uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"Default");
+		//camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI´Â ¾È ÂïÀ½
+		//scene->AddGameObject(camera);
 	}
 #pragma endregion
 
@@ -1187,9 +1210,8 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"loginScene");
 		finalRanking->AddComponent(make_shared<Transform>());
-		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 800.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 500.f));
-		finalRanking->AddComponent(make_shared<ScoreUI>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 100.f));
 		finalRanking->_isRender = true;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1212,69 +1234,21 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 #pragma endregion
 
 
-#pragma region TestPlayer
-	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin");
 
-		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
-		g_EnterPlayerCnt = 1;
-		for (auto& gameObject : gameObjects)
-		{
-			gameObject->SetName(L"Player1");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 0.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(0);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(0, gameObject);
-			scene->AddVecPlayers(gameObject);
-		}
-
-		// Heart
-		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"Heart.bin");
-
-		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
-
-		for (auto& gameObject : objectsHeart)
-		{
-			gameObject->SetName(L"PlayerTag1");
-			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-			gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-			gameObject->AddComponent(make_shared<TagMark>());
-			scene->AddGameObject(gameObject);
-			scene->AddTagMarks(0, gameObject);
-		}
-	}
-#pragma endregion
-
-
-
-#pragma region Directional Light
-	{
-		shared_ptr<GameObject> light = make_shared<GameObject>();
-		light->AddComponent(make_shared<Transform>());
-		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
-		light->AddComponent(make_shared<Light>());
-		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
-		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
-		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
-		light->GetLight()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
-		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-		scene->AddGameObject(light);
-	}
-#pragma endregion
+//#pragma region Directional Light
+//	{
+//		shared_ptr<GameObject> light = make_shared<GameObject>();
+//		light->AddComponent(make_shared<Transform>());
+//		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
+//		light->AddComponent(make_shared<Light>());
+//		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
+//		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
+//		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
+//		light->GetLight()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
+//		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
+//		scene->AddGameObject(light);
+//	}
+//#pragma endregion
 
 	return scene;
 }
@@ -1309,6 +1283,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 				{
 					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))
 						name = L"wooden_fence_04";
+
 					meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 					obj = meshData->Instantiate();
 				}

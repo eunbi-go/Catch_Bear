@@ -15,6 +15,9 @@
 #include <list>
 #include <map>
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
+#include <fstream>
 using namespace std;
 
 #include <filesystem>
@@ -59,6 +62,11 @@ using namespace Microsoft::WRL;
 #pragma comment(lib, "DirectXTex\\DirectXTex.lib")
 #endif
 
+// 사운드
+#include <io.h>
+#include "fmod.h"
+#pragma comment (lib, "fmodex64_vc.lib")
+
 // 각종 typedef
 using int8 = __int8;
 using int16 = __int16;
@@ -82,7 +90,6 @@ enum class CBV_REGISTER : uint8
 	b2,
 	b3,
 	b4,
-	b5,
 
 	END
 };
@@ -408,9 +415,9 @@ struct AnimatedBoneParams
 	Matrix matBoneTrans[72];
 };
 
-struct TimeParams
+struct LeafParticle
 {
-	int deltaTime;
+	float fallSpeed;
 };
 
 extern unique_ptr<class Engine> GEngine;

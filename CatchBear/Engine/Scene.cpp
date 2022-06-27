@@ -21,6 +21,7 @@
 #include "ServerPacketHandler.h"
 #include "TagMark.h"
 #include "SceneManager.h"
+#include "SoundManager.h"
 
 void Scene::Awake()
 {
@@ -33,6 +34,14 @@ void Scene::Awake()
 	{
 		gameObject->Awake();
 	}
+
+	//if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"logo.mp3");
+
+	//if (GET_SINGLE(SceneManager)->getSceneID() == STAGE) {
+	//	GET_SINGLE(SoundManager)->StopAll();
+	//	GET_SINGLE(SoundManager)->PlayBGM(L"Stage.mp3");
+	//}
 }
 
 void Scene::Start()
@@ -210,7 +219,7 @@ void Scene::PushLightData()
 
 		lightParams.lights[lightParams.lightCount] = lightInfo;
 		lightParams.lightCount++;
-		lightParams.time = GET_SINGLE(Timer)->GetAllTime();
+		lightParams.time = DELTA_TIME;
 	}
 
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));

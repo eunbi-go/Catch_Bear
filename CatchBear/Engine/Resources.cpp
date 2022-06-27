@@ -748,7 +748,7 @@ void Resources::CreateDefaultShader()
 
 		ShaderArg arg =
 		{
-			"VS_LeafParticle",
+			"VS_Main",
 			"",
 			"",
 			"",

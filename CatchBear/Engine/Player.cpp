@@ -84,8 +84,8 @@ void Player::LateUpdate()
 	Vec3 trans = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
 
-	if (_player->_curState == WALK && GetAnimationController()->GetCurrentFrame() >= 2)
-		GET_SINGLE(SoundManager)->PlaySound(L"click.mp3", SoundManager::MOVE);
+	//if (_player->_curState == WALK && GetAnimationController()->GetCurrentFrame() >= 2)
+	//	GET_SINGLE(SoundManager)->PlaySound(L"click.mp3", SoundManager::MOVE);
 
 }
 

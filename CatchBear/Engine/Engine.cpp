@@ -40,7 +40,6 @@ void Engine::Init(const WindowInfo& info)
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b3, sizeof(BoneOffsetParams), 4);
 	CreateConstantBuffer(CBV_REGISTER::b4, sizeof(AnimatedBoneParams), 4);
-	CreateConstantBuffer(CBV_REGISTER::b5, sizeof(LeafParticle), 4);
 
 	CreateRenderTargetGroups();
 
@@ -50,7 +49,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
-	GET_SINGLE(SoundManager)->Init();
+	//GET_SINGLE(SoundManager)->Init();
 
 	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
 	_fontDevice->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);

@@ -321,8 +321,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		gameObject->AddComponent(make_shared<Leaf>());
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+		gameObject->AddComponent(make_shared<Leaf>());
+
 		static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(15.f, 2.f, 0.f));
 		scene->AddGameObject(gameObject);
 	}

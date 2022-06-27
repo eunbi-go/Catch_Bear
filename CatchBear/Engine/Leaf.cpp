@@ -2,6 +2,8 @@
 #include "Leaf.h"
 #include "Transform.h"
 #include "Engine.h"
+#include "Timer.h"
+#include "GameObject.h"
 
 Leaf::Leaf()
 {
@@ -13,17 +15,13 @@ Leaf::~Leaf()
 
 void Leaf::Start()
 {
-	LeafParticle leafParams = {};
-	leafParams.fallSpeed = 4.f;
-
-	CONST_BUFFER(CONSTANT_BUFFER_TYPE::LEAF_PARTICLE)->PushGraphicsData(&leafParams, sizeof(LeafParticle));
-}
-
-void Leaf::Update()
-{
-	Vec3 pos = GetTransform()->GetLocalPosition();
+	_fallSpeed = 0.05f;
 }
 
 void Leaf::LateUpdate()
 {
+	// pos
+	Vec3 pos = GetTransform()->GetLocalPosition();
+	pos.y -= _fallSpeed * DELTA_TIME;
+	GetTransform()->SetLocalPosition(pos);
 }

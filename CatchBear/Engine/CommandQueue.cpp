@@ -78,7 +78,7 @@ void GraphicsCommandQueue::RenderBegin()
 	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::MATERIAL)->Clear();
 	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::BONE_OFFSET)->Clear();
 	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::ANIMATED_BONE_TRANS)->Clear();
-	//GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::TIME)->Clear();
+	GEngine->GetConstantBuffer(CONSTANT_BUFFER_TYPE::LEAF_PARTICLE)->Clear();
 
 	GEngine->GetGraphicsDescHeap()->Clear();
 

@@ -9,6 +9,7 @@ public:
 	virtual ~Leaf();
 
 public:
+	virtual void Start();
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 

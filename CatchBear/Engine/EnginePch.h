@@ -90,6 +90,7 @@ enum class CBV_REGISTER : uint8
 	b2,
 	b3,
 	b4,
+	b5,
 
 	END
 };
@@ -413,6 +414,11 @@ struct BoneOffsetParams
 struct AnimatedBoneParams
 {
 	Matrix matBoneTrans[72];
+};
+
+struct LeafParticle
+{
+	float fallSpeed;
 };
 
 extern unique_ptr<class Engine> GEngine;

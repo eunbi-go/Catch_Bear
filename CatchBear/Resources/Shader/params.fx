@@ -89,9 +89,14 @@ cbuffer cbBoneTransforms : register(b4)
     float4x4 g_boneTrans[72];
 };
 
-cbuffer cbBoneTransforms : register(b5)
+//cbuffer cbBoneTransforms : register(b5)
+//{
+//    int g_deltaTime;
+//};
+
+cbuffer leafParticle : register(b5)
 {
-    int g_deltaTime;
-};
+    float fallSpeed;
+}
 
 #endif

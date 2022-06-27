@@ -8,6 +8,7 @@ void Resources::Init()
 {
 	CreateDefaultShader();
 	CreateDefaultMaterial();
+	CreatePlayerTexture();
 }
 
 shared_ptr<Mesh> Resources::LoadPointMesh()
@@ -343,6 +344,25 @@ shared_ptr<class MeshData> Resources::LoadFBX(const wstring& path)
 shared_ptr<class CharacterData> Resources::LoadCharacter(const wstring& path)
 {
 	wstring		key = path;
+
+	//string name = ws2s(path);
+
+	//// path 안에 Evilbear이라는 string이 있으면
+	//if (name.find("Evilbear") != string::npos)
+	//{
+	//	shared_ptr<CharacterData>	characterData = Get<CharacterData>(L"Evilbear_gray.bin");
+	//	if (characterData)	return characterData;
+	//	else
+	//	{
+	//		characterData = make_shared<CharacterData>();
+
+	//		characterData->LoadCharacterFromFile(L"Evilbear_gray.bin");
+	//		characterData->SetName(L"Evilbear_gray.bin");
+	//		Add(L"Evilbear_gray.bin", characterData);
+
+	//		return characterData;
+	//	}
+	//}
 
 	shared_ptr<CharacterData>	characterData = Get<CharacterData>(key);
 	if (characterData)	return characterData;
@@ -870,4 +890,28 @@ void Resources::CreateDefaultMaterial()
 		Add<Material>(L"Terrain", material);
 	}
 
+}
+
+void Resources::CreatePlayerTexture()
+{
+	// gray
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_gray.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_gray", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_gray.png", tex);
+	}
+
+	// brown
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_brown.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_brown", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_brown.png", tex);
+	}
+
+	// blue
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_blue.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_blue", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_blue.png", tex);
+	}
 }

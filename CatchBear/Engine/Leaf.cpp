@@ -16,7 +16,7 @@ Leaf::~Leaf()
 void Leaf::Start()
 {
 	random_device rd;
-	uniform_real_distribution<float> distSpeed(0.5, 1);
+	uniform_real_distribution<float> distSpeed(0.8, 2);
 	uniform_real_distribution<float> distTime(1, 5);
 	_fallSpeed = distSpeed(rd);
 	_respawnTime = distTime(rd);

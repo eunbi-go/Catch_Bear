@@ -259,7 +259,6 @@ static bool isFirstEnter = true;
 void Player::Move()
 {
 	if (_bStunned) return;
-
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
@@ -300,7 +299,13 @@ void Player::Move()
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		else
-			pos -= _player->GetTransform()->GetRight() * (_speed / 10.0f) * DELTA_TIME;
+		{
+			if (_dir == DIR::DIR_LEFT)
+				pos -= _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+			else
+				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+		}
+	
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -341,6 +346,8 @@ void Player::Move()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
+		_dir = DIR::DIR_RIGHT;
+
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -359,6 +366,8 @@ void Player::Move()
 	{
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
+
+		_dir = DIR::DIR_LEFT;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);

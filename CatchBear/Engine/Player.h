@@ -19,6 +19,12 @@ public:
 		DEBUFF_OFF, STUN, ITEM_END, NONE,
 	};
 
+	//장애물 극복 방향을 위해 만듬
+	enum DIR
+	{
+		DIR_LEFT, DIR_RIGHT, DIR_END,
+	};
+
 public:
 	Player();
 	virtual ~Player();
@@ -106,5 +112,7 @@ public:
 	float	_testTime = 0.f;
 	bool	_isFont = false;
 	wstring _wstrText = L"";
+
+	DIR		_dir = DIR::DIR_END;
 };
 

@@ -300,7 +300,7 @@ void Player::Move()
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		else
-			pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
+			pos -= _player->GetTransform()->GetRight() * (_speed / 10.0f) * DELTA_TIME;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);

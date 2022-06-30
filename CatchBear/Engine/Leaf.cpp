@@ -15,13 +15,37 @@ Leaf::~Leaf()
 
 void Leaf::Start()
 {
-	_fallSpeed = 0.05f;
+	random_device rd;
+	uniform_real_distribution<float> distSpeed(0.5, 1);
+	uniform_real_distribution<float> distTime(1, 5);
+	_fallSpeed = distSpeed(rd);
+	_respawnTime = distTime(rd);
 }
 
 void Leaf::LateUpdate()
 {
-	//// pos
-	//Vec3 pos = GetTransform()->GetLocalPosition();
-	//pos.y -= _fallSpeed * DELTA_TIME;
-	//GetTransform()->SetLocalPosition(pos);
+	Vec3 pos = GetTransform()->GetLocalPosition();
+
+	if (GetGameObject()->_isRender)
+	{
+		pos.y -= _fallSpeed * DELTA_TIME;
+		GetTransform()->SetLocalPosition(pos);
+
+		if (pos.y <= 0.5f)
+		{
+			GetGameObject()->_isRender = false;
+			pos.y = 5.f;
+			GetTransform()->SetLocalPosition(pos);
+		}
+	}
+	else
+	{
+		_respawnTime += DELTA_TIME;
+		if (_respawnTime >= 2.f)
+		{
+			_respawnTime = 0.f;
+			GetGameObject()->_isRender = true;
+		}
+	}
+
 }

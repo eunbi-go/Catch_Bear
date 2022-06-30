@@ -235,7 +235,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region StaticMesh
-	LoadMapFile(scene);
+	//LoadMapFile(scene);
 #pragma endregion
 
 #pragma region TestPlayer
@@ -319,24 +319,24 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region leaf
-	//shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
+	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
 
-	//vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
+	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
 
-	//for (auto& gameObject : objectsHeart2)
-	//{
-	//	gameObject->SetName(L"leaf");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, 2.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
-	//	gameObject->AddComponent(make_shared<Leaf>());
+	for (auto& gameObject : objectsHeart2)
+	{
+		gameObject->SetName(L"leaf");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(11.f, 4.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+		gameObject->AddComponent(make_shared<Leaf>());
 
-	//	static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(15.f, 2.f, 0.f));
-	//	scene->AddGameObject(gameObject);
-	//}
+		static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(11.f, 4.f, 0.f));
+		scene->AddGameObject(gameObject);
+	}
 #pragma endregion
 
 
@@ -1287,8 +1287,10 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
+
 				shared_ptr<MeshData> meshData = NULL;
 				vector<shared_ptr<GameObject>> obj;
+
 				if (strcmp(pStrTocken, "Plane"))
 				{
 					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))

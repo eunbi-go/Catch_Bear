@@ -3,6 +3,9 @@
 #include "Engine.h"
 #include "SoundManager.h"
 #include "GameObject.h"
+#include "Input.h"
+#include "SceneManager.h"
+#include "Engine.h"
 
 LoginScene::LoginScene()
 {
@@ -37,6 +40,10 @@ void LoginScene::Start()
 
 void LoginScene::Update()
 {
+	if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
+		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
+		GEngine->_isIPAddrEnter = true;
+	}
 }
 
 void LoginScene::LateUpdate()

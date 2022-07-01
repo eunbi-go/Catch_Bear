@@ -30,8 +30,8 @@ StageScene::~StageScene()
 
 void StageScene::Awake()
 {
-	GET_SINGLE(SoundManager)->StopAll();
-	GET_SINGLE(SoundManager)->PlayBGM(L"Stage.mp3");
+	//GET_SINGLE(SoundManager)->StopAll();
+	//GET_SINGLE(SoundManager)->PlayBGM(L"Stage.mp3");
 }
 
 void StageScene::Start()
@@ -52,7 +52,6 @@ void StageScene::Update()
 		if (_toStartTime >= 7.f)
 		{
 			CheckMouse();
-			GET_SINGLE(Input)->Update();
 			GET_SINGLE(CollidManager)->Update();
 
 			if (!_isFinish)

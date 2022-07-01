@@ -59,46 +59,40 @@ void SceneManager::Render()
 		_activeScene->Render();
 }
 
-void SceneManager::LoadScene(wstring sceneName)
+void SceneManager::LoadScene(SCENE_ID sceneID)
 {
 	// TODO : 기존 Scene 정리
 	// TODO : 파일에서 Scene 정보 로드
 
-	if (sceneName == L"StageScene")
+	if (_curScene != sceneID)
 	{
+		_curScene = sceneID;
+
 		if (_activeScene)
 		{
 			_activeScene.reset();
 			scene.reset();
-			
-			//scene = make_shared<Scene>();
-			//_activeScene = make_shared<Scene>();
-
-			scene = make_shared<StageScene>();
-			_activeScene = make_shared<StageScene>();
 		}
-		_activeScene = LoadTestScene();
-		_curScene = STAGE;
-	}
-	else if (sceneName == L"LoginScene")
-	{
-		if (_activeScene)
+
+		switch (sceneID)
 		{
-			_activeScene.reset();
-			scene.reset();
-
-			//scene = make_shared<Scene>();
-			//_activeScene = make_shared<Scene>();
-
+		case LOGIN:
 			scene = make_shared<LoginScene>();
 			_activeScene = make_shared<LoginScene>();
-		}
-		scene = make_shared<LoginScene>();
-		_activeScene = make_shared<LoginScene>();
-		_activeScene = LoadLoginScene();
-		_curScene = LOGIN;
-	}
+			_activeScene = LoadLoginScene();
+			break;
 
+		case STAGE:
+			scene = make_shared<StageScene>();
+			_activeScene = make_shared<StageScene>();
+			_activeScene = LoadTestScene();
+			break;
+
+		case SCENE_CNT:
+			break;
+		}
+	}
+	
 	_activeScene->Awake();
 	_activeScene->Start();
 	_activeScene->Render();
@@ -265,12 +259,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-
-
-			//gameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"Evilbear_gray.png"));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-
-
 			gameObject->SetStatic(false);
 			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));	// 여기서 z값만 늘려서 충돌테스트 해보기 테스트, 만약 안되면 충돌하는 오브젝트만 따로 만들기
 			gameObject->SetBoundingBox(BoundingOrientedBox(
@@ -291,10 +280,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 		//	gameObject->AddComponent(make_shared<Player>());
 		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-
-		//	//gameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"Evilbear_blue.png"));
 		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-
 		//	gameObject->SetStatic(false);
 		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 		//	gameObject->SetBoundingBox(BoundingOrientedBox(

@@ -36,7 +36,11 @@
 #include "Engine.h"
 #include "Leaf.h"
 
-shared_ptr<Scene> scene = make_shared<Scene>();
+#include "LoginScene.h"
+#include "StageScene.h"
+
+//shared_ptr<Scene> scene = make_shared<Scene>();
+shared_ptr<Scene> scene = NULL;
 
 void SceneManager::Update()
 {
@@ -66,8 +70,12 @@ void SceneManager::LoadScene(wstring sceneName)
 		{
 			_activeScene.reset();
 			scene.reset();
-			scene = make_shared<Scene>();
-			_activeScene = make_shared<Scene>();
+			
+			//scene = make_shared<Scene>();
+			//_activeScene = make_shared<Scene>();
+
+			scene = make_shared<StageScene>();
+			_activeScene = make_shared<StageScene>();
 		}
 		_activeScene = LoadTestScene();
 		_curScene = STAGE;
@@ -78,9 +86,15 @@ void SceneManager::LoadScene(wstring sceneName)
 		{
 			_activeScene.reset();
 			scene.reset();
-			scene = make_shared<Scene>();
-			_activeScene = make_shared<Scene>();
+
+			//scene = make_shared<Scene>();
+			//_activeScene = make_shared<Scene>();
+
+			scene = make_shared<LoginScene>();
+			_activeScene = make_shared<LoginScene>();
 		}
+		scene = make_shared<LoginScene>();
+		_activeScene = make_shared<LoginScene>();
 		_activeScene = LoadLoginScene();
 		_curScene = LOGIN;
 	}

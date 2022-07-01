@@ -448,8 +448,8 @@ void Player::UseItem(int itemNum)
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		Item_Stun();
+		_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		//Item_Stun();
 		break;
 	}
 }
@@ -831,7 +831,7 @@ void Player::Stunned()
 		return;
 	}
 
-	// 유니크 아이템 - 3초간 스턴
+	// 유니크 아이템 - 3초간 스턴 & 텍스처 매핑
 	if (!_bStunned && !_curPlayerItem[ITEM::SHIELD])
 	{
 		if (!isFirstEnter) {

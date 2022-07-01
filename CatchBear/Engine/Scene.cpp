@@ -239,7 +239,7 @@ void Scene::UpdateStageScene()
 		if (_toStartTime >= 7.f)
 		{
 			CheckMouse();
-			GET_SINGLE(Input)->Update();
+			//GET_SINGLE(Input)->Update();
 			GET_SINGLE(CollidManager)->Update();
 
 			if (!_isFinish)

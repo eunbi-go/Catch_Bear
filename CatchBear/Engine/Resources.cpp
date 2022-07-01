@@ -890,6 +890,15 @@ void Resources::CreateDefaultMaterial()
 		Add<Material>(L"Terrain", material);
 	}
 
+	// stun
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Deferred");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Stun", L"..\\Resources\\Texture\\Evilbear_brown.png");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		Add<Material>(L"Stun", material);
+	}
 }
 
 void Resources::CreatePlayerTexture()
@@ -913,5 +922,12 @@ void Resources::CreatePlayerTexture()
 		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_blue.png";
 		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_blue", fullPath);
 		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_blue.png", tex);
+	}
+
+	// stun
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_brown.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"stun", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"stun.jpg", tex);
 	}
 }

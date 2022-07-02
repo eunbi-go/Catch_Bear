@@ -78,7 +78,7 @@ void StunState::Enter(GameObject& player)
     player.GetAnimationController()->SetTrackAnimationSet(0, 5);
 
     // 텍스처 매핑
-    shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(L"Stun");
+    shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(L"StunState");
     player.GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
 }
 
@@ -87,6 +87,7 @@ void StunState::End(GameObject& player)
     _fTime = 0.f;
 
     // 텍스처 매핑
-    shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(L"Stun");
+    wstring key = static_pointer_cast<Player>(player.GetScript(0))->GetTextureKey();
+    shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
     player.GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
 }

@@ -319,28 +319,28 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 #pragma region leaf
-	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
+	//shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
 
-	random_device rd;
-	uniform_real_distribution<float> distX(-50, 50);
-	uniform_real_distribution<float> distZ(-50, 50);
+	//random_device rd;
+	//uniform_real_distribution<float> distX(-50, 50);
+	//uniform_real_distribution<float> distZ(-50, 50);
 
-	for (int i = 0; i < 60; ++i)
-	{
-		vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
+	//for (int i = 0; i < 60; ++i)
+	//{
+	//	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
 
-		for (auto& gameObject : objectsHeart2)
-		{
-			gameObject->SetName(L"leaf");
-			gameObject->SetCheckFrustum(false);
-			gameObject->GetTransform()->SetLocalPosition(Vec3(distX(rd), 2.f, distZ(rd)));
-			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
-			gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
-			gameObject->AddComponent(make_shared<Leaf>());
-			scene->AddGameObject(gameObject);
-		}
-	}
+	//	for (auto& gameObject : objectsHeart2)
+	//	{
+	//		gameObject->SetName(L"leaf");
+	//		gameObject->SetCheckFrustum(false);
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(distX(rd), 2.f, distZ(rd)));
+	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+	//		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+	//		gameObject->AddComponent(make_shared<Leaf>());
+	//		scene->AddGameObject(gameObject);
+	//	}
+	//}
 #pragma endregion
 
 

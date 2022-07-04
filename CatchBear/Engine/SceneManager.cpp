@@ -325,7 +325,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	uniform_real_distribution<float> distX(-50, 50);
 	uniform_real_distribution<float> distZ(-50, 50);
 
-	for (int i = 0; i < 50; ++i)
+	for (int i = 0; i < 60; ++i)
 	{
 		vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
 

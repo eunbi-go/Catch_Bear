@@ -36,6 +36,7 @@ public:
 	void AddPlayerScore(int score) { _iScore += score; }
 	void SetPlayerScore(int score) { _iScore = score; }
 	void SetSheildTime(float time) { _fShieldTime = time; }
+	void SetTextureKey(const wstring& textureKey) { _textureKey = textureKey; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerSpeed() { return _speed; }
@@ -45,6 +46,7 @@ public:
 	const bool GetPlayerStunned() { return _bStunned; }
 	const int GetPlayerScore() { return _iScore; }
 	const int GetItemCount() { return _iItemCnt; }
+	const wstring& GetTextureKey() { return _textureKey; }
 	
 private:
 	void KeyCheck();
@@ -88,6 +90,8 @@ private:
 
 	int		_iScore = 0;
 	int		_iItemCnt = 0;
+
+	wstring _textureKey;
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();

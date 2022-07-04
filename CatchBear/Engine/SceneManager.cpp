@@ -267,6 +267,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
+			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_gray");
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
@@ -288,6 +289,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->SetCheckFrustum(false);
 		//	gameObject->SetPlayerID(1);
 		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_blue");
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(1, gameObject);
 		//	scene->AddVecPlayers(gameObject);
@@ -311,6 +313,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->SetCheckFrustum(false);
 		//	gameObject->SetPlayerID(2);
 		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_brown");
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(2, gameObject);
 		//	scene->AddVecPlayers(gameObject);

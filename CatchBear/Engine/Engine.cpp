@@ -67,22 +67,10 @@ void Engine::Update()
 		GET_SINGLE(Input)->Update();
 		GET_SINGLE(Timer)->Update();
 
-		// 신전환 test
-		if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
-		{
-			if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
-				GET_SINGLE(SceneManager)->LoadScene(L"StageScene");
-				_isIPAddrEnter = true;
-			}
-		}
-
 		_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(InstancingManager)->ClearBuffer();
-		//GET_SINGLE(ItemManager)->Update();
-		//GET_SINGLE(ScoreManager)->Update();
-		//GET_SINGLE(CollidManager)->Update();
 
 		Render();
 
@@ -95,15 +83,6 @@ void Engine::Update()
 void Engine::LoginSceneUpdate()
 {
 	GET_SINGLE(Input)->Update();
-
-	// 신전환 test
-	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
-	{
-		if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
-			GET_SINGLE(SceneManager)->LoadScene(L"StageScene");
-			_isIPAddrEnter = true;
-		}
-	}
 
 	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 

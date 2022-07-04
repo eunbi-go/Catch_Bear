@@ -248,6 +248,8 @@
     <ClCompile Include="FontDevice.cpp" />
     <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="Leaf.cpp" />
+    <ClCompile Include="LoginScene.cpp" />
+    <ClCompile Include="StageScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -465,6 +467,8 @@
     <ClInclude Include="FontDevice.h" />
     <ClInclude Include="SoundManager.h" />
     <ClInclude Include="Leaf.h" />
+    <ClInclude Include="LoginScene.h" />
+    <ClInclude Include="StageScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

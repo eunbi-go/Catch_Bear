@@ -38,7 +38,7 @@
 
 #include "LoginScene.h"
 #include "StageScene.h"
-
+#include "LobbyScene.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -80,6 +80,12 @@ void SceneManager::LoadScene(SCENE_ID sceneID)
 			scene = make_shared<LoginScene>();
 			_activeScene = make_shared<LoginScene>();
 			_activeScene = LoadLoginScene();
+			break;
+
+		case LOBBY:
+			scene = make_shared<LobbyScene>();
+			_activeScene = make_shared<LobbyScene>();
+			_activeScene = LoadLobbyScene();
 			break;
 
 		case STAGE:
@@ -152,6 +158,9 @@ void SceneManager::changeScene(SCENE_ID eScene)
 	{
 	case LOGIN:
 		_activeScene = LoadLoginScene();
+		break;
+	case LOBBY:
+		_activeScene = LoadLobbyScene();
 		break;
 	case STAGE:
 		_activeScene = LoadTestScene();
@@ -1263,6 +1272,60 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 //		scene->AddGameObject(light);
 //	}
 //#pragma endregion
+
+	return scene;
+}
+
+shared_ptr<Scene> SceneManager::LoadLobbyScene()
+{
+#pragma region LayerMask
+	SetLayerName(0, L"Default");
+	SetLayerName(1, L"UI");
+#pragma endregion
+
+#pragma region UI_Camera
+	{
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Orthographic_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, 800*600
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::ORTHOGRAPHIC);
+		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskAll(); // ´Ù ²ô°í
+		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, false); // UI¸¸ ÂïÀ½
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region lobbyScene
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"lobbyScene");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 100.f));
+		finalRanking->_isRender = true;
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobbyUI", L"..\\Resources\\Texture\\Lobby.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
 
 	return scene;
 }

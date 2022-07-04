@@ -219,6 +219,7 @@
     <ClInclude Include="JumpState.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -302,6 +303,7 @@
     <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />

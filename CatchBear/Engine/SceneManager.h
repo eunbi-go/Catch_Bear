@@ -41,6 +41,7 @@ public:
 private:
 	shared_ptr<Scene> LoadTestScene();
 	shared_ptr<Scene> LoadLoginScene();
+	shared_ptr<Scene> LoadLobbyScene();
 
 
 private:

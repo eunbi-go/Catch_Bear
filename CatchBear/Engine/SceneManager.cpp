@@ -39,6 +39,7 @@
 #include "LoginScene.h"
 #include "StageScene.h"
 #include "LobbyScene.h"
+#include "Button.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -1315,7 +1316,37 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobbyUI", L"..\\Resources\\Texture\\Lobby.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobbyUI", L"..\\Resources\\Texture\\Lobby\\background.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region start
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"start");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(300.f, -300.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

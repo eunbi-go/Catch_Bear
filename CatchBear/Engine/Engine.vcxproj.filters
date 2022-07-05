@@ -251,6 +251,7 @@
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
+    <ClCompile Include="Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -471,6 +472,7 @@
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="StageScene.h" />
     <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="Button.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

@@ -243,6 +243,7 @@
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShieldParticle.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SlowRestState.h" />
     <ClInclude Include="SlowState.h" />
@@ -336,6 +337,7 @@
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShieldParticle.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="SlowRestState.cpp" />
     <ClCompile Include="SlowState.cpp" />

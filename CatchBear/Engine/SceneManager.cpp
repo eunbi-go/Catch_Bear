@@ -1303,7 +1303,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 	{
 		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-		finalRanking->SetName(L"lobbyScene");
+		finalRanking->SetName(L"background");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 100.f));
@@ -1339,6 +1339,10 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<Button>());
 
+		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollRect(RECT{ 740, 610, 1040, 680 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start_click", L"..\\Resources\\Texture\\Lobby\\start_click.png");
+		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
 			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
@@ -1347,6 +1351,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
+			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture);
+
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);

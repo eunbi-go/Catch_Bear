@@ -22,6 +22,9 @@ private:
 	void CheckMouse();
 	void CheckTagger();
 
+public:
+	POINT GetMousePos() { return _mousePos; }
+
 private:
 	POINT	_mousePos = { 0, 0 };
 	RECT	_slotRt[3] = { {100, 620, 200, 710}, {220, 620, 320, 710}, {340, 620, 440, 710} };

@@ -36,7 +36,11 @@
 #include "Engine.h"
 #include "Leaf.h"
 
-shared_ptr<Scene> scene = make_shared<Scene>();
+#include "LoginScene.h"
+#include "StageScene.h"
+
+//shared_ptr<Scene> scene = make_shared<Scene>();
+shared_ptr<Scene> scene = NULL;
 
 void SceneManager::Update()
 {
@@ -55,36 +59,40 @@ void SceneManager::Render()
 		_activeScene->Render();
 }
 
-void SceneManager::LoadScene(wstring sceneName)
+void SceneManager::LoadScene(SCENE_ID sceneID)
 {
 	// TODO : 기존 Scene 정리
 	// TODO : 파일에서 Scene 정보 로드
 
-	if (sceneName == L"StageScene")
+	if (_curScene != sceneID)
 	{
-		if (_activeScene)
-		{
-			_activeScene.reset();
-			scene.reset();
-			scene = make_shared<Scene>();
-			_activeScene = make_shared<Scene>();
-		}
-		_activeScene = LoadTestScene();
-		_curScene = STAGE;
-	}
-	else if (sceneName == L"LoginScene")
-	{
-		if (_activeScene)
-		{
-			_activeScene.reset();
-			scene.reset();
-			scene = make_shared<Scene>();
-			_activeScene = make_shared<Scene>();
-		}
-		_activeScene = LoadLoginScene();
-		_curScene = LOGIN;
-	}
+		_curScene = sceneID;
 
+		if (_activeScene)
+		{
+			_activeScene.reset();
+			scene.reset();
+		}
+
+		switch (sceneID)
+		{
+		case LOGIN:
+			scene = make_shared<LoginScene>();
+			_activeScene = make_shared<LoginScene>();
+			_activeScene = LoadLoginScene();
+			break;
+
+		case STAGE:
+			scene = make_shared<StageScene>();
+			_activeScene = make_shared<StageScene>();
+			_activeScene = LoadTestScene();
+			break;
+
+		case SCENE_CNT:
+			break;
+		}
+	}
+	
 	_activeScene->Awake();
 	_activeScene->Start();
 	_activeScene->Render();
@@ -251,12 +259,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 			gameObject->AddComponent(make_shared<Player>());
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-
-
-			//gameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"Evilbear_gray.png"));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-
-
 			gameObject->SetStatic(false);
 			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));	// 여기서 z값만 늘려서 충돌테스트 해보기 테스트, 만약 안되면 충돌하는 오브젝트만 따로 만들기
 			gameObject->SetBoundingBox(BoundingOrientedBox(
@@ -264,6 +267,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
+			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_gray");
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
@@ -277,10 +281,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
 		//	gameObject->AddComponent(make_shared<Player>());
 		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-
-		//	//gameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"Evilbear_blue.png"));
 		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-
 		//	gameObject->SetStatic(false);
 		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 		//	gameObject->SetBoundingBox(BoundingOrientedBox(
@@ -288,6 +289,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->SetCheckFrustum(false);
 		//	gameObject->SetPlayerID(1);
 		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_blue");
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(1, gameObject);
 		//	scene->AddVecPlayers(gameObject);
@@ -311,6 +313,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->SetCheckFrustum(false);
 		//	gameObject->SetPlayerID(2);
 		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_brown");
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(2, gameObject);
 		//	scene->AddVecPlayers(gameObject);
@@ -321,21 +324,25 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region leaf
 	//shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
 
-	//vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
+	//random_device rd;
+	//uniform_real_distribution<float> distX(-50, 50);
+	//uniform_real_distribution<float> distZ(-50, 50);
 
-	//for (auto& gameObject : objectsHeart2)
+	//for (int i = 0; i < 60; ++i)
 	//{
-	//	gameObject->SetName(L"leaf");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, 2.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
-	//	gameObject->AddComponent(make_shared<Leaf>());
+	//	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
 
-	//	static_pointer_cast<Leaf>(gameObject->GetScript(0))->SetPrePosition(Vec3(15.f, 2.f, 0.f));
-	//	scene->AddGameObject(gameObject);
+	//	for (auto& gameObject : objectsHeart2)
+	//	{
+	//		gameObject->SetName(L"leaf");
+	//		gameObject->SetCheckFrustum(false);
+	//		gameObject->GetTransform()->SetLocalPosition(Vec3(distX(rd), 2.f, distZ(rd)));
+	//		gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
+	//		gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+	//		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+	//		gameObject->AddComponent(make_shared<Leaf>());
+	//		scene->AddGameObject(gameObject);
+	//	}
 	//}
 #pragma endregion
 
@@ -1287,8 +1294,10 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
+
 				shared_ptr<MeshData> meshData = NULL;
 				vector<shared_ptr<GameObject>> obj;
+
 				if (strcmp(pStrTocken, "Plane"))
 				{
 					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))

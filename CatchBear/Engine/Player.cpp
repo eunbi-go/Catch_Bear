@@ -259,6 +259,7 @@ static bool isFirstEnter = true;
 void Player::Move()
 {
 	if (_bStunned) return;
+
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
@@ -299,13 +300,7 @@ void Player::Move()
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		else
-		{
-			if (_dir == DIR::DIR_LEFT)
-				pos -= _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
-			else
-				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
-		}
-	
+			pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -346,8 +341,6 @@ void Player::Move()
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
-		_dir = DIR::DIR_RIGHT;
-
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -366,8 +359,6 @@ void Player::Move()
 	{
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
-
-		_dir = DIR::DIR_LEFT;
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -457,8 +448,8 @@ void Player::UseItem(int itemNum)
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		Item_Stun();
+		_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		//Item_Stun();
 		break;
 	}
 }
@@ -840,7 +831,7 @@ void Player::Stunned()
 		return;
 	}
 
-	// 유니크 아이템 - 3초간 스턴
+	// 유니크 아이템 - 3초간 스턴 & 텍스처 매핑
 	if (!_bStunned && !_curPlayerItem[ITEM::SHIELD])
 	{
 		if (!isFirstEnter) {

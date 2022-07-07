@@ -8,8 +8,7 @@ void Game::Init(const WindowInfo& info)
 {
 	GEngine->Init(info);
 
-	GET_SINGLE(SceneManager)->LoadScene(L"LoginScene");
-	//GET_SINGLE(SceneManager)->LoadScene(L"StageScene");
+	GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::LOGIN);
 }
 
 void Game::Update()

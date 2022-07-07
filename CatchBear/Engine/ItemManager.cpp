@@ -116,9 +116,10 @@ void ItemManager::CreateCommonItem()
 				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::SPEED_DOWN);
 				_commonItemList.push_back(item);
 				
-				shared_ptr<Scene> scene = make_shared<Scene>();
-				scene = GET_SINGLE(SceneManager)->GetActiveScene();
-				scene->AddGameObject(item);
+				//shared_ptr<Scene> scene = make_shared<Scene>();
+				//scene = GET_SINGLE(SceneManager)->GetActiveScene();
+				//scene->AddGameObject(item);
+				GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(item);
 			}
 		}
 		_commonItemTimer = 0.f;
@@ -161,9 +162,10 @@ void ItemManager::CreateUniqueItem()
 				//static_pointer_cast<Item>(item->GetScript(0))->SetItemEffect(Item::ITEM_EFFECT::STUN);
 				_uniqueItemList.push_back(item);
 
-				shared_ptr<Scene> scene = make_shared<Scene>();
-				scene = GET_SINGLE(SceneManager)->GetActiveScene();
-				scene->AddGameObject(item);
+				//shared_ptr<Scene> scene = make_shared<Scene>();
+				//scene = GET_SINGLE(SceneManager)->GetActiveScene();
+				//scene->AddGameObject(item);
+				GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(item);
 			}
 		}
 		_uniqueItemTimer = 0.f;
@@ -206,9 +208,10 @@ void ItemManager::CreateTreasure()
 			_treasureList.push_back(gameObject);
 
 
-			shared_ptr<Scene> scene = make_shared<Scene>();
-			scene = GET_SINGLE(SceneManager)->GetActiveScene();
-			scene->AddGameObject(gameObject);
+			//shared_ptr<Scene> scene = make_shared<Scene>();
+			//scene = GET_SINGLE(SceneManager)->GetActiveScene();
+			//scene->AddGameObject(gameObject);
+			GET_SINGLE(SceneManager)->GetActiveScene()->AddGameObject(gameObject);
 		}
 		_treasureTimer = 0.f;
 	}

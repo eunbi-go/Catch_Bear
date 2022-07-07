@@ -19,5 +19,7 @@ private:
 	shared_ptr<GameObject>	_leaf = make_shared<GameObject>();
 	Vec3	_prePosition = Vec3(0.f, 0.f, 0.f);
 	float	_fallSpeed = 0.f;
+	float	_respawnTime = 0.f;
+	bool	_isLive = true;
 };
 

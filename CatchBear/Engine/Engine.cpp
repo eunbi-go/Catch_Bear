@@ -78,6 +78,7 @@ void Engine::Update()
 		//GET_SINGLE(ScoreManager)->Update();
 		//GET_SINGLE(CollidManager)->Update();
 		GET_SINGLE(ShieldParticleManager)->Update();
+		GET_SINGLE(ShieldParticleManager)->LateUpdate();
 
 		Render();
 

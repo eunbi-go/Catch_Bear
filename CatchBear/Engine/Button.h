@@ -15,7 +15,7 @@ public:
 
 
 public:
-	void SetCollRect(RECT rect) { _rect = rect; }
+	void SetCollRect(RECT rect) { _rect = rect; _isCollCheck = true; }
 	void SetCollTexture(shared_ptr<Texture> texture) { _collTexture = texture; }
 	void SetOriginalTexture(shared_ptr<Texture> texture) { _originalTexture = texture; }
 
@@ -29,5 +29,7 @@ private:
 
 	shared_ptr<Texture>	_collTexture;
 	shared_ptr<Texture>	_originalTexture;
+
+	bool	_isCollCheck = false;
 };
 

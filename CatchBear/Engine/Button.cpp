@@ -22,15 +22,17 @@ void Button::Update()
 
 void Button::LateUpdate()
 {
-	GetCursorPos(&_mousePos);
-	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
-
-	if (PtInRect(&_rect, _mousePos))
+	if (_isCollCheck)
 	{
-		GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _collTexture);
-	}
-	else
-		GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _originalTexture);
+		GetCursorPos(&_mousePos);
+		ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
 
-	//printf("%d %d\n", _mousePos.x, _mousePos.y);
+		if (PtInRect(&_rect, _mousePos))
+		{
+			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _collTexture);
+		}
+		else
+			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _originalTexture);
+	}
+	printf("%d %d\n", _mousePos.x, _mousePos.y);
 }

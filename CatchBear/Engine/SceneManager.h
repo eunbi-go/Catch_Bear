@@ -38,6 +38,11 @@ public:
 	SCENE_ID getSceneID() { return _curScene; }
 
 
+
+public:
+	void SetPlayerType(int index, PLAYER_TYPE playerType) { _playerTypes[index] = playerType; }
+
+
 private:
 	shared_ptr<Scene> LoadTestScene();
 	shared_ptr<Scene> LoadLoginScene();
@@ -57,6 +62,8 @@ private:
 	map<wstring, uint8>			_layerIndex;		// 레이어의 인덱스 번호를 찾기 위해
 
 	SCENE_ID	_curScene = SCENE_ID::SCENE_CNT;
+
+	vector<PLAYER_TYPE>	_playerTypes;
 };
 
 

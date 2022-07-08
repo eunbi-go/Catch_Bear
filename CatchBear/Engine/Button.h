@@ -17,13 +17,14 @@ public:
 public:
 	void SetCollRect(RECT rect) { _rect = rect; _isCollCheck = true; }
 	void SetCollTexture(shared_ptr<Texture> texture) { _collTexture = texture; }
-	void SetOriginalTexture(shared_ptr<Texture> texture) { _originalTexture = texture; }
+	void SetOriginalTexture(shared_ptr<Texture> texture, const wstring& texKey) { _originalTexture = texture; _texKey = texKey; }
 
 
 
 private:
 	shared_ptr<GameObject>		_button = make_shared<GameObject>();
 
+protected:
 	RECT	_rect;
 	POINT	_mousePos;
 
@@ -31,5 +32,6 @@ private:
 	shared_ptr<Texture>	_originalTexture;
 
 	bool	_isCollCheck = false;
+	wstring _texKey;
 };
 

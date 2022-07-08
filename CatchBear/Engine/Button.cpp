@@ -34,5 +34,5 @@ void Button::LateUpdate()
 		else
 			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _originalTexture);
 	}
-	printf("%d %d\n", _mousePos.x, _mousePos.y);
+	//printf("%d %d\n", _mousePos.x, _mousePos.y);
 }

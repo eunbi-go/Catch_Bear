@@ -40,6 +40,7 @@
 #include "StageScene.h"
 #include "LobbyScene.h"
 #include "Button.h"
+#include "PlayerIcon.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -1279,6 +1280,8 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 
 shared_ptr<Scene> SceneManager::LoadLobbyScene()
 {
+	_playerTypes.resize(3);
+
 #pragma region LayerMask
 	SetLayerName(0, L"Default");
 	SetLayerName(1, L"UI");
@@ -1351,7 +1354,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
-			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture);
+			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -1373,12 +1376,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(300.f, 100.f, 100.f));
 		finalRanking->_isRender = true;
-		finalRanking->AddComponent(make_shared<Button>());
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollRect(RECT{ 835, 240, 945, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 835, 240, 945, 320 });
 
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown_click", L"..\\Resources\\Texture\\Lobby\\brown_click.png");
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollTexture(texture);
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -1388,7 +1391,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown", L"..\\Resources\\Texture\\Lobby\\brown.png");
-			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture);
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_brown");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -1410,11 +1413,11 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(180.f, 100.f, 100.f));
 		finalRanking->_isRender = true;
-		finalRanking->AddComponent(make_shared<Button>());
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollTexture(texture);
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -1424,7 +1427,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", L"..\\Resources\\Texture\\Lobby\\gray.png");
-			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture);
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_gray");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);

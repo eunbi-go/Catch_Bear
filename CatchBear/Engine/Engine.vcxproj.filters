@@ -243,16 +243,36 @@
     <ClCompile Include="ItemWindow.cpp">
       <Filter>01. Object\02. UI\01. Item</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreUIManager.cpp" />
-    <ClCompile Include="ScoreUI.cpp" />
-    <ClCompile Include="FontDevice.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="Leaf.cpp" />
-    <ClCompile Include="LoginScene.cpp" />
-    <ClCompile Include="StageScene.cpp" />
-    <ClCompile Include="LobbyScene.cpp" />
-    <ClCompile Include="Button.cpp" />
-    <ClCompile Include="PlayerIcon.cpp" />
+    <ClCompile Include="LobbyScene.cpp">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="LoginScene.cpp">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="StageScene.cpp">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Button.cpp">
+      <Filter>01. Object\02. UI\02. Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerIcon.cpp">
+      <Filter>01. Object\02. UI\02. Buttons</Filter>
+    </ClCompile>
+    <ClCompile Include="FontDevice.cpp">
+      <Filter>01. Object\02. UI\03. Font</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUIManager.cpp">
+      <Filter>02. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>02. Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUI.cpp">
+      <Filter>01. Object\02. UI\04. Score</Filter>
+    </ClCompile>
+    <ClCompile Include="Leaf.cpp">
+      <Filter>01. Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -465,16 +485,36 @@
     <ClInclude Include="ItemWindow.h">
       <Filter>01. Object\02. UI\01. Item</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreUIManager.h" />
-    <ClInclude Include="ScoreUI.h" />
-    <ClInclude Include="FontDevice.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="Leaf.h" />
-    <ClInclude Include="LoginScene.h" />
-    <ClInclude Include="StageScene.h" />
-    <ClInclude Include="LobbyScene.h" />
-    <ClInclude Include="Button.h" />
-    <ClInclude Include="PlayerIcon.h" />
+    <ClInclude Include="LobbyScene.h">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LoginScene.h">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="StageScene.h">
+      <Filter>01. Object\03. Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>01. Object\02. UI\02. Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIcon.h">
+      <Filter>01. Object\02. UI\02. Buttons</Filter>
+    </ClInclude>
+    <ClInclude Include="FontDevice.h">
+      <Filter>01. Object\02. UI\03. Font</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIManager.h">
+      <Filter>02. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>02. Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUI.h">
+      <Filter>01. Object\02. UI\04. Score</Filter>
+    </ClInclude>
+    <ClInclude Include="Leaf.h">
+      <Filter>01. Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">
@@ -553,6 +593,18 @@
     </Filter>
     <Filter Include="05. Protocol">
       <UniqueIdentifier>{60750ce2-75ef-44d8-900e-52bbea9084dc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\03. Scene">
+      <UniqueIdentifier>{fafd4372-c2d7-4928-b4a5-7b7c4dc0da17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI\02. Buttons">
+      <UniqueIdentifier>{5f72efb7-2169-48b5-bd54-2d87c3e4ce4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI\03. Font">
+      <UniqueIdentifier>{9bb97cdd-085e-48d2-ae50-b93adf729745}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01. Object\02. UI\04. Score">
+      <UniqueIdentifier>{52fc3885-1c1c-4196-989a-7f02b48c4d00}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

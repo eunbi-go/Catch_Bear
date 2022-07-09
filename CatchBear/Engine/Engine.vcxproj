@@ -189,6 +189,7 @@
     <ClInclude Include="AnimationTrack.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraScript.h" />
     <ClInclude Include="CharacterData.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="JumpState.h" />
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
@@ -230,6 +232,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerIcon.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Protocol.pb.h" />
     <ClInclude Include="RenderTargetGroup.h" />
@@ -243,6 +246,8 @@
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShieldParticle.h" />
+    <ClInclude Include="ShieldParticleManager.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SlowRestState.h" />
     <ClInclude Include="SlowState.h" />
@@ -268,6 +273,7 @@
     <ClCompile Include="AnimationTrack.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraScript.cpp" />
     <ClCompile Include="CharacterData.cpp" />
@@ -302,6 +308,7 @@
     <ClCompile Include="JumpState.cpp" />
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
@@ -318,6 +325,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIcon.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Protocol.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -336,6 +344,8 @@
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShieldParticle.cpp" />
+    <ClCompile Include="ShieldParticleManager.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="SlowRestState.cpp" />
     <ClCompile Include="SlowState.cpp" />

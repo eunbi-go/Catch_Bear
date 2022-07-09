@@ -200,6 +200,8 @@ void StageScene::CheckMouse()
 	GetCursorPos(&_mousePos);
 	ScreenToClient(GET_WINDOW.hwnd, &_mousePos);
 
+	printf("%d %d\n", _mousePos.x, _mousePos.y);
+
 	// 1. ItemWnd
 	shared_ptr<GameObject>	itemWnd = GetGameObject(L"ItemWindow");
 

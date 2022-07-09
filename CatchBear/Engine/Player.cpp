@@ -31,6 +31,7 @@
 #include "Resources.h"
 #include "Engine.h"
 #include "SoundManager.h"
+#include "ShieldParticleManager.h"
 
 Protocol::C_MOVE pkt;
 Protocol::C_STATE StatePkt;
@@ -716,19 +717,23 @@ void Player::Item_Teleport()
 
 void Player::Item_Shield()
 {
-	// 쉴드 상태라면 디버프 방어
-	// 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
-	// 밑에서 위로 뭔가 올라오는 파티클 효과 추가 - 쉴드 상태인걸 알 수 있도록
+	// 쉴드 상태라면 디버프 방어, 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
+
 	_fShieldTime += DELTA_TIME;
 
+
+	// Shield Item
 	if (_fShieldTime <= 5.f)
 	{
+		// Shield Effect
+		ShieldEffect();
 	}
 
 	else if (_fShieldTime > 5.f)
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();
 		_fShieldTime = 0.f;
 		cout << "5초 지나고 쉴드 끝" << endl;
 	}
@@ -853,4 +858,10 @@ void Player::Stunned()
 
 		_bStunned = true;
 	}
+}
+
+void Player::ShieldEffect()
+{
+	GET_SINGLE(ShieldParticleManager)->SetShieldParticleOn();
+	GET_SINGLE(ShieldParticleManager)->UpdatePlayerPos(GetTransform()->GetLocalPosition());
 }

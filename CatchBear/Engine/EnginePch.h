@@ -263,8 +263,9 @@ struct AnimClipInfo
 	float			position;
 };
 
-enum SCENE_ID { LOGIN, STAGE, SCENE_CNT };
+enum SCENE_ID { LOGIN, LOBBY, STAGE, SCENE_CNT };
 
+enum PLAYER_TYPE { BROWN, GRAY, BLUE, PLAYER_TYPE_CNT };
 
 #define DECLARE_SINGLE(type)		\
 private:							\

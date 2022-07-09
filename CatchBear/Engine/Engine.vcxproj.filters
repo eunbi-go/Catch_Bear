@@ -250,6 +250,9 @@
     <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="StageScene.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="PlayerIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -469,6 +472,9 @@
     <ClInclude Include="Leaf.h" />
     <ClInclude Include="LoginScene.h" />
     <ClInclude Include="StageScene.h" />
+    <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="PlayerIcon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

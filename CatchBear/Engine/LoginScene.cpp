@@ -41,8 +41,8 @@ void LoginScene::Start()
 void LoginScene::Update()
 {
 	if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
-		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
-		GEngine->_isIPAddrEnter = true;
+		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::LOBBY);
+		//GEngine->_isIPAddrEnter = true;
 	}
 }
 

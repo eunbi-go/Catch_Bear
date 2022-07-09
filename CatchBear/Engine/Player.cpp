@@ -300,7 +300,13 @@ void Player::Move()
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		else
-			pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
+		{
+			if (_dir == DIR::DIR_LEFT)
+				pos -= _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+			else
+				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+		}
+
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -338,6 +344,8 @@ void Player::Move()
 	float delta = 0.f;
 	if (INPUT->GetButton(KEY_TYPE::RIGHT))
 	{
+		_dir = DIR::DIR_RIGHT;
+
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
@@ -357,6 +365,8 @@ void Player::Move()
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
 	{
+		_dir = DIR::DIR_LEFT;
+
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 

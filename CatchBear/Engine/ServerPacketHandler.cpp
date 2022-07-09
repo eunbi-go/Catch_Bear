@@ -76,6 +76,7 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
 	//if (pkt.isallplayersready())
 	{
+		
 		Protocol::C_ENTER_GAME enterGamePkt;
 		enterGamePkt.set_playerid(mysession->GetPlayerID());
 		enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
@@ -252,8 +253,12 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 	{
 		_player = scene->GetPlayer(i);
 
+		if (_player == nullptr)
+			return true;
+		
 		if (_player->GetPlayerID() == pkt.fromplayerid())
 			continue;
+
 		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
 		{
 			//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);

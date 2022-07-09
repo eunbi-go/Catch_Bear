@@ -40,13 +40,15 @@ public:
 
 
 public:
-	void SetPlayerType(int index, PLAYER_TYPE playerType) { _playerTypes[index] = playerType; }
+	void SetPlayerType(int index, PLAYER_TYPE playerType);
 
 
 private:
 	shared_ptr<Scene> LoadTestScene();
 	shared_ptr<Scene> LoadLoginScene();
 	shared_ptr<Scene> LoadLobbyScene();
+
+	void CheckPlayerType(int index, wstring& key);
 
 
 private:

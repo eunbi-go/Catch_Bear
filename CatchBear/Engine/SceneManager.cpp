@@ -174,6 +174,11 @@ void SceneManager::changeScene(SCENE_ID eScene)
 	}
 }
 
+void SceneManager::SetPlayerType(int index, PLAYER_TYPE playerType)
+{
+	_playerTypes[index] = playerType;
+}
+
 shared_ptr<Scene> SceneManager::LoadTestScene()
 {
 #pragma region LayerMask
@@ -259,7 +264,10 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_gray");
+		wstring key = L"";
+		CheckPlayerType(0, key);
+		//shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_gray");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(key);
 
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 		g_EnterPlayerCnt = 1;
@@ -1278,6 +1286,26 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 	return scene;
 }
 
+void SceneManager::CheckPlayerType(int index, wstring& key)
+{
+	
+	switch (_playerTypes[index])
+	{
+	case PLAYER_TYPE::BLUE:
+		key = L"Evilbear_blue";
+		//return L"Evilbear_blue";
+		break;
+	case PLAYER_TYPE::BROWN:
+		key = L"Evilbear_brown";
+		//return L"Evilbear_brown";
+		break;
+		case PLAYER_TYPE::GRAY:
+		key = L"Evilbear_gray";
+		//return L"Evilbear_gray";
+		break;
+	}
+}
+
 shared_ptr<Scene> SceneManager::LoadLobbyScene()
 {
 	_playerTypes.resize(3);
@@ -1365,6 +1393,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 
 		scene->AddGameObject(finalRanking);
 	}
+
 #pragma endregion
 
 #pragma region playerIcon_brown

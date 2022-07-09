@@ -14,6 +14,7 @@
 #include "ServerSession.h"
 #include "ServerPacketHandler.h"
 #include "SoundManager.h"
+#include "ShieldParticleManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -50,6 +51,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
+	GET_SINGLE(ShieldParticleManager)->Init();
 	//GET_SINGLE(SoundManager)->Init();
 
 	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
@@ -71,9 +73,12 @@ void Engine::Update()
 
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(InstancingManager)->ClearBuffer();
+
 		//GET_SINGLE(ItemManager)->Update();
 		//GET_SINGLE(ScoreManager)->Update();
 		//GET_SINGLE(CollidManager)->Update();
+		GET_SINGLE(ShieldParticleManager)->Update();
+		GET_SINGLE(ShieldParticleManager)->LateUpdate();
 
 		Render();
 

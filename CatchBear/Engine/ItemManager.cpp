@@ -33,10 +33,6 @@ void ItemManager::Update()
 	Collision_ItemToPlayer();
 }
 
-void ItemManager::LateUpdate()
-{
-}
-
 void ItemManager::SetItemPosition()
 {
 	float y = 1.f;		// y값은 다 똑같

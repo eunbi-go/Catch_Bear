@@ -166,9 +166,12 @@ void Player::KeyCheck()
 	KeyCheck_Cheat();
 	//////////////////////////////////////////////////////////////////////////
 
-
-	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
-
+	if (_bStunned)	// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
+	{
+		_curStatePlayer = STATE::STUN;
+		return;
+	}
+			
 	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)

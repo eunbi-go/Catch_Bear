@@ -45,6 +45,7 @@ public:
 	void SetPlayerScore(int score) { _iScore = score; }
 	void SetSheildTime(float time) { _fShieldTime = time; }
 	void SetTextureKey(const wstring& textureKey) { _textureKey = textureKey; }
+	void SetCurState(STATE _state) { _curStatePlayer = _state; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerSpeed() { return _speed; }

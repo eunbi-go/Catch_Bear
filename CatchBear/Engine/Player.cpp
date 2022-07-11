@@ -52,8 +52,6 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
-
-
 }
 
 void Player::LateUpdate()
@@ -543,6 +541,7 @@ bool Player::CheckShield()
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		_fShieldTime = 0.f;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();	// 쉴드 파티클 효과 해제
 		return true;
 	}
 

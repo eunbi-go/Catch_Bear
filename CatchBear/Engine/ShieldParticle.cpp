@@ -9,9 +9,15 @@
 
 ShieldParticle::ShieldParticle()
 {
-	random_device rd;
+	// speed random
+	random_device srd;
 	uniform_real_distribution<float> speed(0.5, 3);
-	_speed = speed(rd);
+	_speed = speed(srd);
+
+	// life time random
+	random_device  lrd;
+	uniform_real_distribution<float> lifeTime(1.5, 3);
+	_lifeTime = lifeTime(lrd);
 }
 
 ShieldParticle::~ShieldParticle()
@@ -36,6 +42,5 @@ void ShieldParticle::LateUpdate()
 	else
 	{
 		_isDead = true;
-		//GET_SINGLE(SceneManager)->GetActiveScene()->RemoveGameObject(GetGameObject());
 	}
 }

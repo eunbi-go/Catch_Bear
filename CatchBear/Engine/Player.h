@@ -1,6 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
 #include "Item.h"
+#include "GameObject.h"
 
 class CameraScript;
 class ShieldParticle;
@@ -54,6 +55,7 @@ public:
 	const int GetPlayerScore() { return _iScore; }
 	const int GetItemCount() { return _iItemCnt; }
 	const wstring& GetTextureKey() { return _textureKey; }
+	const int GetPlayerID() { return _player->GetPlayerID(); }
 	
 private:
 	void KeyCheck();

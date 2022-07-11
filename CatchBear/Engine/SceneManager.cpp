@@ -269,6 +269,11 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_gray");
 		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(key);
 
+		// 다른 클라이언트에선 0번 플레이어의 gameObjects가 0으로 보임
+		// key값으로 LoadCharacter불러오는거에 문제가 있는 것으로 보임
+		//vector<shared_ptr<GameObject>> gameObjects = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
+		// 요 코드로 로드캐릭터하면 되긴 함
+
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 		g_EnterPlayerCnt = 1;
 		for (auto& gameObject : gameObjects)
@@ -291,7 +296,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
 		}
-		/*g_EnterPlayerCnt = 2;
+		g_EnterPlayerCnt = 2;
 		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
@@ -312,7 +317,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
 			scene->AddVecPlayers(gameObject);
-		}*/
+		}
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_brown.bin")->Instantiate();
@@ -385,7 +390,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(0, gameObject);
 	}
-	/*vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
+	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart2)
 	{
 		gameObject->SetName(L"PlayerTag2");
@@ -398,7 +403,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->AddComponent(make_shared<TagMark>());
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(1, gameObject);
-	}*/
+	}
 	/*vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart3)
 	{

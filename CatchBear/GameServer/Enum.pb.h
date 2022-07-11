@@ -145,9 +145,9 @@ enum STATE : int {
   JUMP = 3,
   ATTACK = 4,
   STUN = 5,
-  DASHREST = 6,
-  SLOW = 7,
-  SLOWREST = 8,
+  STUNEND = 6,
+  DASHREST = 7,
+  SLOW = 8,
   SHIELD = 9,
   STATE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
   STATE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()

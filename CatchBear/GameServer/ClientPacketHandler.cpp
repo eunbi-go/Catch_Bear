@@ -268,3 +268,14 @@ bool Handle_C_PLUSTIME(PacketSessionRef& session, Protocol::C_PLUSTIME& pkt)
 	GInGame.OnlySendPlayer(pkt.playerid(),sendBuffer);
 	return true;
 }
+
+bool Handle_C_STUNEND(PacketSessionRef& session, Protocol::C_STUNEND& pkt)
+{
+	Protocol::S_STUNEND StatePkt;
+	StatePkt.set_playerid(pkt.playerid());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(StatePkt);
+
+	GInGame.Broadcast(sendBuffer);
+	return true;
+}

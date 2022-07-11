@@ -145,3 +145,13 @@ message S_PLUSTIME
 {
 	uint64 playerid = 1;
 }
+
+message C_STUNEND
+{
+	uint64 playerid = 1;
+}
+
+message S_STUNEND
+{
+	uint64 playerid = 1;
+}

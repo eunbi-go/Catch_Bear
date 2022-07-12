@@ -391,6 +391,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::IDLE;
+
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
 			}
 		}
 		break;
@@ -408,6 +410,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 					_player->_state = state;
 					_player->_state->Enter(*_player);
 					_player->_state->curState = STATE::WALK;
+
+					static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::WALK;
 				}
 			}
 		}

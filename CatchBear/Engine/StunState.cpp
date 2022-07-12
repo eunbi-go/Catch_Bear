@@ -95,12 +95,6 @@ void StunState::End(GameObject& player)
     shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
     player.GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
 
-    /*Protocol::C_STATE StatePkt;
-    StatePkt.set_playerid(static_pointer_cast<Player>(player.GetScript(0))->GetPlayerID());
-    StatePkt.set_state(Protocol::STATE::STUNEND);
-    auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
-    mysession->Send(sendBuffer);*/
-
     Protocol::C_STUNEND StatePkt;
     StatePkt.set_playerid(static_pointer_cast<Player>(player.GetScript(0))->GetPlayerID());
     auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);

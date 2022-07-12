@@ -177,6 +177,18 @@ void SceneManager::changeScene(SCENE_ID eScene)
 void SceneManager::SetPlayerType(int index, PLAYER_TYPE playerType)
 {
 	_playerTypes[index] = playerType;
+
+	// UI에도 적용
+	wstring infoName = L"playerInfo" + s2ws(to_string(index+1));
+	shared_ptr<GameObject> playerInfo1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(infoName);
+	
+	shared_ptr<Texture> newTex;
+	if (playerType == PLAYER_TYPE::GRAY)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_gray");
+	else if (playerType == PLAYER_TYPE::BROWN)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+
+	playerInfo1->GetMeshRenderer()->GetMaterial()->SetTexture(0, newTex);
 }
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
@@ -1211,20 +1223,6 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 	SetLayerName(1, L"UI");
 #pragma endregion
 
-#pragma region Camera
-	{
-		//shared_ptr<GameObject> camera = make_shared<GameObject>();
-		//camera->SetName(L"Main_Camera");
-		//camera->AddComponent(make_shared<Transform>());
-		//camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, FOV=45도
-		//camera->AddComponent(make_shared<CameraScript>());
-		//camera->GetTransform()->SetLocalPosition(Vec3(0.0f, 0.f, 0.f));
-		//uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"Default");
-		//camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, true); // UI는 안 찍음
-		//scene->AddGameObject(camera);
-	}
-#pragma endregion
-
 #pragma region UI_Camera
 	{
 		shared_ptr<GameObject> camera = make_shared<GameObject>();
@@ -1269,42 +1267,23 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 	}
 #pragma endregion
 
-
-
-//#pragma region Directional Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
-//		light->AddComponent(make_shared<Light>());
-//		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(1.f, 1.f, 1.f));
-//		light->GetLight()->SetAmbient(Vec3(0.3f, 0.3f, 0.3f));
-//		light->GetLight()->SetSpecular(Vec3(0.1f, 0.1f, 0.1f));
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-
 	return scene;
 }
 
 void SceneManager::CheckPlayerType(int index, wstring& key)
 {
-	
 	switch (_playerTypes[index])
 	{
 	case PLAYER_TYPE::BLUE:
 		key = L"Evilbear_blue";
-		//return L"Evilbear_blue";
 		break;
+
 	case PLAYER_TYPE::BROWN:
 		key = L"Evilbear_brown";
-		//return L"Evilbear_brown";
 		break;
-		case PLAYER_TYPE::GRAY:
+
+	case PLAYER_TYPE::GRAY:
 		key = L"Evilbear_gray";
-		//return L"Evilbear_gray";
 		break;
 	}
 }
@@ -1312,6 +1291,9 @@ void SceneManager::CheckPlayerType(int index, wstring& key)
 shared_ptr<Scene> SceneManager::LoadLobbyScene()
 {
 	_playerTypes.resize(3);
+	_playerTypes[0] = PLAYER_TYPE::BROWN;
+	_playerTypes[1] = PLAYER_TYPE::BROWN;
+	_playerTypes[2] = PLAYER_TYPE::BROWN;
 
 #pragma region LayerMask
 	SetLayerName(0, L"Default");
@@ -1405,7 +1387,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_brown");
 		finalRanking->AddComponent(make_shared<Transform>());
-		finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(300.f, 100.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
@@ -1442,7 +1425,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_gray");
 		finalRanking->AddComponent(make_shared<Transform>());
-		finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(180.f, 100.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
@@ -1472,6 +1456,38 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 	}
 #pragma endregion
 
+
+#pragma region playerInfo
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo1");
+		finalRanking->AddComponent(make_shared<Transform>());
+		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-400.f, 20.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerInfo1", L"..\\Resources\\Texture\\Lobby\\brown.png");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
 	return scene;
 }
 

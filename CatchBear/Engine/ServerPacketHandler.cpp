@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include "TagMark.h"
 #include "ServerSession.h"
+#include "Engine.h"
 
 #include "PlayerState.h"
 #include "IdleState.h"
@@ -42,8 +43,6 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
-	//SceneManager::GetInstance()->MakePlayer(pkt.playerid());
-
 	// 세션의 playerID를 저장해준다
 	mysession->SetPlayerID(pkt.playerid());
 
@@ -51,16 +50,12 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	//Protocol::C_ENTER_GAME enterGamePkt;
-	//enterGamePkt.set_playerid(mysession->GetPlayerID());
-	//enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
-	//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	cout << "Player " << mysession->GetPlayerID() << " 로그인 성공\n";
 
 	Protocol::C_ENTER_LOBBY enterLobbyPkt;
 	enterLobbyPkt.set_playerid(mysession->GetPlayerID());
 	enterLobbyPkt.set_playernum(scene->GetEnterPlayerNum());
-	// 일단은 로비에서 레디 무조건 트루
-	enterLobbyPkt.set_isplayerready(true);
+	enterLobbyPkt.set_isplayerready(false);
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 	session->Send(sendBuffer);
 
@@ -72,16 +67,22 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 {
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
+	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
+
 #pragma region test
 	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
-	//if (pkt.isallplayersready())
-	{
-		
+	if (pkt.isallplayersready())
+	{	
+		GEngine->SetIsAllPlayerReady();
+		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
+
 		Protocol::C_ENTER_GAME enterGamePkt;
 		enterGamePkt.set_playerid(mysession->GetPlayerID());
-		enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
+		enterGamePkt.set_playernum(GEngine->GetPlayerNum());
+		//enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
 		session->Send(sendBuffer);
+
 	}
 	// 준비 안됐다면 여기로
 	//else

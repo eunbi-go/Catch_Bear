@@ -117,8 +117,12 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
                 game->_isFirstEnter = false;
             }
-            
-            game->Update();
+            // 모든 플레이어가 접속했다면 인게임 씬 업데이트
+            if (game->isAllPlayerReady())
+                game->Update();
+            // 아직 모든 플레이어 레디 상태가 아니라면 로비씬 업데이트
+            else
+                game->LobbySceneUpdate();
         }
         if (game->_isEnd)
             SendMessage(msg.hwnd, WM_CLOSE, 0, 0);

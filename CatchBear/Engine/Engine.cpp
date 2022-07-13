@@ -101,6 +101,19 @@ void Engine::LoginSceneUpdate()
 	ShowFps();
 }
 
+void Engine::LobbySceneUpdate()
+{
+	GET_SINGLE(Input)->Update();
+
+	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
+
+	GET_SINGLE(SceneManager)->Update();
+
+	Render();
+
+	ShowFps();
+}
+
 void Engine::Render()
 {
 	RenderBegin();

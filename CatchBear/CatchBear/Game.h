@@ -6,10 +6,12 @@ public:
 	void Init(const WindowInfo& info);
 	void Update();
 	void LoginSceneUpdate();
+	void LobbySceneUpdate();
 
 	void setString(const char* strText);
 	const wstring& GetFontString();
 	const bool isIPAddrEnter();
+	const bool isAllPlayerReady();
 
 public:
 	bool	_isEnd = false;

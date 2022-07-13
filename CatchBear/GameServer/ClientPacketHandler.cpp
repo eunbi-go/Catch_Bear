@@ -87,43 +87,54 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 	Protocol::S_ENTER_LOBBY enterLobbyPkt;
-	PlayerRef player = gameSession->_player;
+	/*PlayerRef player = gameSession->_player;
 	player->playerId = pkt.playerid();
 	GLobby.Enter(player);
 	cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
-
+	
 	enterLobbyPkt.set_isallplayersready(false);
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	session->Send(sendBuffer);
+	session->Send(sendBuffer);*/
 
-	//if (GLobby.isFirstEnterLobby(pkt.playerid()))
-	//{
-	//	PlayerRef player = gameSession->_player;
-	//	player->playerId = pkt.playerid();
-	//	GLobby.Enter(player);
-	//	cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
+	if (GLobby.isFirstEnterLobby(pkt.playerid()))
+	{
+		PlayerRef player = gameSession->_player;
+		player->playerId = pkt.playerid();
+		GLobby.Enter(player);
+		cout << "플레이어ID " << pkt.playerid() << " 로비 처음 접속완료!" << endl;
 
-	//	enterLobbyPkt.set_isallplayersready(false);
+		enterLobbyPkt.set_isallplayersready(false);
 
-	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//	session->Send(sendBuffer);
-	//}
-	//else
-	//{
-	//	if (pkt.isplayerready())
-	//		GLobby.SetPlayerReady(pkt.playerid());
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		session->Send(sendBuffer);
+	}
+	else
+	{
+		cout << "플레이어ID " << pkt.playerid() << " 로비 처음 접속아님!" << endl;
+		if (pkt.isplayerready())
+		{
+			cout << "플레이어 " << pkt.playerid() << " 준비완료\n";
+			GLobby.SetPlayerReady(pkt.playerid());
+		}
 
-	//	// 만약 모든 플레이어가 준비됐다면
-	//	if (GLobby.isAllPlayerReady())					
-	//		enterLobbyPkt.set_isallplayersready(true);
-	//	// 한명의 플레이어라도 레디하지않았으면
-	//	else
-	//		enterLobbyPkt.set_isallplayersready(false);
-
-	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//	session->Send(sendBuffer);
-	//}
+		// 만약 모든 플레이어가 준비됐다면
+		if (GLobby.isAllPlayerReady())
+		{
+			cout << "모든 플레이어가 준비됨\n";
+			enterLobbyPkt.set_isallplayersready(true);
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+			GLobby.Broadcast(sendBuffer);
+		}
+		// 한명의 플레이어라도 레디하지않았으면
+		else
+		{
+			cout << "모든 플레이어가 준비되지 않음\n";
+			enterLobbyPkt.set_isallplayersready(false);
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+			session->Send(sendBuffer);
+		}
+	}
 	return true;
 }
 

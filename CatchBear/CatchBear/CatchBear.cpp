@@ -245,20 +245,12 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
         if (wparam == 8/*VK_BACK*/)
         {
             strText[strlen(strText) - 1] = 0;
-            //memset(str, 0, 10);
+            memset(Cstr, 0, 10);
             game->setString(strText);
         }
         else if (wparam == VK_SPACE)
         {
-            DWORD dwConv, dwSent;
-            DWORD dwTemp;
-
-            ImmGetConversionStatus(m_hIMC, &dwConv, &dwSent);
-
-            dwTemp = dwConv & ~IME_CMODE_LANGUAGE;
-            dwTemp |= IME_CMODE_NATIVE;
-            dwConv = IME_CMODE_NATIVE;
-            ImmSetConversionStatus(m_hIMC, dwConv, dwSent);
+            game->setString(strText);
         }
         else
         {

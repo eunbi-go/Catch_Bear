@@ -101,7 +101,7 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
     const float fFontSize = 60.f;//_fHeight / 25.0f;
     const float fSmallFontSize = _fHeight / 40.0f;
 
-    _pd2dWriteFactory->CreateTextFormat(L"HS»êÅä³¢Ã¼", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"en-us", &_pdwTextFormat);
+    _pd2dWriteFactory->CreateTextFormat(L"HS»êÅä³¢Ã¼", nullptr, DWRITE_FONT_WEIGHT_NORMAL, DWRITE_FONT_STYLE_NORMAL, DWRITE_FONT_STRETCH_NORMAL, fFontSize, L"ko", &_pdwTextFormat);
 
     //_pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_CENTER);
     _pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);

@@ -5,7 +5,9 @@
 #include "framework.h"
 #include "CatchBear.h"
 #include "Game.h"
+#include <stdio.h>
 
+#pragma comment (lib, "imm32.lib")
 #include "ThreadManager.h"
 #include "Service.h"
 #include "Session.h"
@@ -24,8 +26,9 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 unique_ptr<Game> game;
+
 char strText[255];     // 텍스트 저장
-char str[10];       // 조합중인 문자
+char Cstr[10];       // 조합중인 문자
 int len = 0;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -195,72 +198,91 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+HIMC m_hIMC = NULL;
 
-
-LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
-    HIMC    _hIMC = NULL;
-
-    switch (message)
+    int len = 0;
+    DWORD sen = 0;
+    DWORD con = 0;
+    switch (msg)
     {
-    case WM_IME_COMPOSITION:    // 글씨 조합중
-        _hIMC = ImmGetContext(hWnd);    // IME 핸들을 얻는다
-
-        // 1. 조합이 완성되면
-        if (lParam & GCS_RESULTSTR) 
+    case WM_IME_COMPOSITION:
+        m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
+        if (!m_hIMC)
+            return 0;
+        if (lparam & GCS_RESULTSTR)
         {
-            // 현재 IME의 문자열 길이를 얻는다
-            if ((len = ImmGetCompositionString(_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+            if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
             {
-                // str에 조합중인 문자열을 받아낸다
-                ImmGetCompositionString(_hIMC, GCS_RESULTSTR, str, len);
+                // 완성된 글자가 있다.
+                ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+                Cstr[len] = 0;
+                strcpy(strText + strlen(strText), Cstr);
+                strText[strlen(strText)+1] = 0;
+                memset(Cstr, 0, 10);
+                game->setString(strText);
 
-                // 제일 끝에 0을 붙여 깨끗하게 해준다
-                str[len] = 0;
-
-                // 전체 내용(실제 보일 텍스트) 뒤에 붙여준다
-                strcpy(strText + strlen(strText), str);
-
-                // 초기화
-                memset(str, 0, 10);
             }
-        }
 
-        // 2. 조합중이면
-        else if (lParam & GCS_COMPSTR)  
+        }
+        else if (lparam & GCS_COMPSTR)
         {
-            // 조합중인 길이를 얻는다
-            len = ImmGetCompositionString(_hIMC, GCS_COMPSTR, NULL, 0);
-            
-            // str에 조합중인 문자를 얻는다
-            ImmGetCompositionString(_hIMC, GCS_COMPSTR, str, len);
+            // 현재 글자를 조합 중이다.
 
-            str[len] = 0;
+            // 조합중인 길이를 얻는다.
+            // str에  조합중인 문자를 얻는다.
+            len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+            ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
+            Cstr[len] = 0;
         }
 
-        // 핸들 반환
-        ImmReleaseContext(hWnd, _hIMC);
-        break;
+        ImmReleaseContext(hWnd, m_hIMC);					// IME 핸들 반환!!
+
+        return 0;
 
     case WM_CHAR:   // 문자 넘어오기
-        if (wParam == VK_BACK)
+        if (wparam == 8/*VK_BACK*/)
         {
-            len = strlen(strText);
-            strText[len-1] = 0;
+            strText[strlen(strText) - 1] = 0;
+            //memset(str, 0, 10);
             game->setString(strText);
+        }
+        else if (wparam == VK_SPACE)
+        {
+            DWORD dwConv, dwSent;
+            DWORD dwTemp;
+
+            ImmGetConversionStatus(m_hIMC, &dwConv, &dwSent);
+
+            dwTemp = dwConv & ~IME_CMODE_LANGUAGE;
+            dwTemp |= IME_CMODE_NATIVE;
+            dwConv = IME_CMODE_NATIVE;
+            ImmSetConversionStatus(m_hIMC, dwConv, dwSent);
         }
         else
         {
             len = strlen(strText);
-            strText[len] = wParam & 0xff;
+            strText[len] = wparam & 0xff;
             strText[len + 1] = 0;
             game->setString(strText);
         }
-        break;
-
+        return 0;
 
     case WM_KEYDOWN:    // 키다운
-        break;
+        return 0;
+
+    }
+    return 1;
+}
+
+LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
+{
+
+    if (GetText(hWnd, message, wParam, lParam) == 0) return 0;
+
+    switch (message)
+    {
 
     case WM_COMMAND:
         {

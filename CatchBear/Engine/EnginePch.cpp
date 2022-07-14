@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "EnginePch.h"
 #include "Engine.h"
-
+#pragma warning(disable:4996)
 unique_ptr<Engine> GEngine = make_unique<Engine>();
 
 wstring s2ws(const string& s)

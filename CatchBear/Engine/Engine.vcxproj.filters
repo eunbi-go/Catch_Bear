@@ -256,6 +256,9 @@
     </ClCompile>
     <ClCompile Include="ShieldParticle.cpp" />
     <ClCompile Include="ShieldParticleManager.cpp" />
+    <ClCompile Include="Button.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
+    <ClCompile Include="PlayerIcon.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -481,6 +484,9 @@
     </ClInclude>
     <ClInclude Include="ShieldParticle.h" />
     <ClInclude Include="ShieldParticleManager.h" />
+    <ClInclude Include="Button.h" />
+    <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="PlayerIcon.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

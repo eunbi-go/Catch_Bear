@@ -24,6 +24,7 @@ void Game::LoginSceneUpdate()
 
 void Game::setString(const char* strText)
 {
+	cout << strText << endl;
 	wstring wstrText = s2ws(strText);
 	GEngine->GetFontDevice()->UpdateFont(wstrText);
 }

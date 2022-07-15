@@ -265,7 +265,7 @@ struct AnimClipInfo
 
 enum SCENE_ID { LOGIN, LOBBY, STAGE, SCENE_CNT };
 
-enum PLAYER_TYPE { BROWN, GRAY, BLUE, PLAYER_TYPE_CNT };
+enum PLAYER_TYPE { BROWN, GRAY, BLUE, PINK, PANDA, WHITE, PLAYER_TYPE_CNT };
 
 #define DECLARE_SINGLE(type)		\
 private:							\

@@ -1315,7 +1315,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 	}
 #pragma endregion
 
-#pragma region lobbyScene
+#pragma region lobbyScene background
 	{
 		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
@@ -1388,13 +1388,13 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_blue");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(50.f, 200.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue_click", L"..\\Resources\\Texture\\Lobby\\blue_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1404,8 +1404,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", L"..\\Resources\\Texture\\Lobby\\gray.png");
-			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_gray");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue", L"..\\Resources\\Texture\\Lobby\\blue.png");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_blue");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -1425,8 +1425,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_brown");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(450.f, 200.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1463,8 +1463,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_gray");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(250.f, 200.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1494,20 +1494,20 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 #pragma endregion
 
 	// new
-#pragma region playerIcon_black
+#pragma region playerIcon_panda
 	{
 		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
-		finalRanking->SetName(L"playerIcon_black");
+		finalRanking->SetName(L"playerIcon_panda");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(50.f, 0.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 50.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda_click", L"..\\Resources\\Texture\\Lobby\\panda_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1517,8 +1517,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", L"..\\Resources\\Texture\\Lobby\\gray.png");
-			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_gray");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda", L"..\\Resources\\Texture\\Lobby\\panda.png");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_panda");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -1538,14 +1538,14 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_pink");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(450.f, 0.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 50.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 835, 240, 945, 320 });
 
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown_click", L"..\\Resources\\Texture\\Lobby\\brown_click.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink_click", L"..\\Resources\\Texture\\Lobby\\pink_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1555,8 +1555,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown", L"..\\Resources\\Texture\\Lobby\\brown.png");
-			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_brown");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink", L"..\\Resources\\Texture\\Lobby\\pink.png");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_pink");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
@@ -1576,13 +1576,13 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_white");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(250.f, 0.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 50.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
-		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white_click", L"..\\Resources\\Texture\\Lobby\\white_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1592,8 +1592,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", L"..\\Resources\\Texture\\Lobby\\gray.png");
-			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_gray");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white", L"..\\Resources\\Texture\\Lobby\\white.png");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_white");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);

@@ -87,15 +87,6 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 {
 	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
 	Protocol::S_ENTER_LOBBY enterLobbyPkt;
-	/*PlayerRef player = gameSession->_player;
-	player->playerId = pkt.playerid();
-	GLobby.Enter(player);
-	cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
-	
-	enterLobbyPkt.set_isallplayersready(false);
-
-	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	session->Send(sendBuffer);*/
 
 	if (GLobby.isFirstEnterLobby(pkt.playerid()))
 	{
@@ -111,7 +102,6 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 	}
 	else
 	{
-		cout << "플레이어ID " << pkt.playerid() << " 로비 처음 접속아님!" << endl;
 		if (pkt.isplayerready())
 		{
 			cout << "플레이어 " << pkt.playerid() << " 준비완료\n";

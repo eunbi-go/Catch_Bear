@@ -25,9 +25,11 @@ public:
 	const wstring& IndexToLayerName(uint8 index) { return _layerNames[index]; }
 	uint8 LayerNameToIndex(const wstring& name);
 
-	void ReStart();	// 게임 끝나고 다시하기 버튼 누르면 실행되는 함수
-	void CreatePlayer(int PlayerID);
+	void SetEnterLobby(int _id, bool _isEnter) { _isPlayersEnterLobby[_id] = _isEnter; }
+	void SetPlayerReady(int _id, bool _isReady) { _isPlayersReady[_id] = _isReady; }
 
+	void ReStart();	// 게임 끝나고 다시하기 버튼 누르면 실행되는 함수
+	void PlayerStateDebug();
 public:
 	shared_ptr<Scene> GetActiveScene() { return _activeScene; }
 	bool IsEnd();
@@ -66,6 +68,10 @@ private:
 	SCENE_ID	_curScene = SCENE_ID::SCENE_CNT;
 
 	vector<PLAYER_TYPE>	_playerTypes;
+
+	map<int, bool> _isPlayersEnterLobby;			// 플레이어가 로비씬에 들어왔는가
+	map<int, bool> _isPlayersReady;					// 플레이어가 레디를 했는가
+	map<int, PLAYER_TYPE> _PlayersType;				// 플레이어가 선택한 캐릭터 타입
 };
 
 

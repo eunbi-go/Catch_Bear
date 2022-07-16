@@ -26,6 +26,7 @@ message C_ENTER_LOBBY
 message S_ENTER_LOBBY
 {
 	bool isAllPlayersReady = 1;
+	uint64 playerId = 2;
 }
 
 message C_ENTER_GAME

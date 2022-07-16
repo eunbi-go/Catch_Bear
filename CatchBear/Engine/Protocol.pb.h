@@ -712,8 +712,18 @@ class S_ENTER_LOBBY final :
   // accessors -------------------------------------------------------
 
   enum : int {
+    kPlayerIdFieldNumber = 2,
     kIsAllPlayersReadyFieldNumber = 1,
   };
+  // uint64 playerId = 2;
+  void clear_playerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid() const;
+  void set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_playerid() const;
+  void _internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
   // bool isAllPlayersReady = 1;
   void clear_isallplayersready();
   bool isallplayersready() const;
@@ -730,6 +740,7 @@ class S_ENTER_LOBBY final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 playerid_;
   bool isallplayersready_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_Protocol_2eproto;
@@ -3898,6 +3909,26 @@ inline void S_ENTER_LOBBY::_internal_set_isallplayersready(bool value) {
 inline void S_ENTER_LOBBY::set_isallplayersready(bool value) {
   _internal_set_isallplayersready(value);
   // @@protoc_insertion_point(field_set:Protocol.S_ENTER_LOBBY.isAllPlayersReady)
+}
+
+// uint64 playerId = 2;
+inline void S_ENTER_LOBBY::clear_playerid() {
+  playerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_LOBBY::_internal_playerid() const {
+  return playerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_ENTER_LOBBY::playerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_ENTER_LOBBY.playerId)
+  return _internal_playerid();
+}
+inline void S_ENTER_LOBBY::_internal_set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  playerid_ = value;
+}
+inline void S_ENTER_LOBBY::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_playerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_ENTER_LOBBY.playerId)
 }
 
 // -------------------------------------------------------------------

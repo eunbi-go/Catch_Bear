@@ -148,6 +148,19 @@ void SceneManager::ReStart()
 	//_activeScene->RemoveItems();
 }
 
+void SceneManager::PlayerStateDebug()
+{
+	for (int i = 0; i < _isPlayersEnterLobby.size(); ++i)
+	{
+		cout << "player " << i << " : enter : " << _isPlayersEnterLobby[i] << endl;
+	}
+
+	for (int i = 0; i < _isPlayersReady.size(); ++i)
+	{
+		cout << "player " << i << " : ready : " << _isPlayersReady[i] << endl;
+	}
+}
+
 
 bool SceneManager::IsEnd()
 {
@@ -295,6 +308,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
+			_isPlayersEnterLobby[0] = false;
+			_isPlayersReady[0] = false;
+			_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
 		g_EnterPlayerCnt = 2;
 		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
@@ -317,6 +333,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
 			scene->AddVecPlayers(gameObject);
+			_isPlayersEnterLobby[0] = false;
+			_isPlayersReady[0] = false;
+			_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
@@ -341,6 +360,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(2, gameObject);
 		//	scene->AddVecPlayers(gameObject);
+		// _isPlayersEnterLobby[0] = false;
+		// _isPlayersReady[0] = false;
+		// _playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		//}
 	}
 #pragma endregion

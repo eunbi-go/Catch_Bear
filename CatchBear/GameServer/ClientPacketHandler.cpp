@@ -95,10 +95,23 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 		GLobby.Enter(player);
 		cout << "플레이어ID " << pkt.playerid() << " 로비 처음 접속완료!" << endl;
 
+		enterLobbyPkt.set_playerid(player->playerId);
 		enterLobbyPkt.set_isallplayersready(false);
+		
+
+		for (int i = 0; i < 3; ++i)		// 캐치베어는 3인게임이니까 세명만 검사한다
+		{
+			if (GLobby.isFirstEnterLobby(i))
+			{
+				
+			}
+		}
 
 		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-		session->Send(sendBuffer);
+		
+		GLobby.Broadcast(sendBuffer);
+		//session->Send(sendBuffer);
+		//GLobby.Broadcast(sendBuffer);
 	}
 	else
 	{

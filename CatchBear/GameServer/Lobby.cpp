@@ -67,3 +67,10 @@ bool Lobby::isAllPlayerReady()
 	}
 	return true;
 }
+
+bool Lobby::isPlayerEnterLobby(uint64 playerId)
+{
+	if (_players[playerId] == nullptr)
+		return false;
+	return true;
+}

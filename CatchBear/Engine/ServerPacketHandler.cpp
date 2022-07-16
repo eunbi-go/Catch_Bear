@@ -67,6 +67,8 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 {
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
+	GET_SINGLE(SceneManager)->SetEnterLobby(int(pkt.playerid()), true);
+	GET_SINGLE(SceneManager)->PlayerStateDebug();
 	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
 
 #pragma region test

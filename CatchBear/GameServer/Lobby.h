@@ -10,6 +10,7 @@ public:
 	bool isFirstEnterLobby(uint64 playerId);
 	void SetPlayerReady(uint64 playerId);
 	bool isAllPlayerReady();
+	bool isPlayerEnterLobby(uint64 playerId);
 
 private:
 	USE_LOCK;

@@ -187,6 +187,14 @@ void SceneManager::SetPlayerType(int index, PLAYER_TYPE playerType)
 		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_gray");
 	else if (playerType == PLAYER_TYPE::BROWN)
 		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+	if (playerType == PLAYER_TYPE::BLUE)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_blue");
+	else if (playerType == PLAYER_TYPE::PANDA)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_panda");
+	if (playerType == PLAYER_TYPE::WHITE)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_white");
+	else if (playerType == PLAYER_TYPE::PINK)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_pink");
 
 	playerInfo1->GetMeshRenderer()->GetMaterial()->SetTexture(0, newTex);
 }
@@ -1284,6 +1292,18 @@ void SceneManager::CheckPlayerType(int index, wstring& key)
 
 	case PLAYER_TYPE::GRAY:
 		key = L"Evilbear_gray";
+		break;
+
+	case PLAYER_TYPE::PANDA:
+		key = L"Evilbear_panda";
+		break;
+
+	case PLAYER_TYPE::WHITE:
+		key = L"Evilbear_white";
+		break;
+
+	case PLAYER_TYPE::PINK:
+		key = L"Evilbear_pink";
 		break;
 	}
 }

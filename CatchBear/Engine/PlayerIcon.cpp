@@ -50,4 +50,20 @@ PLAYER_TYPE PlayerIcon::CheckPlayerType(const wstring& texKey)
 	{
 		return PLAYER_TYPE::GRAY;
 	}
+	else if (texKey == L"playerIcon_blue")
+	{
+		return PLAYER_TYPE::BLUE;
+	}
+	else if (texKey == L"playerIcon_panda")
+	{
+		return PLAYER_TYPE::PANDA;
+	}
+	else if (texKey == L"playerIcon_white")
+	{
+		return PLAYER_TYPE::WHITE;
+	}
+	else if (texKey == L"playerIcon_pink")
+	{
+		return PLAYER_TYPE::PINK;
+	}
 }

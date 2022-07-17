@@ -1387,13 +1387,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_blue");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 590, 70, 760, 190 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue_click", L"..\\Resources\\Texture\\Lobby\\blue_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
@@ -1424,13 +1423,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_brown");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 835, 240, 945, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 995, 70, 1155, 190 });
 
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown_click", L"..\\Resources\\Texture\\Lobby\\brown_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
@@ -1462,13 +1460,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_gray");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 250.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 790, 70, 955, 190 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
@@ -1500,13 +1497,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_panda");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 50.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 590, 260, 760, 385 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda_click", L"..\\Resources\\Texture\\Lobby\\panda_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
@@ -1537,13 +1533,12 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerIcon_pink");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 50.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 835, 240, 945, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 995, 260, 1155, 385 });
 
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink_click", L"..\\Resources\\Texture\\Lobby\\pink_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
@@ -1581,7 +1576,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
-		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 715, 240, 825, 320 });
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 790, 260, 955, 385 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white_click", L"..\\Resources\\Texture\\Lobby\\white_click.png");
 		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
 

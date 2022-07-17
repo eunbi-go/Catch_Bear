@@ -12,6 +12,7 @@
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 std::mutex m;
+int CurPlayerNum = 2;
 
 // 직접 컨텐츠 작업자
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -99,16 +100,17 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 		enterLobbyPkt.set_isallplayersready(false);
 		
 
-		for (int i = 0; i < 3; ++i)		// 캐치베어는 3인게임이니까 세명만 검사한다
+		for (int i = 0; i < CurPlayerNum; ++i)		// 캐치베어는 3인게임이니까 세명만 검사한다
 		{
-			if (GLobby.isFirstEnterLobby(i))
+			if (!GLobby.isFirstEnterLobby(i))
 			{
-				
+				enterLobbyPkt.set_playerid(i);
+				auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+				GLobby.Broadcast(sendBuffer);
 			}
 		}
 
-		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-		
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);		
 		GLobby.Broadcast(sendBuffer);
 		//session->Send(sendBuffer);
 		//GLobby.Broadcast(sendBuffer);
@@ -138,6 +140,29 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 			session->Send(sendBuffer);
 		}
 	}
+	return true;
+}
+
+bool Handle_C_LOBBY_STATE(PacketSessionRef& session, Protocol::C_LOBBY_STATE& pkt)
+{
+	Protocol::S_LOBBY_STATE LobbyStatePkt;
+	
+	LobbyStatePkt.set_playerid(pkt.playerid());
+	LobbyStatePkt.set_playertype(pkt.playertype());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
+	GLobby.Broadcast(sendBuffer);
+
+	for (int i = 0; i < CurPlayerNum; ++i)
+	{
+		if (GLobby.GetPlayerReady(i))		
+		{
+			LobbyStatePkt.set_playerid(i);
+			LobbyStatePkt.set_isready(true);
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
+			GLobby.Broadcast(sendBuffer);	
+		}		
+	}
+	
 	return true;
 }
 

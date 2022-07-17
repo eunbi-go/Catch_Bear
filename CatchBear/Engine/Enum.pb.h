@@ -197,6 +197,32 @@ inline bool DEBUFITEMTYPE_Parse(
   return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<DEBUFITEMTYPE>(
     DEBUFITEMTYPE_descriptor(), name, value);
 }
+enum PLAYER_TYPE : int {
+  BROWN = 0,
+  GRAY = 1,
+  BLUE = 2,
+  PLAYER_TYPE_INT_MIN_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::min(),
+  PLAYER_TYPE_INT_MAX_SENTINEL_DO_NOT_USE_ = std::numeric_limits<::PROTOBUF_NAMESPACE_ID::int32>::max()
+};
+bool PLAYER_TYPE_IsValid(int value);
+constexpr PLAYER_TYPE PLAYER_TYPE_MIN = BROWN;
+constexpr PLAYER_TYPE PLAYER_TYPE_MAX = BLUE;
+constexpr int PLAYER_TYPE_ARRAYSIZE = PLAYER_TYPE_MAX + 1;
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAYER_TYPE_descriptor();
+template<typename T>
+inline const std::string& PLAYER_TYPE_Name(T enum_t_value) {
+  static_assert(::std::is_same<T, PLAYER_TYPE>::value ||
+    ::std::is_integral<T>::value,
+    "Incorrect type passed to function PLAYER_TYPE_Name.");
+  return ::PROTOBUF_NAMESPACE_ID::internal::NameOfEnum(
+    PLAYER_TYPE_descriptor(), enum_t_value);
+}
+inline bool PLAYER_TYPE_Parse(
+    ::PROTOBUF_NAMESPACE_ID::ConstStringParam name, PLAYER_TYPE* value) {
+  return ::PROTOBUF_NAMESPACE_ID::internal::ParseNamedEnum<PLAYER_TYPE>(
+    PLAYER_TYPE_descriptor(), name, value);
+}
 // ===================================================================
 
 
@@ -243,6 +269,11 @@ template <> struct is_proto_enum< ::Protocol::DEBUFITEMTYPE> : ::std::true_type 
 template <>
 inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::DEBUFITEMTYPE>() {
   return ::Protocol::DEBUFITEMTYPE_descriptor();
+}
+template <> struct is_proto_enum< ::Protocol::PLAYER_TYPE> : ::std::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::Protocol::PLAYER_TYPE>() {
+  return ::Protocol::PLAYER_TYPE_descriptor();
 }
 
 PROTOBUF_NAMESPACE_CLOSE

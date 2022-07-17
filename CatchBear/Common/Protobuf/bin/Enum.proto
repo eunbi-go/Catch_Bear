@@ -46,3 +46,10 @@ enum DEBUFITEMTYPE
 	DEBUF_BLIND = 1;
 	DEBUF_STUN = 2;
 }
+
+enum PLAYER_TYPE 
+{ 
+	BROWN = 0;
+	GRAY = 1;
+	BLUE = 2;
+}

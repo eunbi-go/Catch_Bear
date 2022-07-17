@@ -42,6 +42,11 @@ void LobbyScene::Update()
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 		mysession->Send(sendBuffer);
 
+		Protocol::C_LOBBY_STATE LobbyStatePkt;
+		LobbyStatePkt.set_isready(true);
+		LobbyStatePkt.set_playerid(mysession->GetPlayerID());
+		sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyStatePkt);
+		mysession->Send(sendBuffer);
 		//GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
 	}
 }

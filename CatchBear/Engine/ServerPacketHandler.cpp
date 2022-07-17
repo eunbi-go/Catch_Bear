@@ -68,7 +68,6 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
 	GET_SINGLE(SceneManager)->SetEnterLobby(int(pkt.playerid()), true);
-	GET_SINGLE(SceneManager)->PlayerStateDebug();
 	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
 
 #pragma region test
@@ -153,6 +152,14 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyPkt);
 	//	session->Send(sendBuffer);
 	//}
+	return true;
+}
+
+bool Handle_S_LOBBY_STATE(PacketSessionRef& session, Protocol::S_LOBBY_STATE& pkt)
+{
+	GET_SINGLE(SceneManager)->SetPlayerReady(int(pkt.playerid()), pkt.isready());
+	GET_SINGLE(SceneManager)->SetPlayerType(int(pkt.playerid()), (PLAYER_TYPE)pkt.playertype());
+
 	return true;
 }
 

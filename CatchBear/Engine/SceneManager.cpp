@@ -148,19 +148,6 @@ void SceneManager::ReStart()
 	//_activeScene->RemoveItems();
 }
 
-void SceneManager::PlayerStateDebug()
-{
-	for (int i = 0; i < _isPlayersEnterLobby.size(); ++i)
-	{
-		cout << "player " << i << " : enter : " << _isPlayersEnterLobby[i] << endl;
-	}
-
-	for (int i = 0; i < _isPlayersReady.size(); ++i)
-	{
-		cout << "player " << i << " : ready : " << _isPlayersReady[i] << endl;
-	}
-}
-
 
 bool SceneManager::IsEnd()
 {

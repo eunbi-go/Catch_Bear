@@ -18,7 +18,7 @@
 PROTOBUF_PRAGMA_INIT_SEG
 namespace Protocol {
 }  // namespace Protocol
-static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[5];
+static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_Enum_2eproto[6];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_Enum_2eproto = nullptr;
 const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_Enum_2eproto::offsets[1] = {};
 static constexpr ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema* schemas = nullptr;
@@ -36,11 +36,12 @@ const char descriptor_table_protodef_Enum_2eproto[] PROTOBUF_SECTION_VARIABLE(pr
   "\020\004\022\010\n\004STUN\020\005\022\013\n\007STUNEND\020\006\022\014\n\010DASHREST\020\007\022"
   "\010\n\004SLOW\020\010\022\n\n\006SHIELD\020\t*E\n\rDEBUFITEMTYPE\022\023"
   "\n\017DEBUF_SPEEDDOWN\020\000\022\017\n\013DEBUF_BLIND\020\001\022\016\n\n"
-  "DEBUF_STUN\020\002b\006proto3"
+  "DEBUF_STUN\020\002*,\n\013PLAYER_TYPE\022\t\n\005BROWN\020\000\022\010"
+  "\n\004GRAY\020\001\022\010\n\004BLUE\020\002b\006proto3"
   ;
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_Enum_2eproto_once;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_Enum_2eproto = {
-  false, false, 460, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
+  false, false, 506, descriptor_table_protodef_Enum_2eproto, "Enum.proto", 
   &descriptor_table_Enum_2eproto_once, nullptr, 0, 0,
   schemas, file_default_instances, TableStruct_Enum_2eproto::offsets,
   nullptr, file_level_enum_descriptors_Enum_2eproto, file_level_service_descriptors_Enum_2eproto,
@@ -128,6 +129,21 @@ const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* DEBUFITEMTYPE_descriptor() {
   return file_level_enum_descriptors_Enum_2eproto[4];
 }
 bool DEBUFITEMTYPE_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
+const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* PLAYER_TYPE_descriptor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&descriptor_table_Enum_2eproto);
+  return file_level_enum_descriptors_Enum_2eproto[5];
+}
+bool PLAYER_TYPE_IsValid(int value) {
   switch (value) {
     case 0:
     case 1:

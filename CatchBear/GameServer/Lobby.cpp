@@ -43,6 +43,21 @@ void Lobby::SetPlayerReady(uint64 playerId)
 	_playersReady[playerId] = true;
 }
 
+bool Lobby::GetPlayerReady(uint64 playerId)
+{
+	return _playersReady[playerId];
+}
+
+void Lobby::SetPlayerType(uint64 playerId, uint64 _type)
+{
+	_playerType[playerId] = _type;
+}
+
+uint64 Lobby::GetPlayerType(uint64 playerId)
+{
+	return _playerType[playerId];
+}
+
 bool Lobby::isAllPlayerReady()
 {
 	WRITE_LOCK;

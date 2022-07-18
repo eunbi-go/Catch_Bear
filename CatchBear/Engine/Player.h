@@ -1,6 +1,7 @@
 #pragma once
 #include "MonoBehaviour.h"
 #include "Item.h"
+#include "GameObject.h"
 
 class CameraScript;
 class ShieldParticle;
@@ -18,6 +19,12 @@ public:
 	{
 		SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
 		DEBUFF_OFF, STUN, ITEM_END, NONE,
+	};
+
+	//장애물 극복 방향을 위해 만듬
+	enum DIR
+	{
+		DIR_LEFT, DIR_RIGHT, DIR_END,
 	};
 
 public:
@@ -38,6 +45,7 @@ public:
 	void SetPlayerScore(int score) { _iScore = score; }
 	void SetSheildTime(float time) { _fShieldTime = time; }
 	void SetTextureKey(const wstring& textureKey) { _textureKey = textureKey; }
+	void SetCurState(STATE _state) { _curStatePlayer = _state; }
 
 	bool GetCurItem(Player::ITEM curItem) { return _curPlayerItem[curItem]; }
 	const float GetPlayerSpeed() { return _speed; }
@@ -48,6 +56,7 @@ public:
 	const int GetPlayerScore() { return _iScore; }
 	const int GetItemCount() { return _iItemCnt; }
 	const wstring& GetTextureKey() { return _textureKey; }
+	const int GetPlayerID() { return _player->GetPlayerID(); }
 	
 private:
 	void KeyCheck();
@@ -116,5 +125,6 @@ public:
 	float	_testTime = 0.f;
 	bool	_isFont = false;
 	wstring _wstrText = L"";
-};
 
+	DIR		_dir = DIR::DIR_END;
+};

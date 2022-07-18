@@ -10,30 +10,35 @@ enum : uint16
 	PKT_S_LOGIN = 1001,
 	PKT_C_ENTER_LOBBY = 1002,
 	PKT_S_ENTER_LOBBY = 1003,
-	PKT_C_ENTER_GAME = 1004,
-	PKT_S_ENTER_GAME = 1005,
-	PKT_C_CHAT = 1006,
-	PKT_S_CHAT = 1007,
-	PKT_C_MOVE = 1008,
-	PKT_S_MOVE = 1009,
-	PKT_C_USE_DEBUFITEM = 1010,
-	PKT_S_USE_DEBUFITEM = 1011,
-	PKT_C_USE_STUN = 1012,
-	PKT_S_USE_STUN = 1013,
-	PKT_C_COLLIDPLAYERTOPLAYER = 1014,
-	PKT_S_COLLIDPLAYERTOPLAYER = 1015,
-	PKT_C_PLAYERINFO = 1016,
-	PKT_S_PLAYERINFO = 1017,
-	PKT_C_STATE = 1018,
-	PKT_S_STATE = 1019,
-	PKT_C_PLUSTIME = 1020,
-	PKT_S_PLUSTIME = 1021,
+	PKT_C_LOBBY_STATE = 1004,
+	PKT_S_LOBBY_STATE = 1005,
+	PKT_C_ENTER_GAME = 1006,
+	PKT_S_ENTER_GAME = 1007,
+	PKT_C_CHAT = 1008,
+	PKT_S_CHAT = 1009,
+	PKT_C_MOVE = 1010,
+	PKT_S_MOVE = 1011,
+	PKT_C_USE_DEBUFITEM = 1012,
+	PKT_S_USE_DEBUFITEM = 1013,
+	PKT_C_USE_STUN = 1014,
+	PKT_S_USE_STUN = 1015,
+	PKT_C_COLLIDPLAYERTOPLAYER = 1016,
+	PKT_S_COLLIDPLAYERTOPLAYER = 1017,
+	PKT_C_PLAYERINFO = 1018,
+	PKT_S_PLAYERINFO = 1019,
+	PKT_C_STATE = 1020,
+	PKT_S_STATE = 1021,
+	PKT_C_PLUSTIME = 1022,
+	PKT_S_PLUSTIME = 1023,
+	PKT_C_STUNEND = 1024,
+	PKT_S_STUNEND = 1025,
 };
 
 // Custom Handlers
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len);
 bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt);
 bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt);
+bool Handle_S_LOBBY_STATE(PacketSessionRef& session, Protocol::S_LOBBY_STATE& pkt);
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt);
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt);
@@ -43,6 +48,7 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt);
 bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt);
 bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt);
+bool Handle_S_STUNEND(PacketSessionRef& session, Protocol::S_STUNEND& pkt);
 
 class ServerPacketHandler
 {
@@ -53,6 +59,7 @@ public:
 			GPacketHandler[i] = Handle_INVALID;
 		GPacketHandler[PKT_S_LOGIN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LOGIN>(Handle_S_LOGIN, session, buffer, len); };
 		GPacketHandler[PKT_S_ENTER_LOBBY] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_LOBBY>(Handle_S_ENTER_LOBBY, session, buffer, len); };
+		GPacketHandler[PKT_S_LOBBY_STATE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_LOBBY_STATE>(Handle_S_LOBBY_STATE, session, buffer, len); };
 		GPacketHandler[PKT_S_ENTER_GAME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_ENTER_GAME>(Handle_S_ENTER_GAME, session, buffer, len); };
 		GPacketHandler[PKT_S_CHAT] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_CHAT>(Handle_S_CHAT, session, buffer, len); };
 		GPacketHandler[PKT_S_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_MOVE>(Handle_S_MOVE, session, buffer, len); };
@@ -62,6 +69,7 @@ public:
 		GPacketHandler[PKT_S_PLAYERINFO] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAYERINFO>(Handle_S_PLAYERINFO, session, buffer, len); };
 		GPacketHandler[PKT_S_STATE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STATE>(Handle_S_STATE, session, buffer, len); };
 		GPacketHandler[PKT_S_PLUSTIME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLUSTIME>(Handle_S_PLUSTIME, session, buffer, len); };
+		GPacketHandler[PKT_S_STUNEND] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STUNEND>(Handle_S_STUNEND, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -71,6 +79,7 @@ public:
 	}
 	static SendBufferRef MakeSendBuffer(Protocol::C_LOGIN& pkt) { return MakeSendBuffer(pkt, PKT_C_LOGIN); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_LOBBY& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_LOBBY); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_LOBBY_STATE& pkt) { return MakeSendBuffer(pkt, PKT_C_LOBBY_STATE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_ENTER_GAME& pkt) { return MakeSendBuffer(pkt, PKT_C_ENTER_GAME); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_CHAT& pkt) { return MakeSendBuffer(pkt, PKT_C_CHAT); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_C_MOVE); }
@@ -80,6 +89,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLAYERINFO& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAYERINFO); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_STATE& pkt) { return MakeSendBuffer(pkt, PKT_C_STATE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLUSTIME& pkt) { return MakeSendBuffer(pkt, PKT_C_PLUSTIME); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_STUNEND& pkt) { return MakeSendBuffer(pkt, PKT_C_STUNEND); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

@@ -17,6 +17,10 @@
 #include "Material.h"
 #include "Resources.h"
 
+#include "ServerPacketHandler.h"
+#include "ServerSession.h"
+#
+
 PlayerState* StunState::KeyCheck(GameObject& player, STATE& ePlayer)
 {
     return NULL;
@@ -90,4 +94,9 @@ void StunState::End(GameObject& player)
     wstring key = static_pointer_cast<Player>(player.GetScript(0))->GetTextureKey();
     shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
     player.GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
+
+    Protocol::C_STUNEND StatePkt;
+    StatePkt.set_playerid(static_pointer_cast<Player>(player.GetScript(0))->GetPlayerID());
+    auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
+    mysession->Send(sendBuffer);
 }

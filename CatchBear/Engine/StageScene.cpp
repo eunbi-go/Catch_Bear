@@ -19,6 +19,7 @@
 #include "Transform.h"
 #include "ItemSlotUI.h"
 #include "ItemWindow.h"
+#include "PlayerState.h"
 
 StageScene::StageScene()
 {
@@ -67,6 +68,22 @@ void StageScene::Update()
 				gameObject->Update();
 			}
 
+			for (const shared_ptr<GameObject>& player : _vecPlayers)
+			{
+				if (static_pointer_cast<Player>(player->GetScript(0))->_state->curState == STATE::STUN)
+				{
+					//cout << "Player " << player->GetPlayerID() << " Stun!!" << endl;
+					
+				}
+				else
+				{
+					//cout << "Player " << player->GetPlayerID() << " NoStun!!" << endl;
+					wstring key = static_pointer_cast<Player>(player->GetScript(0))->GetTextureKey();
+					shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
+					player->GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
+				}
+					
+			}
 		}
 	}
 }

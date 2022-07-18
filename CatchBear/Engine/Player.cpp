@@ -52,8 +52,6 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
-
-
 }
 
 void Player::LateUpdate()
@@ -168,9 +166,12 @@ void Player::KeyCheck()
 	KeyCheck_Cheat();
 	//////////////////////////////////////////////////////////////////////////
 
-
-	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
-
+	if (_bStunned)	// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
+	{
+		_curStatePlayer = STATE::STUN;
+		return;
+	}
+			
 	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
@@ -301,7 +302,13 @@ void Player::Move()
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
 		else
-			pos -= _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
+		{
+			if (_dir == DIR::DIR_LEFT)
+				pos -= _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+			else
+				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+		}
+
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
@@ -339,6 +346,8 @@ void Player::Move()
 	float delta = 0.f;
 	if (INPUT->GetButton(KEY_TYPE::RIGHT))
 	{
+		_dir = DIR::DIR_RIGHT;
+
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
@@ -358,6 +367,8 @@ void Player::Move()
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
 	{
+		_dir = DIR::DIR_LEFT;
+
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 

@@ -43,6 +43,21 @@ void Lobby::SetPlayerReady(uint64 playerId)
 	_playersReady[playerId] = true;
 }
 
+bool Lobby::GetPlayerReady(uint64 playerId)
+{
+	return _playersReady[playerId];
+}
+
+void Lobby::SetPlayerType(uint64 playerId, uint64 _type)
+{
+	_playerType[playerId] = _type;
+}
+
+uint64 Lobby::GetPlayerType(uint64 playerId)
+{
+	return _playerType[playerId];
+}
+
 bool Lobby::isAllPlayerReady()
 {
 	WRITE_LOCK;
@@ -65,5 +80,12 @@ bool Lobby::isAllPlayerReady()
 		if (_playersReady[i] == false)
 			return false;
 	}
+	return true;
+}
+
+bool Lobby::isPlayerEnterLobby(uint64 playerId)
+{
+	if (_players[playerId] == nullptr)
+		return false;
 	return true;
 }

@@ -22,6 +22,11 @@ void Game::LoginSceneUpdate()
 	GEngine->LoginSceneUpdate();
 }
 
+void Game::LobbySceneUpdate()
+{
+	GEngine->LoginSceneUpdate();
+}
+
 void Game::setString(const char* strText)
 {
 	cout << strText << endl;
@@ -37,4 +42,9 @@ const wstring& Game::GetFontString()
 const bool Game::isIPAddrEnter()
 {
 	return GEngine->GetIsIPAddrEnter();
+}
+
+const bool Game::isAllPlayerReady()
+{
+	return GEngine->GetIsAllPlayerReady();
 }

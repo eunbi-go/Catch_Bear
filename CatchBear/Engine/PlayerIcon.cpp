@@ -6,6 +6,8 @@
 #include "MeshRenderer.h"
 #include "Material.h"
 #include "SceneManager.h"
+#include "ServerSession.h"
+#include "ServerPacketHandler.h"
 
 PlayerIcon::PlayerIcon()
 {
@@ -32,7 +34,14 @@ void PlayerIcon::LateUpdate()
 
 			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
 			{
-				GET_SINGLE(SceneManager)->SetPlayerType(0, CheckPlayerType(_texKey));
+				GET_SINGLE(SceneManager)->SetPlayerType(mysession->GetPlayerID(), CheckPlayerType(_texKey));
+
+				/////////////// Server///////////////////////
+				Protocol::C_LOBBY_STATE pkt;
+				pkt.set_playerid(mysession->GetPlayerID());
+				pkt.set_playertype((uint64)CheckPlayerType(_texKey));
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+				mysession->Send(sendBuffer);
 			}
 		}
 		else

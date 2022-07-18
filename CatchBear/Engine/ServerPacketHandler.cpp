@@ -10,6 +10,7 @@
 #include "Timer.h"
 #include "TagMark.h"
 #include "ServerSession.h"
+#include "Engine.h"
 
 #include "PlayerState.h"
 #include "IdleState.h"
@@ -42,8 +43,6 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
-	//SceneManager::GetInstance()->MakePlayer(pkt.playerid());
-
 	// 세션의 playerID를 저장해준다
 	mysession->SetPlayerID(pkt.playerid());
 
@@ -51,16 +50,12 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
 
-	//Protocol::C_ENTER_GAME enterGamePkt;
-	//enterGamePkt.set_playerid(mysession->GetPlayerID());
-	//enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
-	//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	cout << "Player " << mysession->GetPlayerID() << " 로그인 성공\n";
 
 	Protocol::C_ENTER_LOBBY enterLobbyPkt;
 	enterLobbyPkt.set_playerid(mysession->GetPlayerID());
 	enterLobbyPkt.set_playernum(scene->GetEnterPlayerNum());
-	// 일단은 로비에서 레디 무조건 트루
-	enterLobbyPkt.set_isplayerready(true);
+	enterLobbyPkt.set_isplayerready(false);
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 	session->Send(sendBuffer);
 
@@ -72,15 +67,23 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 {
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
+	GET_SINGLE(SceneManager)->SetEnterLobby(int(pkt.playerid()), true);
+	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
+
 #pragma region test
 	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
-	//if (pkt.isallplayersready())
-	{
+	if (pkt.isallplayersready())
+	{	
+		GEngine->SetIsAllPlayerReady();
+		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
+
 		Protocol::C_ENTER_GAME enterGamePkt;
 		enterGamePkt.set_playerid(mysession->GetPlayerID());
-		enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
+		enterGamePkt.set_playernum(GEngine->GetPlayerNum());
+		//enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
 		session->Send(sendBuffer);
+
 	}
 	// 준비 안됐다면 여기로
 	//else
@@ -152,6 +155,14 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	return true;
 }
 
+bool Handle_S_LOBBY_STATE(PacketSessionRef& session, Protocol::S_LOBBY_STATE& pkt)
+{
+	GET_SINGLE(SceneManager)->SetPlayerReady(int(pkt.playerid()), pkt.isready());
+	GET_SINGLE(SceneManager)->SetPlayerType(int(pkt.playerid()), (PLAYER_TYPE)pkt.playertype());
+
+	return true;
+}
+
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
@@ -166,6 +177,12 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		mysession->SetAllPlayerEnter();
 
 		_player = scene->GetPlayer(pkt.taggerplayerid());
+
+		if (_player == nullptr) 
+		{
+			cout << "술래 플레이어 정해지지 않음\n";
+			return true;
+		}
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";
 		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
@@ -252,8 +269,12 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 	{
 		_player = scene->GetPlayer(i);
 
+		if (_player == nullptr)
+			return true;
+		
 		if (_player->GetPlayerID() == pkt.fromplayerid())
 			continue;
+
 		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
 		{
 			//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
@@ -278,6 +299,7 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
 				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
 				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				_player->_state->curState = STATE::STUN;
 				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 				static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
 			}
@@ -308,6 +330,7 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetCurState(STATE::STUN);
 	}
 	return true;
 }
@@ -356,12 +379,17 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
 	_player = scene->GetPlayer(pkt.playerid());
+	
+	if (_player == nullptr)
+		return true;
 
 	PlayerState* state;
 
 	switch (pkt.state())
 	{
 	case Protocol::IDLE:
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState == STATE::STUN)
+			break;
 		if (_player->_state->curState != STATE::IDLE)
 		{
 			if (_player->_state->curState != STATE::STUN)
@@ -373,6 +401,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::IDLE;
+
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
 			}
 		}
 		break;
@@ -390,6 +420,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 					_player->_state = state;
 					_player->_state->Enter(*_player);
 					_player->_state->curState = STATE::WALK;
+
+					static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::WALK;
 				}
 			}
 		}
@@ -424,6 +456,7 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurState(STATE::STUN);
 		}
 		break;
 	case Protocol::DASH:
@@ -438,7 +471,25 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 		}
 		break;
 	case Protocol::DASHREST:
+		// 프로토콜 오류로 일단 안쓰는 enum으로 테스트
 		if (_player->_state->curState != STATE::DASH_REST)
+		{
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+
+			state = new IdleState;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
+
+			/*_player->_state->End(*_player);
+			delete _player->_state;
+			state = new IdleState;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::IDLE;*/
+		}
+		/*if (_player->_state->curState != STATE::DASH_REST)
 		{
 			_player->_state->End(*_player);
 			delete _player->_state;
@@ -446,7 +497,7 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 			_player->_state = state;
 			_player->_state->Enter(*_player);
 			_player->_state->curState = STATE::DASH_REST;
-		}
+		}*/
 		break;
 	case Protocol::SLOW:
 		if (_player->_state->curState != STATE::SLOW)
@@ -469,6 +520,28 @@ bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt)
 {
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	scene->AddCurTime(-30.f);
+	return true;
+}
+
+bool Handle_S_STUNEND(PacketSessionRef& session, Protocol::S_STUNEND& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player = scene->GetPlayer(pkt.playerid());
+
+	if (_player == nullptr)
+		return true;
+
+	PlayerState* state;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+	delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+
+	state = new IdleState;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
+
 	return true;
 }
 

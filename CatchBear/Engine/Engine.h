@@ -19,6 +19,7 @@ public:
 	void Update();
 
 	void LoginSceneUpdate();
+	void LobbySceneUpdate();
 
 public:
 	const WindowInfo& GetWindow() { return _window; }
@@ -30,11 +31,15 @@ public:
 	shared_ptr<GraphicsDescriptorHeap> GetGraphicsDescHeap() { return _graphicsDescHeap; }
 	shared_ptr<ComputeDescriptorHeap> GetComputeDescHeap() { return _computeDescHeap; }
 	shared_ptr<FontDevice>	GetFontDevice() { return _fontDevice; }
+	bool GetIsAllPlayerReady() { return _isAllPlayerEnter; }
+	
+	void SetIsAllPlayerReady() { _isAllPlayerEnter = true; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
 	shared_ptr<RenderTargetGroup> GetRTGroup(RENDER_TARGET_GROUP_TYPE type) { return _rtGroups[static_cast<uint8>(type)]; }
 
 	const bool GetIsIPAddrEnter() { return _isIPAddrEnter; }
+	const int GetPlayerNum() { return PLAYER_NUM; }
 public:
 	void Render();
 	void RenderBegin();
@@ -71,5 +76,9 @@ private:
 public:
 	bool	_isEnd = false;
 	bool	_isIPAddrEnter = false;
+
+	// 모든 플레이어 준비 검사하는 변수
+	bool	_isAllPlayerEnter = false;
+	int		PLAYER_NUM = 2;	// 몇인용인지
 };
 

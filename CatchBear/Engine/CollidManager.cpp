@@ -7,6 +7,8 @@
 #include "ServerSession.h"
 #include "ServerPacketHandler.h"
 #include "PlayerState.h"
+#include "Engine.h"
+#include "Timer.h"
 
 void CollidManager::Update()
 {
@@ -24,6 +26,8 @@ void CollidManager::ColiisionPlayerToStaticObj()
 	_player = GET_SINGLE(SceneManager)->GetActiveScene()->GetPlayer(mysession->GetPlayerID());
 
 	auto& staticObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetStaticObj();
+
+	Vec3 PrePosition = _player->GetTransform()->GetLook();
 
 	for (auto mapobj = staticObjects.begin(); mapobj != staticObjects.end(); mapobj++)
 	{

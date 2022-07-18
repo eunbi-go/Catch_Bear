@@ -26,6 +26,21 @@ message C_ENTER_LOBBY
 message S_ENTER_LOBBY
 {
 	bool isAllPlayersReady = 1;
+	uint64 playerId = 2;
+}
+
+message C_LOBBY_STATE
+{
+	uint64 playerId = 1;
+	uint64 isReady = 2;
+	uint64 playerType = 3;
+}
+
+message S_LOBBY_STATE
+{
+	uint64 playerId = 1;
+	uint64 isReady = 2;
+	uint64 playerType = 3;
 }
 
 message C_ENTER_GAME
@@ -142,6 +157,16 @@ message C_PLUSTIME
 }
 
 message S_PLUSTIME
+{
+	uint64 playerid = 1;
+}
+
+message C_STUNEND
+{
+	uint64 playerid = 1;
+}
+
+message S_STUNEND
 {
 	uint64 playerid = 1;
 }

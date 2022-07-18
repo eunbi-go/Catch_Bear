@@ -319,8 +319,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			_isPlayersReady[0] = false;
 			_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
+
+
 		g_EnterPlayerCnt = 2;
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
+		CheckPlayerType(1, key);
+		shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
+		vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
+		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
 		for (auto& gameObject : gameObjects2)
 		{
 			gameObject->SetName(L"Player2");
@@ -1645,7 +1650,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, 280.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1676,7 +1681,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, 280.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1710,7 +1715,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, 0.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1741,7 +1746,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, 0.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1775,7 +1780,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, -280.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
@@ -1806,7 +1811,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, -280.f, 100.f));
-		finalRanking->_isRender = true;
+		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();

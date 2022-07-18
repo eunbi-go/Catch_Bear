@@ -14,5 +14,8 @@ public:
 	virtual void Update() override;
 	virtual void LateUpdate() override;
 	virtual void FinalUpdate() override;
+
+private:
+	void CheckIsPlayerEnter();
 };
 

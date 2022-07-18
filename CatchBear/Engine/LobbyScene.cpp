@@ -49,6 +49,8 @@ void LobbyScene::Update()
 		mysession->Send(sendBuffer);
 		//GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
 	}
+
+	CheckIsPlayerEnter();
 }
 
 void LobbyScene::LateUpdate()
@@ -64,5 +66,21 @@ void LobbyScene::FinalUpdate()
 	for (const shared_ptr<GameObject>& gameObject : _gameObjects)
 	{
 		gameObject->FinalUpdate();
+	}
+}
+
+void LobbyScene::CheckIsPlayerEnter()
+{
+	for (int i = 0; i < 2; ++i)
+	{
+		if (GET_SINGLE(SceneManager)->GetEnterLobby(i))
+		{
+			wstring objName = L"playerInfo" + s2ws(to_string(i+1));
+			shared_ptr<GameObject> playerInfo = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(objName);
+			shared_ptr<GameObject> startB = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(objName + L"_start");
+
+			playerInfo->_isRender = true;
+			startB->_isRender = true;
+		}
 	}
 }

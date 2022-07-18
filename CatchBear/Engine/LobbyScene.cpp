@@ -37,7 +37,7 @@ void LobbyScene::Update()
 	if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
 		Protocol::C_ENTER_LOBBY enterLobbyPkt;
 		enterLobbyPkt.set_playerid(mysession->GetPlayerID());
-		enterLobbyPkt.set_playernum(2);
+		enterLobbyPkt.set_playernum(GEngine->GetPlayerNum());
 		enterLobbyPkt.set_isplayerready(true);
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 		mysession->Send(sendBuffer);

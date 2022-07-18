@@ -120,7 +120,7 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 		if (pkt.isplayerready())
 		{
 			cout << "플레이어 " << pkt.playerid() << " 준비완료\n";
-			GLobby.SetPlayerReady(pkt.playerid());
+			GLobby.SetPlayerReady(pkt.playerid(), true);
 		}
 
 		// 만약 모든 플레이어가 준비됐다면
@@ -146,9 +146,12 @@ bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pk
 bool Handle_C_LOBBY_STATE(PacketSessionRef& session, Protocol::C_LOBBY_STATE& pkt)
 {
 	Protocol::S_LOBBY_STATE LobbyStatePkt;
-	
+	GLobby.SetPlayerReady(pkt.playerid(), pkt.isready());
+	GLobby.SetPlayerType(pkt.playerid(), pkt.playertype());
+
 	LobbyStatePkt.set_playerid(pkt.playerid());
-	LobbyStatePkt.set_playertype(pkt.playertype());
+	LobbyStatePkt.set_isready(GLobby.GetPlayerReady(pkt.playerid()));
+	LobbyStatePkt.set_playertype(GLobby.GetPlayerType(pkt.playerid()));
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
 	GLobby.Broadcast(sendBuffer);
 
@@ -158,9 +161,20 @@ bool Handle_C_LOBBY_STATE(PacketSessionRef& session, Protocol::C_LOBBY_STATE& pk
 		{
 			LobbyStatePkt.set_playerid(i);
 			LobbyStatePkt.set_isready(true);
+			LobbyStatePkt.set_playertype(GLobby.GetPlayerType(i));
 			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
 			GLobby.Broadcast(sendBuffer);	
 		}		
+	}
+
+	// 만약 모든 플레이어가 준비됐다면
+	if (GLobby.isAllPlayerReady())
+	{
+		Protocol::S_ENTER_LOBBY enterLobbyPkt;
+		cout << "모든 플레이어가 준비됨\n";
+		enterLobbyPkt.set_isallplayersready(true);
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		GLobby.Broadcast(sendBuffer);
 	}
 	
 	return true;

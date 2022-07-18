@@ -8,7 +8,7 @@ public:
 	void Broadcast(SendBufferRef sendBuffer);
 
 	bool isFirstEnterLobby(uint64 playerId);
-	void SetPlayerReady(uint64 playerId);
+	void SetPlayerReady(uint64 playerId, bool _isReady);
 	bool GetPlayerReady(uint64 playerId);
 	void SetPlayerType(uint64 playerId, uint64 _type);
 	uint64 GetPlayerType(uint64 playerId);

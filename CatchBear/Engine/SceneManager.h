@@ -30,6 +30,7 @@ public:
 
 	bool GetEnterLobby(int _id) { return _isPlayersEnterLobby[_id]; }
 	bool GetPlayerReady(int _id) { return _isPlayersReady[_id]; }
+	PLAYER_TYPE GetPlayerType(int _id) { return _playerTypes[_id]; }
 
 	void ReStart();	// 게임 끝나고 다시하기 버튼 누르면 실행되는 함수
 public:

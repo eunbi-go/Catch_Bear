@@ -39,6 +39,7 @@ void PlayerIcon::LateUpdate()
 				/////////////// Server///////////////////////
 				Protocol::C_LOBBY_STATE pkt;
 				pkt.set_playerid(mysession->GetPlayerID());
+				pkt.set_isready(false);
 				pkt.set_playertype((uint64)CheckPlayerType(_texKey));
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 				mysession->Send(sendBuffer);

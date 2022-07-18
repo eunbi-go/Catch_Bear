@@ -37,10 +37,10 @@ bool Lobby::isFirstEnterLobby(uint64 playerId)
 		return true;
 }
 
-void Lobby::SetPlayerReady(uint64 playerId)
+void Lobby::SetPlayerReady(uint64 playerId, bool _isReady)
 {
 	WRITE_LOCK;
-	_playersReady[playerId] = true;
+	_playersReady[playerId] = _isReady;
 }
 
 bool Lobby::GetPlayerReady(uint64 playerId)

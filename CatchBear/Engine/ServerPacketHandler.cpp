@@ -69,7 +69,6 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 
 	GET_SINGLE(SceneManager)->SetEnterLobby(int(pkt.playerid()), true);
 	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
-
 #pragma region test
 	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
 	if (pkt.isallplayersready())

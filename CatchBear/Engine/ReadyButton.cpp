@@ -6,6 +6,8 @@
 #include "MeshRenderer.h"
 #include "Material.h"
 #include "SceneManager.h"
+#include "ServerPacketHandler.h"
+#include "ServerSession.h"
 
 ReadyButton::ReadyButton()
 {
@@ -35,6 +37,12 @@ void ReadyButton::LateUpdate()
 				_isReady = !_isReady;
 
 				// Server
+				Protocol::C_LOBBY_STATE LobbyStatePkt;
+				LobbyStatePkt.set_isready(_isReady);
+				LobbyStatePkt.set_playerid(mysession->GetPlayerID());
+				LobbyStatePkt.set_playertype((int)GET_SINGLE(SceneManager)->GetPlayerType(mysession->GetPlayerID()));
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyStatePkt);
+				mysession->Send(sendBuffer);
 			}
 		}
 		else

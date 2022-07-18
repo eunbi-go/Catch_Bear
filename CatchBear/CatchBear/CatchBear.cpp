@@ -262,13 +262,13 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
         {
 
         }
-        //else
-        //{
-        //    len = strlen(strText);
-        //    strText[len] = wparam & 0xff;
-        //    strText[len + 1] = 0;
-        //    game->setString(strText);
-        //}
+        else
+        {
+            len = strlen(strText);
+            strText[len] = wparam & 0xff;
+            strText[len + 1] = 0;
+            game->setString(strText);
+        }
         return 0;
 
     case WM_KEYDOWN:    // 키다운

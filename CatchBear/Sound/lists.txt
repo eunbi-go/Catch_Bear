@@ -1,3 +1,4 @@
-logo.mp3
-Stage.mp3
 click.mp3
+lobbyScene.wav
+loginScene.wav
+stageScene.wav

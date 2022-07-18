@@ -18,6 +18,7 @@ public:
 
 public:
 	void UpdateFont(const wstring& wstrText);
+	void PushFont(const wstring& wstrText);
 	const wstring& GetFontString() { return _vTextBlocks[0].wstrText; }
 
 	void Render(UINT nFrame);

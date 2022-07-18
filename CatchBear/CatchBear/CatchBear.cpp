@@ -29,6 +29,7 @@ unique_ptr<Game> game;
 
 char strText[255];     // 텍스트 저장
 char Cstr[10];       // 조합중인 문자
+char temp[255];
 int len = 0;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
@@ -225,6 +226,7 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
                 strcpy(strText + strlen(strText), Cstr);
                 strText[strlen(strText)+1] = 0;
                 memset(Cstr, 0, 10);
+                memset(temp, 0, 255);
                 game->setString(strText);
 
             }
@@ -239,6 +241,10 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
             len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
             ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
             Cstr[len] = 0;
+
+            strcpy(temp, strText);
+            strcpy(temp + strlen(temp), Cstr);
+            game->setString(temp);
         }
 
         ImmReleaseContext(hWnd, m_hIMC);					// IME 핸들 반환!!
@@ -252,17 +258,17 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
             memset(Cstr, 0, 10);
             game->setString(strText);
         }
-        else if (wparam == VK_SPACE)
+        else if (wparam == VK_RETURN)
         {
-            game->setString(strText);
+
         }
-        else
-        {
-            len = strlen(strText);
-            strText[len] = wparam & 0xff;
-            strText[len + 1] = 0;
-            game->setString(strText);
-        }
+        //else
+        //{
+        //    len = strlen(strText);
+        //    strText[len] = wparam & 0xff;
+        //    strText[len + 1] = 0;
+        //    game->setString(strText);
+        //}
         return 0;
 
     case WM_KEYDOWN:    // 키다운

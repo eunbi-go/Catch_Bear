@@ -1,26 +1,25 @@
 #include "pch.h"
-#include "Button.h"
+#include "ReadyButton.h"
 #include "Engine.h"
 #include "GameObject.h"
 #include "Input.h"
 #include "MeshRenderer.h"
 #include "Material.h"
+#include "SceneManager.h"
 
-Button::Button()
+ReadyButton::ReadyButton()
 {
 }
 
-Button::~Button()
+ReadyButton::~ReadyButton()
 {
 }
 
-void Button::Update()
+void ReadyButton::Update()
 {
-
-
 }
 
-void Button::LateUpdate()
+void ReadyButton::LateUpdate()
 {
 	if (_isCollCheck)
 	{
@@ -29,10 +28,14 @@ void Button::LateUpdate()
 
 		if (PtInRect(&_rect, _mousePos))
 		{
+			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _collTexture);
+
 			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
 			{
+				_isReady = !_isReady;
+
+				// Server
 			}
-			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _collTexture);
 		}
 		else
 			GetGameObject()->GetMeshRenderer()->GetMaterial()->SetTexture(0, _originalTexture);

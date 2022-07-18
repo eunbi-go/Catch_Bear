@@ -259,6 +259,7 @@
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="LobbyScene.cpp" />
     <ClCompile Include="PlayerIcon.cpp" />
+    <ClCompile Include="ReadyButton.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AnimationController.h">
@@ -487,6 +488,7 @@
     <ClInclude Include="Button.h" />
     <ClInclude Include="LobbyScene.h" />
     <ClInclude Include="PlayerIcon.h" />
+    <ClInclude Include="ReadyButton.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Common\Protobuf\bin\Enum.proto">

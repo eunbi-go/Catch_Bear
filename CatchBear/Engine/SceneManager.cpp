@@ -41,6 +41,7 @@
 #include "LobbyScene.h"
 #include "Button.h"
 #include "PlayerIcon.h"
+#include "ReadyButton.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -321,34 +322,34 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 
 
-		g_EnterPlayerCnt = 2;
-		CheckPlayerType(1, key);
-		shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
-		vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
-		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player2");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_blue");
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
-			_isPlayersEnterLobby[0] = false;
-			_isPlayersReady[0] = false;
-			_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
-		}
+		//g_EnterPlayerCnt = 2;
+		//CheckPlayerType(1, key);
+		//shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
+		//vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
+		////vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player2");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_blue");
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//	_isPlayersEnterLobby[0] = false;
+		//	_isPlayersReady[0] = false;
+		//	_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		//}
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		//vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_brown.bin")->Instantiate();
@@ -1392,11 +1393,11 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
 		finalRanking->GetTransform()->SetLocalPosition(Vec3(300.f, -300.f, 100.f));
 		finalRanking->_isRender = true;
-		finalRanking->AddComponent(make_shared<Button>());
+		finalRanking->AddComponent(make_shared<ReadyButton>());
 
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollRect(RECT{ 740, 610, 1040, 680 });
+		static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetCollRect(RECT{ 740, 610, 1040, 680 });
 		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start_click", L"..\\Resources\\Texture\\Lobby\\start_click.png");
-		static_pointer_cast<Button>(finalRanking->GetScript(0))->SetCollTexture(texture);
+		static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetCollTexture(texture);
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -1406,7 +1407,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
-			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+			static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);

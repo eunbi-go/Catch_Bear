@@ -324,7 +324,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		CheckPlayerType(1, key);
 		shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
 		vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
-		//vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
+
 		for (auto& gameObject : gameObjects2)
 		{
 			gameObject->SetName(L"Player2");
@@ -340,7 +340,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(1);
 			gameObject->_state = new IdleState();
-			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(L"Evilbear_blue");
+			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(1, gameObject);
 			scene->AddVecPlayers(gameObject);
@@ -354,7 +354,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//shared_ptr<CharacterData> CharacData3 = GET_SINGLE(Resources)->LoadCharacter(key);
 		//vector<shared_ptr<GameObject>>	gameObjects3 = CharacData3->Instantiate();
 
-		////vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_brown.bin")->Instantiate();
 		//for (auto& gameObject : gameObjects3)
 		//{
 		//	gameObject->SetName(L"Player3");
@@ -363,7 +362,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->AddComponent(make_shared<Player>());
 		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		// 	//gameObject->GetMeshRenderer()->GetMaterial()->SetTexture(0, GET_SINGLE(Resources)->Get<Texture>(L"Evilbear_brown.png"));
 		//	gameObject->SetStatic(false);
 		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
 		//	gameObject->SetBoundingBox(BoundingOrientedBox(
@@ -371,7 +369,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	gameObject->SetCheckFrustum(false);
 		//	gameObject->SetPlayerID(2);
 		//	gameObject->_state = new IdleState();
-		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
+		// 	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
 		//	scene->AddGameObject(gameObject);
 		//	scene->AddPlayers(2, gameObject);
 		//	scene->AddVecPlayers(gameObject);

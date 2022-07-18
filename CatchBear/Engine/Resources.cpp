@@ -924,6 +924,27 @@ void Resources::CreatePlayerTexture()
 		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_blue.png", tex);
 	}
 
+	// panda
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_panda.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_panda", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_panda.png", tex);
+	}
+
+	// white
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_white.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_white", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_white.png", tex);
+	}
+
+	// pink
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_pink.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_pink", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_pink.png", tex);
+	}
+
 	// stun
 	{
 		wstring		fullPath = L"..\\Resources\\Texture\\StunState.jpg";

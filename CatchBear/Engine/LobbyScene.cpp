@@ -7,6 +7,11 @@
 #include "SceneManager.h"
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
+#include "ReadyButton.h"
+#include "MeshRenderer.h"
+#include "Material.h"
+#include "Texture.h"
+#include "Resources.h"
 
 LobbyScene::LobbyScene()
 {
@@ -51,6 +56,7 @@ void LobbyScene::Update()
 	}
 
 	CheckIsPlayerEnter();
+	CheckIsPlayerReady();
 }
 
 void LobbyScene::LateUpdate()
@@ -81,6 +87,26 @@ void LobbyScene::CheckIsPlayerEnter()
 
 			playerInfo->_isRender = true;
 			startB->_isRender = true;
+		}
+	}
+}
+
+void LobbyScene::CheckIsPlayerReady()
+{
+	for (int i = 0; i < 3; ++i)
+	{
+		wstring objName = L"playerInfo" + s2ws(to_string(i + 1)) + L"_start";
+		shared_ptr<GameObject> playerInfo = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(objName);
+		shared_ptr<Texture> clickedTex = GET_SINGLE(Resources)->Get<Texture>(L"lobby_start_click");
+		shared_ptr<Texture> normalTex = GET_SINGLE(Resources)->Get<Texture>(L"lobby_start");
+
+		if (GET_SINGLE(SceneManager)->GetPlayerReady(i))
+		{
+			playerInfo->GetMeshRenderer()->GetMaterial()->SetTexture(0, clickedTex);
+		}
+		else
+		{
+			playerInfo->GetMeshRenderer()->GetMaterial()->SetTexture(0, normalTex);
 		}
 	}
 }

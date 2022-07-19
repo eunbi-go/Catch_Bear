@@ -17,8 +17,6 @@ void ShieldParticleManager::Init()
 
 void ShieldParticleManager::Update()
 {
-	if (!_shieldParticleOn) return;
-
 	if (_isCreate) CreateParticles();
 
 	else	// delay
@@ -31,15 +29,13 @@ void ShieldParticleManager::Update()
 		}
 	}
 
-}
-
-void ShieldParticleManager::LateUpdate()
-{
 	DeleteParticles();
 }
 
 void ShieldParticleManager::CreateParticles()
 {
+	if (!_shieldParticleOn) return;
+
 	for (int i = 0; i < 5; ++i)
 	{
 		vector<shared_ptr<GameObject>> particle = _shieldMesh->Instantiate();
@@ -73,6 +69,23 @@ void ShieldParticleManager::CreateParticles()
 
 void ShieldParticleManager::DeleteParticles()
 {
+	if (!_shieldParticleOn)
+	{
+		_isCreate = false;
+		_curTime = 0.f;
+		_shieldTime = 0.f;
+
+		for (auto p = _listParticles.begin(); p != _listParticles.end();)
+		{
+			//static_pointer_cast<ShieldParticle>((*p)->GetScript(0))->SetShieldEnd(true);
+			GET_SINGLE(SceneManager)->GetActiveScene()->RemoveGameObject(*p);
+			p = _listParticles.erase(p);
+		}
+
+		_listParticles.clear();
+	}
+
+	// Life Time 끝난 파티클 삭제
 	for (auto p = _listParticles.begin(); p != _listParticles.end();)
 	{
 		if (static_pointer_cast<ShieldParticle>((*p)->GetScript(0))->GetDead())
@@ -83,4 +96,22 @@ void ShieldParticleManager::DeleteParticles()
 
 		else p++;
 	}
+}
+
+void ShieldParticleManager::SetShieldParticleOff()
+{
+	_shieldParticleOn = false;
+
+	//_isCreate = false;
+	//_curTime = 0.f;
+	//_shieldTime = 0.f;
+
+	//for (auto p = _listParticles.begin(); p != _listParticles.end();)
+	//{
+	//	//static_pointer_cast<ShieldParticle>((*p)->GetScript(0))->SetShieldEnd(true);
+	//	GET_SINGLE(SceneManager)->GetActiveScene()->RemoveGameObject(*p);
+	//	p = _listParticles.erase(p);
+	//}
+
+	//_listParticles.clear();
 }

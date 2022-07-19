@@ -111,9 +111,22 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
 
 }
 
+// 폰트만 변경
 void FontDevice::UpdateFont(const wstring& wstrText)
 {
     _vTextBlocks[0] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+}
+
+// 엔터 누르면 개행
+void FontDevice::PushFont(const wstring& wstrText)
+{
+    TextBlock tb = { L" ", D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    tb.wstrText = wstrText;
+    _vTextBlocks.push_back(tb);
+
+    for (int i = 0; i < _vTextBlocks.size(); ++i)
+    {
+    }
 }
 
 void FontDevice::Render(UINT nFrame)

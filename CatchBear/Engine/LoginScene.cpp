@@ -27,7 +27,7 @@ void LoginScene::Awake()
 		gameObject->Awake();
 	}
 
-	//GET_SINGLE(SoundManager)->PlayBGM(L"logo.mp3");
+	GET_SINGLE(SoundManager)->PlayBGM(L"loginScene.wav");
 }
 
 void LoginScene::Start()

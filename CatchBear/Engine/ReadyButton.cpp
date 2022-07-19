@@ -35,6 +35,7 @@ void ReadyButton::LateUpdate()
 			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
 			{
 				_isReady = !_isReady;
+				//GET_SINGLE(SceneManager)->SetPlayerReady(mysession->GetPlayerID(), _isReady);
 
 				// Server
 				Protocol::C_LOBBY_STATE LobbyStatePkt;

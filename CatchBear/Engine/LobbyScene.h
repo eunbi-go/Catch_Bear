@@ -17,5 +17,7 @@ public:
 
 private:
 	void CheckIsPlayerEnter();
+	void CheckIsPlayerReady();
+
 };
 

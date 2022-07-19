@@ -924,10 +924,74 @@ void Resources::CreatePlayerTexture()
 		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_blue.png", tex);
 	}
 
+	// panda
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_panda.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_panda", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_panda.png", tex);
+	}
+
+	// white
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_white.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_white", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_white.png", tex);
+	}
+
+	// pink
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_pink.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_pink", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_pink.png", tex);
+	}
+
 	// stun
 	{
 		wstring		fullPath = L"..\\Resources\\Texture\\StunState.jpg";
 		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"StunState", fullPath);
 		GET_SINGLE(Resources)->Add<Texture>(L"StunState.jpg", tex);
+	}
+
+	// icons
+	// - gray
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\gray.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_gray.png", tex);
+	}
+
+	// - brown
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\brown.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_brown.png", tex);
+	}
+
+	// - blue
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\blue.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_blue.png", tex);
+	}
+
+	// - panda
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\panda.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_panda.png", tex);
+	}
+
+	// - white
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\white.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_white.png", tex);
+	}
+
+	// - pink
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\pink.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_pink.png", tex);
 	}
 }

@@ -52,7 +52,7 @@ private:
 	shared_ptr<Scene> LoadLoginScene();
 	shared_ptr<Scene> LoadLobbyScene();
 
-	void CheckPlayerType(int index, wstring& key);
+	void CheckPlayerType(int index, wstring& key, bool isIcon = false);
 
 
 private:

@@ -404,6 +404,7 @@ void Player::KeyCheck_Item()
 
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(0);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
@@ -413,6 +414,7 @@ void Player::KeyCheck_Item()
 
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(1);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
@@ -422,6 +424,7 @@ void Player::KeyCheck_Item()
 
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(2);
 	}
 

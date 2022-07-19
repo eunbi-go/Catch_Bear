@@ -4,7 +4,7 @@ class SoundManager
 	DECLARE_SINGLE(SoundManager);
 
 public:
-	enum CHANNELID { BGM, LOBBY, MOVE, MAXCHANNEL };
+	enum CHANNELID { BGM, LOBBY, MOVE, ITEM, MAXCHANNEL };
 
 public:
 	void Init();

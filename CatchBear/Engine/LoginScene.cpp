@@ -40,7 +40,7 @@ void LoginScene::Start()
 
 void LoginScene::Update()
 {
-	if (INPUT->GetButtonDown(KEY_TYPE::SPACE)) {
+	if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
 		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::LOBBY);
 		GEngine->_isIPAddrEnter = true;
 	}

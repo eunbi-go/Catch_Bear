@@ -1,5 +1,5 @@
 #pragma once
-
+class SceneManager;
 class Game
 {
 public:
@@ -13,6 +13,8 @@ public:
 	const wstring& GetFontString();
 	const bool isIPAddrEnter();
 	const bool isAllPlayerReady();
+
+	SCENE_ID GetCurSceneID();
 
 public:
 	bool	_isEnd = false;

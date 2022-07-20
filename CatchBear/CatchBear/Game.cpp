@@ -53,3 +53,8 @@ const bool Game::isAllPlayerReady()
 {
 	return GEngine->GetIsAllPlayerReady();
 }
+
+SCENE_ID Game::GetCurSceneID()
+{
+	return GET_SINGLE(SceneManager)->getSceneID();
+}

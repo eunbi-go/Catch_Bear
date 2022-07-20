@@ -145,8 +145,6 @@ void Player::KeyCheck()
 	if (INPUT->GetButtonDown(KEY_TYPE::ESC))
 		::PostQuitMessage(0);
 
-
-
 	if (mysession == NULL)
 		return;
 
@@ -448,8 +446,16 @@ void Player::UseItem(int itemNum)
 		_curPlayerItem[Player::ITEM::TELEPORT] = true;
 		break;
 	case Item::ITEM_EFFECT::SHIELD:
+	{
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
+		_shieldPlayerIdx = mysession->GetPlayerID();
+		// Server
+		Protocol::C_USE_SHIELD pkt;
+		pkt.set_playerid(mysession->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 		break;
+	}
 	case Item::ITEM_EFFECT::SPEED_DOWN:
 		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		Item_SpeedDown();
@@ -867,6 +873,10 @@ void Player::Stunned()
 
 void Player::ShieldEffect()
 {
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_Shield_Effect_player = scene->GetPlayer(_shieldPlayerIdx);
 	GET_SINGLE(ShieldParticleManager)->SetShieldParticleOn();
-	GET_SINGLE(ShieldParticleManager)->UpdatePlayerPos(GetTransform()->GetLocalPosition());
+
+	GET_SINGLE(ShieldParticleManager)->UpdatePlayerPos(_Shield_Effect_player->GetTransform()->GetLocalPosition());
 }

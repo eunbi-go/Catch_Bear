@@ -93,7 +93,7 @@ void LobbyScene::CheckIsPlayerEnter()
 
 void LobbyScene::CheckIsPlayerReady()
 {
-	for (int i = 0; i < 3; ++i)
+	for (int i = 0; i < GEngine->GetPlayerNum(); ++i)
 	{
 		wstring objName = L"playerInfo" + s2ws(to_string(i + 1)) + L"_start";
 		shared_ptr<GameObject> playerInfo = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(objName);

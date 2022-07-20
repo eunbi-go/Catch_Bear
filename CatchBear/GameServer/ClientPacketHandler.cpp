@@ -332,3 +332,13 @@ bool Handle_C_STUNEND(PacketSessionRef& session, Protocol::C_STUNEND& pkt)
 	GInGame.Broadcast(sendBuffer);
 	return true;
 }
+
+bool Handle_C_USE_SHIELD(PacketSessionRef& session, Protocol::C_USE_SHIELD& pkt)
+{
+	Protocol::S_USE_SHIELD UseShieldPkt;
+	UseShieldPkt.set_playerid(pkt.playerid());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(UseShieldPkt);
+	GInGame.Broadcast(sendBuffer);
+	return true;
+}

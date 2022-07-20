@@ -35,9 +35,9 @@ void ScoreManager::AddScore()
 
 	if (_scoreTime >= 1.f)
 	{
-		// player1
-		shared_ptr<GameObject>	player1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player1");
-		GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(0, static_pointer_cast<Player>(player1->GetScript(0))->GetPlayerScore());
+		//// player1
+		//shared_ptr<GameObject>	player1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player1");
+		//GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(0, static_pointer_cast<Player>(player1->GetScript(0))->GetPlayerScore());
 
 		//// player2
 		//shared_ptr<GameObject>	player2 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"Player2");

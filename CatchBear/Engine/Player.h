@@ -57,7 +57,9 @@ public:
 	const int GetItemCount() { return _iItemCnt; }
 	const wstring& GetTextureKey() { return _textureKey; }
 	const int GetPlayerID() { return _player->GetPlayerID(); }
-	
+
+	void SetShieldEffectPlayerIndex(int _idx) { _shieldPlayerIdx = _idx; }
+
 private:
 	void KeyCheck();
 	void Move();
@@ -107,6 +109,7 @@ private:
 	wstring _textureKey;
 
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
+	shared_ptr<GameObject>		_Shield_Effect_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();
 	shared_ptr<CameraScript>	_cameraScript = make_shared<CameraScript>();
 	//shared_ptr<ShieldParticle>	_shieldParticle = make_shared<ShieldParticle>();
@@ -125,6 +128,7 @@ public:
 	float	_testTime = 0.f;
 	bool	_isFont = false;
 	wstring _wstrText = L"";
+	int		_shieldPlayerIdx = 0;
 
 	DIR		_dir = DIR::DIR_END;
 };

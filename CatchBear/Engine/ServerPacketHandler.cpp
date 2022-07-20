@@ -544,6 +544,24 @@ bool Handle_S_STUNEND(PacketSessionRef& session, Protocol::S_STUNEND& pkt)
 	return true;
 }
 
+bool Handle_S_USE_SHIELD(PacketSessionRef& session, Protocol::S_USE_SHIELD& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player = scene->GetPlayer(pkt.playerid());
+
+	if (_player == nullptr)
+		return true;
+	if (mysession->GetPlayerID() == pkt.playerid())
+		return true;
+	
+	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, true);
+	static_pointer_cast<Player>(_player->GetScript(0))->SetShieldEffectPlayerIndex((int)pkt.playerid());
+	//static_pointer_cast<Player>(_player->GetScript(0))->Server_Item_Shield();
+	return true;
+}
+
 
 
 

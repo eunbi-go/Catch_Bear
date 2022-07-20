@@ -170,3 +170,13 @@ message S_STUNEND
 {
 	uint64 playerid = 1;
 }
+
+message C_USE_SHIELD
+{
+	uint64 playerid = 1;
+}
+
+message S_USE_SHIELD
+{
+	uint64 playerid = 1;
+}

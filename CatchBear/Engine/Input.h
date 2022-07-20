@@ -20,6 +20,7 @@ enum class KEY_TYPE
 	TEST_KEY = 'T',
 	P = 'P',
 	I = 'I',
+	J = 'J',	// reset testkey
 
 	NUM1 = '1',
 	NUM2 = '2',

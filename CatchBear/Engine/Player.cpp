@@ -114,14 +114,14 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 
 void Player::Reset()
 {
-	// 플레이어 위치 - 서버에서 ?
-	// 근데 플레이어 위치 다시하기 한다고 굳이 초기화 안해도 될듯 ?
-
-
 	// 플레이어 보유 아이템
 	_playerItemArr[0] = Item::ITEM_EFFECT::NONE;
 	_playerItemArr[1] = Item::ITEM_EFFECT::NONE;
 	_playerItemArr[2] = Item::ITEM_EFFECT::NONE;
+
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(1);
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(2);
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(3);
 
 	// 플레이어 적용중인 버프,디버프 아이템 초기화
 	_curPlayerItem = { false, };
@@ -134,7 +134,7 @@ void Player::Reset()
 
 	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
 	_speed = 10.f;
-	_bStunned = false;
+	//_bStunned = false;	// 이동 오류땜에 일단 꺼둠
 	_fShieldTime = 0.f;
 	_fBlindTime = 0.f;
 }
@@ -688,9 +688,9 @@ void Player::KeyCheck_Cheat()
 		cout << endl;
 	}
 
-	// 시간 늘리기 치트키
-	if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
-		GET_SINGLE(SceneManager)->ReStart();
+	//// 시간 늘리기 치트키
+	//if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
+	//	GET_SINGLE(SceneManager)->ReStart();
 }
 
 void Player::Item_SpeedUp()

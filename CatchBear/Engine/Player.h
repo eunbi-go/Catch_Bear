@@ -109,7 +109,6 @@ private:
 	shared_ptr<GameObject>		_player = make_shared<GameObject>();
 	shared_ptr<GameObject>		_camera = make_shared<GameObject>();
 	shared_ptr<CameraScript>	_cameraScript = make_shared<CameraScript>();
-	//shared_ptr<ShieldParticle>	_shieldParticle = make_shared<ShieldParticle>();
 	shared_ptr<GameObject>		_shieldParticle = make_shared<GameObject>();
 
 	array<bool, Player::ITEM::ITEM_END> _curPlayerItem;	// 플레이어가 사용중인or당하는중인 아이템 확인하기 위한 배열

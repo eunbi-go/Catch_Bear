@@ -17,15 +17,17 @@ public:
 public:
 	void SetStartPos(Vec3 pos) { _startPos = pos; }
 	void SetPlayerDis(float disX, float disZ) { _disX = disX; _disZ = disZ; }
+	void SetShieldEnd(bool value) { _isShieldEnd = value; }
 	void UpdatePlayerPos(Vec3 playerPos) { _playerPos = playerPos; }
 
 private:
 	Vec3	_startPos;
 	Vec3	_playerPos;
 	float	_speed;
-	float	_lifeTime = 2.f;
+	float	_lifeTime = 0.f;
 	float	_curTime = 0.f;
 	bool	_isDead = false;
+	bool	_isShieldEnd = false;
 
 	float	_disX;
 	float	_disZ;

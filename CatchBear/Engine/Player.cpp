@@ -463,8 +463,8 @@ void Player::UseItem(int itemNum)
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		//Item_Stun();
+		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		Item_Stun();
 		break;
 	}
 }
@@ -488,8 +488,8 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	//if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
-	//	Item_DebuffOff();
+	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
+		Item_DebuffOff();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
@@ -505,18 +505,18 @@ void Player::ClearDebuff()
 {
 	// 디버프 해제와 쉴드에 사용됨
 
-	//// SPEED_DOWN 해제
-	//if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
-	//{
-	//	_state->End(*_player);
-	//	delete _state;
-	//	_state = new IdleState;
-	//	_state->Enter(*_player);
+	// SPEED_DOWN 해제
+	if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = new IdleState;
+		_state->Enter(*_player);
 
-	//	_speed = 10.f;
-	//	_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
-	//	cout << "SpeedDown 해제" << endl;
-	//}
+		_speed = 10.f;
+		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
+		cout << "SpeedDown 해제" << endl;
+	}
 
 	// BLIND 해제
 	if (_curPlayerItem[Player::ITEM::BLIND])
@@ -557,6 +557,7 @@ bool Player::CheckShield()
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		_fShieldTime = 0.f;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();	// 쉴드 파티클 효과 해제
 		return true;
 	}
 

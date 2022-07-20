@@ -12,7 +12,7 @@
 
 void ShieldParticleManager::Init()
 {
-	_shieldMesh = GET_SINGLE(Resources)->LoadFBX(L"present1.bin");
+	_shieldMesh = GET_SINGLE(Resources)->LoadFBX(L"Gem1Blue.bin");
 }
 
 void ShieldParticleManager::Update()
@@ -53,7 +53,7 @@ void ShieldParticleManager::CreateParticles()
 			gameObject->SetCheckFrustum(false);
 			gameObject->GetTransform()->SetLocalPosition(pos);
 			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 0.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.002f, 0.002f, 0.002f));
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->AddComponent(make_shared<ShieldParticle>());
 			static_pointer_cast<ShieldParticle>(gameObject->GetScript(0))->SetStartPos(pos);

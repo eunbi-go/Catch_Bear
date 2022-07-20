@@ -260,7 +260,8 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
         }
         else if (wparam == VK_RETURN)
         {
-
+            game->UpdateFont(strText);
+            memset(strText, 0, 255);
         }
         else
         {

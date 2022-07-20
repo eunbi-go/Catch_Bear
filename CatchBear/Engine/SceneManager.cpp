@@ -375,7 +375,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	scene->AddVecPlayers(gameObject);
 		// _isPlayersEnterLobby[0] = false;
 		// _isPlayersReady[0] = false;
-		// _playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		// //_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		//}
 	}
 #pragma endregion

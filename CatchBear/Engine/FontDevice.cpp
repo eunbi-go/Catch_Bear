@@ -8,7 +8,6 @@ FontDevice::FontDevice(UINT nFrame)
 	_fWidth = 0.f;
 	_vWrappedRenderTargets.resize(nFrame);
 	_vd2dRenderTargets.resize(nFrame);
-	_vTextBlocks.resize(1);
 }
 
 void FontDevice::Initialize(ComPtr<ID3D12Device> pd3dDevice, ComPtr<ID3D12CommandQueue> pd3dCommandQueue)
@@ -107,26 +106,33 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
     _pdwTextFormat->SetTextAlignment(DWRITE_TEXT_ALIGNMENT_LEADING);
     _pdwTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
-    _vTextBlocks[0] = { L" ", D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    // 위치 지정
+    _textPos[0] = { D2D1::RectF(100, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f) };
+    _textPos[1] = { D2D1::RectF(100, _fHeight / 2 + 100.f, _fWidth / 2 + 500.f, _fHeight / 2 + 330.f) };
+    _textPos[2] = { D2D1::RectF(100, _fHeight / 2 + 130.f, _fWidth / 2 + 500.f, _fHeight / 2 + 360.f) };
+    _textPos[3] = { D2D1::RectF(100, _fHeight / 2 + 160.f, _fWidth / 2 + 500.f, _fHeight / 2 + 390.f) };
 
 }
 
 // 폰트만 변경
 void FontDevice::UpdateFont(const wstring& wstrText)
 {
-    _vTextBlocks[0] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    if (_vTextBlocks.size() == 0)
+    {
+        TextBlock tb;
+        _vTextBlocks.push_back(tb);
+    }
+    _vTextBlocks[_vTextBlocks.size() - 1] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
 }
 
 // 엔터 누르면 개행
 void FontDevice::PushFont(const wstring& wstrText)
 {
-    TextBlock tb = { L" ", D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
-    tb.wstrText = wstrText;
-    _vTextBlocks.push_back(tb);
+    if (_vTextBlocks.size() >= 4)
+        _vTextBlocks.pop_front();
 
-    for (int i = 0; i < _vTextBlocks.size(); ++i)
-    {
-    }
+    TextBlock tb = { L" ", D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    _vTextBlocks.push_back(tb);
 }
 
 void FontDevice::Render(UINT nFrame)
@@ -137,12 +143,19 @@ void FontDevice::Render(UINT nFrame)
     _pd3d11On12Device->AcquireWrappedResources(ppResources, _countof(ppResources));
 
     _pd2dDeviceContext->BeginDraw();
-    for (auto textBlock : _vTextBlocks)
+    
+    if (_vTextBlocks.size())
     {
-        _pd2dDeviceContext->DrawText(textBlock.wstrText.c_str(), static_cast<UINT>(textBlock.wstrText.length()),
-            
-            textBlock.pdwFormat, textBlock.d2dLayoutRect, _pd2dTextBrush);
+        for (int i = 0; i < _vTextBlocks.size(); ++i)
+        {
+            if (_vTextBlocks[i].wstrText != L"")
+            {
+                _pd2dDeviceContext->DrawText(_vTextBlocks[i].wstrText.c_str(), static_cast<UINT>(_vTextBlocks[i].wstrText.length()),
+                    _vTextBlocks[i].pdwFormat, _textPos[i], _pd2dTextBrush);
+            }
+        }
     }
+
     _pd2dDeviceContext->EndDraw();
 
     _pd3d11On12Device->ReleaseWrappedResources(ppResources, _countof(ppResources));

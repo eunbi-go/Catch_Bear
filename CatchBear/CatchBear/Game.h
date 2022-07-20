@@ -9,6 +9,7 @@ public:
 	void LobbySceneUpdate();
 
 	void setString(const char* strText);
+	void UpdateFont(const char* strText);
 	const wstring& GetFontString();
 	const bool isIPAddrEnter();
 	const bool isAllPlayerReady();

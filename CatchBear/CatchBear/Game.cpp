@@ -29,9 +29,14 @@ void Game::LobbySceneUpdate()
 
 void Game::setString(const char* strText)
 {
-	//cout << strText << endl;
 	wstring wstrText = s2ws(strText);
 	GEngine->GetFontDevice()->UpdateFont(wstrText);
+}
+
+void Game::UpdateFont(const char* strText)
+{
+	wstring wstrText = s2ws(strText);
+	GEngine->GetFontDevice()->PushFont(wstrText);
 }
 
 const wstring& Game::GetFontString()

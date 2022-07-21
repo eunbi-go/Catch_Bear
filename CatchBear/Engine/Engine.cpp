@@ -74,10 +74,13 @@ void Engine::Update()
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(InstancingManager)->ClearBuffer();
 
-		//GET_SINGLE(ItemManager)->Update();
-		//GET_SINGLE(ScoreManager)->Update();
-		//GET_SINGLE(CollidManager)->Update();
+		GET_SINGLE(ItemManager)->Update();
+		GET_SINGLE(ScoreManager)->Update();
+		GET_SINGLE(CollidManager)->Update();
 		GET_SINGLE(ShieldParticleManager)->Update();
+
+		if (INPUT->GetButtonDown(KEY_TYPE::J))	// ReStart Test
+			GET_SINGLE(SceneManager)->ReStart();
 
 		Render();
 

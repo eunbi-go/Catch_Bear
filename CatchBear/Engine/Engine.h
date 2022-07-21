@@ -82,5 +82,6 @@ public:
 
 	int		PLAYER_NUM = 3;	// 몇인용인지
 
+	
 };
 

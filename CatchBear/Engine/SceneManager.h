@@ -59,8 +59,6 @@ private:
 	void LoadMapFile(shared_ptr<Scene> scene);
 	void AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<class GameObject>> gameObj, wstring name, Vec3 trans, Vec3 scale, Vec3 rotate);
 
-	
-
 private:
 	shared_ptr<Scene> _activeScene;
 
@@ -73,6 +71,8 @@ private:
 
 	map<int, bool> _isPlayersEnterLobby;			// 플레이어가 로비씬에 들어왔는가
 	map<int, bool> _isPlayersReady;					// 플레이어가 레디를 했는가
+
+	
 };
 
 

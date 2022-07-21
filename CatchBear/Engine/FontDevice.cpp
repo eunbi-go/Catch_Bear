@@ -161,3 +161,13 @@ void FontDevice::Render(UINT nFrame)
     _pd3d11On12Device->ReleaseWrappedResources(ppResources, _countof(ppResources));
     _pd3d11DeviceContext->Flush();
 }
+
+void FontDevice::InitFont()
+{
+    int size = _vTextBlocks.size();
+    if (size)
+    {
+        for (int i = 0; i < size; ++i)
+            _vTextBlocks[i].wstrText = L"";
+    }
+}

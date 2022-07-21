@@ -24,7 +24,8 @@ void Game::LoginSceneUpdate()
 
 void Game::LobbySceneUpdate()
 {
-	GEngine->LoginSceneUpdate();
+	//GEngine->LoginSceneUpdate();
+	GEngine->LobbySceneUpdate();
 }
 
 void Game::setString(const char* strText)

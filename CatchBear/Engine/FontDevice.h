@@ -23,6 +23,7 @@ public:
 	const wstring& GetFontString() { return _vTextBlocks.at(0).wstrText; }
 
 	void Render(UINT nFrame);
+	void InitFont();
 
 private:
 	UINT GetRenderTargetsCount() { return static_cast<UINT>(_vWrappedRenderTargets.size()); }

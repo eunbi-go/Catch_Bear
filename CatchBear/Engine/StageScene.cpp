@@ -31,8 +31,8 @@ StageScene::~StageScene()
 
 void StageScene::Awake()
 {
-	GET_SINGLE(SoundManager)->StopAll();
-	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
+	/*GET_SINGLE(SoundManager)->StopAll();
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");*/
 }
 
 void StageScene::Start()

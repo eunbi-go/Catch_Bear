@@ -52,7 +52,7 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
 	GET_SINGLE(ShieldParticleManager)->Init();
-	GET_SINGLE(SoundManager)->Init();
+	//GET_SINGLE(SoundManager)->Init();
 
 	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
 	_fontDevice->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);

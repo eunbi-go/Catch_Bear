@@ -1203,7 +1203,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<GameObject> light = make_shared<GameObject>();
 		light->AddComponent(make_shared<Transform>());
-		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
+		light->GetTransform()->SetLocalPosition(Vec3(0, 100, 0));
 		light->AddComponent(make_shared<Light>());
 		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
 		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
@@ -1213,44 +1213,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(light);
 	}
 #pragma endregion
-
-	//
-//#pragma region Point Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(0.f, 100.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		//light->GetLight()->SetLightDirection(Vec3(-1.f, -1.f, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::POINT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.5f, 0.0f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetLightRange(200.f);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
-//#pragma region Spot Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(75.f, 0.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		light->GetLight()->SetLightDirection(Vec3(-1.f, 0, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::SPOT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.f, 0.5f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetLightRange(200.f);
-//		light->GetLight()->SetLightAngle(3.14f / 2);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
-
 
 	return scene;
 }

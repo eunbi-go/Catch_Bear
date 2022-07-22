@@ -20,6 +20,7 @@
 #include "ItemSlotUI.h"
 #include "ItemWindow.h"
 #include "PlayerState.h"
+#include "SceneManager.h"
 
 StageScene::StageScene()
 {
@@ -33,6 +34,7 @@ void StageScene::Awake()
 {
 	/*GET_SINGLE(SoundManager)->StopAll();
 	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");*/
+
 }
 
 void StageScene::Start()
@@ -265,10 +267,15 @@ void StageScene::CheckMouse()
 		{
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"restart", L"..\\Resources\\Texture\\restart.png");
 			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+
+			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
+			{
+				GET_SINGLE(SceneManager)->ReStart();
+			}
 		}
 		else
 		{
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\ranking.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"rankingImage");
 			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 		}
 	}

@@ -12,6 +12,7 @@
 #include "Material.h"
 #include "Texture.h"
 #include "Resources.h"
+#include "FontDevice.h"
 
 LobbyScene::LobbyScene()
 {
@@ -25,6 +26,7 @@ void LobbyScene::Awake()
 {
 	/*GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
 	GET_SINGLE(SoundManager)->PlayBGM(L"lobbyScene.wav");*/
+
 }
 
 void LobbyScene::Start()
@@ -37,22 +39,10 @@ void LobbyScene::Start()
 
 void LobbyScene::Update()
 {
-	//GEngine->_isIPAddrEnter = true;
-	// 이 부분 모든 플레이어가 준비되면 넘어가게 바꿀게요~ (서버)
-	if (INPUT->GetButtonDown(KEY_TYPE::ENTER)) {
-		Protocol::C_ENTER_LOBBY enterLobbyPkt;
-		enterLobbyPkt.set_playerid(mysession->GetPlayerID());
-		enterLobbyPkt.set_playernum(GEngine->GetPlayerNum());
-		enterLobbyPkt.set_isplayerready(true);
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
-		mysession->Send(sendBuffer);
-
-		Protocol::C_LOBBY_STATE LobbyStatePkt;
-		LobbyStatePkt.set_isready(true);
-		LobbyStatePkt.set_playerid(mysession->GetPlayerID());
-		sendBuffer = ServerPacketHandler::MakeSendBuffer(LobbyStatePkt);
-		mysession->Send(sendBuffer);
-		//GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
+	if (!_isInitFont)
+	{
+		_isInitFont = true;
+		GEngine->GetFontDevice()->InitFont();
 	}
 
 	CheckIsPlayerEnter();

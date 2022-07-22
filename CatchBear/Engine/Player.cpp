@@ -134,7 +134,7 @@ void Player::Reset()
 
 	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
 	_speed = 10.f;
-	//_bStunned = false;	// 이동 오류땜에 일단 꺼둠
+	_bStunned = false;	// 이동 오류땜에 일단 꺼둠
 	_fShieldTime = 0.f;
 	_fBlindTime = 0.f;
 }
@@ -274,14 +274,14 @@ void Player::Move()
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
-	// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
-	if (isFirstEnter) {
-		Item_Stun();
-		isFirstEnter = false;
+	//// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
+	//if (isFirstEnter) {
+	//	Item_Stun();
+	//	isFirstEnter = false;
 
-		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
-			scene->_FinalPlayerEnter = true;
-	}
+	//	if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+	//		scene->_FinalPlayerEnter = true;
+	//}
 
 	for (auto& gameObject : gameObjects)
 	{
@@ -425,9 +425,6 @@ void Player::KeyCheck_Item()
 		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(2);
 	}
-
-	//if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
-	//	SlowDown();
 }
 
 void Player::UseItem(int itemNum)
@@ -542,18 +539,18 @@ void Player::ClearDebuff()
 		cout << "Blind 해제" << endl;
 	}
 
-	//// STUN 해제
-	//if (_curPlayerItem[Player::ITEM::STUN])
-	//{
-	//	_state->End(*_player);
-	//	delete _state;
-	//	_state = new IdleState;
-	//	_state->Enter(*_player);
+	// STUN 해제
+	if (_curPlayerItem[Player::ITEM::STUN])
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = new IdleState;
+		_state->Enter(*_player);
 
-	//	_curPlayerItem[Player::ITEM::STUN] = false;
-	//	_bStunned = false;
-	//	cout << "Stun 해제" << endl;
-	//}
+		_curPlayerItem[Player::ITEM::STUN] = false;
+		_bStunned = false;
+		cout << "Stun 해제" << endl;
+	}
 }
 
 bool Player::CheckShield()
@@ -693,10 +690,6 @@ void Player::KeyCheck_Cheat()
 		cout << "Stun: " << _curPlayerItem[ITEM::STUN] << endl;
 		cout << endl;
 	}
-
-	//// 시간 늘리기 치트키
-	//if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
-	//	GET_SINGLE(SceneManager)->ReStart();
 }
 
 void Player::Item_SpeedUp()
@@ -731,7 +724,6 @@ void Player::Item_Shield()
 	// 쉴드 상태라면 디버프 방어, 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
 
 	_fShieldTime += DELTA_TIME;
-
 
 	// Shield Item
 	if (_fShieldTime <= 5.f)

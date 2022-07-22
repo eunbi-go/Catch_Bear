@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <fstream>
 #include <random>
+#include <deque>
 using namespace std;
 
 #include <filesystem>

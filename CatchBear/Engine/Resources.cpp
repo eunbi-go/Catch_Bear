@@ -9,6 +9,7 @@ void Resources::Init()
 	CreateDefaultShader();
 	CreateDefaultMaterial();
 	CreatePlayerTexture();
+	CreateNumberTexture();
 }
 
 shared_ptr<Mesh> Resources::LoadPointMesh()
@@ -994,4 +995,71 @@ void Resources::CreatePlayerTexture()
 		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink", fullPath);
 		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_pink.png", tex);
 	}
+}
+
+void Resources::CreateNumberTexture()
+{
+#pragma region score
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score0.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score0", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score0.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score1.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score1", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score1.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score2.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score2", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score2.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score3.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score3", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score3.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score4.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score4", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score4.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score5.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score5", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score5.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score6.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score6", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score6.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score7.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score7", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score7.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score8.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score8", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score8.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score9.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score9", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score9.png", tex);
+	}
+
+#pragma endregion
 }

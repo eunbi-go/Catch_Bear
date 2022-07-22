@@ -18,7 +18,7 @@ public:
 	enum ITEM
 	{
 		SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-		DEBUFF_OFF, STUN, ITEM_END, NONE,
+		DEBUFF_OFF, STUN, ITEM_END, NONE,	// DEBUFF_OFF -> SILENCE
 	};
 
 	//장애물 극복 방향을 위해 만듬
@@ -79,11 +79,13 @@ private:
 	void Item_Blind();
 	void Item_DebuffOff();
 	void Item_Stun();
+	void Item_Silence();
 
 	// 디버프 아이템 효과 겪는 함수
 	void SlowDown();
 	void Blinded();
 	void Stunned();
+	void Silence();
 
 	// 아이템 이펙트
 	void ShieldEffect();
@@ -100,6 +102,7 @@ private:
 
 	float	_fShieldTime = 0.f;
 	float	_fBlindTime = 0.f;
+	float	_fSilenceTime = 0.f;
 
 	int		_iScore = 0;
 	int		_iItemCnt = 0;

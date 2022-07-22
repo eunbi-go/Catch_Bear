@@ -204,6 +204,7 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //
 //
 HIMC m_hIMC = NULL;
+bool isFirstEnter = true;
 
 int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 {
@@ -260,7 +261,12 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
         }
         else if (wparam == VK_RETURN)
         {
-            if (game->GetCurSceneID() == SCENE_ID::LOBBY)
+            if (isFirstEnter)
+            {
+                isFirstEnter = false;
+                memset(strText, 0, 255);
+            }
+            else
             {
                 game->UpdateFont(strText);
                 memset(strText, 0, 255);

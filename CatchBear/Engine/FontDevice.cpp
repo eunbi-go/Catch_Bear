@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "FontDevice.h"
 #include "Engine.h"
+#include "SceneManager.h"
 
 FontDevice::FontDevice(UINT nFrame)
 {
@@ -107,32 +108,50 @@ void FontDevice::Resize(UINT nWidth, UINT nHeight)
     _pdwTextFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR);
 
     // 위치 지정
-    _textPos[0] = { D2D1::RectF(100, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f) };
-    _textPos[1] = { D2D1::RectF(100, _fHeight / 2 + 100.f, _fWidth / 2 + 500.f, _fHeight / 2 + 330.f) };
-    _textPos[2] = { D2D1::RectF(100, _fHeight / 2 + 130.f, _fWidth / 2 + 500.f, _fHeight / 2 + 360.f) };
-    _textPos[3] = { D2D1::RectF(100, _fHeight / 2 + 160.f, _fWidth / 2 + 500.f, _fHeight / 2 + 390.f) };
+    _textPos[0] = { D2D1::RectF(100, _fHeight / 2 + 70.f, 
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 300.f) };
 
+    _textPos[1] = { D2D1::RectF(100, _fHeight / 2 + 120.f, 
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 350.f) };
+
+    _textPos[2] = { D2D1::RectF(100, _fHeight / 2 + 170.f, 
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 400.f) };
+
+    _textPos[3] = { D2D1::RectF(100, _fHeight / 2 + 220.f, 
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 450.f) };
+
+    _textPos[4] = { D2D1::RectF(100, _fHeight / 2 + 270.f, 
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 500.f) };
+
+    _writingStrPos = { D2D1::RectF(100, _fHeight / 2 + 320.f,
+                                _fWidth / 2 + 500.f, _fHeight / 2 + 550.f) };
 }
 
 // 폰트만 변경
 void FontDevice::UpdateFont(const wstring& wstrText)
 {
-    if (_vTextBlocks.size() == 0)
+    if (_vTextBlocks.size() == 0 && GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
     {
         TextBlock tb;
         _vTextBlocks.push_back(tb); 
     }
-    _vTextBlocks[_vTextBlocks.size() - 1] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+
+    if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
+        _vTextBlocks[_vTextBlocks.size() - 1] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    else if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOBBY)
+        _writingStr = wstrText;
 }
 
 // 엔터 누르면 개행
 void FontDevice::PushFont(const wstring& wstrText)
 {
-    if (_vTextBlocks.size() >= 4)
+    if (_vTextBlocks.size() >= 5)
         _vTextBlocks.pop_front();
 
-    TextBlock tb = { L" ", D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    TextBlock tb = { _writingStr, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
     _vTextBlocks.push_back(tb);
+
+    _writingStr = L"";
 }
 
 void FontDevice::Render(UINT nFrame)
@@ -146,16 +165,32 @@ void FontDevice::Render(UINT nFrame)
     
     if (_vTextBlocks.size())
     {
-        for (int i = 0; i < _vTextBlocks.size(); ++i)
-        {
-            if (_vTextBlocks[i].wstrText != L"")
-            {
-                _pd2dDeviceContext->DrawText(_vTextBlocks[i].wstrText.c_str(), static_cast<UINT>(_vTextBlocks[i].wstrText.length()),
-                    _vTextBlocks[i].pdwFormat, _textPos[i], _pd2dTextBrush);
-            }
-        }
-    }
 
+		for (int i = 0; i < _vTextBlocks.size(); ++i)
+		{
+			if (_vTextBlocks[i].wstrText != L"")
+			{
+				if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
+				{
+					_pd2dDeviceContext->DrawText(_vTextBlocks[i].wstrText.c_str(), static_cast<UINT>(_vTextBlocks[i].wstrText.length()),
+						_vTextBlocks[i].pdwFormat, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pd2dTextBrush);
+				}
+				else
+				{
+					_pd2dDeviceContext->DrawText(_vTextBlocks[i].wstrText.c_str(), static_cast<UINT>(_vTextBlocks[i].wstrText.length()),
+						_vTextBlocks[i].pdwFormat, _textPos[i], _pd2dTextBrush);
+				}
+			}
+		}
+
+
+
+    }
+    if (_writingStr != L"" && GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOBBY)
+    {
+        _pd2dDeviceContext->DrawText(_writingStr.c_str(), static_cast<UINT>(_writingStr.length()),
+            _pdwTextFormat, _writingStrPos, _pd2dTextBrush);
+    }
     _pd2dDeviceContext->EndDraw();
 
     _pd3d11On12Device->ReleaseWrappedResources(ppResources, _countof(ppResources));
@@ -164,10 +199,12 @@ void FontDevice::Render(UINT nFrame)
 
 void FontDevice::InitFont()
 {
+    _vTextBlocks.resize(0);
     int size = _vTextBlocks.size();
     if (size)
     {
         for (int i = 0; i < size; ++i)
             _vTextBlocks[i].wstrText = L"";
     }
+    _writingStr = L"";
 }

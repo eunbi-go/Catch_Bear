@@ -20,6 +20,7 @@
 #include "ItemSlotUI.h"
 #include "ItemWindow.h"
 #include "PlayerState.h"
+#include "SceneManager.h"
 
 StageScene::StageScene()
 {
@@ -265,6 +266,11 @@ void StageScene::CheckMouse()
 		{
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"restart", L"..\\Resources\\Texture\\restart.png");
 			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
+
+			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
+			{
+				GET_SINGLE(SceneManager)->ReStart();
+			}
 		}
 		else
 		{

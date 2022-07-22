@@ -19,5 +19,8 @@ private:
 	void CheckIsPlayerEnter();
 	void CheckIsPlayerReady();
 
+private:
+	bool	_isInitFont = false;
+
 };
 

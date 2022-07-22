@@ -375,7 +375,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		//	scene->AddVecPlayers(gameObject);
 		// _isPlayersEnterLobby[0] = false;
 		// _isPlayersReady[0] = false;
-		// _playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		// //_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		//}
 	}
 #pragma endregion
@@ -801,7 +801,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\ranking.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"rankingImage", L"..\\Resources\\Texture\\ranking.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -1256,7 +1256,7 @@ shared_ptr<Scene> SceneManager::LoadLoginScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\Login.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"login_background", L"..\\Resources\\Texture\\Login.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -1407,7 +1407,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_blue");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 250.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 230.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1443,7 +1443,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_brown");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 250.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 230.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1480,7 +1480,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_gray");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 250.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 230.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1517,7 +1517,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_panda");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 50.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 30.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1553,7 +1553,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerIcon_pink");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 50.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 30.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1591,7 +1591,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
 		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 50.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 30.f, 100.f));
 		finalRanking->_isRender = true;
 		finalRanking->AddComponent(make_shared<PlayerIcon>());
 
@@ -1627,9 +1627,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerInfo1");
 		finalRanking->AddComponent(make_shared<Transform>());
-		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, 280.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 280.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1659,8 +1658,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerInfo1_start");
 		finalRanking->AddComponent(make_shared<Transform>());
-		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, 280.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(303.f, 100.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 280.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1693,8 +1692,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerInfo2");
 		finalRanking->AddComponent(make_shared<Transform>());
 		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, 0.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 140.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1725,7 +1724,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerInfo2_start");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, 0.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 140.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1757,8 +1756,8 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		finalRanking->SetName(L"playerInfo3");
 		finalRanking->AddComponent(make_shared<Transform>());
-		finalRanking->GetTransform()->SetLocalScale(Vec3(150.f, 170.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-450.f, -280.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 0.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1789,7 +1788,7 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 		finalRanking->SetName(L"playerInfo3_start");
 		finalRanking->AddComponent(make_shared<Transform>());
 		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
-		finalRanking->GetTransform()->SetLocalPosition(Vec3(-200.f, -280.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 0.f, 100.f));
 		finalRanking->_isRender = false;
 		finalRanking->AddComponent(make_shared<Button>());
 
@@ -1802,6 +1801,39 @@ shared_ptr<Scene> SceneManager::LoadLobbyScene()
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
 			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
 			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
+
+
+#pragma region chat
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"chat");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(550.f, 300.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-270.f, -230.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"chatting", L"..\\Resources\\Texture\\Lobby\\chat.png");
 
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);

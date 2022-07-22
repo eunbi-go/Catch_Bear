@@ -31,8 +31,8 @@ StageScene::~StageScene()
 
 void StageScene::Awake()
 {
-	GET_SINGLE(SoundManager)->StopAll();
-	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
+	//GET_SINGLE(SoundManager)->StopAll();
+	//GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 }
 
 void StageScene::Start()
@@ -268,7 +268,7 @@ void StageScene::CheckMouse()
 		}
 		else
 		{
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\ranking.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"rankingImage");
 			finalWnd->GetMeshRenderer()->GetMaterial()->SetTexture(0, texture);
 		}
 	}

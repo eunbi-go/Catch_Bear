@@ -5,6 +5,7 @@ struct TextBlock
 	wstring		wstrText;
 	D2D1_RECT_F	d2dLayoutRect;
 	IDWriteTextFormat* pdwFormat;
+	Vec2	position;
 };
 
 class FontDevice : public GameObject
@@ -22,6 +23,7 @@ public:
 	const wstring& GetFontString() { return _vTextBlocks[0].wstrText; }
 
 	void Render(UINT nFrame);
+	void InitFont();
 
 private:
 	UINT GetRenderTargetsCount() { return static_cast<UINT>(_vWrappedRenderTargets.size()); }
@@ -41,5 +43,9 @@ private:
 
 	vector<ID3D11Resource*>	_vWrappedRenderTargets;
 	vector<ID2D1Bitmap1*>	_vd2dRenderTargets;
-	vector<TextBlock>					_vTextBlocks;
+	deque<TextBlock>					_vTextBlocks;
+	array< D2D1_RECT_F, 5>	_textPos;
+
+	wstring		_writingStr = L"";
+	D2D1_RECT_F	_writingStrPos;
 };

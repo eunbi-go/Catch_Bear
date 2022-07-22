@@ -104,7 +104,7 @@ void GraphicsCommandQueue::RenderEnd()
 	_cmdQueue->ExecuteCommandLists(_countof(cmdListArr), cmdListArr);
 
 	//// font ·»´õ¸µ
-	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN)
+	if (GET_SINGLE(SceneManager)->getSceneID() == LOGIN || GET_SINGLE(SceneManager)->getSceneID() == LOBBY)
 	{
 		uint8 index = _swapChain->GetBackBufferIndex();
 		GEngine->GetFontDevice()->Render(index);

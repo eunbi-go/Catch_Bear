@@ -20,11 +20,27 @@ message C_ENTER_LOBBY
 {
 	uint64 playerId = 1;
 	bool isPlayerReady = 2;
+	uint64 playernum = 3;
 }
 
 message S_ENTER_LOBBY
 {
 	bool isAllPlayersReady = 1;
+	uint64 playerId = 2;
+}
+
+message C_LOBBY_STATE
+{
+	uint64 playerId = 1;
+	uint64 isReady = 2;
+	uint64 playerType = 3;
+}
+
+message S_LOBBY_STATE
+{
+	uint64 playerId = 1;
+	uint64 isReady = 2;
+	uint64 playerType = 3;
 }
 
 message C_ENTER_GAME
@@ -97,6 +113,16 @@ message S_USE_STUN
 	DEBUFITEMTYPE itemtype = 2;
 }
 
+message C_USE_SILENCE
+{
+	uint64 fromplayerid = 1;
+}
+
+message S_USE_SILENCE
+{
+	uint64 fromplayerid = 1;
+}
+
 message C_COLLIDPLAYERTOPLAYER
 {
 	uint64 fromplayerid = 1;
@@ -141,6 +167,26 @@ message C_PLUSTIME
 }
 
 message S_PLUSTIME
+{
+	uint64 playerid = 1;
+}
+
+message C_STUNEND
+{
+	uint64 playerid = 1;
+}
+
+message S_STUNEND
+{
+	uint64 playerid = 1;
+}
+
+message C_USE_SHIELD
+{
+	uint64 playerid = 1;
+}
+
+message S_USE_SHIELD
 {
 	uint64 playerid = 1;
 }

@@ -10,12 +10,16 @@
 #include "TableDescriptorHeap.h"
 #include "Texture.h"
 #include "RenderTargetGroup.h"
+#include "FontDevice.h"
 
 class Engine
 {
 public:
 	void Init(const WindowInfo& info);
 	void Update();
+
+	void LoginSceneUpdate();
+	void LobbySceneUpdate();
 
 public:
 	const WindowInfo& GetWindow() { return _window; }
@@ -26,9 +30,16 @@ public:
 	shared_ptr<RootSignature> GetRootSignature() { return _rootSignature; }
 	shared_ptr<GraphicsDescriptorHeap> GetGraphicsDescHeap() { return _graphicsDescHeap; }
 	shared_ptr<ComputeDescriptorHeap> GetComputeDescHeap() { return _computeDescHeap; }
+	shared_ptr<FontDevice>	GetFontDevice() { return _fontDevice; }
+	bool GetIsAllPlayerReady() { return _isAllPlayerEnter; }
+	
+	void SetIsAllPlayerReady() { _isAllPlayerEnter = true; }
 
 	shared_ptr<ConstantBuffer> GetConstantBuffer(CONSTANT_BUFFER_TYPE type) { return _constantBuffers[static_cast<uint8>(type)]; }
 	shared_ptr<RenderTargetGroup> GetRTGroup(RENDER_TARGET_GROUP_TYPE type) { return _rtGroups[static_cast<uint8>(type)]; }
+
+	const bool GetIsIPAddrEnter() { return _isIPAddrEnter; }
+	const int GetPlayerNum() { return PLAYER_NUM; }
 public:
 	void Render();
 	void RenderBegin();
@@ -57,11 +68,20 @@ private:
 	shared_ptr<RootSignature> _rootSignature = make_shared<RootSignature>();
 	shared_ptr<GraphicsDescriptorHeap> _graphicsDescHeap = make_shared<GraphicsDescriptorHeap>();
 	shared_ptr<ComputeDescriptorHeap> _computeDescHeap = make_shared<ComputeDescriptorHeap>();
+	shared_ptr<FontDevice>	_fontDevice = make_shared<FontDevice>(2);
 
 	vector<shared_ptr<ConstantBuffer>> _constantBuffers;
 	array<shared_ptr<RenderTargetGroup>, RENDER_TARGET_GROUP_COUNT> _rtGroups;
 
 public:
 	bool	_isEnd = false;
+	bool	_isIPAddrEnter = false;
+
+	// 모든 플레이어 준비 검사하는 변수
+	bool	_isAllPlayerEnter = false;
+
+	int		PLAYER_NUM = 1;	// 몇인용인지
+
+	
 };
 

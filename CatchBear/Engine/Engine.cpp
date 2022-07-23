@@ -12,6 +12,9 @@
 #include "ScoreManager.h"
 #include "CollidManager.h"
 #include "ServerSession.h"
+#include "ServerPacketHandler.h"
+#include "SoundManager.h"
+#include "ShieldParticleManager.h"
 
 void Engine::Init(const WindowInfo& info)
 {
@@ -30,14 +33,15 @@ void Engine::Init(const WindowInfo& info)
 	_graphicsDescHeap->Init(256);
 
 	_computeDescHeap->Init();
-	
+
+
+
 	// 특정 레지스터와 Constant Buffer 설정
 	CreateConstantBuffer(CBV_REGISTER::b0, sizeof(LightParams), 1);
 	CreateConstantBuffer(CBV_REGISTER::b1, sizeof(TransformParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b2, sizeof(MaterialParams), 256);
 	CreateConstantBuffer(CBV_REGISTER::b3, sizeof(BoneOffsetParams), 4);
 	CreateConstantBuffer(CBV_REGISTER::b4, sizeof(AnimatedBoneParams), 4);
-	CreateConstantBuffer(CBV_REGISTER::b5, sizeof(TimeParams), 4);
 
 	CreateRenderTargetGroups();
 
@@ -47,6 +51,11 @@ void Engine::Init(const WindowInfo& info)
 	GET_SINGLE(Timer)->Init();
 	GET_SINGLE(Resources)->Init();
 	GET_SINGLE(ItemManager)->Init();	// 아이템 좌표 설정
+	GET_SINGLE(ShieldParticleManager)->Init();
+	//GET_SINGLE(SoundManager)->Init();
+
+	_fontDevice->Initialize(GEngine->GetDevice()->GetDevice(), GEngine->GetGraphicsCmdQueue()->GetCmdQueue());
+	_fontDevice->Resize(GEngine->GetWindowInfo().width, GEngine->GetWindowInfo().height);
 }
 
 void Engine::Update()
@@ -56,15 +65,22 @@ void Engine::Update()
 	// 모든 플레이어가 접속 시에만 이 코드가 돌아갈 수 있도록 설정함.
 	// 1인 플레이 테스트할땐 관계없음
 	if (mysession->GetIsAllPlayerEnter()) {
+		GET_SINGLE(Input)->Update();
+
+		GET_SINGLE(Timer)->Update();
+
 		_isEnd = GET_SINGLE(SceneManager)->IsEnd();
 
-		//GET_SINGLE(Input)->Update();
-		GET_SINGLE(Timer)->Update();
 		GET_SINGLE(SceneManager)->Update();
 		GET_SINGLE(InstancingManager)->ClearBuffer();
-		//GET_SINGLE(ItemManager)->Update();
-		//GET_SINGLE(ScoreManager)->Update();
-		//GET_SINGLE(CollidManager)->Update();
+
+		GET_SINGLE(ItemManager)->Update();
+		GET_SINGLE(ScoreManager)->Update();
+		GET_SINGLE(CollidManager)->Update();
+		GET_SINGLE(ShieldParticleManager)->Update();
+
+		if (INPUT->GetButtonDown(KEY_TYPE::J))	// ReStart Test
+			GET_SINGLE(SceneManager)->ReStart();
 
 		Render();
 
@@ -72,6 +88,32 @@ void Engine::Update()
 
 		gPacketControl++;
 	}
+}
+
+void Engine::LoginSceneUpdate()
+{
+	GET_SINGLE(Input)->Update();
+
+	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
+
+	GET_SINGLE(SceneManager)->Update();
+
+	Render();
+
+	ShowFps();
+}
+
+void Engine::LobbySceneUpdate()
+{
+	GET_SINGLE(Input)->Update();
+
+	_isEnd = GET_SINGLE(SceneManager)->IsEnd();
+
+	GET_SINGLE(SceneManager)->Update();
+
+	Render();
+
+	ShowFps();
 }
 
 void Engine::Render()

@@ -5,13 +5,16 @@
 #include "framework.h"
 #include "CatchBear.h"
 #include "Game.h"
+#include <stdio.h>
 
+#pragma comment (lib, "imm32.lib")
 #include "ThreadManager.h"
 #include "Service.h"
 #include "Session.h"
 #include "BufferReader.h"
 #include "ServerPacketHandler.h"
 #include "ServerSession.h"
+
 
 #define MAX_LOADSTRING 100
 wstring MyIPAddr;
@@ -23,6 +26,11 @@ WCHAR szTitle[MAX_LOADSTRING];                  // 제목 표시줄 텍스트입
 WCHAR szWindowClass[MAX_LOADSTRING];            // 기본 창 클래스 이름입니다.
 
 unique_ptr<Game> game;
+
+char strText[255];     // 텍스트 저장
+char Cstr[10];       // 조합중인 문자
+char temp[255];
+int len = 0;
 
 // 이 코드 모듈에 포함된 함수의 선언을 전달합니다:
 ATOM                MyRegisterClass(HINSTANCE hInstance);
@@ -66,31 +74,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     ServerPacketHandler::Init();
     //this_thread::sleep_for(1s);
-
-    //cout << "ip주소 입력: ";
-    //wcin >> MyIPAddr;
-
-
-    ClientServiceRef service = MakeShared<ClientService>(
-        NetAddress(L"127.0.0.1", 7777),
-        //NetAddress(MyIPAddr, 7777),
-        MakeShared<IocpCore>(),
-        MakeShared<ServerSession>, // TODO : SessionManager 등
-        100);
-
-    ASSERT_CRASH(service->Start());
-
-    for (int32 i = 0; i < 5; i++)
-    {  
-        GThreadManager->Launch([=]()
-            {
-                while (true)
-                {
-                    service->GetIocpCore()->Dispatch();
-                }
-            });
-    }
-
+    ClientServiceRef service;
     // 기본 메시지 루프입니다:
     while (true)
     {
@@ -107,9 +91,43 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
                 
             }
         }
+        
+        if (!game->isIPAddrEnter())
+            game->LoginSceneUpdate();
+        else 
+        {
+            if (game->_isFirstEnter)    // 처음 접속했으면 클라이언트 서비스 설정해줌
+            {
+                MyIPAddr = game->GetFontString();
+                service = MakeShared<ClientService>(
+                    //NetAddress(L"127.0.0.1", 7777),
+                    NetAddress(MyIPAddr, 7777),
+                    MakeShared<IocpCore>(),
+                    MakeShared<ServerSession>, // TODO : SessionManager 등
+                    100);
 
-        // TODO
-        game->Update();
+                ASSERT_CRASH(service->Start());
+
+                for (int32 i = 0; i < 5; i++)
+                {
+                    GThreadManager->Launch([=]()
+                        {
+                            while (true)
+                            {
+                                service->GetIocpCore()->Dispatch();
+                            }
+                        });
+                }
+
+                game->_isFirstEnter = false;
+            }
+            // 모든 플레이어가 접속했다면 인게임 씬 업데이트
+            if (game->isAllPlayerReady())
+                game->Update();
+            // 아직 모든 플레이어 레디 상태가 아니라면 로비씬 업데이트
+            else
+                game->LobbySceneUpdate();
+        }
         if (game->_isEnd)
             SendMessage(msg.hwnd, WM_CLOSE, 0, 0);
     }
@@ -185,10 +203,99 @@ BOOL InitInstance(HINSTANCE hInstance, int nCmdShow)
 //  WM_DESTROY  - 종료 메시지를 게시하고 반환합니다.
 //
 //
+HIMC m_hIMC = NULL;
+bool isFirstEnter = true;
+
+int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
+{
+    int len = 0;
+    DWORD sen = 0;
+    DWORD con = 0;
+    switch (msg)
+    {
+    case WM_IME_COMPOSITION:
+        m_hIMC = ImmGetContext(hWnd);	// ime핸들을 얻는것
+        if (!m_hIMC)
+            return 0;
+        if (lparam & GCS_RESULTSTR)
+        {
+            if ((len = ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, NULL, 0)) > 0)
+            {
+                // 완성된 글자가 있다.
+                ImmGetCompositionString(m_hIMC, GCS_RESULTSTR, Cstr, len);
+                Cstr[len] = 0;
+                strcpy(strText + strlen(strText), Cstr);
+                strText[strlen(strText)+1] = 0;
+                memset(Cstr, 0, 10);
+                memset(temp, 0, 255);
+                game->setString(strText);
+
+            }
+
+        }
+        else if (lparam & GCS_COMPSTR)
+        {
+            // 현재 글자를 조합 중이다.
+
+            // 조합중인 길이를 얻는다.
+            // str에  조합중인 문자를 얻는다.
+            len = ImmGetCompositionString(m_hIMC, GCS_COMPSTR, NULL, 0);
+            ImmGetCompositionString(m_hIMC, GCS_COMPSTR, Cstr, len);
+            Cstr[len] = 0;
+
+            strcpy(temp, strText);
+            strcpy(temp + strlen(temp), Cstr);
+            game->setString(temp);
+        }
+
+        ImmReleaseContext(hWnd, m_hIMC);					// IME 핸들 반환!!
+
+        return 0;
+
+    case WM_CHAR:   // 문자 넘어오기
+        if (wparam == 8/*VK_BACK*/)
+        {
+            strText[strlen(strText) - 1] = 0;
+            memset(Cstr, 0, 10);
+            game->setString(strText);
+        }
+        else if (wparam == VK_RETURN)
+        {
+            if (isFirstEnter)
+            {
+                isFirstEnter = false;
+                memset(strText, 0, 255);
+            }
+            else
+            {
+                game->UpdateFont(strText);
+                memset(strText, 0, 255);
+            }
+        }
+        else
+        {
+            len = strlen(strText);
+            strText[len] = wparam & 0xff;
+            strText[len + 1] = 0;
+            game->setString(strText);
+        }
+        return 0;
+
+    case WM_KEYDOWN:    // 키다운
+        return 0;
+
+    }
+    return 1;
+}
+
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
+
+    if (GetText(hWnd, message, wParam, lParam) == 0) return 0;
+
     switch (message)
     {
+
     case WM_COMMAND:
         {
             int wmId = LOWORD(wParam);
@@ -222,6 +329,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
     }
     return 0;
 }
+
 
 // 정보 대화 상자의 메시지 처리기입니다.
 INT_PTR CALLBACK About(HWND hDlg, UINT message, WPARAM wParam, LPARAM lParam)

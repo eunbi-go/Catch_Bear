@@ -8,6 +8,8 @@ void Resources::Init()
 {
 	CreateDefaultShader();
 	CreateDefaultMaterial();
+	CreatePlayerTexture();
+	CreateNumberTexture();
 }
 
 shared_ptr<Mesh> Resources::LoadPointMesh()
@@ -344,16 +346,35 @@ shared_ptr<class CharacterData> Resources::LoadCharacter(const wstring& path)
 {
 	wstring		key = path;
 
-	shared_ptr<CharacterData>	meshData = Get<CharacterData>(key);
-	if (meshData)	return meshData;
+	//string name = ws2s(path);
 
-	meshData = make_shared<CharacterData>();
+	//// path 안에 Evilbear이라는 string이 있으면
+	//if (name.find("Evilbear") != string::npos)
+	//{
+	//	shared_ptr<CharacterData>	characterData = Get<CharacterData>(L"Evilbear_gray.bin");
+	//	if (characterData)	return characterData;
+	//	else
+	//	{
+	//		characterData = make_shared<CharacterData>();
 
-	meshData->LoadCharacterFromFile(path);
-	meshData->SetName(key);
-	Add(key, meshData);
+	//		characterData->LoadCharacterFromFile(L"Evilbear_gray.bin");
+	//		characterData->SetName(L"Evilbear_gray.bin");
+	//		Add(L"Evilbear_gray.bin", characterData);
 
-	return meshData;
+	//		return characterData;
+	//	}
+	//}
+
+	shared_ptr<CharacterData>	characterData = Get<CharacterData>(key);
+	if (characterData)	return characterData;
+
+	characterData = make_shared<CharacterData>();
+
+	characterData->LoadCharacterFromFile(path);
+	characterData->SetName(key);
+	Add(key, characterData);
+
+	return characterData;
 }
 
 void Resources::CreateDefaultShader()
@@ -738,6 +759,27 @@ void Resources::CreateDefaultShader()
 		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
 		Add<Shader>(L"NormalTagMark", shader);
 	}
+
+	// Leaf Particle
+	{
+		ShaderInfo info =
+		{
+			SHADER_TYPE::DEFERRED,
+		};
+
+		ShaderArg arg =
+		{
+			"VS_Main",
+			"",
+			"",
+			"",
+			"PS_LeafParticle"
+		};
+
+		shared_ptr<Shader> shader = make_shared<Shader>();
+		shader->CreateGraphicsShader(L"..\\Resources\\Shader\\deferred.fx", info, arg);
+		Add<Shader>(L"LeafParticle", shader);
+	}
 }
 
 void Resources::CreateDefaultMaterial()
@@ -849,4 +891,175 @@ void Resources::CreateDefaultMaterial()
 		Add<Material>(L"Terrain", material);
 	}
 
+	// stun
+	{
+		shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"Deferred");
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"StunState", L"..\\Resources\\Texture\\StunState.jpg");
+		shared_ptr<Material> material = make_shared<Material>();
+		material->SetShader(shader);
+		material->SetTexture(0, texture);
+		Add<Material>(L"StunState", material);
+	}
+}
+
+void Resources::CreatePlayerTexture()
+{
+	// gray
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_gray.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_gray", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_gray.png", tex);
+	}
+
+	// brown
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_brown.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_brown", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_brown.png", tex);
+	}
+
+	// blue
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_blue.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_blue", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_blue.png", tex);
+	}
+
+	// panda
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_panda.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_panda", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_panda.png", tex);
+	}
+
+	// white
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_white.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_white", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_white.png", tex);
+	}
+
+	// pink
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Evilbear_pink.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"Evilbear_pink", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"Evilbear_pink.png", tex);
+	}
+
+	// stun
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\StunState.jpg";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"StunState", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"StunState.jpg", tex);
+	}
+
+	// icons
+	// - gray
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\gray.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_gray.png", tex);
+	}
+
+	// - brown
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\brown.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_brown.png", tex);
+	}
+
+	// - blue
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\blue.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_blue.png", tex);
+	}
+
+	// - panda
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\panda.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_panda.png", tex);
+	}
+
+	// - white
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\white.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_white.png", tex);
+	}
+
+	// - pink
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\Lobby\\pink.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"playerIcon_pink.png", tex);
+	}
+}
+
+void Resources::CreateNumberTexture()
+{
+#pragma region score
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score0.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score0", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score0.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score1.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score1", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score1.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score2.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score2", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score2.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score3.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score3", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score3.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score4.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score4", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score4.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score5.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score5", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score5.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score6.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score6", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score6.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score7.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score7", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score7.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score8.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score8", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score8.png", tex);
+	}
+
+	{
+		wstring		fullPath = L"..\\Resources\\Texture\\score\\score9.png";
+		shared_ptr<Texture> tex = GET_SINGLE(Resources)->Load<Texture>(L"score9", fullPath);
+		GET_SINGLE(Resources)->Add<Texture>(L"score9.png", tex);
+	}
+
+#pragma endregion
 }

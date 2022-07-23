@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "EnginePch.h"
 #include "Engine.h"
-
+#pragma warning(disable:4996)
 unique_ptr<Engine> GEngine = make_unique<Engine>();
+
+static int PLAYER_NUM = 2;
 
 wstring s2ws(const string& s)
 {

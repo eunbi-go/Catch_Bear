@@ -147,6 +147,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -189,6 +190,7 @@
     <ClInclude Include="AnimationTrack.h" />
     <ClInclude Include="AttackState.h" />
     <ClInclude Include="BaseCollider.h" />
+    <ClInclude Include="Button.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraScript.h" />
     <ClInclude Include="CharacterData.h" />
@@ -204,6 +206,7 @@
     <ClInclude Include="Engine.h" />
     <ClInclude Include="EnginePch.h" />
     <ClInclude Include="Enum.pb.h" />
+    <ClInclude Include="FontDevice.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="IdleState.h" />
@@ -216,7 +219,10 @@
     <ClInclude Include="ItemSlotUI.h" />
     <ClInclude Include="ItemWindow.h" />
     <ClInclude Include="JumpState.h" />
+    <ClInclude Include="Leaf.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="LobbyScene.h" />
+    <ClInclude Include="LoginScene.h" />
     <ClInclude Include="Material.h" />
     <ClInclude Include="Mesh.h" />
     <ClInclude Include="MeshData.h" />
@@ -227,8 +233,10 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerIcon.h" />
     <ClInclude Include="PlayerState.h" />
     <ClInclude Include="Protocol.pb.h" />
+    <ClInclude Include="ReadyButton.h" />
     <ClInclude Include="RenderTargetGroup.h" />
     <ClInclude Include="Resources.h" />
     <ClInclude Include="RootSignature.h" />
@@ -240,10 +248,14 @@
     <ClInclude Include="ServerPacketHandler.h" />
     <ClInclude Include="ServerSession.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShieldParticle.h" />
+    <ClInclude Include="ShieldParticleManager.h" />
     <ClInclude Include="SimpleMath.h" />
     <ClInclude Include="SlowRestState.h" />
     <ClInclude Include="SlowState.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="StageScene.h" />
     <ClInclude Include="Struct.pb.h" />
     <ClInclude Include="StructuredBuffer.h" />
     <ClInclude Include="StunState.h" />
@@ -263,6 +275,7 @@
     <ClCompile Include="AnimationTrack.cpp" />
     <ClCompile Include="AttackState.cpp" />
     <ClCompile Include="BaseCollider.cpp" />
+    <ClCompile Include="Button.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraScript.cpp" />
     <ClCompile Include="CharacterData.cpp" />
@@ -282,6 +295,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="FontDevice.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="IdleState.cpp" />
@@ -294,7 +308,10 @@
     <ClCompile Include="ItemSlotUI.cpp" />
     <ClCompile Include="ItemWindow.cpp" />
     <ClCompile Include="JumpState.cpp" />
+    <ClCompile Include="Leaf.cpp" />
     <ClCompile Include="Light.cpp" />
+    <ClCompile Include="LobbyScene.cpp" />
+    <ClCompile Include="LoginScene.cpp" />
     <ClCompile Include="Material.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
@@ -310,6 +327,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerIcon.cpp" />
     <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Protocol.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
@@ -317,6 +335,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">NotUsing</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="ReadyButton.cpp" />
     <ClCompile Include="RenderTargetGroup.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="RootSignature.cpp" />
@@ -328,10 +347,14 @@
     <ClCompile Include="ServerPacketHandler.cpp" />
     <ClCompile Include="ServerSession.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShieldParticle.cpp" />
+    <ClCompile Include="ShieldParticleManager.cpp" />
     <ClCompile Include="SimpleMath.cpp" />
     <ClCompile Include="SlowRestState.cpp" />
     <ClCompile Include="SlowState.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="StageScene.cpp" />
     <ClCompile Include="Struct.pb.cc">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>

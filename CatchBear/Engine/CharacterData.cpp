@@ -29,7 +29,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	pStr = new char[iLen];
 	WideCharToMultiByte(CP_ACP, 0, path.c_str(), -1, pStr, iLen, 0, 0);
 
-	wstring strpath = L"..\\Resources\\Binary\\" + path;
+	wstring strpath = L"..\\Resources\\Binary\\" + path + L".bin";
 
 	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
 	if (pFile == NULL)
@@ -48,18 +48,12 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 		{
 			if (!strcmp(pStrTocken, "<Hierarchy>:"))
 			{
-				_modelInfo->_rootObject = LoadFrameHierarchyFromFile(NULL, pFile, true);
+				_modelInfo->_rootObject = LoadFrameHierarchyFromFile(NULL, pFile);
 				int l = 0;
 			}
 
 			else if (!strcmp(pStrTocken, "</Hierarchy>"))
 			{
-				if (_name == L"EvilbearL2.bin")
-					CreateTextures4();
-				if (_name == L"EvilbearL3.bin")
-					CreateTextures2();
-				if (_name == L"EvilbearL4.bin")
-					CreateTextures3();
 				CreateMaterials();
 			}
 
@@ -75,7 +69,7 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 
 
 				// Material 생성해서 Reosurces에 추가
-				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(/*_name*/_staticMeshInfo.material.name);
+				shared_ptr<Material>	material = GET_SINGLE(Resources)->Get<Material>(_name);
 				shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"PlayerAnimation");
 				
 				material->SetShader(shader);
@@ -93,18 +87,12 @@ void CharacterData::LoadCharacterFromFile(const wstring& path)
 	}
 }
 
-shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile, bool bFirst)
+shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile)
 {
 	char pStrTocken[64] = { '\0' };
 	UINT	nReads = 0;
 
 	shared_ptr<Transform>	pTrans = make_shared<Transform>();
-
-	if (!bFirst)
-	{
-		//cInfo->parentName = parent->boneName;
-		//cInfo->parentIdx = parent->nFrame;
-	}
 
 	for (; ;)
 	{
@@ -144,7 +132,7 @@ shared_ptr<Transform> CharacterData::LoadFrameHierarchyFromFile(shared_ptr<Trans
 				for (int i = 0; i < nChild; ++i)
 				{
 					shared_ptr<Transform>	childTrans = make_shared<Transform>();
-					childTrans = LoadFrameHierarchyFromFile(pTrans, pFile, false);
+					childTrans = LoadFrameHierarchyFromFile(pTrans, pFile);
 					pTrans->SetChild(childTrans);
 				}
 			}
@@ -537,7 +525,9 @@ void CharacterData::LoadAnimationInfo(FILE* pFile)
 void CharacterData::CreateMaterials()
 {
 	shared_ptr<Material>	material = make_shared<Material>();
-	wstring		key = _staticMeshInfo.material.name;
+	//wstring		key = _staticMeshInfo.material.name;
+	//wstring		key = _staticMeshInfo.material.diffuseTexName;
+	wstring		key = _name;
 
 	material->SetName(key);
 
@@ -547,9 +537,9 @@ void CharacterData::CreateMaterials()
 
 	if (key != L"Material")
 	{
-		wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
-		wstring		fileName = fs::path(diffuseName).filename();
-		wstring		key = fileName;
+		//wstring		diffuseName = _staticMeshInfo.material.diffuseTexName.c_str();
+		//wstring		fileName = fs::path(diffuseName).filename();
+		//wstring		key = fileName;
 
 		shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
 		if (diffuseTex)	material->SetTexture(0, diffuseTex);
@@ -560,7 +550,7 @@ void CharacterData::CreateMaterials()
 
 vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 {
-	vector<shared_ptr<GameObject>>	v;
+	vector<shared_ptr<GameObject>>	vCharacter;
 
 	for (MeshRendererInfo& info : _meshRenders)
 	{
@@ -571,13 +561,12 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->GetMeshRenderer()->SetMaterial(info.materials);
 		gameObject->GetTransform()->SetChild(_modelInfo->_rootObject);
 
-		// Animation
 		gameObject->AddComponent(make_shared<AnimationController>());
 		gameObject->GetAnimationController()->SetAnimClips(_animationClipInfo);
 		gameObject->GetAnimationController()->SetModelInfo(_modelInfo, _skinningInfo);
 
-		v.push_back(gameObject);
+		vCharacter.push_back(gameObject);
 	}
 
-	return v;
+	return vCharacter;
 }

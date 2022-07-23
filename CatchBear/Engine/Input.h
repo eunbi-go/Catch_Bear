@@ -20,6 +20,7 @@ enum class KEY_TYPE
 	TEST_KEY = 'T',
 	P = 'P',
 	I = 'I',
+	J = 'J',	// reset testkey
 
 	NUM1 = '1',
 	NUM2 = '2',
@@ -27,6 +28,8 @@ enum class KEY_TYPE
 	NUM4 = '4',		// 아이템 창 비우는 치트키
 	NUM5 = '5',		// 모든 디버프 효과 해제하는 치트키
 	NUM9 = '9',		// 다시하기 테스트 버튼
+
+	NUM0 = '0',
 
 	// 아이템 치트키
 	Z = 'Z',	// SpeedUp
@@ -41,6 +44,8 @@ enum class KEY_TYPE
 
 	LBUTTON = VK_LBUTTON,
 	RBUTTON = VK_RBUTTON,
+
+	ENTER = VK_RETURN,
 
 	ESC = VK_ESCAPE,
 	SPACE = VK_SPACE,

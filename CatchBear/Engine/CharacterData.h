@@ -15,11 +15,10 @@ public:
 	virtual ~CharacterData();
 
 public:
-	void	LoadCharacterFromFile(const wstring& path);
+	void LoadCharacterFromFile(const wstring& path);
 
 private:
-	// 이 함수를 재귀함수로 계속 부르면서 계층구조 완성해야 함
-	shared_ptr<Transform> LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile, bool bFirst);
+	shared_ptr<Transform> LoadFrameHierarchyFromFile(shared_ptr<Transform> parent, FILE* pFile);
 
 private:
 	void LoadSkinningInfoFromFile(FILE* pFile);
@@ -34,11 +33,7 @@ public:
 
 private:
 	SkinningInfo							_skinningInfo;
-	vector<wstring>							_animationFrameName;
 	vector<shared_ptr<AnimationClipInfo>>	_animationClipInfo;
-
 	shared_ptr<AnimationModelInfo>			_modelInfo;
-
 	wstring _name;
 };
-

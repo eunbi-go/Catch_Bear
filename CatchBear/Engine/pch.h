@@ -32,10 +32,10 @@
 using GameSessionRef = shared_ptr<class GameSession>;
 using PlayerRef = shared_ptr<class Player>;
 
-enum STATE
-{
-	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW, SLOW_REST, STUN, END
-};
+//enum STATE
+//{
+//	IDLE, WALK, DASH, JUMP, ATTACK, DASH_REST, WALK_DOWN, SLOW, SLOW_REST, STUN, END
+//};
 
 #endif //PCH_H
 

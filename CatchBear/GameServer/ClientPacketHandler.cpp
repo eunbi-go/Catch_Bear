@@ -7,10 +7,13 @@
 #include "GameSession.h"
 #include "Timer.h"
 #include "InGame.h"
+#include "Lobby.h"
 
 
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 std::mutex m;
+
+int CurPlayerNum = 1;
 
 // 직접 컨텐츠 작업자
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -27,7 +30,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 	//	// TODO : Validation 체크
 	//	
 	Protocol::S_LOGIN loginPkt;
-	// 원래대로라면 데이터베이스에 접근하여 유효한 아이디인지 확인하고 성공 패킷을 보내야겠죠?
+
 	loginPkt.set_success(true);
 
 	static Atomic<uint64> idGenerator = 0;
@@ -39,7 +42,7 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 		playerRef->playerId = idGenerator++;
 		playerRef->ownerSession = gameSession;
 		GInGame.Enter(playerRef);
-		cout << "플레이어ID " << playerRef->playerId << " 인게임 접속완료!" << endl;
+		cout << "플레이어ID " << playerRef->playerId << " 로그인 완료!" << endl;
 		//loginPkt.set_enterplayer(GInGame.GetEnterPlayerNum() - 1);
 		gameSession->_player = playerRef;
 
@@ -84,35 +87,97 @@ bool Handle_C_LOGIN(PacketSessionRef& session, Protocol::C_LOGIN& pkt)
 
 bool Handle_C_ENTER_LOBBY(PacketSessionRef& session, Protocol::C_ENTER_LOBBY& pkt)
 {
-	//GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
-	//Protocol::S_ENTER_LOBBY enterLobbyPkt;
-	//if (GLobby.isFirstEnterLobby(pkt.playerid()))
-	//{
-	//	PlayerRef player = gameSession->_player;
-	//	player->playerId = pkt.playerid();
-	//	GLobby.Enter(player);
-	//	cout << "플레이어ID " << pkt.playerid() << " 로비 접속완료!" << endl;
+	GameSessionRef gameSession = static_pointer_cast<GameSession>(session);
+	Protocol::S_ENTER_LOBBY enterLobbyPkt;
 
-	//	enterLobbyPkt.set_isallplayersready(false);
+	if (GLobby.isFirstEnterLobby(pkt.playerid()))
+	{
+		PlayerRef player = gameSession->_player;
+		player->playerId = pkt.playerid();
+		GLobby.Enter(player);
+		cout << "플레이어ID " << pkt.playerid() << " 로비 처음 접속완료!" << endl;
 
-	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//	session->Send(sendBuffer);
-	//}
-	//else
-	//{
-	//	if (pkt.isplayerready())
-	//		GLobby.SetPlayerReady(pkt.playerid());
+		enterLobbyPkt.set_playerid(player->playerId);
+		enterLobbyPkt.set_isallplayersready(false);
+		
 
-	//	// 만약 모든 플레이어가 준비됐다면
-	//	if (GLobby.isAllPlayerReady())					
-	//		enterLobbyPkt.set_isallplayersready(true);
-	//	// 한명의 플레이어라도 레디하지않았으면
-	//	else
-	//		enterLobbyPkt.set_isallplayersready(false);
+		for (int i = 0; i < CurPlayerNum; ++i)		// 캐치베어는 3인게임이니까 세명만 검사한다
+		{
+			if (!GLobby.isFirstEnterLobby(i))
+			{
+				enterLobbyPkt.set_playerid(i);
+				auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+				GLobby.Broadcast(sendBuffer);
+			}
+		}
 
-	//	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//	session->Send(sendBuffer);
-	//}
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);		
+		GLobby.Broadcast(sendBuffer);
+		//session->Send(sendBuffer);
+		//GLobby.Broadcast(sendBuffer);
+	}
+	else
+	{
+		if (pkt.isplayerready())
+		{
+			cout << "플레이어 " << pkt.playerid() << " 준비완료\n";
+			GLobby.SetPlayerReady(pkt.playerid(), true);
+		}
+
+		// 만약 모든 플레이어가 준비됐다면
+		if (GLobby.isAllPlayerReady())
+		{
+			cout << "모든 플레이어가 준비됨\n";
+			enterLobbyPkt.set_isallplayersready(true);
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+			GLobby.Broadcast(sendBuffer);
+		}
+		// 한명의 플레이어라도 레디하지않았으면
+		else
+		{
+			cout << "모든 플레이어가 준비되지 않음\n";
+			enterLobbyPkt.set_isallplayersready(false);
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+			session->Send(sendBuffer);
+		}
+	}
+	return true;
+}
+
+bool Handle_C_LOBBY_STATE(PacketSessionRef& session, Protocol::C_LOBBY_STATE& pkt)
+{
+	Protocol::S_LOBBY_STATE LobbyStatePkt;
+	GLobby.SetPlayerReady(pkt.playerid(), pkt.isready());
+	GLobby.SetPlayerType(pkt.playerid(), pkt.playertype());
+
+	LobbyStatePkt.set_playerid(pkt.playerid());
+	LobbyStatePkt.set_isready(GLobby.GetPlayerReady(pkt.playerid()));
+	LobbyStatePkt.set_playertype(GLobby.GetPlayerType(pkt.playerid()));
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
+	GLobby.Broadcast(sendBuffer);
+
+	for (int i = 0; i < CurPlayerNum; ++i)
+	{
+		if (GLobby.GetPlayerReady(i))		
+		{
+			LobbyStatePkt.set_playerid(i);
+			LobbyStatePkt.set_isready(true);
+			LobbyStatePkt.set_playertype(GLobby.GetPlayerType(i));
+			auto sendBuffer = ClientPacketHandler::MakeSendBuffer(LobbyStatePkt);
+			GLobby.Broadcast(sendBuffer);	
+		}		
+	}
+
+	// 만약 모든 플레이어가 준비됐다면
+	if (GLobby.isAllPlayerReady())
+	{
+		Protocol::S_ENTER_LOBBY enterLobbyPkt;
+		cout << "모든 플레이어가 준비됨\n";
+		enterLobbyPkt.set_isallplayersready(true);
+		auto sendBuffer = ClientPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		GLobby.Broadcast(sendBuffer);
+	}
+	
 	return true;
 }
 
@@ -184,7 +249,7 @@ bool Handle_C_MOVE(PacketSessionRef& session, Protocol::C_MOVE& pkt)
 	movePkt.set_ypos(pkt.ypos());
 	movePkt.set_zpos(pkt.zpos());
 	movePkt.set_yrot(pkt.yrot());
-	
+
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(movePkt);
 
 	GInGame.Broadcast(sendBuffer);
@@ -209,7 +274,6 @@ bool Handle_C_USE_STUN(PacketSessionRef& session, Protocol::C_USE_STUN& pkt)
 	s_pkt.set_fromplayerid(pkt.fromplayerid());
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
 	GInGame.Broadcast(sendBuffer);
-
 	return true;
 }
 
@@ -256,5 +320,35 @@ bool Handle_C_PLUSTIME(PacketSessionRef& session, Protocol::C_PLUSTIME& pkt)
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(timepkt);
 	GInGame.OnlySendPlayer(pkt.playerid(),sendBuffer);
+	return true;
+}
+
+bool Handle_C_STUNEND(PacketSessionRef& session, Protocol::C_STUNEND& pkt)
+{
+	Protocol::S_STUNEND StatePkt;
+	StatePkt.set_playerid(pkt.playerid());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(StatePkt);
+
+	GInGame.Broadcast(sendBuffer);
+	return true;
+}
+
+bool Handle_C_USE_SHIELD(PacketSessionRef& session, Protocol::C_USE_SHIELD& pkt)
+{
+	Protocol::S_USE_SHIELD UseShieldPkt;
+	UseShieldPkt.set_playerid(pkt.playerid());
+
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(UseShieldPkt);
+	GInGame.Broadcast(sendBuffer);
+	return true;
+}
+
+bool Handle_C_USE_SILENCE(PacketSessionRef& session, Protocol::C_USE_SILENCE& pkt)
+{
+	Protocol::S_USE_SILENCE s_pkt;
+	s_pkt.set_fromplayerid(pkt.fromplayerid());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
+	GInGame.ExceptBroadcast(pkt.fromplayerid(), sendBuffer);
 	return true;
 }

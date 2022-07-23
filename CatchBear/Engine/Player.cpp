@@ -29,6 +29,9 @@
 #include "TagMark.h"
 #include "MeshRenderer.h"
 #include "Resources.h"
+#include "Engine.h"
+#include "SoundManager.h"
+#include "ShieldParticleManager.h"
 
 Protocol::C_MOVE pkt;
 Protocol::C_STATE StatePkt;
@@ -49,8 +52,6 @@ void Player::Update()
 {
 	//cout << "플레이어 " << _player->GetPlayerID() << ": " << /*static_pointer_cast<Player>(_player->GetScript(0))->*/_iScore << endl;
 	ApplyItemEffect();
-
-
 }
 
 void Player::LateUpdate()
@@ -60,8 +61,8 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
-	PlayerState* state = _state->Update(*_player, _curState);
-	_player->_curState = _curState;
+	PlayerState* state = _state->Update(*_player, _curStatePlayer);
+	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
 	{
@@ -78,10 +79,13 @@ void Player::LateUpdate()
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
 	GetAnimationController()->SetWorldMatrix();
-	
+
 	Vec3 trans = GetTransform()->GetLocalPosition();
 	//printf("%f, %f, %f\n", trans.x, trans.y, trans.z);
-	
+
+	if (_player->_curState == WALK && GetAnimationController()->GetCurrentFrame() >= 2)
+		GET_SINGLE(SoundManager)->PlaySound(L"click.mp3", SoundManager::MOVE);
+
 }
 
 void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
@@ -110,14 +114,14 @@ void Player::AddPlayerItem(Item::ITEM_EFFECT itemEffect)
 
 void Player::Reset()
 {
-	// 플레이어 위치 - 서버에서 ?
-	// 근데 플레이어 위치 다시하기 한다고 굳이 초기화 안해도 될듯 ?
-
-
 	// 플레이어 보유 아이템
 	_playerItemArr[0] = Item::ITEM_EFFECT::NONE;
 	_playerItemArr[1] = Item::ITEM_EFFECT::NONE;
 	_playerItemArr[2] = Item::ITEM_EFFECT::NONE;
+
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(1);
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(2);
+	GET_SINGLE(ItemSlotManager)->ResetItemSlot(3);
 
 	// 플레이어 적용중인 버프,디버프 아이템 초기화
 	_curPlayerItem = { false, };
@@ -130,7 +134,7 @@ void Player::Reset()
 
 	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
 	_speed = 10.f;
-	_bStunned = false;
+	_bStunned = false;	// 이동 오류땜에 일단 꺼둠
 	_fShieldTime = 0.f;
 	_fBlindTime = 0.f;
 }
@@ -152,8 +156,7 @@ void Player::KeyCheck()
 	//////////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
 	// State Check
-	PlayerState* state = _state->KeyCheck(*_player, _curState);
-
+	PlayerState* state = _state->KeyCheck(*_player, _curStatePlayer);
 
 	// Item KeyCheck /////////////////////////////////////////////////////////
 	// stunned면 키입력을 안받아서 스턴일때 알약이 안됨, 코드 위로 옮김
@@ -161,10 +164,13 @@ void Player::KeyCheck()
 	KeyCheck_Cheat();
 	//////////////////////////////////////////////////////////////////////////
 
-
-	if (_bStunned) return;		// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
-
-	_player->_curState = _curState;
+	if (_bStunned)	// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
+	{
+		_curStatePlayer = STATE::STUN;
+		return;
+	}
+			
+	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
 	{
@@ -293,7 +299,15 @@ void Player::Move()
 	{
 		if (_player->GetIsAllowPlayerMove())
 			pos += _player->GetTransform()->GetLook() * _speed * DELTA_TIME;
-		
+		else
+		{
+			if (_dir == DIR::DIR_LEFT)
+				pos -= _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+			else
+				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
+		}
+
+
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);
 		pkt.set_zpos(pos.z);
@@ -330,6 +344,8 @@ void Player::Move()
 	float delta = 0.f;
 	if (INPUT->GetButton(KEY_TYPE::RIGHT))
 	{
+		_dir = DIR::DIR_RIGHT;
+
 		rot.y += DELTA_TIME * _rotSpeed;
 		delta = DELTA_TIME * _rotSpeed;
 
@@ -349,6 +365,8 @@ void Player::Move()
 
 	if (INPUT->GetButton(KEY_TYPE::LEFT))
 	{
+		_dir = DIR::DIR_LEFT;
+
 		rot.y -= DELTA_TIME * _rotSpeed;
 		delta = -DELTA_TIME * _rotSpeed;
 
@@ -367,13 +385,19 @@ void Player::Move()
 		_player->GetTransform()->SetLocalRotation(rot);
 	}
 
+
 	_player->GetTransform()->SetLocalPosition(pos);
 	_cameraScript->Revolve(delta, _player->GetTransform()->GetLocalPosition());
 	static_pointer_cast<TagMark>(tagObject->GetScript(0))->SetPosition(pos);
+	static_pointer_cast<TagMark>(tagObject->GetScript(0))->SetRotation();
 }
 
 void Player::KeyCheck_Item()
 {
+	// 침묵상태이면 아이템 사용 X
+	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence, enum값 ui 변경 후에 수정
+		return;
+
 	// 아이템 사용 키입력 - 1, 2, 3
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
@@ -382,6 +406,7 @@ void Player::KeyCheck_Item()
 
 		UseItem(0);
 		GET_SINGLE(ItemSlotManager)->UseItem(1);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(0);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM2))
@@ -391,6 +416,7 @@ void Player::KeyCheck_Item()
 
 		UseItem(1);
 		GET_SINGLE(ItemSlotManager)->UseItem(2);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(1);
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM3))
@@ -400,11 +426,9 @@ void Player::KeyCheck_Item()
 
 		UseItem(2);
 		GET_SINGLE(ItemSlotManager)->UseItem(3);
+		GET_SINGLE(SoundManager)->PlaySound(L"item1.MP3", SoundManager::CHANNELID::ITEM);
 		DeletePlayerItem(2);
 	}
-
-	//if (INPUT->GetButtonDown(KEY_TYPE::TEST_KEY))
-	//	SlowDown();
 }
 
 void Player::UseItem(int itemNum)
@@ -423,8 +447,16 @@ void Player::UseItem(int itemNum)
 		_curPlayerItem[Player::ITEM::TELEPORT] = true;
 		break;
 	case Item::ITEM_EFFECT::SHIELD:
+	{
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
+		_shieldPlayerIdx = mysession->GetPlayerID();
+		// Server
+		Protocol::C_USE_SHIELD pkt;
+		pkt.set_playerid(mysession->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 		break;
+	}
 	case Item::ITEM_EFFECT::SPEED_DOWN:
 		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
 		//Item_SpeedDown();
@@ -434,7 +466,7 @@ void Player::UseItem(int itemNum)
 		//Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		ClearDebuff();
+		Item_Silence();
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
@@ -463,8 +495,8 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	//if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
-	//	Item_DebuffOff();
+	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence로 변경, enum값은 ui 변경 후 수정예정
+		Silence();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
@@ -480,18 +512,18 @@ void Player::ClearDebuff()
 {
 	// 디버프 해제와 쉴드에 사용됨
 
-	//// SPEED_DOWN 해제
-	//if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
-	//{
-	//	_state->End(*_player);
-	//	delete _state;
-	//	_state = new IdleState;
-	//	_state->Enter(*_player);
+	// SPEED_DOWN 해제
+	if (_curPlayerItem[Player::ITEM::SPEED_DOWN])
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = new IdleState;
+		_state->Enter(*_player);
 
-	//	_speed = 10.f;
-	//	_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
-	//	cout << "SpeedDown 해제" << endl;
-	//}
+		_speed = 10.f;
+		_curPlayerItem[Player::ITEM::SPEED_DOWN] = false;
+		cout << "SpeedDown 해제" << endl;
+	}
 
 	// BLIND 해제
 	if (_curPlayerItem[Player::ITEM::BLIND])
@@ -511,18 +543,18 @@ void Player::ClearDebuff()
 		cout << "Blind 해제" << endl;
 	}
 
-	//// STUN 해제
-	//if (_curPlayerItem[Player::ITEM::STUN])
-	//{
-	//	_state->End(*_player);
-	//	delete _state;
-	//	_state = new IdleState;
-	//	_state->Enter(*_player);
+	// STUN 해제
+	if (_curPlayerItem[Player::ITEM::STUN])
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = new IdleState;
+		_state->Enter(*_player);
 
-	//	_curPlayerItem[Player::ITEM::STUN] = false;
-	//	_bStunned = false;
-	//	cout << "Stun 해제" << endl;
-	//}
+		_curPlayerItem[Player::ITEM::STUN] = false;
+		_bStunned = false;
+		cout << "Stun 해제" << endl;
+	}
 }
 
 bool Player::CheckShield()
@@ -531,6 +563,8 @@ bool Player::CheckShield()
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		_fShieldTime = 0.f;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();	// 쉴드 파티클 효과 해제
 		return true;
 	}
 
@@ -585,10 +619,10 @@ void Player::KeyCheck_Cheat()
 		_iItemCnt = 0;
 	}
 
-	if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
-	{
-		ClearDebuff();
-	}
+	//if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
+	//{
+	//	ClearDebuff();
+	//}
 
 	if (INPUT->GetButtonDown(KEY_TYPE::F))	// 플레이어 속도 원래대로 돌리기(10.f)
 	{
@@ -660,10 +694,6 @@ void Player::KeyCheck_Cheat()
 		cout << "Stun: " << _curPlayerItem[ITEM::STUN] << endl;
 		cout << endl;
 	}
-
-	// 시간 늘리기 치트키
-	if (INPUT->GetButtonDown(KEY_TYPE::NUM9))
-		GET_SINGLE(SceneManager)->ReStart();
 }
 
 void Player::Item_SpeedUp()
@@ -695,24 +725,24 @@ void Player::Item_Teleport()
 
 void Player::Item_Shield()
 {
-	// 쉴드 상태라면 디버프 방어
-	// 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
-	// 밑에서 위로 뭔가 올라오는 파티클 효과 추가 - 쉴드 상태인걸 알 수 있도록
+	// 쉴드 상태라면 디버프 방어, 쉴드 상태때 디버프 1회 방해했으면 쉴드 해제
+
 	_fShieldTime += DELTA_TIME;
 
+	// Shield Item
 	if (_fShieldTime <= 5.f)
 	{
-		// 아이템 슬롯에서도 제거, 쿨타임 렌더링도 끝내기
-		//GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		// Shield Effect
+		ShieldEffect();
 	}
 
 	else if (_fShieldTime > 5.f)
 	{
-		_fShieldTime = 0.f;
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();
 		_fShieldTime = 0.f;
-		cout << "쉴드 끝" << endl;
+		cout << "5초 지나고 쉴드 끝" << endl;
 	}
 }
 
@@ -754,6 +784,15 @@ void Player::Item_Stun()
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 	mysession->Send(sendBuffer);
 	///////////////////////////////////////////
+}
+
+void Player::Item_Silence()
+{
+	// 서버 부분
+	Protocol::C_USE_SILENCE pkt;
+	pkt.set_fromplayerid(mysession->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
 }
 
 void Player::SlowDown()
@@ -823,7 +862,7 @@ void Player::Stunned()
 		return;
 	}
 
-	// 유니크 아이템 - 3초간 스턴
+	// 유니크 아이템 - 3초간 스턴 & 텍스처 매핑
 	if (!_bStunned && !_curPlayerItem[ITEM::SHIELD])
 	{
 		if (!isFirstEnter) {
@@ -835,4 +874,33 @@ void Player::Stunned()
 
 		_bStunned = true;
 	}
+}
+
+void Player::Silence() 
+{
+	if (CheckShield())
+	{
+		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
+		cout << "쉴드 방어: SILENCE" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		return;
+	}
+
+	_fSilenceTime += DELTA_TIME;
+
+	if (_fSilenceTime >= 5.f)
+	{
+		_fSilenceTime = 0.f;
+		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;	// enum값 Silence로 수정할 예정
+	}
+}
+
+void Player::ShieldEffect()
+{
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_Shield_Effect_player = scene->GetPlayer(_shieldPlayerIdx);
+	GET_SINGLE(ShieldParticleManager)->SetShieldParticleOn();
+
+	GET_SINGLE(ShieldParticleManager)->UpdatePlayerPos(_Shield_Effect_player->GetTransform()->GetLocalPosition());
 }

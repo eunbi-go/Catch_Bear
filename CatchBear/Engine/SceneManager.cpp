@@ -32,14 +32,23 @@
 #include "ScoreUI.h"
 #include "ItemManager.h"
 #include "ServerPacketHandler.h"
+#include "FontDevice.h"
+#include "Engine.h"
+#include "Leaf.h"
 
-shared_ptr<Scene> scene = make_shared<Scene>();
+#include "LoginScene.h"
+#include "StageScene.h"
+#include "LobbyScene.h"
+#include "Button.h"
+#include "PlayerIcon.h"
+#include "ReadyButton.h"
+//shared_ptr<Scene> scene = make_shared<Scene>();
+shared_ptr<Scene> scene = NULL;
 
 void SceneManager::Update()
 {
 	if (_activeScene == nullptr)
 		return;
-
 	_activeScene->Update();
 	_activeScene->LateUpdate();
 	_activeScene->FinalUpdate();
@@ -52,15 +61,49 @@ void SceneManager::Render()
 		_activeScene->Render();
 }
 
-void SceneManager::LoadScene(wstring sceneName)
+void SceneManager::LoadScene(SCENE_ID sceneID)
 {
 	// TODO : 기존 Scene 정리
 	// TODO : 파일에서 Scene 정보 로드
 
-	_activeScene = LoadTestScene();
+	if (_curScene != sceneID)
+	{
+		_curScene = sceneID;
 
+		if (_activeScene)
+		{
+			_activeScene.reset();
+			scene.reset();
+		}
+
+		switch (sceneID)
+		{
+		case LOGIN:
+			scene = make_shared<LoginScene>();
+			_activeScene = make_shared<LoginScene>();
+			_activeScene = LoadLoginScene();
+			break;
+
+		case LOBBY:
+			scene = make_shared<LobbyScene>();
+			_activeScene = make_shared<LobbyScene>();
+			_activeScene = LoadLobbyScene();
+			break;
+
+		case STAGE:
+			scene = make_shared<StageScene>();
+			_activeScene = make_shared<StageScene>();
+			_activeScene = LoadTestScene();
+			break;
+
+		case SCENE_CNT:
+			break;
+		}
+	}
+	
 	_activeScene->Awake();
 	_activeScene->Start();
+	_activeScene->Render();
 }
 
 void SceneManager::SetLayerName(uint8 index, const wstring& name)
@@ -94,21 +137,66 @@ void SceneManager::ReStart()
 	mysession->Send(sendBuffer);
 	///////////////////////////////////////////////////////////
 
-	//// 플레이어
+	// 플레이어
+	static_pointer_cast<Player>(_activeScene->GetPlayer(mysession->GetPlayerID())->GetScript(0))->Reset();
 	//static_pointer_cast<Player>(_activeScene->GetGameObject(L"Player1")->GetScript(0))->Reset();
 
-	//// 타이머
-	//_activeScene->SetCurTime(-1.0f);
+	// 타이머
+	//_activeScene->SetCurTime(-1.0f);	// 이거 안해줘도 시간 늘어나네
 
-	//// 아이템
-	//GET_SINGLE(ItemManager)->Reset();
-	//_activeScene->RemoveItems();
+	// 아이템
+	GET_SINGLE(ItemManager)->Reset();
 }
 
 
 bool SceneManager::IsEnd()
 {
 	return _activeScene->_isEnd;
+}
+
+void SceneManager::changeScene(SCENE_ID eScene)
+{
+	switch (eScene)
+	{
+	case LOGIN:
+		_activeScene = LoadLoginScene();
+		break;
+	case LOBBY:
+		_activeScene = LoadLobbyScene();
+		break;
+	case STAGE:
+		_activeScene = LoadTestScene();
+		break;
+	case SCENE_CNT:
+		break;
+	default:
+		break;
+	}
+}
+
+void SceneManager::SetPlayerType(int index, PLAYER_TYPE playerType)
+{
+	_playerTypes[index] = playerType;
+
+	// UI에도 적용
+	wstring infoName = L"playerInfo" + s2ws(to_string(index+1));
+	shared_ptr<GameObject> playerInfo1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(infoName);
+	
+	shared_ptr<Texture> newTex;
+	if (playerType == PLAYER_TYPE::GRAY)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_gray");
+	else if (playerType == PLAYER_TYPE::BROWN)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+	if (playerType == PLAYER_TYPE::BLUE)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_blue");
+	else if (playerType == PLAYER_TYPE::PANDA)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_panda");
+	if (playerType == PLAYER_TYPE::WHITE)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_white");
+	else if (playerType == PLAYER_TYPE::PINK)
+		newTex = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_pink");
+
+	playerInfo1->GetMeshRenderer()->GetMaterial()->SetTexture(0, newTex);
 }
 
 shared_ptr<Scene> SceneManager::LoadTestScene()
@@ -167,29 +255,6 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-#pragma region TestObject
-	/*{
-		shared_ptr<GameObject> obj = make_shared<GameObject>();
-		obj->SetName(L"OBJ");
-		obj->AddComponent(make_shared<Transform>());
-		obj->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
-		obj->GetTransform()->SetLocalPosition(Vec3(0, 0.f, 300.f));
-		obj->SetStatic(false);
-		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
-		{
-			shared_ptr<Mesh> sphereMesh = GET_SINGLE(Resources)->LoadSphereMesh();
-			meshRenderer->SetMesh(sphereMesh);
-		}
-		{
-			shared_ptr<Material> material = GET_SINGLE(Resources)->Get<Material>(L"GameObject");
-			meshRenderer->SetMaterial(material->Clone());
-		}
-		obj->AddComponent(meshRenderer);
-		scene->AddGameObject(obj);
-	}*/
-#pragma endregion
-
-
 #pragma region SkyBox
 	{
 		shared_ptr<GameObject> skybox = make_shared<GameObject>();
@@ -219,7 +284,15 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 #pragma region TestPlayer
 	{
-		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL4.bin");
+		wstring key = L"";
+		CheckPlayerType(0, key);
+		//shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_gray");
+		shared_ptr<CharacterData> CharacData = GET_SINGLE(Resources)->LoadCharacter(key);
+
+		// 다른 클라이언트에선 0번 플레이어의 gameObjects가 0으로 보임
+		// key값으로 LoadCharacter불러오는거에 문제가 있는 것으로 보임
+		//vector<shared_ptr<GameObject>> gameObjects = GET_SINGLE(Resources)->LoadCharacter(L"Evilbear_blue")->Instantiate();
+		// 요 코드로 로드캐릭터하면 되긴 함
 
 		vector<shared_ptr<GameObject>>	gameObjects = CharacData->Instantiate();
 		g_EnterPlayerCnt = 1;
@@ -232,61 +305,107 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
 			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));	// 여기서 z값만 늘려서 충돌테스트 해보기 테스트, 만약 안되면 충돌하는 오브젝트만 따로 만들기
 			gameObject->SetBoundingBox(BoundingOrientedBox(
 				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
 			gameObject->SetCheckFrustum(false);
 			gameObject->SetPlayerID(0);
 			gameObject->_state = new IdleState();
+			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
 			scene->AddGameObject(gameObject);
 			scene->AddPlayers(0, gameObject);
 			scene->AddVecPlayers(gameObject);
-		}
-		g_EnterPlayerCnt = 2;
-		vector<shared_ptr<GameObject>> gameObjects2 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL3.bin")->Instantiate();
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player2");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
+			_isPlayersEnterLobby[0] = false;
+			_isPlayersReady[0] = false;
+			//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
 
-		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
-		vector<shared_ptr<GameObject>> gameObjects3 = GET_SINGLE(Resources)->LoadCharacter(L"EvilbearL2.bin")->Instantiate();
-		for (auto& gameObject : gameObjects3)
+		//g_EnterPlayerCnt = 2;
+		//CheckPlayerType(1, key);
+		//shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
+		//vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
+
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player2");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//	_isPlayersEnterLobby[0] = false;
+		//	_isPlayersReady[0] = false;
+		//	//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		//}
+
+		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
+		//CheckPlayerType(2, key);
+		//shared_ptr<CharacterData> CharacData3 = GET_SINGLE(Resources)->LoadCharacter(key);
+		//vector<shared_ptr<GameObject>>	gameObjects3 = CharacData3->Instantiate();
+
+		//for (auto& gameObject : gameObjects3)
+		//{
+		//	gameObject->SetName(L"Player3");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(2);
+		//	gameObject->_state = new IdleState();
+		// 	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(2, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		// _isPlayersEnterLobby[0] = false;
+		// _isPlayersReady[0] = false;
+		// //_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		//}
+
+	}
+#pragma endregion
+
+#pragma region leaf
+	shared_ptr<MeshData> meshHeart2 = GET_SINGLE(Resources)->LoadFBX(L"SNature_Leaf.bin");
+
+	random_device rd;
+	uniform_real_distribution<float> distX(-50, 50);
+	uniform_real_distribution<float> distZ(-50, 50);
+
+	for (int i = 0; i < 60; ++i)
+	{
+		vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart2->Instantiate();
+
+		for (auto& gameObject : objectsHeart2)
 		{
-			gameObject->SetName(L"Player3");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 10.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+			gameObject->SetName(L"leaf");
 			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(2);
-			gameObject->_state = new IdleState();
+			gameObject->GetTransform()->SetLocalPosition(Vec3(distX(rd), 2.f, distZ(rd)));
+			gameObject->GetTransform()->SetLocalRotation(Vec3(0.f, 0.f, 95.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.5f, 0.5f, 0.5f));
+			gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"LeafParticle"));
+			gameObject->AddComponent(make_shared<Leaf>());
 			scene->AddGameObject(gameObject);
-			scene->AddPlayers(2, gameObject);
-			scene->AddVecPlayers(gameObject);
 		}
 	}
 #pragma endregion
+
 
 #pragma region TagMark
 	// Heart
@@ -299,7 +418,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		gameObject->SetName(L"PlayerTag1");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, -2.f, 0.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
@@ -307,13 +426,13 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(0, gameObject);
 	}
-	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
+	/*vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart2)
 	{
 		gameObject->SetName(L"PlayerTag2");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -2.f, 5.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
@@ -321,13 +440,14 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(1, gameObject);
 	}
-	/*vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
+
+	vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart3)
 	{
 		gameObject->SetName(L"PlayerTag3");
 		gameObject->SetCheckFrustum(false);
 		gameObject->GetTransform()->SetLocalPosition(Vec3(5.f, -2.f, 10.f));
-		gameObject->GetTransform()->SetLocalRotation(Vec3(-90.f, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
 		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
 		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
 		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
@@ -567,6 +687,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		minuteTimer->AddComponent(make_shared<Transform>());
 		minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 		minuteTimer->GetTransform()->SetLocalPosition(Vec3(-40.f, 340.f, 500.f));
+		minuteTimer->_isRender = true;
 
 		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 		{
@@ -592,6 +713,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	minuteTimer->AddComponent(make_shared<Transform>());
 	minuteTimer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	minuteTimer->GetTransform()->SetLocalPosition(Vec3(-100.f, 340.f, 500.f));
+	minuteTimer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
 	{
@@ -617,6 +739,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec1Timer->AddComponent(make_shared<Transform>());
 	sec1Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec1Timer->GetTransform()->SetLocalPosition(Vec3(20.f, 340.f, 500.f));
+	sec1Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer1 = make_shared<MeshRenderer>();
 	{
@@ -642,6 +765,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	sec2Timer->AddComponent(make_shared<Transform>());
 	sec2Timer->GetTransform()->SetLocalScale(Vec3(130.f, 130.f, 100.f));
 	sec2Timer->GetTransform()->SetLocalPosition(Vec3(100.f, 340.f, 500.f));
+	sec2Timer->_isRender = true;
 
 	shared_ptr<MeshRenderer> meshRenderer2 = make_shared<MeshRenderer>();
 	{
@@ -679,7 +803,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"ranking", L"..\\Resources\\Texture\\ranking.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"rankingImage", L"..\\Resources\\Texture\\ranking.png");
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -694,6 +818,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region Player1 ScoreUI
 	// icon
 	{
+		wstring key = L"";
+		CheckPlayerType(0, key, true);
+
 		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"Player1ScoreIcon");
@@ -709,7 +836,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Iicon", L"..\\Resources\\Texture\\Iicon.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(key);
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -807,6 +934,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region Player2 ScoreUI
 	// icon
 	{
+		wstring key = L"";
+		CheckPlayerType(1, key, true);
+
 		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"Player2ScoreIcon");
@@ -822,7 +952,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Gicon", L"..\\Resources\\Texture\\Gicon.png");
+			//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Gicon", L"..\\Resources\\Texture\\Gicon.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(key);
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -920,6 +1051,9 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma region Player3 ScoreUI
 	// icon
 	{
+		wstring key = L"";
+		CheckPlayerType(2, key, true);
+
 		shared_ptr<GameObject> player1Score1 = make_shared<GameObject>();
 		player1Score1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
 		player1Score1->SetName(L"Player3ScoreIcon");
@@ -935,7 +1069,8 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		}
 		{
 			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
-			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Licon", L"..\\Resources\\Texture\\Licon.png");
+			//shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"Licon", L"..\\Resources\\Texture\\Licon.png");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(key);
 			shared_ptr<Material> material = make_shared<Material>();
 			material->SetShader(shader);
 			material->SetTexture(0, texture);
@@ -1070,7 +1205,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	{
 		shared_ptr<GameObject> light = make_shared<GameObject>();
 		light->AddComponent(make_shared<Transform>());
-		light->GetTransform()->SetLocalPosition(Vec3(0, 1000, 0));
+		light->GetTransform()->SetLocalPosition(Vec3(0, 100, 0));
 		light->AddComponent(make_shared<Light>());
 		light->GetLight()->SetLightDirection(Vec3(0, -1, 0.f));
 		light->GetLight()->SetLightType(LIGHT_TYPE::DIRECTIONAL_LIGHT);
@@ -1081,43 +1216,638 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
-	//
-//#pragma region Point Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(0.f, 100.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		//light->GetLight()->SetLightDirection(Vec3(-1.f, -1.f, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::POINT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.5f, 0.0f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.3f, 0.0f));
-//		light->GetLight()->SetLightRange(200.f);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
-//#pragma region Spot Light
-//	{
-//		shared_ptr<GameObject> light = make_shared<GameObject>();
-//		light->AddComponent(make_shared<Transform>());
-//		light->GetTransform()->SetLocalPosition(Vec3(75.f, 0.f, 150.f));
-//		light->AddComponent(make_shared<Light>());
-//		light->GetLight()->SetLightDirection(Vec3(-1.f, 0, 0));
-//		light->GetLight()->SetLightType(LIGHT_TYPE::SPOT_LIGHT);
-//		light->GetLight()->SetDiffuse(Vec3(0.0f, 0.f, 0.5f));
-//		light->GetLight()->SetAmbient(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetSpecular(Vec3(0.0f, 0.0f, 0.1f));
-//		light->GetLight()->SetLightRange(200.f);
-//		light->GetLight()->SetLightAngle(3.14f / 2);
-//
-//		scene->AddGameObject(light);
-//	}
-//#pragma endregion
-//
+	return scene;
+}
 
+shared_ptr<Scene> SceneManager::LoadLoginScene()
+{
+#pragma region LayerMask
+	SetLayerName(0, L"Default");
+	SetLayerName(1, L"UI");
+#pragma endregion
+
+#pragma region UI_Camera
+	{
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Orthographic_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, 800*600
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::ORTHOGRAPHIC);
+		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskAll(); // 다 끄고
+		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, false); // UI만 찍음
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region loginScene
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"loginScene");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 100.f));
+		finalRanking->_isRender = true;
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"login_background", L"..\\Resources\\Texture\\Login.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+	return scene;
+}
+
+void SceneManager::CheckPlayerType(int index, wstring& key, bool isIcon)
+{
+	switch (_playerTypes[index])
+	{
+	case PLAYER_TYPE::BLUE:
+		if (isIcon) key = L"playerIcon_blue";
+		else key = L"Evilbear_blue";
+		break;
+
+	case PLAYER_TYPE::BROWN:
+		if (isIcon) key = L"playerIcon_brown";
+		else key = L"Evilbear_brown";
+		break;
+
+	case PLAYER_TYPE::GRAY:
+		if (isIcon) key = L"playerIcon_gray";
+		else key = L"Evilbear_gray";
+		break;
+
+	case PLAYER_TYPE::PANDA:
+		if (isIcon) key = L"playerIcon_panda";
+		else key = L"Evilbear_panda";
+		break;
+
+	case PLAYER_TYPE::WHITE:
+		if (isIcon) key = L"playerIcon_white";
+		else key = L"Evilbear_white";
+		break;
+
+	case PLAYER_TYPE::PINK:
+		if (isIcon) key = L"playerIcon_pink";
+		else key = L"Evilbear_pink";
+		break;
+	}
+}
+
+shared_ptr<Scene> SceneManager::LoadLobbyScene()
+{
+	_playerTypes.resize(3);
+	_playerTypes[0] = PLAYER_TYPE::BROWN;
+	_playerTypes[1] = PLAYER_TYPE::BROWN;
+	_playerTypes[2] = PLAYER_TYPE::BROWN;
+
+#pragma region LayerMask
+	SetLayerName(0, L"Default");
+	SetLayerName(1, L"UI");
+#pragma endregion
+
+#pragma region UI_Camera
+	{
+		shared_ptr<GameObject> camera = make_shared<GameObject>();
+		camera->SetName(L"Orthographic_Camera");
+		camera->AddComponent(make_shared<Transform>());
+		camera->AddComponent(make_shared<Camera>()); // Near=1, Far=1000, 800*600
+		camera->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 0.f));
+		camera->GetCamera()->SetProjectionType(PROJECTION_TYPE::ORTHOGRAPHIC);
+		uint8 layerIndex = GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI");
+		camera->GetCamera()->SetCullingMaskAll(); // 다 끄고
+		camera->GetCamera()->SetCullingMaskLayerOnOff(layerIndex, false); // UI만 찍음
+		scene->AddGameObject(camera);
+	}
+#pragma endregion
+
+#pragma region lobbyScene background
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"background");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(1200.f, 800.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(0.f, 0.f, 100.f));
+		finalRanking->_isRender = true;
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobbyUI", L"..\\Resources\\Texture\\Lobby\\background.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region start
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"start");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(300.f, -300.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<ReadyButton>());
+
+		static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetCollRect(RECT{ 740, 610, 1040, 680 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start_click", L"..\\Resources\\Texture\\Lobby\\start_click.png");
+		static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
+			static_pointer_cast<ReadyButton>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
+
+#pragma region playerIcon_blue
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_blue");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 230.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 590, 70, 760, 190 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_blue_click", L"..\\Resources\\Texture\\Lobby\\blue_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_blue");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_blue");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerIcon_brown
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_brown");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 230.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 995, 70, 1155, 190 });
+
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_brown_click", L"..\\Resources\\Texture\\Lobby\\brown_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_brown");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerIcon_gray
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_gray");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 230.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 790, 70, 955, 190 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_gray_click", L"..\\Resources\\Texture\\Lobby\\gray_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_gray");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_gray");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+	// new
+#pragma region playerIcon_panda
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_panda");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(90.f, 30.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 590, 260, 760, 385 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_panda_click", L"..\\Resources\\Texture\\Lobby\\panda_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_panda");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_panda");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerIcon_pink
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_pink");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(490.f, 30.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 995, 260, 1155, 385 });
+
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_pink_click", L"..\\Resources\\Texture\\Lobby\\pink_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_pink");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_pink");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerIcon_white
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerIcon_white");
+		finalRanking->AddComponent(make_shared<Transform>());
+		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(200.f, 220.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(290.f, 30.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<PlayerIcon>());
+
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollRect(RECT{ 790, 260, 955, 385 });
+		shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"playerIcon_white_click", L"..\\Resources\\Texture\\Lobby\\white_click.png");
+		static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetCollTexture(texture);
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_white");
+			static_pointer_cast<PlayerIcon>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"playerIcon_white");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+
+#pragma region playerInfo1
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo1");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 280.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerInfo1_start
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo1_start");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(303.f, 100.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 280.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
+			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
+
+#pragma region playerInfo2
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo2");
+		finalRanking->AddComponent(make_shared<Transform>());
+		//finalRanking->GetTransform()->SetLocalScale(Vec3(110.f, 89.f, 100.f));
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 140.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerInfo2_start
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo2_start");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 140.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
+			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
+
+#pragma region playerInfo3
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo3");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(120.f, 140.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-470.f, 0.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Get<Texture>(L"playerIcon_brown");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+#pragma endregion
+
+#pragma region playerInfo3_start
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"playerInfo3_start");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(316.f, 113.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-220.f, 0.f, 100.f));
+		finalRanking->_isRender = false;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"lobby_start", L"..\\Resources\\Texture\\Lobby\\start.png");
+			static_pointer_cast<Button>(finalRanking->GetScript(0))->SetOriginalTexture(texture, L"lobby_start");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
+
+
+#pragma region chat
+	{
+		shared_ptr<GameObject> finalRanking = make_shared<GameObject>();
+		finalRanking->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		finalRanking->SetName(L"chat");
+		finalRanking->AddComponent(make_shared<Transform>());
+		finalRanking->GetTransform()->SetLocalScale(Vec3(550.f, 300.f, 100.f));
+		finalRanking->GetTransform()->SetLocalPosition(Vec3(-270.f, -230.f, 100.f));
+		finalRanking->_isRender = true;
+		finalRanking->AddComponent(make_shared<Button>());
+
+		shared_ptr<MeshRenderer> meshRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			meshRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemSlot");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"chatting", L"..\\Resources\\Texture\\Lobby\\chat.png");
+
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			meshRenderer->SetMaterial(material);
+		}
+		finalRanking->AddComponent(meshRenderer);
+
+		scene->AddGameObject(finalRanking);
+	}
+
+#pragma endregion
 
 	return scene;
 }
@@ -1146,12 +1876,15 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 
 				ReadStringFromFileForCharac(pFile, pStrTocken);
 				wstring name = s2ws(pStrTocken);
+
 				shared_ptr<MeshData> meshData = NULL;
 				vector<shared_ptr<GameObject>> obj;
+
 				if (strcmp(pStrTocken, "Plane"))
 				{
 					if (!strcmp(pStrTocken, "wooden_fence_04:Mesh"))
 						name = L"wooden_fence_04";
+
 					meshData = GET_SINGLE(Resources)->LoadFBX(name + L".bin");
 					obj = meshData->Instantiate();
 				}

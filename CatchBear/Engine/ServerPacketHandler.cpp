@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ServerPacketHandler.h"
 #include "SceneManager.h"
+#include "ItemSlotManager.h"
 #include "Input.h"
 #include "Scene.h"
 #include "GameObject.h"
@@ -9,6 +10,7 @@
 #include "Timer.h"
 #include "TagMark.h"
 #include "ServerSession.h"
+#include "Engine.h"
 
 #include "PlayerState.h"
 #include "IdleState.h"
@@ -41,70 +43,74 @@ bool Handle_S_LOGIN(PacketSessionRef& session, Protocol::S_LOGIN& pkt)
 	if (pkt.success() == false)
 		return true;
 
-	//SceneManager::GetInstance()->MakePlayer(pkt.playerid());
-
 	// 세션의 playerID를 저장해준다
 	mysession->SetPlayerID(pkt.playerid());
-	uint64 pid = mysession->GetPlayerID();
-
-	shared_ptr<GameObject>	_player = make_shared<GameObject>();
 
 	// 현재 씬에서 플레이어를 찾는다
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
-	_player->SetPlayerID(pkt.playerid());
 
-	Protocol::C_ENTER_GAME enterGamePkt;
-	enterGamePkt.set_playerid(mysession->GetPlayerID());
-	enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
-	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+	cout << "Player " << mysession->GetPlayerID() << " 로그인 성공\n";
+
+	Protocol::C_ENTER_LOBBY enterLobbyPkt;
+	enterLobbyPkt.set_playerid(mysession->GetPlayerID());
+	enterLobbyPkt.set_playernum(scene->GetEnterPlayerNum());
+	enterLobbyPkt.set_isplayerready(false);
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
 	session->Send(sendBuffer);
 
-	//// 입장 UI 버튼 누르면 로비창 입장
-	//Protocol::C_ENTER_LOBBY enterLobbyPkt;
-	//enterLobbyPkt.set_playerid(GPlayer.playerId);
-	//auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//session->Send(sendBuffer);
 
 	return true;
 }
 
 bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pkt)
 {
-#pragma region test
-	//// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
-	//if (pkt.isallplayersready())
-	//{
-	//	Protocol::C_ENTER_GAME enterGamePkt;
-	//	enterGamePkt.set_playerid(GPlayer.playerId);
-	//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
-	//	session->Send(sendBuffer);
-	//}
-	//// 준비 안됐다면 여기로
-	//else
-	//{
-	//	string sChat;
-	//	// 채팅하고싶으면 컨트롤 키 누르기 (일단 임시)
-	//	cout << "채팅하고싶으면 LControl키 누르세요 / 레디하고 싶으면 스페이스를 누르세요 " << endl;
-	//	if (CKeyManager::Get_Instance()->Key_Down(VK_LCONTROL))
-	//	{
-	//		cin >> sChat;
-	//		Protocol::C_CHAT chatPkt;
-	//		chatPkt.set_msg(sChat);
-	//		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
-	//		session->Send(sendBuffer);
-	//	}
-	//	if (CKeyManager::Get_Instance()->Key_Down(VK_SPACE))
-	//	{
-	//		Protocol::C_ENTER_LOBBY enterLobbyPkt;
-	//		enterLobbyPkt.set_playerid(GPlayer.playerId);
-	//		enterLobbyPkt.set_isplayerready(true);
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
-	//		cout << GPlayer.playerId << "번 플레이어 준비 완료!" << endl;
-	//		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
-	//		session->Send(sendBuffer);
-	//	}
-	//}
+	GET_SINGLE(SceneManager)->SetEnterLobby(int(pkt.playerid()), true);
+	//cout << "Player " << mysession->GetPlayerID() << " 로비 입장\n";
+#pragma region test
+	// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
+	if (pkt.isallplayersready())
+	{	
+		GEngine->SetIsAllPlayerReady();
+		GET_SINGLE(SceneManager)->LoadScene(SCENE_ID::STAGE);
+
+		Protocol::C_ENTER_GAME enterGamePkt;
+		enterGamePkt.set_playerid(mysession->GetPlayerID());
+		enterGamePkt.set_playernum(GEngine->GetPlayerNum());
+		//enterGamePkt.set_playernum(scene->GetEnterPlayerNum());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterGamePkt);
+		session->Send(sendBuffer);
+
+	}
+	// 준비 안됐다면 여기로
+	//else
+	{
+		// 나중에 로비에서 채팅패킷보내거나 캐릭터 고를때 쓸듯
+		
+		//string sChat;
+		//// 채팅하고싶으면 컨트롤 키 누르기 (일단 임시)
+		//cout << "채팅하고싶으면 LControl키 누르세요 / 레디하고 싶으면 스페이스를 누르세요 " << endl;
+		//if (CKeyManager::Get_Instance()->Key_Down(VK_LCONTROL))
+		//{
+		//	cin >> sChat;
+		//	Protocol::C_CHAT chatPkt;
+		//	chatPkt.set_msg(sChat);
+		//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chatPkt);
+		//	session->Send(sendBuffer);
+		//}
+		//if (CKeyManager::Get_Instance()->Key_Down(VK_SPACE))
+		//{
+		//	Protocol::C_ENTER_LOBBY enterLobbyPkt;
+		//	enterLobbyPkt.set_playerid(GPlayer.playerId);
+		//	enterLobbyPkt.set_isplayerready(true);
+
+		//	cout << GPlayer.playerId << "번 플레이어 준비 완료!" << endl;
+		//	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(enterLobbyPkt);
+		//	session->Send(sendBuffer);
+		//}
+	}
 #pragma endregion test
 	//// 만약 모든 플레이어가 준비됐다면 C_ENTER_GAME 패킷 보냄
 	//if (pkt.isallplayersready())
@@ -148,6 +154,14 @@ bool Handle_S_ENTER_LOBBY(PacketSessionRef& session, Protocol::S_ENTER_LOBBY& pk
 	return true;
 }
 
+bool Handle_S_LOBBY_STATE(PacketSessionRef& session, Protocol::S_LOBBY_STATE& pkt)
+{
+	GET_SINGLE(SceneManager)->SetPlayerReady(int(pkt.playerid()), pkt.isready());
+	GET_SINGLE(SceneManager)->SetPlayerType(int(pkt.playerid()), (PLAYER_TYPE)pkt.playertype());
+
+	return true;
+}
+
 bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 {
 	shared_ptr<GameObject>	_player = make_shared<GameObject>();
@@ -158,12 +172,18 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 		return false;
 
 	if (pkt.isallplayersready()) {
+
 		mysession->SetAllPlayerEnter();
-		//_player = scene->GetPlayer(0);		// 버그 해결을 위해서 임시로 술래 0번으로 고정
+
 		_player = scene->GetPlayer(pkt.taggerplayerid());
+
+		if (_player == nullptr) 
+		{
+			cout << "술래 플레이어 정해지지 않음\n";
+			return true;
+		}
 		_player->SetIsTagger(true);	
 		cout << "모든 플레이어 접속 완료!\n";
-
 		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
 	else
@@ -200,8 +220,8 @@ bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt)
 	// 본인의 플레이어가 아닐때만 이동, 애니메이션 동기화 시켜줌
 	if (_player->GetPlayerID() != mysession->GetPlayerID())
 	{
-		_player->GetTransform()->SetLocalRotation(rot);
 		_player->GetTransform()->SetLocalPosition(pos);
+		_player->GetTransform()->SetLocalRotation(rot);
 		static_pointer_cast<TagMark>(scene->GetTagMarks(_player->GetPlayerID())->GetScript(0))->SetPosition(pos);
 	}
 
@@ -215,8 +235,12 @@ bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
 	if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
+	{
+		//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		//static_pointer_cast<Player>(_player->GetScript(0))->SetSheildTime(0.f);
 		return true;
-
+	}
 	switch (pkt.itemtype())
 	{
 	case Protocol::DEBUF_BLIND:
@@ -239,28 +263,48 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 	//_player = scene->GetPlayer(mysession->GetPlayerID());
 
 	PlayerState* state;
+	
 	for (int i = 0; i < scene->GetEnterPlayerNum(); ++i)
 	{
 		_player = scene->GetPlayer(i);
 
+		if (_player == nullptr)
+			return true;
+		
 		if (_player->GetPlayerID() == pkt.fromplayerid())
 			continue;
 
 		if (static_pointer_cast<Player>(_player->GetScript(0))->GetCurItem(Player::ITEM::SHIELD))
-			continue;
-
-		static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
-		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
 		{
-			state = new StunState;
-			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
-			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
-			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
-			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
-			static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+			//static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, false);
+			GET_SINGLE(ItemSlotManager)->UseShieldItem();
+			//static_pointer_cast<Player>(_player->GetScript(0))->SetSheildTime(0.f);
+
+			_player->_state->End(*_player);
+			state = new IdleState;
+			delete _player->_state;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::IDLE;
+
+			return true;
 		}
-		
+		else
+		{
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::STUN, true);
+			if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::STUN)
+			{			
+				state = new StunState;
+				delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+				_player->_state->curState = STATE::STUN;
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+				static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+			}
+		}
 	}
+
 	return true;
 }
 
@@ -285,6 +329,7 @@ bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLID
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 		static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+		static_pointer_cast<Player>(_player->GetScript(0))->SetCurState(STATE::STUN);
 	}
 	return true;
 }
@@ -333,12 +378,17 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
 	_player = scene->GetPlayer(pkt.playerid());
+	
+	if (_player == nullptr)
+		return true;
 
 	PlayerState* state;
 
 	switch (pkt.state())
 	{
 	case Protocol::IDLE:
+		if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState == STATE::STUN)
+			break;
 		if (_player->_state->curState != STATE::IDLE)
 		{
 			if (_player->_state->curState != STATE::STUN)
@@ -350,6 +400,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 				_player->_state = state;
 				_player->_state->Enter(*_player);
 				_player->_state->curState = STATE::IDLE;
+
+				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
 			}
 		}
 		break;
@@ -367,6 +419,8 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 					_player->_state = state;
 					_player->_state->Enter(*_player);
 					_player->_state->curState = STATE::WALK;
+
+					static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::WALK;
 				}
 			}
 		}
@@ -401,6 +455,7 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
 			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
+			static_pointer_cast<Player>(_player->GetScript(0))->SetCurState(STATE::STUN);
 		}
 		break;
 	case Protocol::DASH:
@@ -415,7 +470,25 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 		}
 		break;
 	case Protocol::DASHREST:
+		// 프로토콜 오류로 일단 안쓰는 enum으로 테스트
 		if (_player->_state->curState != STATE::DASH_REST)
+		{
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+
+			state = new IdleState;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
+
+			/*_player->_state->End(*_player);
+			delete _player->_state;
+			state = new IdleState;
+			_player->_state = state;
+			_player->_state->Enter(*_player);
+			_player->_state->curState = STATE::IDLE;*/
+		}
+		/*if (_player->_state->curState != STATE::DASH_REST)
 		{
 			_player->_state->End(*_player);
 			delete _player->_state;
@@ -423,7 +496,7 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 			_player->_state = state;
 			_player->_state->Enter(*_player);
 			_player->_state->curState = STATE::DASH_REST;
-		}
+		}*/
 		break;
 	case Protocol::SLOW:
 		if (_player->_state->curState != STATE::SLOW)
@@ -449,6 +522,56 @@ bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt)
 	return true;
 }
 
+bool Handle_S_STUNEND(PacketSessionRef& session, Protocol::S_STUNEND& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 
+	_player = scene->GetPlayer(pkt.playerid());
+
+	if (_player == nullptr)
+		return true;
+
+	PlayerState* state;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+	delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+
+	state = new IdleState;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+	static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::IDLE;
+
+	return true;
+}
+
+bool Handle_S_USE_SHIELD(PacketSessionRef& session, Protocol::S_USE_SHIELD& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+
+	_player = scene->GetPlayer(pkt.playerid());
+
+	if (_player == nullptr)
+		return true;
+	if (mysession->GetPlayerID() == pkt.playerid())
+		return true;
+	
+	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, true);
+	static_pointer_cast<Player>(_player->GetScript(0))->SetShieldEffectPlayerIndex((int)pkt.playerid());
+	//static_pointer_cast<Player>(_player->GetScript(0))->Server_Item_Shield();
+	return true;
+}
+
+bool Handle_S_USE_SILENCE(PacketSessionRef& session, Protocol::S_USE_SILENCE& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_player = scene->GetPlayer(mysession->GetPlayerID());
+
+	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::DEBUFF_OFF, true);
+
+
+	return true;
+}
 
 

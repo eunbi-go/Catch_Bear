@@ -12,6 +12,7 @@ public:
 	uint32 GetFps() { return _fps; }
 	float GetDeltaTime() { return _deltaTime; }
 	float GetAllTime() { return _AllTime; }
+	void	AddTime() { _AllTime -= 30.f; }
 
 private:
 	uint64	_frequency = 0;

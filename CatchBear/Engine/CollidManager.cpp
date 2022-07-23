@@ -7,6 +7,8 @@
 #include "ServerSession.h"
 #include "ServerPacketHandler.h"
 #include "PlayerState.h"
+#include "Engine.h"
+#include "Timer.h"
 
 void CollidManager::Update()
 {
@@ -25,6 +27,8 @@ void CollidManager::ColiisionPlayerToStaticObj()
 
 	auto& staticObjects = GET_SINGLE(SceneManager)->GetActiveScene()->GetStaticObj();
 
+	Vec3 PrePosition = _player->GetTransform()->GetLook();
+
 	for (auto mapobj = staticObjects.begin(); mapobj != staticObjects.end(); mapobj++)
 	{
 		if ((*mapobj)->GetName() == L"Tree_01" || (*mapobj)->GetName() == L"Tree_02" ||
@@ -35,7 +39,7 @@ void CollidManager::ColiisionPlayerToStaticObj()
 			if ((*mapobj)->GetBoundingBox().Intersects(_player->GetBoundingBox()))
 			{
 				_player->SetIsAllowPlayerMove(false);
-				_player->SetIsCollidObj(true);
+				_player->SetIsCollidObj(true);	// 이건 딱히 아직 없음
 				break;
 			}
 			else {

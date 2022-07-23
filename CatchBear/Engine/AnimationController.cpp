@@ -85,18 +85,16 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 			{
 				if (_animTracks[k]._bEnable)
 				{
-					AnimationSet* pAnimationSet =
-						_animSets->_animationSet[_animTracks[k]._nAnimationSet];
+					AnimationSet* pAnimationSet = _animSets->_animationSet[_animTracks[k]._nAnimationSet];
 					pAnimationSet->SetPosition(_animTracks[k]._position);
 
 					XMFLOAT4X4 xmf4x4TrackTransform = pAnimationSet->GetSRT(j);
-					xmf4x4Transform = Add(xmf4x4Transform,
-						Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
+					_curFrame = pAnimationSet->_curFrame;
+					//printf("frame: %d\n", _curFrame);
+					xmf4x4Transform = Add(xmf4x4Transform, Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
 				}
 			}
 			_animatedTrans[j]->_matToParent = xmf4x4Transform;
-
-			// 실제 플레이어 모델 뼈의 toParent행렬을 변경해줘야한다!
 			GetGameObject()->GetTransform()->FindTransform(_animatedTrans[j]->_name)->_matToParent = xmf4x4Transform;
 		}
 

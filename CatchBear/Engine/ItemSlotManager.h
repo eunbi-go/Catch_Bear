@@ -15,6 +15,8 @@ public:
 
 	void UseShieldItem();
 
+	void IsSilenced(bool isSilenced);
+
 private:
 	shared_ptr<GameObject> _itemSlot1;
 	shared_ptr<GameObject> _itemSlot2;

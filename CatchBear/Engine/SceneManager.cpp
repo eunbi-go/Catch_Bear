@@ -42,6 +42,7 @@
 #include "Button.h"
 #include "PlayerIcon.h"
 #include "ReadyButton.h"
+#include "SoundManager.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -149,6 +150,10 @@ void SceneManager::ReStart()
 
 	// 점수
 	GET_SINGLE(ScoreManager)->InitScore();
+
+	// 사운드
+	GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 }
 
 

@@ -33,8 +33,8 @@ StageScene::~StageScene()
 
 void StageScene::Awake()
 {
-	/*GET_SINGLE(SoundManager)->StopAll();
-	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");*/
+	GET_SINGLE(SoundManager)->StopAll();
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 
 }
 
@@ -140,6 +140,12 @@ void StageScene::SetTimer()
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
 
+	if (minute >= 2)
+	{
+		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+		GET_SINGLE(SoundManager)->PlayBGM(L"speedBGM.mp3");
+	}
+
 	// secondTimer
 	int second = (int)(time) % 60;
 	int ten = second / 10;
@@ -153,6 +159,9 @@ void StageScene::SetTimer()
 		// 3분 다 지났으면 랭킹 정하기
 		SetFinalRanking();
 		_isFinish = true;
+
+		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+		GET_SINGLE(SoundManager)->PlayBGM(L"ending.mp3");
 	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));

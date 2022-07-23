@@ -3,3 +3,5 @@ lobbyScene.wav
 loginScene.wav
 stageScene.wav
 item1.MP3
+ending.mp3
+speedBGM.mp3

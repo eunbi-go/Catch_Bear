@@ -95,7 +95,7 @@ void StunState::End(GameObject& player)
     wstring key = static_pointer_cast<Player>(player.GetScript(0))->GetTextureKey();
     shared_ptr<Texture>	diffuseTex = GET_SINGLE(Resources)->Get<Texture>(key);
     player.GetMeshRenderer()->GetMaterial()->SetTexture(0, diffuseTex);
-    static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
+    //static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
 
     Protocol::C_STUNEND StatePkt;
     StatePkt.set_playerid(static_pointer_cast<Player>(player.GetScript(0))->GetPlayerID());

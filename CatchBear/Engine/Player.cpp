@@ -394,6 +394,10 @@ void Player::Move()
 
 void Player::KeyCheck_Item()
 {
+	// 침묵상태이면 아이템 사용 X
+	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence, enum값 ui 변경 후에 수정
+		return;
+
 	// 아이템 사용 키입력 - 1, 2, 3
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM1))
 	{
@@ -462,7 +466,7 @@ void Player::UseItem(int itemNum)
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		ClearDebuff();
+		Item_Silence();
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
@@ -491,8 +495,8 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])
-		Item_DebuffOff();
+	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence로 변경, enum값은 ui 변경 후 수정예정
+		Silence();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
 		Stunned();
@@ -615,10 +619,10 @@ void Player::KeyCheck_Cheat()
 		_iItemCnt = 0;
 	}
 
-	if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
-	{
-		ClearDebuff();
-	}
+	//if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
+	//{
+	//	ClearDebuff();
+	//}
 
 	if (INPUT->GetButtonDown(KEY_TYPE::F))	// 플레이어 속도 원래대로 돌리기(10.f)
 	{
@@ -782,6 +786,11 @@ void Player::Item_Stun()
 	///////////////////////////////////////////
 }
 
+void Player::Item_Silence()
+{
+	// 서버 부분
+}
+
 void Player::SlowDown()
 {
 	if (CheckShield())
@@ -860,6 +869,25 @@ void Player::Stunned()
 		}
 
 		_bStunned = true;
+	}
+}
+
+void Player::Silence()
+{
+	if (CheckShield())
+	{
+		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
+		cout << "쉴드 방어: SILENCE" << endl;
+		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		return;
+	}
+
+	_fSilenceTime += DELTA_TIME;
+
+	if (_fSilenceTime >= 5.f)
+	{
+		_fSilenceTime = 0.f;
+		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;	// enum값 Silence로 수정할 예정
 	}
 }
 

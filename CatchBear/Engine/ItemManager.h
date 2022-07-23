@@ -23,7 +23,7 @@ public:
 
 private:
 	void Collision_ItemToPlayer();
-	void Check_ItemPos();
+	void Check_ItemPos(int itemIndex);
 
 public:
 	list<shared_ptr<GameObject>>& GetCommonItemList() { return _commonItemList; }
@@ -42,9 +42,9 @@ private:
 	shared_ptr<MeshData> _uniqueItemMesh;
 	shared_ptr<MeshData> _treasureMesh;
 
-	array<Vec3, 30>		_itemPosArray;
+	array<Vec3, 40>		_itemPosArray;
 	int		_itemIndex = 0;
-	int		_maxItemIndex = 29;
+	int		_maxItemIndex = 39;
 
 	// 시간은 테스트용
 	float		_commonItemTimer = 0.f;

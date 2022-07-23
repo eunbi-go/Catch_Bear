@@ -134,7 +134,7 @@ void Player::Reset()
 
 	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
 	_speed = 10.f;
-	_bStunned = false;	// 이동 오류땜에 일단 꺼둠
+	//_bStunned = false;	// 이동 오류땜에 일단 꺼둠
 	_fShieldTime = 0.f;
 	_fBlindTime = 0.f;
 }
@@ -458,20 +458,20 @@ void Player::UseItem(int itemNum)
 		break;
 	}
 	case Item::ITEM_EFFECT::SPEED_DOWN:
-		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
-		Item_SpeedDown();
+		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
+		//Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
-		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
-		Item_Blind();
+		_curPlayerItem[Player::ITEM::BLIND] = true;	// test
+		//Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		Item_Silence();
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		Item_Stun();
+		_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		//Item_Stun();
 		break;
 	}
 }

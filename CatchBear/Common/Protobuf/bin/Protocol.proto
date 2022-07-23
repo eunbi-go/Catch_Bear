@@ -113,6 +113,16 @@ message S_USE_STUN
 	DEBUFITEMTYPE itemtype = 2;
 }
 
+message C_USE_SILENCE
+{
+	uint64 fromplayerid = 1;
+}
+
+message S_USE_SILENCE
+{
+	uint64 fromplayerid = 1;
+}
+
 message C_COLLIDPLAYERTOPLAYER
 {
 	uint64 fromplayerid = 1;

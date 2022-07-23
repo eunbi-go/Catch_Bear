@@ -562,6 +562,16 @@ bool Handle_S_USE_SHIELD(PacketSessionRef& session, Protocol::S_USE_SHIELD& pkt)
 	return true;
 }
 
+bool Handle_S_USE_SILENCE(PacketSessionRef& session, Protocol::S_USE_SILENCE& pkt)
+{
+	shared_ptr<GameObject>	_player = make_shared<GameObject>();
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_player = scene->GetPlayer(mysession->GetPlayerID());
 
+	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::DEBUFF_OFF, true);
+
+
+	return true;
+}
 
 

@@ -48,7 +48,7 @@ struct TableStruct_Protocol_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxiliaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[28]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[30]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -95,6 +95,9 @@ extern C_USE_DEBUFITEMDefaultTypeInternal _C_USE_DEBUFITEM_default_instance_;
 class C_USE_SHIELD;
 struct C_USE_SHIELDDefaultTypeInternal;
 extern C_USE_SHIELDDefaultTypeInternal _C_USE_SHIELD_default_instance_;
+class C_USE_SILENCE;
+struct C_USE_SILENCEDefaultTypeInternal;
+extern C_USE_SILENCEDefaultTypeInternal _C_USE_SILENCE_default_instance_;
 class C_USE_STUN;
 struct C_USE_STUNDefaultTypeInternal;
 extern C_USE_STUNDefaultTypeInternal _C_USE_STUN_default_instance_;
@@ -137,6 +140,9 @@ extern S_USE_DEBUFITEMDefaultTypeInternal _S_USE_DEBUFITEM_default_instance_;
 class S_USE_SHIELD;
 struct S_USE_SHIELDDefaultTypeInternal;
 extern S_USE_SHIELDDefaultTypeInternal _S_USE_SHIELD_default_instance_;
+class S_USE_SILENCE;
+struct S_USE_SILENCEDefaultTypeInternal;
+extern S_USE_SILENCEDefaultTypeInternal _S_USE_SILENCE_default_instance_;
 class S_USE_STUN;
 struct S_USE_STUNDefaultTypeInternal;
 extern S_USE_STUNDefaultTypeInternal _S_USE_STUN_default_instance_;
@@ -155,6 +161,7 @@ template<> ::Protocol::C_STATE* Arena::CreateMaybeMessage<::Protocol::C_STATE>(A
 template<> ::Protocol::C_STUNEND* Arena::CreateMaybeMessage<::Protocol::C_STUNEND>(Arena*);
 template<> ::Protocol::C_USE_DEBUFITEM* Arena::CreateMaybeMessage<::Protocol::C_USE_DEBUFITEM>(Arena*);
 template<> ::Protocol::C_USE_SHIELD* Arena::CreateMaybeMessage<::Protocol::C_USE_SHIELD>(Arena*);
+template<> ::Protocol::C_USE_SILENCE* Arena::CreateMaybeMessage<::Protocol::C_USE_SILENCE>(Arena*);
 template<> ::Protocol::C_USE_STUN* Arena::CreateMaybeMessage<::Protocol::C_USE_STUN>(Arena*);
 template<> ::Protocol::S_CHAT* Arena::CreateMaybeMessage<::Protocol::S_CHAT>(Arena*);
 template<> ::Protocol::S_COLLIDPLAYERTOPLAYER* Arena::CreateMaybeMessage<::Protocol::S_COLLIDPLAYERTOPLAYER>(Arena*);
@@ -169,6 +176,7 @@ template<> ::Protocol::S_STATE* Arena::CreateMaybeMessage<::Protocol::S_STATE>(A
 template<> ::Protocol::S_STUNEND* Arena::CreateMaybeMessage<::Protocol::S_STUNEND>(Arena*);
 template<> ::Protocol::S_USE_DEBUFITEM* Arena::CreateMaybeMessage<::Protocol::S_USE_DEBUFITEM>(Arena*);
 template<> ::Protocol::S_USE_SHIELD* Arena::CreateMaybeMessage<::Protocol::S_USE_SHIELD>(Arena*);
+template<> ::Protocol::S_USE_SILENCE* Arena::CreateMaybeMessage<::Protocol::S_USE_SILENCE>(Arena*);
 template<> ::Protocol::S_USE_STUN* Arena::CreateMaybeMessage<::Protocol::S_USE_STUN>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace Protocol {
@@ -2621,6 +2629,270 @@ class S_USE_STUN final :
 };
 // -------------------------------------------------------------------
 
+class C_USE_SILENCE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_USE_SILENCE) */ {
+ public:
+  inline C_USE_SILENCE() : C_USE_SILENCE(nullptr) {}
+  ~C_USE_SILENCE() override;
+  explicit constexpr C_USE_SILENCE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  C_USE_SILENCE(const C_USE_SILENCE& from);
+  C_USE_SILENCE(C_USE_SILENCE&& from) noexcept
+    : C_USE_SILENCE() {
+    *this = ::std::move(from);
+  }
+
+  inline C_USE_SILENCE& operator=(const C_USE_SILENCE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline C_USE_SILENCE& operator=(C_USE_SILENCE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const C_USE_SILENCE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const C_USE_SILENCE* internal_default_instance() {
+    return reinterpret_cast<const C_USE_SILENCE*>(
+               &_C_USE_SILENCE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    16;
+
+  friend void swap(C_USE_SILENCE& a, C_USE_SILENCE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(C_USE_SILENCE* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(C_USE_SILENCE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline C_USE_SILENCE* New() const final {
+    return new C_USE_SILENCE();
+  }
+
+  C_USE_SILENCE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<C_USE_SILENCE>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const C_USE_SILENCE& from);
+  void MergeFrom(const C_USE_SILENCE& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(C_USE_SILENCE* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.C_USE_SILENCE";
+  }
+  protected:
+  explicit C_USE_SILENCE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFromplayeridFieldNumber = 1,
+  };
+  // uint64 fromplayerid = 1;
+  void clear_fromplayerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid() const;
+  void set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_fromplayerid() const;
+  void _internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.C_USE_SILENCE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
+class S_USE_SILENCE final :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.S_USE_SILENCE) */ {
+ public:
+  inline S_USE_SILENCE() : S_USE_SILENCE(nullptr) {}
+  ~S_USE_SILENCE() override;
+  explicit constexpr S_USE_SILENCE(::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized);
+
+  S_USE_SILENCE(const S_USE_SILENCE& from);
+  S_USE_SILENCE(S_USE_SILENCE&& from) noexcept
+    : S_USE_SILENCE() {
+    *this = ::std::move(from);
+  }
+
+  inline S_USE_SILENCE& operator=(const S_USE_SILENCE& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline S_USE_SILENCE& operator=(S_USE_SILENCE&& from) noexcept {
+    if (this == &from) return *this;
+    if (GetOwningArena() == from.GetOwningArena()) {
+      InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return default_instance().GetMetadata().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return default_instance().GetMetadata().reflection;
+  }
+  static const S_USE_SILENCE& default_instance() {
+    return *internal_default_instance();
+  }
+  static inline const S_USE_SILENCE* internal_default_instance() {
+    return reinterpret_cast<const S_USE_SILENCE*>(
+               &_S_USE_SILENCE_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    17;
+
+  friend void swap(S_USE_SILENCE& a, S_USE_SILENCE& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(S_USE_SILENCE* other) {
+    if (other == this) return;
+    if (GetOwningArena() == other->GetOwningArena()) {
+      InternalSwap(other);
+    } else {
+      ::PROTOBUF_NAMESPACE_ID::internal::GenericSwap(this, other);
+    }
+  }
+  void UnsafeArenaSwap(S_USE_SILENCE* other) {
+    if (other == this) return;
+    GOOGLE_DCHECK(GetOwningArena() == other->GetOwningArena());
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline S_USE_SILENCE* New() const final {
+    return new S_USE_SILENCE();
+  }
+
+  S_USE_SILENCE* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<S_USE_SILENCE>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const S_USE_SILENCE& from);
+  void MergeFrom(const S_USE_SILENCE& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(S_USE_SILENCE* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "Protocol.S_USE_SILENCE";
+  }
+  protected:
+  explicit S_USE_SILENCE(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  private:
+  static void ArenaDtor(void* object);
+  inline void RegisterArenaDtor(::PROTOBUF_NAMESPACE_ID::Arena* arena);
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kFromplayeridFieldNumber = 1,
+  };
+  // uint64 fromplayerid = 1;
+  void clear_fromplayerid();
+  ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid() const;
+  void set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::uint64 _internal_fromplayerid() const;
+  void _internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:Protocol.S_USE_SILENCE)
+ private:
+  class _Internal;
+
+  template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
+  typedef void InternalArenaConstructable_;
+  typedef void DestructorSkippable_;
+  ::PROTOBUF_NAMESPACE_ID::uint64 fromplayerid_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_Protocol_2eproto;
+};
+// -------------------------------------------------------------------
+
 class C_COLLIDPLAYERTOPLAYER final :
     public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:Protocol.C_COLLIDPLAYERTOPLAYER) */ {
  public:
@@ -2665,7 +2937,7 @@ class C_COLLIDPLAYERTOPLAYER final :
                &_C_COLLIDPLAYERTOPLAYER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    16;
+    18;
 
   friend void swap(C_COLLIDPLAYERTOPLAYER& a, C_COLLIDPLAYERTOPLAYER& b) {
     a.Swap(&b);
@@ -2808,7 +3080,7 @@ class S_COLLIDPLAYERTOPLAYER final :
                &_S_COLLIDPLAYERTOPLAYER_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    17;
+    19;
 
   friend void swap(S_COLLIDPLAYERTOPLAYER& a, S_COLLIDPLAYERTOPLAYER& b) {
     a.Swap(&b);
@@ -2951,7 +3223,7 @@ class C_PLAYERINFO final :
                &_C_PLAYERINFO_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    18;
+    20;
 
   friend void swap(C_PLAYERINFO& a, C_PLAYERINFO& b) {
     a.Swap(&b);
@@ -3105,7 +3377,7 @@ class S_PLAYERINFO final :
                &_S_PLAYERINFO_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    19;
+    21;
 
   friend void swap(S_PLAYERINFO& a, S_PLAYERINFO& b) {
     a.Swap(&b);
@@ -3259,7 +3531,7 @@ class C_STATE final :
                &_C_STATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    20;
+    22;
 
   friend void swap(C_STATE& a, C_STATE& b) {
     a.Swap(&b);
@@ -3402,7 +3674,7 @@ class S_STATE final :
                &_S_STATE_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    21;
+    23;
 
   friend void swap(S_STATE& a, S_STATE& b) {
     a.Swap(&b);
@@ -3545,7 +3817,7 @@ class C_PLUSTIME final :
                &_C_PLUSTIME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    22;
+    24;
 
   friend void swap(C_PLUSTIME& a, C_PLUSTIME& b) {
     a.Swap(&b);
@@ -3677,7 +3949,7 @@ class S_PLUSTIME final :
                &_S_PLUSTIME_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    23;
+    25;
 
   friend void swap(S_PLUSTIME& a, S_PLUSTIME& b) {
     a.Swap(&b);
@@ -3809,7 +4081,7 @@ class C_STUNEND final :
                &_C_STUNEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    24;
+    26;
 
   friend void swap(C_STUNEND& a, C_STUNEND& b) {
     a.Swap(&b);
@@ -3941,7 +4213,7 @@ class S_STUNEND final :
                &_S_STUNEND_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    25;
+    27;
 
   friend void swap(S_STUNEND& a, S_STUNEND& b) {
     a.Swap(&b);
@@ -4073,7 +4345,7 @@ class C_USE_SHIELD final :
                &_C_USE_SHIELD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    26;
+    28;
 
   friend void swap(C_USE_SHIELD& a, C_USE_SHIELD& b) {
     a.Swap(&b);
@@ -4205,7 +4477,7 @@ class S_USE_SHIELD final :
                &_S_USE_SHIELD_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    27;
+    29;
 
   friend void swap(S_USE_SHIELD& a, S_USE_SHIELD& b) {
     a.Swap(&b);
@@ -5339,6 +5611,54 @@ inline void S_USE_STUN::set_itemtype(::Protocol::DEBUFITEMTYPE value) {
 
 // -------------------------------------------------------------------
 
+// C_USE_SILENCE
+
+// uint64 fromplayerid = 1;
+inline void C_USE_SILENCE::clear_fromplayerid() {
+  fromplayerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_USE_SILENCE::_internal_fromplayerid() const {
+  return fromplayerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 C_USE_SILENCE::fromplayerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.C_USE_SILENCE.fromplayerid)
+  return _internal_fromplayerid();
+}
+inline void C_USE_SILENCE::_internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  fromplayerid_ = value;
+}
+inline void C_USE_SILENCE::set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_fromplayerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.C_USE_SILENCE.fromplayerid)
+}
+
+// -------------------------------------------------------------------
+
+// S_USE_SILENCE
+
+// uint64 fromplayerid = 1;
+inline void S_USE_SILENCE::clear_fromplayerid() {
+  fromplayerid_ = uint64_t{0u};
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_USE_SILENCE::_internal_fromplayerid() const {
+  return fromplayerid_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::uint64 S_USE_SILENCE::fromplayerid() const {
+  // @@protoc_insertion_point(field_get:Protocol.S_USE_SILENCE.fromplayerid)
+  return _internal_fromplayerid();
+}
+inline void S_USE_SILENCE::_internal_set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  
+  fromplayerid_ = value;
+}
+inline void S_USE_SILENCE::set_fromplayerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
+  _internal_set_fromplayerid(value);
+  // @@protoc_insertion_point(field_set:Protocol.S_USE_SILENCE.fromplayerid)
+}
+
+// -------------------------------------------------------------------
+
 // C_COLLIDPLAYERTOPLAYER
 
 // uint64 fromplayerid = 1;
@@ -5788,6 +6108,10 @@ inline void S_USE_SHIELD::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

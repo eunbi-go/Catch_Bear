@@ -22,18 +22,20 @@ enum : uint16
 	PKT_S_USE_DEBUFITEM = 1013,
 	PKT_C_USE_STUN = 1014,
 	PKT_S_USE_STUN = 1015,
-	PKT_C_COLLIDPLAYERTOPLAYER = 1016,
-	PKT_S_COLLIDPLAYERTOPLAYER = 1017,
-	PKT_C_PLAYERINFO = 1018,
-	PKT_S_PLAYERINFO = 1019,
-	PKT_C_STATE = 1020,
-	PKT_S_STATE = 1021,
-	PKT_C_PLUSTIME = 1022,
-	PKT_S_PLUSTIME = 1023,
-	PKT_C_STUNEND = 1024,
-	PKT_S_STUNEND = 1025,
-	PKT_C_USE_SHIELD = 1026,
-	PKT_S_USE_SHIELD = 1027,
+	PKT_C_USE_SILENCE = 1016,
+	PKT_S_USE_SILENCE = 1017,
+	PKT_C_COLLIDPLAYERTOPLAYER = 1018,
+	PKT_S_COLLIDPLAYERTOPLAYER = 1019,
+	PKT_C_PLAYERINFO = 1020,
+	PKT_S_PLAYERINFO = 1021,
+	PKT_C_STATE = 1022,
+	PKT_S_STATE = 1023,
+	PKT_C_PLUSTIME = 1024,
+	PKT_S_PLUSTIME = 1025,
+	PKT_C_STUNEND = 1026,
+	PKT_S_STUNEND = 1027,
+	PKT_C_USE_SHIELD = 1028,
+	PKT_S_USE_SHIELD = 1029,
 };
 
 // Custom Handlers
@@ -46,6 +48,7 @@ bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt);
 bool Handle_S_MOVE(PacketSessionRef& session, Protocol::S_MOVE& pkt);
 bool Handle_S_USE_DEBUFITEM(PacketSessionRef& session, Protocol::S_USE_DEBUFITEM& pkt);
 bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt);
+bool Handle_S_USE_SILENCE(PacketSessionRef& session, Protocol::S_USE_SILENCE& pkt);
 bool Handle_S_COLLIDPLAYERTOPLAYER(PacketSessionRef& session, Protocol::S_COLLIDPLAYERTOPLAYER& pkt);
 bool Handle_S_PLAYERINFO(PacketSessionRef& session, Protocol::S_PLAYERINFO& pkt);
 bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt);
@@ -68,6 +71,7 @@ public:
 		GPacketHandler[PKT_S_MOVE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_MOVE>(Handle_S_MOVE, session, buffer, len); };
 		GPacketHandler[PKT_S_USE_DEBUFITEM] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_DEBUFITEM>(Handle_S_USE_DEBUFITEM, session, buffer, len); };
 		GPacketHandler[PKT_S_USE_STUN] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_STUN>(Handle_S_USE_STUN, session, buffer, len); };
+		GPacketHandler[PKT_S_USE_SILENCE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_SILENCE>(Handle_S_USE_SILENCE, session, buffer, len); };
 		GPacketHandler[PKT_S_COLLIDPLAYERTOPLAYER] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_COLLIDPLAYERTOPLAYER>(Handle_S_COLLIDPLAYERTOPLAYER, session, buffer, len); };
 		GPacketHandler[PKT_S_PLAYERINFO] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLAYERINFO>(Handle_S_PLAYERINFO, session, buffer, len); };
 		GPacketHandler[PKT_S_STATE] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STATE>(Handle_S_STATE, session, buffer, len); };
@@ -89,6 +93,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_MOVE& pkt) { return MakeSendBuffer(pkt, PKT_C_MOVE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_USE_DEBUFITEM& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_DEBUFITEM); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_USE_STUN& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_STUN); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_USE_SILENCE& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_SILENCE); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_COLLIDPLAYERTOPLAYER& pkt) { return MakeSendBuffer(pkt, PKT_C_COLLIDPLAYERTOPLAYER); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLAYERINFO& pkt) { return MakeSendBuffer(pkt, PKT_C_PLAYERINFO); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_STATE& pkt) { return MakeSendBuffer(pkt, PKT_C_STATE); }

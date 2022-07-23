@@ -13,7 +13,7 @@
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 std::mutex m;
 
-int CurPlayerNum = 3;
+int CurPlayerNum = 1;
 
 // Á÷Á¢ ÄÁÅÙÃ÷ ÀÛ¾÷ÀÚ
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -341,5 +341,14 @@ bool Handle_C_USE_SHIELD(PacketSessionRef& session, Protocol::C_USE_SHIELD& pkt)
 
 	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(UseShieldPkt);
 	GInGame.Broadcast(sendBuffer);
+	return true;
+}
+
+bool Handle_C_USE_SILENCE(PacketSessionRef& session, Protocol::C_USE_SILENCE& pkt)
+{
+	Protocol::S_USE_SILENCE s_pkt;
+	s_pkt.set_fromplayerid(pkt.fromplayerid());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(s_pkt);
+	GInGame.ExceptBroadcast(pkt.fromplayerid(), sendBuffer);
 	return true;
 }

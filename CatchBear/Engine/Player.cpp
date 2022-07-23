@@ -789,6 +789,10 @@ void Player::Item_Stun()
 void Player::Item_Silence()
 {
 	// 서버 부분
+	Protocol::C_USE_SILENCE pkt;
+	pkt.set_fromplayerid(mysession->GetPlayerID());
+	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+	mysession->Send(sendBuffer);
 }
 
 void Player::SlowDown()
@@ -872,7 +876,7 @@ void Player::Stunned()
 	}
 }
 
-void Player::Silence()
+void Player::Silence() 
 {
 	if (CheckShield())
 	{

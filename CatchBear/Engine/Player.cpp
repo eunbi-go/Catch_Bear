@@ -134,7 +134,7 @@ void Player::Reset()
 
 	// 플레이어 멤버변수들 초기화 (혹시 모르니 해둠)
 	_speed = 10.f;
-	_bStunned = false;	// 이동 오류땜에 일단 꺼둠
+	//_bStunned = false;	// 이동 오류땜에 일단 꺼둠
 	_fShieldTime = 0.f;
 	_fBlindTime = 0.f;
 }

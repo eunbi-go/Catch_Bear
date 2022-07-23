@@ -36,6 +36,8 @@ enum : uint16
 	PKT_S_STUNEND = 1027,
 	PKT_C_USE_SHIELD = 1028,
 	PKT_S_USE_SHIELD = 1029,
+	PKT_C_RESTART = 1030,
+	PKT_S_RESTART = 1031,
 };
 
 // Custom Handlers
@@ -55,6 +57,7 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt);
 bool Handle_S_PLUSTIME(PacketSessionRef& session, Protocol::S_PLUSTIME& pkt);
 bool Handle_S_STUNEND(PacketSessionRef& session, Protocol::S_STUNEND& pkt);
 bool Handle_S_USE_SHIELD(PacketSessionRef& session, Protocol::S_USE_SHIELD& pkt);
+bool Handle_S_RESTART(PacketSessionRef& session, Protocol::S_RESTART& pkt);
 
 class ServerPacketHandler
 {
@@ -78,6 +81,7 @@ public:
 		GPacketHandler[PKT_S_PLUSTIME] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_PLUSTIME>(Handle_S_PLUSTIME, session, buffer, len); };
 		GPacketHandler[PKT_S_STUNEND] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_STUNEND>(Handle_S_STUNEND, session, buffer, len); };
 		GPacketHandler[PKT_S_USE_SHIELD] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_USE_SHIELD>(Handle_S_USE_SHIELD, session, buffer, len); };
+		GPacketHandler[PKT_S_RESTART] = [](PacketSessionRef& session, BYTE* buffer, int32 len) { return HandlePacket<Protocol::S_RESTART>(Handle_S_RESTART, session, buffer, len); };
 	}
 
 	static bool HandlePacket(PacketSessionRef& session, BYTE* buffer, int32 len)
@@ -100,6 +104,7 @@ public:
 	static SendBufferRef MakeSendBuffer(Protocol::C_PLUSTIME& pkt) { return MakeSendBuffer(pkt, PKT_C_PLUSTIME); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_STUNEND& pkt) { return MakeSendBuffer(pkt, PKT_C_STUNEND); }
 	static SendBufferRef MakeSendBuffer(Protocol::C_USE_SHIELD& pkt) { return MakeSendBuffer(pkt, PKT_C_USE_SHIELD); }
+	static SendBufferRef MakeSendBuffer(Protocol::C_RESTART& pkt) { return MakeSendBuffer(pkt, PKT_C_RESTART); }
 
 private:
 	template<typename PacketType, typename ProcessFunc>

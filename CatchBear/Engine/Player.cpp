@@ -281,6 +281,12 @@ void Player::Move()
 
 		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
 			scene->_FinalPlayerEnter = true;
+
+		// 실드 버그 대문에 시작할때 실드 패킷 한번 보내고 시작
+		Protocol::C_USE_SHIELD pkt;
+		pkt.set_playerid(mysession->GetPlayerID());
+		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+		mysession->Send(sendBuffer);
 	}
 
 	for (auto& gameObject : gameObjects)
@@ -450,6 +456,7 @@ void Player::UseItem(int itemNum)
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = true;
 		_shieldPlayerIdx = mysession->GetPlayerID();
+
 		// Server
 		Protocol::C_USE_SHIELD pkt;
 		pkt.set_playerid(mysession->GetPlayerID());
@@ -739,7 +746,9 @@ void Player::Item_Shield()
 	else if (_fShieldTime > 5.f)
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
-		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+
+		if (mysession->GetPlayerID() == _shieldPlayerIdx)
+			GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();
 		_fShieldTime = 0.f;
 		cout << "5초 지나고 쉴드 끝" << endl;

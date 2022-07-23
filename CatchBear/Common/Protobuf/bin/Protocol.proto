@@ -190,3 +190,13 @@ message S_USE_SHIELD
 {
 	uint64 playerid = 1;
 }
+
+message C_RESTART
+{
+	uint64 playerid = 1;
+}
+
+message S_RESTART
+{
+	uint64 playerid = 1;
+}

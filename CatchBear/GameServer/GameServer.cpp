@@ -20,6 +20,7 @@ int main(){
 	ServerServiceRef service = MakeShared<ServerService>(
 		NetAddress(L"127.0.0.1", 7777),
 		//NetAddress(L"222.117.32.23", 7777),
+		//NetAddress(L"172.30.1.7", 7777),
 		//NetAddress(MyIpAddr, 7777),
 		MakeShared<IocpCore>(),
 		MakeShared<GameSession>, // TODO : SessionManager 등

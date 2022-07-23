@@ -28,6 +28,7 @@ private:
 private:
 	float	_scoreTime = 0.f;
 	bool	_bRanked = false;
+	bool	_bTaggerReset = false;
 
 	shared_ptr<GameObject>	_myPlayer;
 

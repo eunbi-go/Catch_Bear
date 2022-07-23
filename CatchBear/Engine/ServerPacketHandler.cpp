@@ -177,12 +177,16 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 		_player = scene->GetPlayer(pkt.taggerplayerid());
 
+		scene->SetCurTime(0.f);
+
 		if (_player == nullptr) 
 		{
 			cout << "술래 플레이어 정해지지 않음\n";
 			return true;
 		}
 		_player->SetIsTagger(true);	
+
+		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(0);
 		cout << "모든 플레이어 접속 완료!\n";
 		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
@@ -559,6 +563,12 @@ bool Handle_S_USE_SHIELD(PacketSessionRef& session, Protocol::S_USE_SHIELD& pkt)
 	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SHIELD, true);
 	static_pointer_cast<Player>(_player->GetScript(0))->SetShieldEffectPlayerIndex((int)pkt.playerid());
 	//static_pointer_cast<Player>(_player->GetScript(0))->Server_Item_Shield();
+	return true;
+}
+
+bool Handle_S_RESTART(PacketSessionRef& session, Protocol::S_RESTART& pkt)
+{
+	GET_SINGLE(SceneManager)->ReStart();
 	return true;
 }
 

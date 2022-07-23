@@ -120,10 +120,24 @@ void StageScene::SetTimer()
 	shared_ptr<GameObject> tTimer = GetGameObject(L"tenSecond");
 	shared_ptr<GameObject> oTimer = GetGameObject(L"oneSecond");
 	shared_ptr<Texture> textureMinute, textureTenSec, textureOneSec;
-
+	
 	_curTime += DELTA_TIME;
 
-	float time = 180.0f - _curTime;
+	float time;
+
+	if (_curTime < 5.f)
+		time = 180.0f;
+	else
+	{
+		if (!_isTimerStart)
+		{
+			_curTime = 0.f;
+			_isTimerStart = true;
+		}
+		time = 185.0f - _curTime;
+	}
+
+	//float time = 180.0f - _curTime;
 	if (_curTime >= 180.0f)
 		int k = 0;
 
@@ -164,7 +178,9 @@ void StageScene::SetTimer()
 	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
 	pkt.set_score(myscore);
 	if (mysession->GetPlayerID() == (g_EnterPlayerCnt - 1))
+	{
 		pkt.set_timer(_curTime);
+	}
 	pkt.set_playerid(mysession->GetPlayerID());
 	if (gPacketControl % 60 == 1)
 	{
@@ -271,6 +287,12 @@ void StageScene::CheckMouse()
 			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
 			{
 				GET_SINGLE(SceneManager)->ReStart();
+
+				// Server
+				Protocol::C_RESTART pkt;
+				pkt.set_playerid(mysession->GetPlayerID());
+				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+				mysession->Send(sendBuffer);
 			}
 		}
 		else

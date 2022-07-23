@@ -274,14 +274,14 @@ void Player::Move()
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
-	//// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
-	//if (isFirstEnter) {
-	//	Item_Stun();
-	//	isFirstEnter = false;
+	// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
+	if (isFirstEnter) {
+		Item_Stun();
+		isFirstEnter = false;
 
-	//	if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
-	//		scene->_FinalPlayerEnter = true;
-	//}
+		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+			scene->_FinalPlayerEnter = true;
+	}
 
 	for (auto& gameObject : gameObjects)
 	{

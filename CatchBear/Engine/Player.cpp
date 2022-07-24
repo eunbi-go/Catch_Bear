@@ -75,9 +75,6 @@ void Player::LateUpdate()
 		_state->Enter(*_player);
 	}
 
-	//Vec3 pos = GetTransform()->GetLocalPosition();
-	//printf("%f, %f, %f\n", pos.x, pos.y, pos.z);
-
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);
 	GetTransform()->UpdateTransform(NULL);
@@ -468,20 +465,20 @@ void Player::UseItem(int itemNum)
 		break;
 	}
 	case Item::ITEM_EFFECT::SPEED_DOWN:
-		_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
-		//Item_SpeedDown();
+		//_curPlayerItem[Player::ITEM::SPEED_DOWN] = true;	// test
+		Item_SpeedDown();
 		break;
 	case Item::ITEM_EFFECT::BLIND:
-		_curPlayerItem[Player::ITEM::BLIND] = true;	// test
-		//Item_Blind();
+		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
+		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
 		Item_Silence();
 		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
-		_curPlayerItem[Player::ITEM::STUN] = true;	// test
-		//Item_Stun();
+		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
+		Item_Stun();
 		break;
 	}
 }

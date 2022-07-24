@@ -171,7 +171,8 @@ void StageScene::SetTimer()
 	{
 		ten = 5; one = 9;
 	}
-	if (minute == 0 && second < 1)
+
+	if (minute == 0 && second < 1)	// 게임 끝!
 	{
 		// 3분 다 지났으면 랭킹 정하기
 		SetFinalRanking();
@@ -185,7 +186,7 @@ void StageScene::SetTimer()
 		tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
 		oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
 	}
-	else
+	else    // 게임중!
 	{
 		wstring texTenName = L"timer" + s2ws(to_string(ten));
 		wstring texOneName = L"timer" + s2ws(to_string(one));

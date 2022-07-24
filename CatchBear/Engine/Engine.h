@@ -80,6 +80,6 @@ public:
 	// 모든 플레이어 준비 검사하는 변수
 	bool	_isAllPlayerEnter = false;
 
-	int		PLAYER_NUM = 1;	// 몇인용인지	
+	int		PLAYER_NUM = 2;	// 몇인용인지	
 };
 

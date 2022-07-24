@@ -13,7 +13,7 @@
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 std::mutex m;
 
-int CurPlayerNum = 1;
+int CurPlayerNum = 2;
 
 // Á÷Á¢ ÄÁÅÙÃ÷ ÀÛ¾÷ÀÚ
 bool Handle_INVALID(PacketSessionRef& session, BYTE* buffer, int32 len)

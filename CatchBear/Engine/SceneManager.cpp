@@ -466,6 +466,23 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 #pragma endregion
 
 
+#pragma region CenterHouse
+	{
+		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"House01.bin");
+
+		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+		for (auto& gameObject : objectsHeart)
+		{
+			gameObject->SetName(L"House");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.0f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.015f, 0.015f, 0.015f));
+			scene->AddGameObject(gameObject);
+		}
+	}
+#pragma endregion
+
 
 #pragma region ItemSlotUI
 	// 1.

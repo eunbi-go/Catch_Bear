@@ -463,6 +463,15 @@ bool Handle_S_STATE(PacketSessionRef& session, Protocol::S_STATE& pkt)
 		}
 		break;
 	case Protocol::DASH:
+		/*if (static_pointer_cast<Player>(_player->GetScript(0))->_state->curState != STATE::DASH)
+		{
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->End(*_player);
+			delete static_pointer_cast<Player>(_player->GetScript(0))->_state;
+			state = new DashState;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state = state;
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->Enter(*_player);
+			static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::DASH;
+		}*/
 		if (_player->_state->curState != STATE::DASH)
 		{
 			_player->_state->End(*_player);

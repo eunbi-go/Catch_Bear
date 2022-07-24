@@ -61,6 +61,9 @@ void Player::LateUpdate()
 
 	////////////////////////////////////////////////////////////////////
 	// 이 부분은 직접 플레이하고 있는 플레이어에만 적용되야 함!!
+	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_player = scene->GetPlayer(mysession->GetPlayerID());
+
 	PlayerState* state = _state->Update(*_player, _curStatePlayer);
 	_player->_curState = _curStatePlayer;
 
@@ -708,6 +711,8 @@ void Player::Item_SpeedUp()
 	// 스피드 변경 전 한번만 하도록
 	if (_speed != _dashSpeed)
 	{
+		_speed = _dashSpeed;
+
 		_state->End(*_player);
 		delete _state;
 		_state = new DashState;

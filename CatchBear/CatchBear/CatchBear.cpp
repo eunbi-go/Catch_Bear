@@ -255,9 +255,12 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
     case WM_CHAR:   // 문자 넘어오기
         if (wparam == 8/*VK_BACK*/)
         {
-            strText[strlen(strText) - 1] = 0;
-            memset(Cstr, 0, 10);
-            game->setString(strText);
+            if (strlen(strText))
+            {           
+                strText[strlen(strText) - 1] = 0;
+                memset(Cstr, 0, 10);
+                game->setString(strText);
+            }
         }
         else if (wparam == VK_RETURN)
         {

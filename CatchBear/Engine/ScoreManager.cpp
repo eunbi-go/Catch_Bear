@@ -20,6 +20,17 @@ const vector<shared_ptr<GameObject>>& ScoreManager::GetVecRankedPlayers()
 		return _vecRankedPlayers;
 }
 
+void ScoreManager::InitScore()
+{
+	auto& scene = GET_SINGLE(SceneManager)->GetActiveScene();
+	_vecRankedPlayers = scene->GetVecPlayers();
+
+	for (auto player : _vecRankedPlayers)
+	{
+		static_pointer_cast<Player>(player->GetScript(0))->SetPlayerScore(0);
+	}
+}
+
 void ScoreManager::AddScore()
 {
 	// 1초에 1점씩 올라감

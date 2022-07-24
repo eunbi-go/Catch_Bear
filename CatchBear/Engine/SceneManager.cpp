@@ -42,6 +42,7 @@
 #include "Button.h"
 #include "PlayerIcon.h"
 #include "ReadyButton.h"
+#include "SoundManager.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -147,6 +148,13 @@ void SceneManager::ReStart()
 
 	// 아이템
 	GET_SINGLE(ItemManager)->Reset();
+
+	// 점수
+	GET_SINGLE(ScoreManager)->InitScore();
+
+	// 사운드
+	GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 }
 
 
@@ -458,6 +466,25 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 	}
 #pragma endregion
 
+
+#pragma region CenterHouse
+	{
+		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"House01.bin");
+
+		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+		for (auto& gameObject : objectsHeart)
+		{
+			gameObject->SetName(L"House");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.0f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.015f, 0.015f, 0.015f));
+			scene->AddGameObject(gameObject);
+		}
+	}
+#pragma endregion
+
+
 #pragma region ItemSlotUI
 	// 1.
 	shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
@@ -627,6 +654,92 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 	scene->AddItemCoolTime(itemCoolTime3);
 	scene->AddGameObject(itemCoolTime3);
+#pragma endregion
+
+#pragma region Silence
+	{
+		// 1.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot1_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-450.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
+
+	{
+		// 2.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot2_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
+
+	{
+		// 3.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot3_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-210.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
 #pragma endregion
 
 #pragma region ItemWnd

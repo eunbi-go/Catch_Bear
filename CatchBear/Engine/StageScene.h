@@ -22,6 +22,8 @@ private:
 	void CheckMouse();
 	void CheckTagger();
 
+	void InitUI();
+
 public:
 	POINT GetMousePos() { return _mousePos; }
 

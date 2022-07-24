@@ -22,6 +22,8 @@ public:
 	void SetMyPlayer(shared_ptr<GameObject> myPlayer) { _myPlayer = myPlayer; }
 	const vector<shared_ptr<GameObject>>& GetVecRankedPlayers();
 
+	void InitScore();
+
 private:
 	void AddScore();
 

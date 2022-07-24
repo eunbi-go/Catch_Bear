@@ -18,7 +18,7 @@ public:
 	enum ITEM_EFFECT
 	{
 		/*일반 아이템*/	 SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-		/*유니크 아이템*/ DEBUFF_OFF, STUN,
+		/*유니크 아이템*/ SILENCE, STUN,
 		/*보물	   	*/	 TREASURE,
 		ITEM_EFFECT_END, NONE,
 	};

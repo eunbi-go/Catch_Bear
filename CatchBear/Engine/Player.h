@@ -18,7 +18,7 @@ public:
 	enum ITEM
 	{
 		SPEED_UP, TELEPORT, SHIELD, SPEED_DOWN, BLIND,
-		DEBUFF_OFF, STUN, ITEM_END, NONE,	// DEBUFF_OFF -> SILENCE
+		SILENCE, STUN, ITEM_END, NONE,
 	};
 
 	//장애물 극복 방향을 위해 만듬
@@ -79,7 +79,6 @@ private:
 	void Item_Shield();
 	void Item_SpeedDown();
 	void Item_Blind();
-	void Item_DebuffOff();
 	void Item_Stun();
 	void Item_Silence();
 

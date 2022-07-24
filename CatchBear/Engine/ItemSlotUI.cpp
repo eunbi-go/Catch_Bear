@@ -51,8 +51,7 @@ void ItemSlotUI::SetItem(Item::ITEM_EFFECT item)
 		_texName = L"blind";
 		_fCoolTime = 5.f;
 		break;
-	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		//_texName = L"debuff_off";
+	case Item::ITEM_EFFECT::SILENCE:
 		_texName = L"silence";
 		break;
 	case Item::ITEM_EFFECT::STUN:
@@ -99,7 +98,7 @@ void ItemSlotUI::CheckItem()
 	case Item::ITEM_EFFECT::BLIND:
 		//GetGameObject()->_isRender = false;
 		break;
-	case Item::ITEM_EFFECT::DEBUFF_OFF:
+	case Item::ITEM_EFFECT::SILENCE:
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		//GetGameObject()->_isRender = false;

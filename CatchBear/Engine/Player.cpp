@@ -401,7 +401,7 @@ void Player::Move()
 void Player::KeyCheck_Item()
 {
 	// 침묵상태이면 아이템 사용 X
-	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence, enum값 ui 변경 후에 수정
+	if (_curPlayerItem[Player::ITEM::SILENCE])
 		return;
 
 	// 아이템 사용 키입력 - 1, 2, 3
@@ -472,9 +472,9 @@ void Player::UseItem(int itemNum)
 		//_curPlayerItem[Player::ITEM::BLIND] = true;	// test
 		Item_Blind();
 		break;
-	case Item::ITEM_EFFECT::DEBUFF_OFF:
+	case Item::ITEM_EFFECT::SILENCE:
 		Item_Silence();
-		//_curPlayerItem[Player::ITEM::DEBUFF_OFF] = true;
+		//_curPlayerItem[Player::ITEM::SILENCE] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
@@ -502,7 +502,7 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	if (_curPlayerItem[Player::ITEM::DEBUFF_OFF])	// Silence로 변경, enum값은 ui 변경 후 수정예정
+	if (_curPlayerItem[Player::ITEM::SILENCE])	// Silence로 변경, enum값은 ui 변경 후 수정예정
 		Silence();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
@@ -582,7 +582,7 @@ bool Player::CheckShield()
 bool Player::CheckDebuff(Item::ITEM_EFFECT itemEffect)
 {
 	// 아이템 사용 키체크 전에 호출
-	// 디버프 효과를 받는 중이라면, DEBUFF_OFF 아이템을 제외한 버프 아이템 사용 불가능 -> true 리턴
+	// 디버프 효과를 받는 중이라면, 버프 아이템 사용 불가능 -> true 리턴
 	if (_curPlayerItem[ITEM::SPEED_DOWN] || _curPlayerItem[ITEM::BLIND] || _curPlayerItem[ITEM::STUN])
 	{
 		if (itemEffect == Item::ITEM_EFFECT::SPEED_UP ||
@@ -662,8 +662,8 @@ void Player::KeyCheck_Cheat()
 	}
 	if (INPUT->GetButtonDown(KEY_TYPE::V))
 	{
-		_playerItemArr[0] = Item::ITEM_EFFECT::DEBUFF_OFF;
-		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::DEBUFF_OFF);
+		_playerItemArr[0] = Item::ITEM_EFFECT::SILENCE;
+		GET_SINGLE(ItemSlotManager)->AddItem_Cheat(Item::ITEM_EFFECT::SILENCE);
 		if (_playerItemArr[0] == Item::ITEM_EFFECT::NONE)
 			_iItemCnt++;
 	}
@@ -697,7 +697,7 @@ void Player::KeyCheck_Cheat()
 		cout << "Shield: " << _curPlayerItem[ITEM::SHIELD] << endl;
 		cout << "SpeedDown: " << _curPlayerItem[ITEM::SPEED_DOWN] << endl;
 		cout << "Blind: " << _curPlayerItem[ITEM::BLIND] << endl;
-		cout << "DebuffOff: " << _curPlayerItem[ITEM::DEBUFF_OFF] << endl;
+		cout << "Silence: " << _curPlayerItem[ITEM::SILENCE] << endl;
 		cout << "Stun: " << _curPlayerItem[ITEM::STUN] << endl;
 		cout << endl;
 	}
@@ -777,14 +777,6 @@ void Player::Item_Blind()
 	auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 	mysession->Send(sendBuffer);
 	///////////////////////////////////////////
-}
-
-void Player::Item_DebuffOff()
-{
-	// 유니크 아이템 - 자신에게 걸려있는 모든 디버프 해제
-	// 디버프: SPEED_DOWN, BLIND, STUN
-	ClearDebuff();
-	_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
 }
 
 void Player::Item_Stun()
@@ -891,7 +883,6 @@ void Player::Silence()
 {
 	if (CheckShield())
 	{
-		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;
 		cout << "쉴드 방어: SILENCE" << endl;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		return;
@@ -905,7 +896,7 @@ void Player::Silence()
 	if (_fSilenceTime >= 5.f)
 	{
 		_fSilenceTime = 0.f;
-		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;	// enum값 Silence로 수정할 예정
+		_curPlayerItem[Player::ITEM::SILENCE] = false;
 
 			// UI 변경
 		GET_SINGLE(ItemSlotManager)->IsSilenced(false);

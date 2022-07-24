@@ -293,6 +293,10 @@ void MeshData::LoadMaterialInfoFromFile(FILE* pFile)
 				_staticMeshInfo.material.diffuseTexName = L"Simplistic_Nature_Texture";
 			else if (!strcmp(pStrTocken, "Collectibles_2"))
 				_staticMeshInfo.material.diffuseTexName = L"Gem1Blue";
+			else if (!strcmp(pStrTocken, "Townrama_houses"))
+				_staticMeshInfo.material.diffuseTexName = L"StylizedTownTex";
+			else if (!strcmp(pStrTocken, "FK01"))
+				_staticMeshInfo.material.diffuseTexName = L"FK01";
 			else
 				int k = 0;
 		}

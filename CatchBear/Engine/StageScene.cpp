@@ -21,6 +21,7 @@
 #include "ItemWindow.h"
 #include "PlayerState.h"
 #include "SceneManager.h"
+#include "ScoreUIManager.h"
 
 StageScene::StageScene()
 {
@@ -32,8 +33,8 @@ StageScene::~StageScene()
 
 void StageScene::Awake()
 {
-	/*GET_SINGLE(SoundManager)->StopAll();
-	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");*/
+	GET_SINGLE(SoundManager)->StopAll();
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 
 }
 
@@ -139,6 +140,12 @@ void StageScene::SetTimer()
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
 
+	if (minute >= 2)
+	{
+		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+		GET_SINGLE(SoundManager)->PlayBGM(L"speedBGM.mp3");
+	}
+
 	// secondTimer
 	int second = (int)(time) % 60;
 	int ten = second / 10;
@@ -152,6 +159,9 @@ void StageScene::SetTimer()
 		// 3분 다 지났으면 랭킹 정하기
 		SetFinalRanking();
 		_isFinish = true;
+
+		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+		GET_SINGLE(SoundManager)->PlayBGM(L"ending.mp3");
 	}
 	wstring texTenName = L"timer" + s2ws(to_string(ten));
 	wstring texOneName = L"timer" + s2ws(to_string(one));
@@ -271,6 +281,7 @@ void StageScene::CheckMouse()
 			if (INPUT->GetButtonDown(KEY_TYPE::LBUTTON))
 			{
 				GET_SINGLE(SceneManager)->ReStart();
+				InitUI();
 			}
 		}
 		else
@@ -309,5 +320,47 @@ void StageScene::CheckTagger()
 			}
 			break;
 		}
+	}
+}
+
+void StageScene::InitUI()
+{
+	shared_ptr<GameObject>	ranking = GetGameObject(L"finalRanking");
+	ranking->_isRender = false;
+
+	vector<shared_ptr<GameObject>> players = GET_SINGLE(ScoreManager)->GetVecRankedPlayers();
+	int scores[3] = {};
+	wstring playerName[3] = {};
+
+	for (size_t i = 0; i < players.size(); ++i)
+	{
+		scores[i] = static_pointer_cast<Player>(players[i]->GetScript(0))->GetPlayerScore();
+		playerName[i] = players[i]->GetName();
+
+		wstring scoreUIName1 = playerName[i] + L"Score1";
+		wstring scoreUIName2 = playerName[i] + L"Score2";
+		wstring scoreUIName3 = playerName[i] + L"Score3";
+		wstring scoreIconName = playerName[i] + L"ScoreIcon";
+
+		shared_ptr<GameObject> mScore1 = GetGameObject(scoreUIName1);
+		shared_ptr<GameObject> mScore2 = GetGameObject(scoreUIName2);
+		shared_ptr<GameObject> mScore3 = GetGameObject(scoreUIName3);
+		shared_ptr<GameObject> mIcon = GetGameObject(scoreIconName);
+
+		// 위치, 크기 재설정해야 함
+
+		mIcon->GetTransform()->SetLocalPosition(Vec3(400.f, 200.f - (i * 100.f), 500.f));
+		mIcon->GetTransform()->SetLocalScale(Vec3(80.f, 80.f, 50.f));
+
+		mScore1->GetTransform()->SetLocalPosition(Vec3(450.f, 200.f - (i * 100.f), 500.f));
+		mScore1->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+		mScore2->GetTransform()->SetLocalPosition(Vec3(480.f, 200.f - (i * 100.f), 500.f));
+		mScore2->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+		mScore3->GetTransform()->SetLocalPosition(Vec3(510.f, 200.f - (i * 100.f), 500.f));
+		mScore3->GetTransform()->SetLocalScale(Vec3(50.f, 50.f, 50.f));
+
+		GET_SINGLE(ScoreUIManager)->SetPlayerScoreTexture(i+1, static_pointer_cast<Player>(players[i]->GetScript(0))->GetPlayerScore());
 	}
 }

@@ -24,8 +24,8 @@ LobbyScene::~LobbyScene()
 
 void LobbyScene::Awake()
 {
-	/*GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
-	GET_SINGLE(SoundManager)->PlayBGM(L"lobbyScene.wav");*/
+	GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+	GET_SINGLE(SoundManager)->PlayBGM(L"speedBGM.mp3");
 
 }
 

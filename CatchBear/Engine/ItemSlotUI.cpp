@@ -52,7 +52,8 @@ void ItemSlotUI::SetItem(Item::ITEM_EFFECT item)
 		_fCoolTime = 5.f;
 		break;
 	case Item::ITEM_EFFECT::DEBUFF_OFF:
-		_texName = L"debuff_off";
+		//_texName = L"debuff_off";
+		_texName = L"silence";
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		_texName = L"stun";

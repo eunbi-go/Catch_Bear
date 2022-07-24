@@ -42,6 +42,7 @@
 #include "Button.h"
 #include "PlayerIcon.h"
 #include "ReadyButton.h"
+#include "SoundManager.h"
 //shared_ptr<Scene> scene = make_shared<Scene>();
 shared_ptr<Scene> scene = NULL;
 
@@ -146,6 +147,13 @@ void SceneManager::ReStart()
 
 	// 아이템
 	GET_SINGLE(ItemManager)->Reset();
+
+	// 점수
+	GET_SINGLE(ScoreManager)->InitScore();
+
+	// 사운드
+	GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
+	GET_SINGLE(SoundManager)->PlayBGM(L"stageScene.wav");
 }
 
 
@@ -320,34 +328,34 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
 
-		//g_EnterPlayerCnt = 2;
-		//CheckPlayerType(1, key);
-		//shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
-		//vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
+		g_EnterPlayerCnt = 2;
+		CheckPlayerType(1, key);
+		shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
+		vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
 
-		//for (auto& gameObject : gameObjects2)
-		//{
-		//	gameObject->SetName(L"Player2");
-		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
-		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-		//	gameObject->AddComponent(make_shared<Player>());
-		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-		//	gameObject->SetStatic(false);
-		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-		//	gameObject->SetBoundingBox(BoundingOrientedBox(
-		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-		//	gameObject->SetCheckFrustum(false);
-		//	gameObject->SetPlayerID(1);
-		//	gameObject->_state = new IdleState();
-		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
-		//	scene->AddGameObject(gameObject);
-		//	scene->AddPlayers(1, gameObject);
-		//	scene->AddVecPlayers(gameObject);
-		//	_isPlayersEnterLobby[0] = false;
-		//	_isPlayersReady[0] = false;
-		//	//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
-		//}
+		for (auto& gameObject : gameObjects2)
+		{
+			gameObject->SetName(L"Player2");
+			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+			gameObject->AddComponent(make_shared<Player>());
+			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			gameObject->SetStatic(false);
+			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+			gameObject->SetBoundingBox(BoundingOrientedBox(
+				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+			gameObject->SetCheckFrustum(false);
+			gameObject->SetPlayerID(1);
+			gameObject->_state = new IdleState();
+			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
+			scene->AddGameObject(gameObject);
+			scene->AddPlayers(1, gameObject);
+			scene->AddVecPlayers(gameObject);
+			_isPlayersEnterLobby[0] = false;
+			_isPlayersReady[0] = false;
+			//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		}
 
 		//g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		//CheckPlayerType(2, key);
@@ -426,7 +434,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(0, gameObject);
 	}
-	/*vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
+	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart2)
 	{
 		gameObject->SetName(L"PlayerTag2");
@@ -441,7 +449,7 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddTagMarks(1, gameObject);
 	}
 
-	vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
+	/*vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart3)
 	{
 		gameObject->SetName(L"PlayerTag3");
@@ -456,6 +464,25 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddTagMarks(2, gameObject);
 	}*/
 #pragma endregion
+
+
+#pragma region CenterHouse
+	{
+		shared_ptr<MeshData> meshHeart = GET_SINGLE(Resources)->LoadFBX(L"House01.bin");
+
+		vector<shared_ptr<GameObject>>	objectsHeart = meshHeart->Instantiate();
+
+		for (auto& gameObject : objectsHeart)
+		{
+			gameObject->SetName(L"House");
+			gameObject->SetCheckFrustum(false);
+			gameObject->GetTransform()->SetLocalPosition(Vec3(0.f, 0.0f, 0.f));
+			gameObject->GetTransform()->SetLocalScale(Vec3(0.015f, 0.015f, 0.015f));
+			scene->AddGameObject(gameObject);
+		}
+	}
+#pragma endregion
+
 
 #pragma region ItemSlotUI
 	// 1.
@@ -626,6 +653,92 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 
 	scene->AddItemCoolTime(itemCoolTime3);
 	scene->AddGameObject(itemCoolTime3);
+#pragma endregion
+
+#pragma region Silence
+	{
+		// 1.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot1_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-450.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
+
+	{
+		// 2.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot2_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-330.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
+
+	{
+		// 3.
+		shared_ptr<GameObject> itemSlot1 = make_shared<GameObject>();
+		itemSlot1->SetLayerIndex(GET_SINGLE(SceneManager)->LayerNameToIndex(L"UI"));
+		itemSlot1->SetName(L"ItemSlot3_Silence");
+		itemSlot1->AddComponent(make_shared<Transform>());
+		itemSlot1->GetTransform()->SetLocalScale(Vec3(100.f, 100.f, 100.f));
+		itemSlot1->GetTransform()->SetLocalPosition(Vec3(-210.f, -300.f, 500.f));
+		itemSlot1->_isRender = false;
+
+		shared_ptr<MeshRenderer> itemSlotRenderer = make_shared<MeshRenderer>();
+		{
+			shared_ptr<Mesh> mesh = GET_SINGLE(Resources)->LoadRectangleMesh();
+			itemSlotRenderer->SetMesh(mesh);
+		}
+		{
+			shared_ptr<Shader> shader = GET_SINGLE(Resources)->Get<Shader>(L"ItemCoolTime");
+			shared_ptr<Texture> texture = GET_SINGLE(Resources)->Load<Texture>(L"itemSlot_silence", L"..\\Resources\\Texture\\silence_effect.png");
+			shared_ptr<Material> material = make_shared<Material>();
+			material->SetShader(shader);
+			material->SetTexture(0, texture);
+			itemSlotRenderer->SetMaterial(material);
+		}
+		itemSlot1->AddComponent(itemSlotRenderer);
+
+		scene->AddGameObject(itemSlot1);
+	}
 #pragma endregion
 
 #pragma region ItemWnd

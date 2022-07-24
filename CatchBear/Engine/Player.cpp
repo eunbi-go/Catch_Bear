@@ -888,10 +888,16 @@ void Player::Silence()
 
 	_fSilenceTime += DELTA_TIME;
 
+	// UI 변경
+	GET_SINGLE(ItemSlotManager)->IsSilenced(true);
+
 	if (_fSilenceTime >= 5.f)
 	{
 		_fSilenceTime = 0.f;
 		_curPlayerItem[Player::ITEM::DEBUFF_OFF] = false;	// enum값 Silence로 수정할 예정
+
+			// UI 변경
+		GET_SINGLE(ItemSlotManager)->IsSilenced(false);
 	}
 }
 

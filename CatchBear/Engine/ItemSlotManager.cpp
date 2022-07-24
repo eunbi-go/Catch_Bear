@@ -250,3 +250,18 @@ void ItemSlotManager::UseShieldItem()
 	}
 }
 
+void ItemSlotManager::IsSilenced(bool isSilenced)
+{
+	shared_ptr<GameObject> silenceEffect1 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemSlot1_Silence");
+	if (isSilenced) silenceEffect1->_isRender = true;
+	else silenceEffect1->_isRender = false;
+
+	shared_ptr<GameObject> silenceEffect2 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemSlot2_Silence");
+	if (isSilenced) silenceEffect2->_isRender = true;
+	else silenceEffect2->_isRender = false;
+
+	shared_ptr<GameObject> silenceEffect3 = GET_SINGLE(SceneManager)->GetActiveScene()->GetGameObject(L"ItemSlot3_Silence");
+	if (isSilenced) silenceEffect3->_isRender = true;
+	else silenceEffect3->_isRender = false;
+}
+

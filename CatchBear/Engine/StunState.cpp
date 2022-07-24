@@ -30,9 +30,10 @@ PlayerState* StunState::Update(GameObject& player, STATE& ePlayer)
 {
     // 3초 동안만 유지됨
     _fTime += DELTA_TIME;
-    
+
     if (_fTime >= 3.f)
     {
+        cout << "스턴끝\n";
         static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::STUN, false);
         static_pointer_cast<Player>(player.GetScript(0))->SetPlayerStunned(false);
 

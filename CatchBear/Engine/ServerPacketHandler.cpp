@@ -305,6 +305,7 @@ bool Handle_S_USE_STUN(PacketSessionRef& session, Protocol::S_USE_STUN& pkt)
 				_player->_state->curState = STATE::STUN;
 				static_pointer_cast<Player>(_player->GetScript(0))->_state->curState = STATE::STUN;
 				static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerStunned(true);
+				//static_pointer_cast<Player>(_player->GetScript(0))->SetCurState(STATE::STUN);
 			}
 		}
 	}

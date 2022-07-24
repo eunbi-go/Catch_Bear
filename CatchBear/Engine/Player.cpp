@@ -67,6 +67,8 @@ void Player::LateUpdate()
 	PlayerState* state = _state->Update(*_player, _curStatePlayer);
 	_player->_curState = _curStatePlayer;
 
+	//cout << _player->GetPlayerID() << " : " << _curStatePlayer << endl;
+
 	if (state != NULL)
 	{
 		_state->End(*_player);
@@ -163,13 +165,15 @@ void Player::KeyCheck()
 	KeyCheck_Item();
 	KeyCheck_Cheat();
 	//////////////////////////////////////////////////////////////////////////
+	cout << _bStunned << endl;
 
 	if (_bStunned)	// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
 	{
 		_curStatePlayer = STATE::STUN;
+
 		return;
 	}
-			
+
 	_player->_curState = _curStatePlayer;
 
 	if (state != NULL)
@@ -251,6 +255,8 @@ void Player::KeyCheck()
 #pragma endregion 애니메이션동기화
 	//////////////////////////////////////////////////////////////////////////
 
+	
+
 	Move();
 }
 
@@ -258,7 +264,7 @@ static bool isFirstEnter = true;
 
 void Player::Move()
 {
-	if (_bStunned) return;
+	if (_bStunned)	return;
 
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	const vector<shared_ptr<GameObject>>& gameObjects = scene->GetGameObjects();
@@ -279,14 +285,14 @@ void Player::Move()
 		Item_Stun();
 		isFirstEnter = false;
 
-		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
-			scene->_FinalPlayerEnter = true;
-
 		// 실드 버그 대문에 시작할때 실드 패킷 한번 보내고 시작
 		Protocol::C_USE_SHIELD pkt;
 		pkt.set_playerid(mysession->GetPlayerID());
 		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 		mysession->Send(sendBuffer);
+
+		if (mysession->GetPlayerID() == g_EnterPlayerCnt - 1)
+			scene->_FinalPlayerEnter = true;		
 	}
 
 	for (auto& gameObject : gameObjects)

@@ -143,21 +143,24 @@ void StageScene::SetTimer()
 		int k = 0;
 
 	// minuteTimer
-	int minute = (int)(_curTime / 60.f);
+	//int minute = (int)(_curTime / 60.f);
+	int minute = (int)(time / 60.f);
 	if (minute == 0)
-		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer2", L"..\\Resources\\Texture\\timer\\timer2.png");
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
 	else if (minute == 1)
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer1", L"..\\Resources\\Texture\\timer\\timer1.png");
 	else if (minute == 2)
-		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer2", L"..\\Resources\\Texture\\timer\\timer2.png");
 	else
-		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer3", L"..\\Resources\\Texture\\timer\\timer3.png");
 	mTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureMinute);
 
-	if (minute >= 2)
+	if (time <= 60.f && !_isSpeedTime)
 	{
 		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
 		GET_SINGLE(SoundManager)->PlayBGM(L"speedBGM.mp3");
+
+		_isSpeedTime = true;
 	}
 
 	// secondTimer
@@ -168,7 +171,7 @@ void StageScene::SetTimer()
 	{
 		ten = 5; one = 9;
 	}
-	if (minute == 2 && second < 1)
+	if (minute == 0 && second < 1)
 	{
 		// 3분 다 지났으면 랭킹 정하기
 		SetFinalRanking();
@@ -176,26 +179,34 @@ void StageScene::SetTimer()
 
 		GET_SINGLE(SoundManager)->StopSound(SoundManager::CHANNELID::BGM);
 		GET_SINGLE(SoundManager)->PlayBGM(L"ending.mp3");
-	}
-	wstring texTenName = L"timer" + s2ws(to_string(ten));
-	wstring texOneName = L"timer" + s2ws(to_string(one));
 
-	textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
-	textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
-	tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
-	oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
-
-	uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
-	pkt.set_score(myscore);
-	if (mysession->GetPlayerID() == (g_EnterPlayerCnt - 1))
-	{
-		pkt.set_timer(_curTime);
+		textureTenSec = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+		textureOneSec = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
+		tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
+		oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
 	}
-	pkt.set_playerid(mysession->GetPlayerID());
-	if (gPacketControl % 60 == 1)
+	else
 	{
-		auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
-		mysession->Send(sendBuffer);
+		wstring texTenName = L"timer" + s2ws(to_string(ten));
+		wstring texOneName = L"timer" + s2ws(to_string(one));
+
+		textureTenSec = GET_SINGLE(Resources)->Load<Texture>(texTenName, L"..\\Resources\\Texture\\timer\\" + texTenName + L".png");
+		textureOneSec = GET_SINGLE(Resources)->Load<Texture>(texOneName, L"..\\Resources\\Texture\\timer\\" + texOneName + L".png");
+		tTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureTenSec);
+		oTimer->GetMeshRenderer()->GetMaterial()->SetTexture(0, textureOneSec);
+
+		uint64 myscore = static_pointer_cast<Player>(_players[mysession->GetPlayerID()]->GetScript(0))->GetPlayerScore();
+		pkt.set_score(myscore);
+		if (mysession->GetPlayerID() == (g_EnterPlayerCnt - 1))
+		{
+			pkt.set_timer(_curTime);
+		}
+		pkt.set_playerid(mysession->GetPlayerID());
+		if (gPacketControl % 60 == 1)
+		{
+			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
+			mysession->Send(sendBuffer);
+		}
 	}
 }
 

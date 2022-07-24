@@ -51,6 +51,7 @@ public:
 	vector<shared_ptr<class Light>>	GetLights() { return _lights; }
 
 	int GetEnterPlayerNum() { return _players.size(); }
+	float GetCurTime() { return _curTime; }
 
 	void SetCurTime(float _time) { _curTime = _time; }
 	void AddCurTime(float _time);

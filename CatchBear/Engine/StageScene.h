@@ -35,5 +35,6 @@ private:
 
 	bool	_isTimerStart = false;
 	float	_StartTimer = 0.f;
+	bool	_isSpeedTime = false;
 };
 

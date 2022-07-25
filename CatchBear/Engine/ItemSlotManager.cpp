@@ -66,7 +66,7 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
+		else if (item == Item::ITEM_EFFECT::SILENCE)
 		{
 			static_pointer_cast<ItemSlotUI>(_itemSlot1->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
@@ -115,7 +115,7 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
+		else if (item == Item::ITEM_EFFECT::SILENCE)
 		{
 			static_pointer_cast<ItemSlotUI>(_itemSlot2->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);
@@ -165,7 +165,7 @@ void ItemSlotManager::UseItem(int nSlot)
 			ResetItemSlot(nSlot);
 			return;
 		}
-		else if (item == Item::ITEM_EFFECT::DEBUFF_OFF)
+		else if (item == Item::ITEM_EFFECT::SILENCE)
 		{
 			static_pointer_cast<ItemSlotUI>(_itemSlot3->GetScript(0))->UseItem();
 			ResetItemSlot(nSlot);

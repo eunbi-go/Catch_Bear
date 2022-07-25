@@ -329,34 +329,34 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 			//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
 		}
 
-		g_EnterPlayerCnt = 2;
-		CheckPlayerType(1, key);
-		shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
-		vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
+		//g_EnterPlayerCnt = 2;
+		//CheckPlayerType(1, key);
+		//shared_ptr<CharacterData> CharacData2 = GET_SINGLE(Resources)->LoadCharacter(key);
+		//vector<shared_ptr<GameObject>>	gameObjects2 = CharacData2->Instantiate();
 
-		for (auto& gameObject : gameObjects2)
-		{
-			gameObject->SetName(L"Player2");
-			gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
-			gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
-			gameObject->AddComponent(make_shared<Player>());
-			gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
-			gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			gameObject->SetStatic(false);
-			gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
-			gameObject->SetBoundingBox(BoundingOrientedBox(
-				XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
-			gameObject->SetCheckFrustum(false);
-			gameObject->SetPlayerID(1);
-			gameObject->_state = new IdleState();
-			static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
-			scene->AddGameObject(gameObject);
-			scene->AddPlayers(1, gameObject);
-			scene->AddVecPlayers(gameObject);
-			_isPlayersEnterLobby[0] = false;
-			_isPlayersReady[0] = false;
-			//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
-		}
+		//for (auto& gameObject : gameObjects2)
+		//{
+		//	gameObject->SetName(L"Player2");
+		//	gameObject->GetTransform()->SetLocalPosition(Vec3(10.f, 0.f, 5.f));
+		//	gameObject->GetTransform()->SetLocalScale(Vec3(1.f, 1.f, 1.f));
+		//	gameObject->AddComponent(make_shared<Player>());
+		//	gameObject->GetAnimationController()->SetTrackAnimationSet(0, 0);
+		//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		//	gameObject->SetStatic(false);
+		//	gameObject->SetBoundingExtents(XMFLOAT3(0.4f, 1.f, 0.4f));
+		//	gameObject->SetBoundingBox(BoundingOrientedBox(
+		//		XMFLOAT3(0.0f, 0.0f, 0.0f), gameObject->GetBoundingExtents(), XMFLOAT4(0.0f, 0.0f, 0.0f, 1.0f)));
+		//	gameObject->SetCheckFrustum(false);
+		//	gameObject->SetPlayerID(1);
+		//	gameObject->_state = new IdleState();
+		//	static_pointer_cast<Player>(gameObject->GetScript(0))->SetTextureKey(key);
+		//	scene->AddGameObject(gameObject);
+		//	scene->AddPlayers(1, gameObject);
+		//	scene->AddVecPlayers(gameObject);
+		//	_isPlayersEnterLobby[0] = false;
+		//	_isPlayersReady[0] = false;
+		//	//_playerTypes[0] = PLAYER_TYPE::PLAYER_TYPE_CNT;
+		//}
 
 		g_EnterPlayerCnt = 3;		// 최종적으로 3인게임으로 바꾸면 3으로 고정 
 		CheckPlayerType(2, key);

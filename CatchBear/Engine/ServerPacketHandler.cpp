@@ -588,7 +588,7 @@ bool Handle_S_USE_SILENCE(PacketSessionRef& session, Protocol::S_USE_SILENCE& pk
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
-	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::DEBUFF_OFF, true);
+	static_pointer_cast<Player>(_player->GetScript(0))->SetCurItem(Player::ITEM::SILENCE, true);
 
 
 	return true;

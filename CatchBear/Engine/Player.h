@@ -130,7 +130,6 @@ public:
 	bool	_isFont = false;
 	wstring _wstrText = L"";
 	int		_shieldPlayerIdx = 0;
-	bool	_isFirstMove = false;
 
 	DIR		_dir = DIR::DIR_END;
 };

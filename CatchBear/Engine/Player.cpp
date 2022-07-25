@@ -42,7 +42,6 @@ Player::Player()
 	_state = new IdleState();
 	_curPlayerItem = { false, };
 	_playerItemArr = { Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE };
-	_isFirstMove = false;
 }
 
 Player::~Player()
@@ -260,8 +259,6 @@ void Player::KeyCheck()
 #pragma endregion 애니메이션동기화
 	//////////////////////////////////////////////////////////////////////////
 
-	
-
 	Move();
 }
 
@@ -323,7 +320,6 @@ void Player::Move()
 			else
 				pos += _player->GetTransform()->GetRight() * (_speed / 5.0f) * DELTA_TIME;
 		}
-
 
 		pkt.set_xpos(pos.x);
 		pkt.set_ypos(pos.y);

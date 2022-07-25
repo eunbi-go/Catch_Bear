@@ -84,4 +84,6 @@ public:
 	bool	_isEnd = false;
 
 	bool	_FinalPlayerEnter = false;
+
+	float	_timerTime = 0.f;
 };

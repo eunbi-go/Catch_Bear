@@ -42,6 +42,7 @@ Player::Player()
 	_state = new IdleState();
 	_curPlayerItem = { false, };
 	_playerItemArr = { Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE, Item::ITEM_EFFECT::NONE };
+	_isFirstMove = false;
 }
 
 Player::~Player()
@@ -141,6 +142,8 @@ void Player::Reset()
 	_fBlindTime = 0.f;
 }
 
+static bool isFirstEnter = true;
+
 void Player::KeyCheck()
 {
 	// 게임종료
@@ -165,14 +168,16 @@ void Player::KeyCheck()
 	KeyCheck_Item();
 	KeyCheck_Cheat();
 	//////////////////////////////////////////////////////////////////////////
-	cout << _bStunned << endl;
+
+	//cout << _bStunned << endl;
 
 	if (_bStunned)	// 멀티플레이 환경에서 stun 상태일때 WALK애니메이션 하지 않게 함
 	{
 		_curStatePlayer = STATE::STUN;
-
+		//_bStunned = false;
 		return;
 	}
+
 
 	_player->_curState = _curStatePlayer;
 
@@ -260,7 +265,7 @@ void Player::KeyCheck()
 	Move();
 }
 
-static bool isFirstEnter = true;
+
 
 void Player::Move()
 {
@@ -280,7 +285,7 @@ void Player::Move()
 	Vec3 pos = _player->GetTransform()->GetLocalPosition();
 	Vec3 rot = _player->GetTransform()->GetLocalRotation();
 
-	// 이동 오류때문에 시작할때 stun 패킷 한번 보내고 시작
+	
 	if (isFirstEnter) {
 		Item_Stun();
 		isFirstEnter = false;
@@ -787,6 +792,7 @@ void Player::Item_Blind()
 
 void Player::Item_Stun()
 {
+	cout << mysession->GetPlayerID() << " : 스턴 보냄\n";
 	/////////////// prod by. wc ///////////////
 	Protocol::C_USE_STUN pkt;
 	pkt.set_fromplayerid(mysession->GetPlayerID());
@@ -866,8 +872,10 @@ void Player::Stunned()
 	if (CheckShield())
 	{
 		_curPlayerItem[Player::ITEM::STUN] = false;
+
 		cout << "쉴드 방어: STUN" << endl;
 		GET_SINGLE(ItemSlotManager)->UseShieldItem();
+
 		return;
 	}
 

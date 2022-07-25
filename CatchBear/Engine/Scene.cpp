@@ -88,6 +88,12 @@ void Scene::RenderDeferred()
 	// 3가지의 렌더타겟이 포지션, 노멀, 컬러 값으로 세팅이 된다.
 	GEngine->GetRTGroup(RENDER_TARGET_GROUP_TYPE::G_BUFFER)->OMSetRenderTargets();
 
+	if (_cameras.size() == 0)
+	{
+		cout << "카메라 사이즈 0\n";
+		return;
+	}
+
 	// Render_Deferred()는 메인 카메라만 수행한다.
 	shared_ptr<Camera> mainCamera = _cameras[0];
 	mainCamera->SortGameObject();

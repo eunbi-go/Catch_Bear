@@ -188,6 +188,8 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 		static_pointer_cast<Player>(_player->GetScript(0))->SetPlayerScore(0);
 		cout << "모든 플레이어 접속 완료!\n";
+
+		scene->_FinalPlayerEnter = true;
 		//cout << "술래는 " << pkt.taggerplayerid() << "번 플레이어입니다!" << endl;
 	}
 	else

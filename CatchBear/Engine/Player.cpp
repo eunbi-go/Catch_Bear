@@ -477,8 +477,8 @@ void Player::UseItem(int itemNum)
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::SILENCE:
-		_curPlayerItem[Player::ITEM::SILENCE] = true;	// test
-		//Item_Silence();
+		//_curPlayerItem[Player::ITEM::SILENCE] = true;	// test
+		Item_Silence();
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test

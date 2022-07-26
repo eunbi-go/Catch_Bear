@@ -168,7 +168,7 @@ void Scene::PushLightData()
 
 		lightParams.lights[lightParams.lightCount] = lightInfo;
 		lightParams.lightCount++;
-		lightParams.time = GET_SINGLE(Timer)->GetAllTime();
+		lightParams.time = _timerTime;
 	}
 
 	CONST_BUFFER(CONSTANT_BUFFER_TYPE::GLOBAL)->SetGraphicsGlobalData(&lightParams, sizeof(lightParams));

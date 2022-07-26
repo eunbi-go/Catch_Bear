@@ -446,6 +446,10 @@ void Player::KeyCheck_Item()
 
 void Player::UseItem(int itemNum)
 {
+	// 침묵상태이면 아이템 사용 X
+	if (_curPlayerItem[Player::ITEM::SILENCE])
+		return;
+
 	// 키입력을 받은 후 _curPlayerItem의 bool값을 true로 만들어주는 함수
 	Item::ITEM_EFFECT itemEffect = _playerItemArr[itemNum];
 
@@ -480,8 +484,8 @@ void Player::UseItem(int itemNum)
 		Item_Blind();
 		break;
 	case Item::ITEM_EFFECT::SILENCE:
+		//_curPlayerItem[Player::ITEM::SILENCE] = true;	// test
 		Item_Silence();
-		//_curPlayerItem[Player::ITEM::SILENCE] = true;
 		break;
 	case Item::ITEM_EFFECT::STUN:
 		//_curPlayerItem[Player::ITEM::STUN] = true;	// test
@@ -509,7 +513,7 @@ void Player::ApplyItemEffect()
 	if (_curPlayerItem[Player::ITEM::BLIND])
 		Blinded();
 
-	if (_curPlayerItem[Player::ITEM::SILENCE])	// Silence로 변경, enum값은 ui 변경 후 수정예정
+	if (_curPlayerItem[Player::ITEM::SILENCE])
 		Silence();
 
 	if (_curPlayerItem[Player::ITEM::STUN])
@@ -614,11 +618,6 @@ void Player::KeyCheck_Cheat()
 		printf("3번 아이템: %d\n", _playerItemArr[2]);
 	}
 
-	if (INPUT->GetButtonDown(KEY_TYPE::P))
-	{
-		cout << "Player Speed: " << _speed << endl;
-	}
-
 	// 치트키
 	if (INPUT->GetButtonDown(KEY_TYPE::NUM4))	// 아이템 창 비움
 	{
@@ -632,11 +631,6 @@ void Player::KeyCheck_Cheat()
 
 		_iItemCnt = 0;
 	}
-
-	//if (INPUT->GetButtonDown(KEY_TYPE::NUM5))	// 디버프 효과 해제
-	//{
-	//	ClearDebuff();
-	//}
 
 	if (INPUT->GetButtonDown(KEY_TYPE::F))	// 플레이어 속도 원래대로 돌리기(10.f)
 	{
@@ -908,7 +902,7 @@ void Player::Silence()
 		_fSilenceTime = 0.f;
 		_curPlayerItem[Player::ITEM::SILENCE] = false;
 
-			// UI 변경
+		// UI 변경
 		GET_SINGLE(ItemSlotManager)->IsSilenced(false);
 	}
 }

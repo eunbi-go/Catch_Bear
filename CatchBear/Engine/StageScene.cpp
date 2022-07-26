@@ -141,7 +141,7 @@ void StageScene::SetTimer()
 	//float time = 180.0f - _curTime;
 	if (_curTime >= 180.0f)
 		int k = 0;
-
+	_timerTime = time;
 	// minuteTimer
 	//int minute = (int)(_curTime / 60.f);
 	int minute = (int)(time / 60.f);

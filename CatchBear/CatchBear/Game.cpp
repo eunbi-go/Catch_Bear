@@ -40,6 +40,12 @@ void Game::UpdateFont(const char* strText)
 	GEngine->GetFontDevice()->PushFont(wstrText);
 }
 
+void Game::SendChatPacket(const char* strText)
+{
+	wstring wstrText = s2ws(strText);
+	GEngine->GetFontDevice()->SendChatPacket(wstrText);
+}
+
 const wstring& Game::GetFontString()
 {
 	return GEngine->GetFontDevice()->GetFontString();

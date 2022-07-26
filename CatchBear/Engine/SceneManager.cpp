@@ -435,20 +435,20 @@ shared_ptr<Scene> SceneManager::LoadTestScene()
 		scene->AddGameObject(gameObject);
 		scene->AddTagMarks(0, gameObject);
 	}
-	//vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
-	//for (auto& gameObject : objectsHeart2)
-	//{
-	//	gameObject->SetName(L"PlayerTag2");
-	//	gameObject->SetCheckFrustum(false);
-	//	gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -2.f, 5.f));
-	//	gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
-	//	gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-	//	gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
-	//	gameObject->AddComponent(make_shared<TagMark>());
-	//	scene->AddGameObject(gameObject);
-	//	scene->AddTagMarks(1, gameObject);
-	//}
+	vector<shared_ptr<GameObject>>	objectsHeart2 = meshHeart->Instantiate();
+	for (auto& gameObject : objectsHeart2)
+	{
+		gameObject->SetName(L"PlayerTag2");
+		gameObject->SetCheckFrustum(false);
+		gameObject->GetTransform()->SetLocalPosition(Vec3(15.f, -2.f, 5.f));
+		gameObject->GetTransform()->SetLocalRotation(Vec3(-1.57079649, 0.f, 0.f));
+		gameObject->GetTransform()->SetLocalScale(Vec3(0.2f, 0.2f, 0.2f));
+		gameObject->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+		gameObject->GetMeshRenderer()->GetMaterial()->SetShader(GET_SINGLE(Resources)->Get<Shader>(L"TagMark"));
+		gameObject->AddComponent(make_shared<TagMark>());
+		scene->AddGameObject(gameObject);
+		scene->AddTagMarks(1, gameObject);
+	}
 
 	vector<shared_ptr<GameObject>>	objectsHeart3 = meshHeart->Instantiate();
 	for (auto& gameObject : objectsHeart3)

@@ -27,6 +27,18 @@ void Lobby::Broadcast(SendBufferRef sendBuffer)
 	}
 }
 
+void Lobby::ExceptBroadcast(uint64 exceptPlayerID, SendBufferRef sendBuffer)
+{
+	WRITE_LOCK;
+	for (auto& p : _players)
+	{
+		if (p.second->playerId == exceptPlayerID)
+			continue;
+		else
+			p.second->ownerSession->Send(sendBuffer);
+	}
+}
+
 bool Lobby::isFirstEnterLobby(uint64 playerId)
 {
 	WRITE_LOCK;

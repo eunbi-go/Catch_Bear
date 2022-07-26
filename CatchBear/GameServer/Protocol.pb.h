@@ -1528,7 +1528,7 @@ class C_CHAT final :
     kMsgFieldNumber = 2,
     kPlayerIdFieldNumber = 1,
   };
-  // string msg = 2;
+  // bytes msg = 2;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -1676,7 +1676,7 @@ class S_CHAT final :
     kMsgFieldNumber = 2,
     kPlayerIdFieldNumber = 1,
   };
-  // string msg = 2;
+  // bytes msg = 2;
   void clear_msg();
   const std::string& msg() const;
   template <typename ArgT0 = const std::string&, typename... ArgT>
@@ -5383,7 +5383,7 @@ inline void C_CHAT::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.C_CHAT.playerId)
 }
 
-// string msg = 2;
+// bytes msg = 2;
 inline void C_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }
@@ -5395,7 +5395,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void C_CHAT::set_msg(ArgT0&& arg0, ArgT... args) {
  
- msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ msg_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Protocol.C_CHAT.msg)
 }
 inline std::string* C_CHAT::mutable_msg() {
@@ -5452,7 +5452,7 @@ inline void S_CHAT::set_playerid(::PROTOBUF_NAMESPACE_ID::uint64 value) {
   // @@protoc_insertion_point(field_set:Protocol.S_CHAT.playerId)
 }
 
-// string msg = 2;
+// bytes msg = 2;
 inline void S_CHAT::clear_msg() {
   msg_.ClearToEmpty();
 }
@@ -5464,7 +5464,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void S_CHAT::set_msg(ArgT0&& arg0, ArgT... args) {
  
- msg_.Set(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ msg_.SetBytes(::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::EmptyDefault{}, static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Protocol.S_CHAT.msg)
 }
 inline std::string* S_CHAT::mutable_msg() {

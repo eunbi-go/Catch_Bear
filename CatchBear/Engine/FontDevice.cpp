@@ -2,6 +2,8 @@
 #include "FontDevice.h"
 #include "Engine.h"
 #include "SceneManager.h"
+#include "ServerPacketHandler.h"
+#include "ServerSession.h"
 
 FontDevice::FontDevice(UINT nFrame)
 {
@@ -152,6 +154,17 @@ void FontDevice::PushFont(const wstring& wstrText)
     _vTextBlocks.push_back(tb);
 
     _writingStr = L"";
+}
+
+void FontDevice::SendChatPacket(const wstring& wstrText)
+{
+    string strText = ws2s(wstrText);
+
+    Protocol::C_CHAT chat_pkt;
+    chat_pkt.set_playerid(mysession->GetPlayerID());
+    chat_pkt.set_msg(strText);
+    auto sendBuffer = ServerPacketHandler::MakeSendBuffer(chat_pkt);
+    mysession->Send(sendBuffer);
 }
 
 void FontDevice::Render(UINT nFrame)

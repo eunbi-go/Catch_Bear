@@ -577,6 +577,9 @@ void Player::ClearDebuff()
 
 bool Player::CheckShield()
 {
+	if (_shieldPlayerIdx != mysession->GetPlayerID())	// 실드 쓴 플레이어가 아니면 체크하지않음
+		return false;
+
 	if (_curPlayerItem[Player::ITEM::SHIELD])
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
@@ -598,7 +601,11 @@ bool Player::CheckDebuff(Item::ITEM_EFFECT itemEffect)
 	{
 		if (itemEffect == Item::ITEM_EFFECT::SPEED_UP ||
 			itemEffect == Item::ITEM_EFFECT::TELEPORT ||
-			itemEffect == Item::ITEM_EFFECT::SHIELD)
+			itemEffect == Item::ITEM_EFFECT::SHIELD ||
+			itemEffect == Item::ITEM_EFFECT::SILENCE ||
+			itemEffect == Item::ITEM_EFFECT::STUN ||
+			itemEffect == Item::ITEM_EFFECT::SPEED_DOWN ||
+			itemEffect == Item::ITEM_EFFECT::BLIND)
 		{
 			cout << "디버프중 - 버프아이템 사용 못함" << endl;
 			return true;
@@ -750,8 +757,8 @@ void Player::Item_Shield()
 	{
 		_curPlayerItem[Player::ITEM::SHIELD] = false;
 
-		if (mysession->GetPlayerID() == _shieldPlayerIdx)
-			GET_SINGLE(ItemSlotManager)->UseShieldItem();
+		//if (mysession->GetPlayerID() == _shieldPlayerIdx)
+		//	GET_SINGLE(ItemSlotManager)->UseShieldItem();
 		GET_SINGLE(ShieldParticleManager)->SetShieldParticleOff();
 		_fShieldTime = 0.f;
 		cout << "5초 지나고 쉴드 끝" << endl;

@@ -20,6 +20,7 @@ public:
 public:
 	void UpdateFont(const wstring& wstrText);
 	void PushFont(const wstring& wstrText);
+	void SendChatPacket(const wstring& wstrText);	// Server
 	const wstring& GetFontString() { return _vTextBlocks[0].wstrText; }
 
 	void Render(UINT nFrame);

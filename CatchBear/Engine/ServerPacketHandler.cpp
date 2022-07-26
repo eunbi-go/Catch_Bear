@@ -26,6 +26,8 @@
 #include "Resources.h"
 #include "MeshRenderer.h"
 
+#include "FontDevice.h"
+
 PacketHandlerFunc GPacketHandler[UINT16_MAX];
 
 // Á÷Á¢ ÄÁÅÙÃ÷ ÀÛ¾÷ÀÚ
@@ -199,11 +201,17 @@ bool Handle_S_ENTER_GAME(PacketSessionRef& session, Protocol::S_ENTER_GAME& pkt)
 
 bool Handle_S_CHAT(PacketSessionRef& session, Protocol::S_CHAT& pkt)
 {
-	//uint64 playerId = pkt.playerid();
+	uint64 playerId = pkt.playerid();
 
-	//std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
+	std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
+	
+	//wstring message_w;
+	//message_w.assign(pkt.msg().begin(), pkt.msg().end());
 
-	////std::cout << pkt.msg() << endl;
+	wstring wstrText = s2ws(pkt.msg());
+	GEngine->GetFontDevice()->UpdateFont(wstrText);
+	GEngine->GetFontDevice()->PushFont(wstrText);
+
 	return true;
 }
 

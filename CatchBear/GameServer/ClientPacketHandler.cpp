@@ -226,16 +226,16 @@ bool Handle_C_ENTER_GAME(PacketSessionRef& session, Protocol::C_ENTER_GAME& pkt)
 
 bool Handle_C_CHAT(PacketSessionRef& session, Protocol::C_CHAT& pkt)
 {
-	//uint64 playerId = pkt.playerid();
+	uint64 playerId = pkt.playerid();
 
-	//std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
+	std::cout << "ID: " << playerId << ") " << pkt.msg() << endl;
 
-	//Protocol::S_CHAT chatPkt;
-	//chatPkt.set_playerid(playerId);
-	//chatPkt.set_msg(pkt.msg());
-	//auto sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
+	Protocol::S_CHAT chatPkt;
+	chatPkt.set_playerid(playerId);
+	chatPkt.set_msg(pkt.msg());
+	auto sendBuffer = ClientPacketHandler::MakeSendBuffer(chatPkt);
 
-	//GLobby.Broadcast(sendBuffer); // WRITE_LOCK
+	GLobby.ExceptBroadcast(playerId, sendBuffer); // WRITE_LOCK
 
 	return true;
 }

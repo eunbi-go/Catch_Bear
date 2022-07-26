@@ -10,6 +10,7 @@ public:
 
 	void setString(const char* strText);
 	void UpdateFont(const char* strText);
+	void SendChatPacket(const char* strText);
 	const wstring& GetFontString();
 	const bool isIPAddrEnter();
 	const bool isAllPlayerReady();

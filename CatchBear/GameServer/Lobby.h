@@ -6,6 +6,7 @@ public:
 	void Enter(PlayerRef player);
 	void Leave(PlayerRef player);
 	void Broadcast(SendBufferRef sendBuffer);
+	void ExceptBroadcast(uint64 exceptPlayerID, SendBufferRef sendBuffer);
 
 	bool isFirstEnterLobby(uint64 playerId);
 	void SetPlayerReady(uint64 playerId, bool _isReady);

@@ -272,6 +272,7 @@ int GetText(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
             else
             {
                 game->UpdateFont(strText);
+                game->SendChatPacket(strText);
                 memset(strText, 0, 255);
             }
         }

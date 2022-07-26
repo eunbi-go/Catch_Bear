@@ -108,6 +108,9 @@ void Scene::RenderLights()
 	// RenderLights()를 하기 전에 RenderShadow()를 하는 순간
 	// RenderShadow()는 우리가 배치한 Light에 있는 카메라로 뷰 매트릭스와 프로젝션 매트릭스를 덮어쓰고 있기 때문에
 	// 다시 복원시켜준다.
+	if (_cameras.size() == 0)
+		return;
+
 	shared_ptr<Camera> mainCamera = _cameras[0];
 	Camera::S_MatView = mainCamera->GetViewMatrix();
 	Camera::S_MatProjection = mainCamera->GetProjectionMatrix();

@@ -767,8 +767,8 @@ const char descriptor_table_protodef_Protocol_2eproto[] PROTOBUF_SECTION_VARIABL
   "\010playerId\030\001 \001(\004\022\017\n\007success\030\002 \001(\010\022\023\n\013ente"
   "rPlayer\030\003 \001(\004\022\031\n\021isAllPlayersReady\030\004 \001(\010"
   "\022\026\n\016taggerplayerid\030\005 \001(\004\"\'\n\006C_CHAT\022\020\n\010pl"
-  "ayerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"\'\n\006S_CHAT\022\020\n\010p"
-  "layerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\t\"R\n\006C_MOVE\022\020\n\010"
+  "ayerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\014\"\'\n\006S_CHAT\022\020\n\010p"
+  "layerId\030\001 \001(\004\022\013\n\003msg\030\002 \001(\014\"R\n\006C_MOVE\022\020\n\010"
   "playerId\030\001 \001(\004\022\014\n\004XPos\030\002 \001(\002\022\014\n\004YPos\030\003 \001"
   "(\002\022\014\n\004ZPos\030\004 \001(\002\022\014\n\004YRot\030\005 \001(\002\"R\n\006S_MOVE"
   "\022\020\n\010playerId\030\001 \001(\004\022\014\n\004XPos\030\002 \001(\002\022\014\n\004YPos"
@@ -2846,12 +2846,11 @@ const char* C_CHAT::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string msg = 2;
+      // bytes msg = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_msg();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.C_CHAT.msg"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -2890,13 +2889,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_playerid(), target);
   }
 
-  // string msg = 2;
+  // bytes msg = 2;
   if (!this->msg().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_msg().data(), static_cast<int>(this->_internal_msg().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Protocol.C_CHAT.msg");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_msg(), target);
   }
 
@@ -2916,10 +2911,10 @@ size_t C_CHAT::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string msg = 2;
+  // bytes msg = 2;
   if (!this->msg().empty()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_msg());
   }
 
@@ -3078,12 +3073,11 @@ const char* S_CHAT::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::int
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // string msg = 2;
+      // bytes msg = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           auto str = _internal_mutable_msg();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
-          CHK_(::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "Protocol.S_CHAT.msg"));
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
@@ -3122,13 +3116,9 @@ failure:
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteUInt64ToArray(1, this->_internal_playerid(), target);
   }
 
-  // string msg = 2;
+  // bytes msg = 2;
   if (!this->msg().empty()) {
-    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
-      this->_internal_msg().data(), static_cast<int>(this->_internal_msg().length()),
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
-      "Protocol.S_CHAT.msg");
-    target = stream->WriteStringMaybeAliased(
+    target = stream->WriteBytesMaybeAliased(
         2, this->_internal_msg(), target);
   }
 
@@ -3148,10 +3138,10 @@ size_t S_CHAT::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // string msg = 2;
+  // bytes msg = 2;
   if (!this->msg().empty()) {
     total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::BytesSize(
         this->_internal_msg());
   }
 

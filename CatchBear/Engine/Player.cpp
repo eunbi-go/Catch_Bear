@@ -195,7 +195,7 @@ void Player::KeyCheck()
 	{
 		StatePkt.set_playerid(mysession->GetPlayerID());
 		StatePkt.set_state(Protocol::IDLE);
-		if (gPacketControl % 50 == 1)
+		if (gPacketControl % 10 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
@@ -205,7 +205,7 @@ void Player::KeyCheck()
 	case STATE::WALK:
 		StatePkt.set_playerid(mysession->GetPlayerID());
 		StatePkt.set_state(Protocol::WALK);
-		if (gPacketControl % 10 == 1)
+		if (gPacketControl % 2 == 1)
 		{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(StatePkt);
 			mysession->Send(sendBuffer);
@@ -327,13 +327,13 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
-		{
+		//if (gPacketControl % 2 == 1)
+		//{
 			if (_player->GetIsAllowPlayerMove()) {
 				auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 				mysession->Send(sendBuffer);
 			}
-		}
+		//}
 		
 	}
 	else if (INPUT->GetButton(KEY_TYPE::DOWN))
@@ -346,11 +346,11 @@ void Player::Move()
 		pkt.set_yrot(rot.y);
 		pkt.set_playerid(mysession->GetPlayerID());
 
-		if (gPacketControl % 2 == 1)
-		{
+		//if (gPacketControl % 2 == 1)
+		//{
 			auto sendBuffer = ServerPacketHandler::MakeSendBuffer(pkt);
 			mysession->Send(sendBuffer);
-		}
+		//}
 	}
 
 	// È¸Àü

@@ -39,7 +39,6 @@ public:
 
 
 public:
-	void changeScene(SCENE_ID eScene);
 	SCENE_ID getSceneID() { return _curScene; }
 
 

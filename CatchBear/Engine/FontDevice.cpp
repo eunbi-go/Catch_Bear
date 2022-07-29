@@ -138,9 +138,23 @@ void FontDevice::UpdateFont(const wstring& wstrText)
         _vTextBlocks.push_back(tb); 
     }
 
-    //wstring temp = L"";
-    //if (mysession)
-    //    temp = to_wstring(mysession->GetPlayerID()) + L" : ";
+    wstring player_ID = L"";
+    if (mysession)
+        player_ID = to_wstring(mysession->GetPlayerID()) + L" : ";
+
+    if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
+        _vTextBlocks[_vTextBlocks.size() - 1] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };
+    else if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOBBY)
+        _writingStr = player_ID + wstrText;
+}
+
+void FontDevice::Server_UpdateFont(const wstring& wstrText)
+{
+    if (_vTextBlocks.size() == 0 && GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
+    {
+        TextBlock tb;
+        _vTextBlocks.push_back(tb);
+    }
 
     if (GET_SINGLE(SceneManager)->getSceneID() == SCENE_ID::LOGIN)
         _vTextBlocks[_vTextBlocks.size() - 1] = { wstrText, D2D1::RectF(_fWidth / 2 - 200.f, _fHeight / 2 + 70.f, _fWidth / 2 + 500.f, _fHeight / 2 + 300.f), _pdwTextFormat };

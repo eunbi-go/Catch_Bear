@@ -86,6 +86,8 @@ void SceneManager::LoadScene(SCENE_ID sceneID)
 			break;
 
 		case LOBBY:
+			if (mysession)
+				cout << mysession->GetPlayerID() << " : " << "Enter Lobby Scene!\n";
 			scene = make_shared<LobbyScene>();
 			_activeScene = make_shared<LobbyScene>();
 			_activeScene = LoadLobbyScene();

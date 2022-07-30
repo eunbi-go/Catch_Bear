@@ -70,6 +70,7 @@ private:
 
 	map<int, bool> _isPlayersEnterLobby;			// 플레이어가 로비씬에 들어왔는가
 	map<int, bool> _isPlayersReady;					// 플레이어가 레디를 했는가
+
 };
 
 

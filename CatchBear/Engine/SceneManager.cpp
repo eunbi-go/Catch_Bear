@@ -2050,7 +2050,6 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 	fopen_s(&pFile, ws2s(strpath).c_str(), "rb");
 	if (pFile == NULL)		return;
 	rewind(pFile);
-	int l = 0;
 
 	for (; ;)
 	{

@@ -133,5 +133,5 @@ public:
 
 	DIR		_dir = DIR::DIR_END;
 
-
+	int		_nWalkSoundFrame = 2;
 };

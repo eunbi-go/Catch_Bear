@@ -81,7 +81,7 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 		{
 			XMFLOAT4X4 xmf4x4Transform = Zero();
 
-			for (int k = 0; k < _nAnimationTracks; k++)
+			for (int k = 0; k < _nAnimationTracks; k++)	// _nAnimationTracks: 1
 			{
 				if (_animTracks[k]._bEnable)
 				{
@@ -90,7 +90,6 @@ void AnimationController::AdvanceTime(float fElapsedTime)
 
 					XMFLOAT4X4 xmf4x4TrackTransform = pAnimationSet->GetSRT(j);
 					_curFrame = pAnimationSet->_curFrame;
-					//printf("frame: %d\n", _curFrame);
 					xmf4x4Transform = Add(xmf4x4Transform, Scale(xmf4x4TrackTransform, _animTracks[k]._weight));
 				}
 			}

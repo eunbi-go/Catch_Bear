@@ -54,7 +54,7 @@ private:
 	float									_fTrackPosition = 0.0f;
 
 	vector<shared_ptr<CharacterBoneInfo>>	_bones;
-	vector<shared_ptr<AnimationClipInfo>>	_animClips;
+	//vector<shared_ptr<AnimationClipInfo>>	_animClips;
 
 	shared_ptr<StructuredBuffer>			_boneTransform;
 	shared_ptr<AnimationModelInfo>			_modelInfo;
@@ -69,7 +69,7 @@ private:
 public:
 	vector<shared_ptr<Transform>>		_animatedTrans;
 	vector<Matrix>	matToParent;
-	shared_ptr<StructuredBuffer>	_offsetBuffer;
+	shared_ptr<StructuredBuffer>		_offsetBuffer;
 	vector<Matrix>	offsetMat;
 
 	int _curFrame;

@@ -46,4 +46,7 @@ void SlowRestState::Enter(GameObject& player)
 
 void SlowRestState::End(GameObject& player)
 {
+	static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(10.f);
+	static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
+	_fTime = 0.f;
 }

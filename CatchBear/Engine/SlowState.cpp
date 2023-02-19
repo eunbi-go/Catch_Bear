@@ -33,10 +33,6 @@ PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
         _fSlowSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSlowSpeed();
         static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(_fSlowSpeed);
         ePlayer = STATE::SLOW;
-
-        //cout << "Slow ½ÃÀÛ" << endl;
-        //float playerSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSpeed();
-        //cout << "Player Speed: " << playerSpeed << endl;
     }
 
     else if (_fTime >= 5.f)
@@ -46,11 +42,6 @@ PlayerState* SlowState::Update(GameObject& player, STATE& ePlayer)
         static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
         _fTime = 0.f;
         ePlayer = STATE::IDLE;
-
-        //cout << "Slow ³¡" << endl;
-        //float playerSpeed = static_pointer_cast<Player>(player.GetScript(0))->GetPlayerSpeed();
-        //cout << "Player Speed: " << playerSpeed << endl;
-
         return new IdleState;
     }
 
@@ -66,7 +57,8 @@ void SlowState::Enter(GameObject& player)
 void SlowState::End(GameObject& player)
 {
     _fTime = 0.f;
-
+    static_pointer_cast<Player>(player.GetScript(0))->SetPlayerSpeed(10.f);
+    static_pointer_cast<Player>(player.GetScript(0))->SetCurItem(Player::ITEM::SPEED_DOWN, false);
     player.GetAnimationController()->SetAnimationPosition(0, 0.f);
     player.GetAnimationController()->SetTrackSpeed(0, 1.f);
 }

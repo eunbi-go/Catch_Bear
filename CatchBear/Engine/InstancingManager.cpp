@@ -15,6 +15,7 @@
 
 void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 {
+	// uint64: instanceID
 	map<uint64, vector<shared_ptr<GameObject>>> cache;
 
 	for (shared_ptr<GameObject>& gameObject : gameObjects)
@@ -43,6 +44,14 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 			}
 			continue;
 		}
+
+		// 3. 그 외
+		else if (vec.size() == 1)
+		{
+			vec[0]->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
+			vec[0]->GetMeshRenderer()->Render();
+		}
+
 		// 2. TagMark
 		else if (vec[0]->GetName() == L"PlayerTag1" || vec[0]->GetName() == L"PlayerTag2" || vec[0]->GetName() == L"PlayerTag3")
 		{
@@ -58,17 +67,11 @@ void InstancingManager::Render(vector<shared_ptr<GameObject>>& gameObjects)
 				vec[i]->GetMeshRenderer()->Render();
 			}
 		}
-		// 3. 그 외
-		else if (vec.size() == 1)
-		{
-			vec[0]->GetMeshRenderer()->GetMaterial()->SetInt(0, 0);
-			vec[0]->GetMeshRenderer()->Render();
-		}
-
 
 		// 인스턴싱O
 		else
 		{
+			// map<uint64, vector<shared_ptr<GameObject>>> pair
 			const uint64 instanceId = pair.first;
 
 			for (const shared_ptr<GameObject>& gameObject : vec)
@@ -99,6 +102,7 @@ void InstancingManager::ClearBuffer()
 
 void InstancingManager::AddParam(uint64 instanceId, InstancingParams& data)
 {
+	// instanceID에 해당하는 버퍼가 있는지 확인
 	if (_buffers.find(instanceId) == _buffers.end())
 		_buffers[instanceId] = make_shared<InstancingBuffer>();
 

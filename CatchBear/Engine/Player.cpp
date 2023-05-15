@@ -63,6 +63,22 @@ void Player::Update()
 
 void Player::LateUpdate()
 {
+	PlayerState* state = _state->Update(*_player, _curStatePlayer);
+	_player->_curState = _curStatePlayer;
+
+	// 상태가 다를 경우 상태 변화.
+	if (state != NULL)
+	{
+		_state->End(*_player);
+		delete _state;
+		_state = state;
+		_state->Enter(*_player);
+	}
+
+
+	//cout << _player->GetPlayerID() << " : " << _curStatePlayer << endl;
+
+
 	// 서버에서 컨트롤하는 플레이어는 서버에서 위치값도 받아오니까 필요없을듯
 	KeyCheck();
 
@@ -71,18 +87,7 @@ void Player::LateUpdate()
 	shared_ptr<Scene> scene = GET_SINGLE(SceneManager)->GetActiveScene();
 	_player = scene->GetPlayer(mysession->GetPlayerID());
 
-	PlayerState* state = _state->Update(*_player, _curStatePlayer);
-	_player->_curState = _curStatePlayer;
 
-	//cout << _player->GetPlayerID() << " : " << _curStatePlayer << endl;
-
-	if (state != NULL)
-	{
-		_state->End(*_player);
-		delete _state;
-		_state = state;
-		_state->Enter(*_player);
-	}
 
 	// 애니메이션 재생하는 부분 -> 모두 적용되야 함
 	GetAnimationController()->AdvanceTime(DELTA_TIME);

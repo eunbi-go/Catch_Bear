@@ -2101,7 +2101,7 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 					else AddMapObject(scene, obj, name, trans, scale, Vec3(0.f, 0.f, 0.f));
 					break;
 				}
-				
+
 			}
 			else
 			{
@@ -2112,7 +2112,8 @@ void SceneManager::LoadMapFile(shared_ptr<Scene> scene)
 	}
 }
 
-void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameObject>> gameObj, wstring name, Vec3 trans, Vec3 scale, Vec3 rotate)
+void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameObject>> gameObj, 
+								wstring name, Vec3 trans, Vec3 scale, Vec3 rotate)
 {
 	for (auto& object : gameObj)
 	{
@@ -2121,6 +2122,7 @@ void SceneManager::AddMapObject(shared_ptr<Scene> scene, vector<shared_ptr<GameO
 		object->GetTransform()->SetLocalPosition(trans);
 		object->GetTransform()->SetLocalScale(scale);
 		object->GetTransform()->SetLocalRotation(rotate);
+		// Bounding Box.
 		if (name == L"Tree_01") {
 			object->SetBoundingExtents(XMFLOAT3(0.4f, 2.7f, 0.4f));
 			object->SetBoundingBox(BoundingOrientedBox(

@@ -562,7 +562,7 @@ vector<shared_ptr<GameObject>> CharacterData::Instantiate()
 		gameObject->GetTransform()->SetChild(_modelInfo->_rootObject);
 
 		gameObject->AddComponent(make_shared<AnimationController>());
-		gameObject->GetAnimationController()->SetAnimClips(_animationClipInfo);
+		//gameObject->GetAnimationController()->SetAnimClips(_animationClipInfo);
 		gameObject->GetAnimationController()->SetModelInfo(_modelInfo, _skinningInfo);
 
 		vCharacter.push_back(gameObject);

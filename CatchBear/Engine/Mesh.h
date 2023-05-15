@@ -55,7 +55,7 @@ private:
 
 
 	// Animation
-	vector<AnimClipInfo>		_animClips;
+	//vector<AnimClipInfo>		_animClips;
 	vector<BoneInfo>			_bones;
 
 	shared_ptr<StructuredBuffer>	_offsetBuffer;

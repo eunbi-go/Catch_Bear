@@ -30,7 +30,7 @@ void MeshRenderer::Render(shared_ptr<InstancingBuffer>& buffer)
 {
 	// 한번에 그려줘야 하는, 인스턴싱이 들어간 애들은 params.fx의 TRANSFORM_PARAMS : register(b1)을 사용하는게 아니라
 	// 우리가 따로 넣어준 deferred.fx의 VS_IN 부분에서 받아주게 된다.
-	
+
 	buffer->PushData();
 
 	// Animation

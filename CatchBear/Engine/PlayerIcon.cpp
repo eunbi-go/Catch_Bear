@@ -76,4 +76,6 @@ PLAYER_TYPE PlayerIcon::CheckPlayerType(const wstring& texKey)
 	{
 		return PLAYER_TYPE::PINK;
 	}
+
+	return PLAYER_TYPE::PLAYER_TYPE_CNT;
 }

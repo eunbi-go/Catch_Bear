@@ -16,8 +16,9 @@ void ScoreManager::Update()
 
 const vector<shared_ptr<GameObject>>& ScoreManager::GetVecRankedPlayers()
 {
-	if (_bRanked)
+	//if (_bRanked)
 		return _vecRankedPlayers;
+
 }
 
 void ScoreManager::InitScore()

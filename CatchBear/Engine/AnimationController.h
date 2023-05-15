@@ -19,7 +19,7 @@ public:
 
 public:
 	void SetBones(vector<shared_ptr<CharacterBoneInfo>> bones) { _bones = bones; }
-	void SetAnimClips(vector<shared_ptr<AnimationClipInfo>> anClips) { _animClips = anClips; }
+	//void SetAnimClips(vector<shared_ptr<AnimationClipInfo>> anClips) { _animClips = anClips; }
 	void SetModelInfo(shared_ptr<AnimationModelInfo> model, SkinningInfo skinInfo);
 
 public:

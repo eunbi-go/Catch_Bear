@@ -120,7 +120,7 @@ float4 PS_TimerTex(VS_TEX_OUT input) : SV_Target
         color = g_tex_0.Sample(g_sam_0, input.uv);
 
     int time = (int)g_time;
-    if (time < 60)  // 나중에 30초 남았을 때로 변경해야 함, 지금은 빨리 확인하려구 해둠
+    if (time < 60)  
     {
         if (time % 2 == 0)
         {

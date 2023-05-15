@@ -143,7 +143,6 @@ void StageScene::SetTimer()
 		int k = 0;
 	_timerTime = time;
 	// minuteTimer
-	//int minute = (int)(_curTime / 60.f);
 	int minute = (int)(time / 60.f);
 	if (minute == 0)
 		textureMinute = GET_SINGLE(Resources)->Load<Texture>(L"timer0", L"..\\Resources\\Texture\\timer\\timer0.png");
